@@ -24,7 +24,7 @@ export default ({ items, onOrder }) => {
   }, [items, onOrder, quantities])
 
   return (
-    <div>
+    <div className="mt3">
       <h2 className="tc">Qual seu pedido?</h2>
       <List
         itemLayout="horizontal"

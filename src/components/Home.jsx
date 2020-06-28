@@ -17,7 +17,7 @@ export default () => {
   const [address, setAddress] = useState(null)
   const [order, setOrder] = useState([])
   const [total, setTotal] = useState(0)
-  const [nome, setNome] = useState("")
+  const [name, setName] = useState("")
   const [info, setInfo] = useState("")
   const [paymentInfo, setPayment] = useState(null)
 
@@ -30,24 +30,26 @@ export default () => {
         label,
         change
       },
+      name,
+      total,
       info
     })
     var win = window.open(whatsappLink, "_blank")
     win.focus()
-  }, [address, order, info, paymentInfo])
+  }, [address, order, info, paymentInfo, name, total])
 
   const hasOrder = useMemo(() => {
     return order.some(([, quantity]) => parseInt(quantity, 10))
   }, [order])
 
   const pedidoValido = useMemo(() => {
-    return total > 0 && nome && address.logradouro
-  }, [total, nome, address])
+    return total > 0 && name && address.logradouro
+  }, [total, name, address])
 
   return (
     <div className="App">
       <Alert
-        message="No final, vamos te enviar pra o Whatsapp para você finalizar seu pedido ;)"
+        message="No final, vamos te redirecionar pra o Whatsapp para finalizar seu pedido ;)"
         type="info"
       />
       <Cardapio items={items} onOrder={setOrder} />
@@ -64,8 +66,8 @@ export default () => {
       />
       <span className="mt2">Seu nome</span>
       <Input
-        value={nome}
-        onChange={eSet(setNome)}
+        value={name}
+        onChange={eSet(setName)}
         className="mt2"
         size="large"
       />

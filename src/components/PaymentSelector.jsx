@@ -81,7 +81,7 @@ export default ({ methods: methodsObj, onPayment }) => {
         </div>
         {(methodDescription || methodImage) && (
           <Alert
-            message="Envie o comprovante de trasnferência pelo Whatsapp."
+            message="Envie o comprovante de transferência pelo Whatsapp."
             type="warning"
             className="mt2"
           />

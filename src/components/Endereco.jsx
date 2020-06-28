@@ -12,9 +12,10 @@ export default ({ onAddress }) => {
   const [bairro, setBairro] = useState("")
 
   // Campina Grande é o meu país
-  const setAddress = useCallback(({ logradouro, bairro }) => {
+  const setAddress = useCallback(({ logradouro, bairro, numero }) => {
     setLogradouro(logradouro)
     setBairro(bairro)
+    setNumero(numero)
   }, [])
 
   useEffect(() => {

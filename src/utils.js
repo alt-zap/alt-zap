@@ -14,23 +14,22 @@ export const generateLink = ({
     .map(([name, quantity]) => `*${quantity}* - ${name}`)
     .join("\r\n")
   const text = `*Novo Pedido!*
+*Nome:* ${name}
 
-  *Nome:* ${name}
+*Itens:*
+${items}
+*Total do Pedido:* R$ ${total}
 
-  *Items:*
-  ${items}
+*Endereço:* 
+${logradouro} - ${numero}
+${complemento || "(s/c)"} - ${bairro}
 
-  *Endereço:* 
-  ${logradouro} - ${numero}
-  ${complemento || "(s/c)"} - ${bairro}
+*Outras Informações:*
+${info} 
 
-  *Outras Informações:*
-  ${info} 
-
-  *Total do Pedido:* ${total}
-  *Meio de Pagamento:* ${label}
-  ${change ? `Precisa de troco para *${change}*` : ""}
-  `
+  
+*Meio de Pagamento:* ${label}
+${change ? `Precisa de troco para R$ *${change}*` : ""}`
 
   return `https://api.whatsapp.com/send?phone=5583987599425&text=${window.encodeURIComponent(
     text

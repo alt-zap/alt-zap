@@ -42,12 +42,14 @@ export default ({ onAddress }) => {
             prox: position.coords.latitude + "," + position.coords.longitude
           },
           data => {
+            setLoading(false)
             try {
               const address = data.Response.View[0].Result[0].Location.Address
+              console.log(address)
               const {
                 Street: logradouro,
                 District: bairro,
-                StreetNumber: numero
+                HouseNumber: numero
               } = address
               onAddress({ logradouro, bairro, numero })
             } catch (e) {
@@ -56,9 +58,9 @@ export default ({ onAddress }) => {
           },
           error => {
             console.error(error)
+            setLoading(false)
           }
         )
-        setLoading(false)
       })
     }
   }, [onAddress])
