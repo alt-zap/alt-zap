@@ -6,7 +6,7 @@ export default ({ order }) => (
     <span className="tc gray tracked-tight f6">ITEMS</span>
     <div className="flex flex-column">
       {order.map(([name, quantity, price]) => (
-        <div className="flex justify-between">
+        <div className="flex justify-between" key={name}>
           <div>
             <span className="gray">{`${quantity} x ${name}`}</span>
           </div>

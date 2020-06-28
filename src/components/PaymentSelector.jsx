@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react"
-import { Radio } from "antd"
+import { Radio, Alert } from "antd"
+import ReactMarkdown from "react-markdown"
 
 import RealInput from "./RealInput"
 
@@ -8,7 +9,7 @@ const radioStyle = {
   lineHeight: "30px"
 }
 
-export default ({ total, methods: methodsObj, onPayment }) => {
+export default ({ methods: methodsObj, onPayment }) => {
   const [paymentInfo, setPaymentInfo] = useState(null)
 
   useEffect(() => {
@@ -29,6 +30,12 @@ export default ({ total, methods: methodsObj, onPayment }) => {
     return paymentInfo && methodsObj[paymentInfo.method].checkForChange
   }, [paymentInfo, methodsObj])
 
+  const { methodImage, methodDescription } = useMemo(() => {
+    if (!paymentInfo) return false
+    const { image, description } = methodsObj[paymentInfo.method]
+    return { methodImage: image, methodDescription: description }
+  }, [paymentInfo, methodsObj])
+
   return (
     <div className="flex flex-column items-center w-100 mt2">
       <h2>Selecione o pagamento</h2>
@@ -41,7 +48,12 @@ export default ({ total, methods: methodsObj, onPayment }) => {
           {methods
             .map(name => ({ name, ...methodsObj[name] }))
             .map(({ name, label, checkForChange }) => (
-              <Radio style={radioStyle} value={name} className="w-100">
+              <Radio
+                style={radioStyle}
+                value={name}
+                key={name}
+                className="w-100"
+              >
                 {label}
                 {checkForChange && needsChange && (
                   <RealInput
@@ -56,6 +68,24 @@ export default ({ total, methods: methodsObj, onPayment }) => {
               </Radio>
             ))}
         </Radio.Group>
+      </div>
+      <div className="tc">
+        {(methodDescription || methodImage) && <h4>Informações</h4>}
+        <div className="flex flex-column items-center">
+          {methodDescription && (
+            <ReactMarkdown source={methodDescription} className="pa1" />
+          )}
+          {methodImage && (
+            <img src={methodImage} alt={paymentInfo.label} className="w-70" />
+          )}
+        </div>
+        {(methodDescription || methodImage) && (
+          <Alert
+            message="Envie o comprovante de trasnferência pelo Whatsapp."
+            type="warning"
+            className="mt2"
+          />
+        )}
       </div>
     </div>
   )

@@ -5,7 +5,8 @@
     "imask": "6.0.5",
     "moment": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-markdown": "4.3.1"
   },
   "keywords": [],
   "name": "altpedidos",

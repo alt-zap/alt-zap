@@ -17,14 +17,19 @@ export default () => {
   const [address, setAddress] = useState(null)
   const [order, setOrder] = useState([])
   const [total, setTotal] = useState(0)
+  const [nome, setNome] = useState("")
   const [info, setInfo] = useState("")
   const [paymentInfo, setPayment] = useState(null)
 
   const enviarPedido = useCallback(() => {
+    const { label, change } = paymentInfo
     const whatsappLink = generateLink({
       address,
       order,
-      paymentInfo,
+      payment: {
+        label,
+        change
+      },
       info
     })
     var win = window.open(whatsappLink, "_blank")
@@ -32,9 +37,12 @@ export default () => {
   }, [address, order, info, paymentInfo])
 
   const hasOrder = useMemo(() => {
-    return true
     return order.some(([, quantity]) => parseInt(quantity, 10))
   }, [order])
+
+  const pedidoValido = useMemo(() => {
+    return total > 0 && nome && address.logradouro
+  }, [total, nome, address])
 
   return (
     <div className="App">
@@ -51,6 +59,13 @@ export default () => {
         value={info}
         onChange={eSet(setInfo)}
         placeholder="Ex: Tira o sal da batata frita"
+        className="mv2"
+        size="large"
+      />
+      <span className="mt2">Seu nome</span>
+      <Input
+        value={nome}
+        onChange={eSet(setNome)}
         className="mt2"
         size="large"
       />
@@ -80,7 +95,7 @@ export default () => {
           className="mt4"
           size="large"
           shape="round"
-          disabled={hasOrder}
+          disabled={!pedidoValido}
           onClick={enviarPedido}
         >
           Enviar Pedido

@@ -2,10 +2,16 @@ export default {
   deliveryFee: 500,
   paymentMethods: {
     transfer: {
-      label: "Transferência Nubank"
+      label: "Transferência Nubank",
+      description:
+        "**Banco:** 260 - **Agência:** 0001\r\r\n **Conta:** 56593261-7",
+      image: "https://i.imgur.com/SZ5X8ME.png"
     },
     picpay: {
-      label: "PicPay"
+      label: "PicPay",
+      description:
+        "**Banco:** 260 - **Agência:** 0001\r\r\n **Conta:** 56593261-7",
+      image: "https://i.imgur.com/SZ5X8ME.png"
     },
     cash: {
       label: "À vista",
