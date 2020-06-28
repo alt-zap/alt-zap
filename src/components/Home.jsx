@@ -1,6 +1,7 @@
-import React, { useCallback, useState, useMemo } from "react"
+import React, { useCallback, useState, useMemo, useEffect } from "react"
 import { Affix, Alert, Button, Divider, Input } from "antd"
 import { SendOutlined } from "@ant-design/icons"
+import firebase from "firebase"
 
 import Endereco from "./Endereco"
 import Cardapio from "./Cardapio"
@@ -10,6 +11,24 @@ import PaymentSelector from "./PaymentSelector"
 
 import { generateLink, eSet } from "../utils"
 import config from "../config"
+
+// Your web app's Firebase configuration
+var firebaseConfig = {
+  apiKey: "AIzaSyCzMTycLwjA7AqcXmaBLIw3AvlwCGcgqN8",
+  authDomain: "alt-zap.firebaseapp.com",
+  databaseURL: "https://alt-zap.firebaseio.com",
+  projectId: "alt-zap",
+  storageBucket: "alt-zap.appspot.com",
+  messagingSenderId: "1714467047",
+  appId: "1:1714467047:web:19299006d2dc09c730b242",
+  measurementId: "G-WQCGKC63FY"
+}
+
+// Initialize Firebase
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig)
+  firebase.analytics()
+}
 
 const { deliveryFee, items, paymentMethods } = config
 

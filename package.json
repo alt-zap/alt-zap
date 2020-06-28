@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "@ant-design/icons": "4.2.1",
+    "@reach/router": "1.3.4",
     "antd": "latest",
+    "firebase": "7.15.5",
     "imask": "6.0.5",
     "moment": "latest",
     "react": "latest",
