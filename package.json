@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "@ant-design/icons": "4.2.1",
+    "antd": "latest",
+    "imask": "6.0.5",
+    "moment": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "keywords": [],
+  "name": "altpedidos",
+  "description": null,
+  "version": "0.0.180",
+  "devDependencies": {
+    "react-scripts": "1.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

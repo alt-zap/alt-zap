@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@ant-design/icons": "4.2.1",
+    "antd": "latest",
+    "imask": "6.0.5",
+    "moment": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "keywords": [],
+  "name": "altpedidos",
+  "description": ""
+}
