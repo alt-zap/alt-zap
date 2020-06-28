@@ -28,7 +28,7 @@ export default ({ items, onOrder }) => {
       <h2 className="tc">Qual seu pedido?</h2>
       <List
         itemLayout="horizontal"
-        dataSource={items}
+        dataSource={items.filter(({ live }) => live)}
         renderItem={({ headline, imgSrc, nome, items, price }, i) => (
           <List.Item>
             <List.Item.Meta
