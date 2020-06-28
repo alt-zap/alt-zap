@@ -2,7 +2,6 @@ import React, { useCallback, useState, Fragment, useEffect } from "react"
 import { Input, Select } from "antd"
 
 import AutoFill from "./AutoFill"
-import Cardapio from "./Cardapio"
 const eSet = fn => e => fn(e.target.value)
 
 export default ({ onAddress }) => {
