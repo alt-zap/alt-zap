@@ -29,8 +29,8 @@ export default ({ onAddress }) => {
     if (navigator.geolocation) {
       const H = window.H
       const platform = new H.service.Platform({
-        app_id: "3QJ2bSLt38M4CglGoiHp",
-        apikey: "gHjA5cqevmhypFVTPn__kUvcvPNXPjpPnj57pG6iIno"
+        app_id: process.env.REACT_APP_HERE_APP_ID,
+        apikey: process.env.REACT_APP_HERE_KEY
       })
       const geocoder = platform.getGeocodingService()
       setLoading(true)
