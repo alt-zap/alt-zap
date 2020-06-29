@@ -1,7 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import * as firebase from "firebase"
-import "firebase/firestore"
 // import "firebase/analytics"
 
 import { Router } from "@reach/router"
