@@ -8,16 +8,24 @@ import "./index.css"
 
 import HomePage from "./pages/HomePage"
 
+const { 
+  REACT_APP_FIREBASE_KEY,
+  REACT_APP_FIREBASE_PROJECT_ID,
+  REACT_APP_FIREBASE_SENDER_ID,
+  REACT_APP_FIREBASE_APP_ID,
+  REACT_APP_FIREBASE_MEASUREMENT_ID
+} = process.env
+
 // Your web app's Firebase configuration
 var firebaseConfig = {
-  apiKey: "AIzaSyCzMTycLwjA7AqcXmaBLIw3AvlwCGcgqN8",
-  authDomain: "alt-zap.firebaseapp.com",
-  databaseURL: "https://alt-zap.firebaseio.com",
-  projectId: "alt-zap",
-  storageBucket: "alt-zap.appspot.com",
-  messagingSenderId: "1714467047",
-  appId: "1:1714467047:web:19299006d2dc09c730b242",
-  measurementId: "G-WQCGKC63FY"
+  apiKey: REACT_APP_FIREBASE_KEY,
+  authDomain: `${REACT_APP_FIREBASE_PROJECT_ID}.firebaseapp.com`,
+  databaseURL: `https://${REACT_APP_FIREBASE_PROJECT_ID}.firebaseio.com`,
+  projectId: REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: `${REACT_APP_FIREBASE_PROJECT_ID}.appspot.com`,
+  messagingSenderId: REACT_APP_FIREBASE_SENDER_ID,
+  appId: REACT_APP_FIREBASE_APP_ID,
+  measurementId: REACT_APP_FIREBASE_MEASUREMENT_ID
 }
 
 // Initialize Firebase
