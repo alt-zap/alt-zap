@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import * as firebase from "firebase"
-import { Router } from "@reach/router"
+import { Router, Link } from "@reach/router"
 
 import "antd/dist/antd.css"
 import "./index.css"
