@@ -11,8 +11,8 @@
     "react-markdown": "4.3.1"
   },
   "keywords": [],
-  "name": "altpedidos",
-  "description": null,
+  "name": "altzap",
+  "description": "Compartilhe seu cardápio e receba pedidos pelo Whatsapp",
   "version": "0.0.180",
   "devDependencies": {
     "react-scripts": "1.0.0"
