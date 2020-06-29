@@ -31,7 +31,7 @@ ${info}
 *Meio de Pagamento:* ${label}
 ${change ? `Precisa de troco para R$ *${change}*` : ""}`
 
-  return `https://api.whatsapp.com/send?phone=5583996446497&text=${window.encodeURIComponent(
-    text
-  )}`
+  return `https://api.whatsapp.com/send?phone=${
+    process.env.REACT_APP_PHONE_NUMBER
+  }&text=${window.encodeURIComponent(text)}`
 }
