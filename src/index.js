@@ -37,6 +37,7 @@ if (!firebase.apps.length) {
 const App = () => {
   return (
     <Router>
+      <HomePage path="/" />
       <HomePage path="/:slug" />
     </Router>
   )

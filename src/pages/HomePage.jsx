@@ -5,7 +5,7 @@ import Home from "./Home"
 
 export default ({ slug }) => {
   return (
-    <TenantContextProvider slug={slug}>
+    <TenantContextProvider slug={slug || process.env.REACT_APP_DEFAULT_SLUG}>
       <Home />
     </TenantContextProvider>
   )
