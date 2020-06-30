@@ -9,6 +9,13 @@ import "antd/dist/antd.css"
 import "./index.css"
 
 import HomePage from "./pages/HomePage"
+import PedidoPage from "./pages/PedidoPage"
+import EditTenantPage from "./pages/EditTenantPage"
+import LoginPage from "./pages/LoginPage"
+import OnboardPage from "./pages/OnboardPage"
+
+import { AuthContextProvider } from "./contexts/AuthContext"
+import UserSwitch from "./components/UserSwitch"
 
 const {
   REACT_APP_FIREBASE_KEY,
@@ -38,9 +45,15 @@ if (!firebase.apps.length) {
 
 const App = () => {
   return (
-    <Router>
-      <HomePage path="/:slug" />
-    </Router>
+    <AuthContextProvider>
+      <Router>
+        <UserSwitch path="/" />
+        <LoginPage path="/login" />
+        <OnboardPage path="/onboard" />
+        <EditTenantPage path="/edit-tenant" />
+        <PedidoPage path="/:slug" />
+      </Router>
+    </AuthContextProvider>
   )
 }
 

@@ -1,12 +1,5 @@
 import React from "react"
 
-import { TenantContextProvider } from "../contexts/TenantContext"
-import Home from "./Home"
-
-export default ({ slug }) => {
-  return (
-    <TenantContextProvider slug={slug}>
-      <Home />
-    </TenantContextProvider>
-  )
+export default () => {
+  return <h1>Home</h1>
 }
