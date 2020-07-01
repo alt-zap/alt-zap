@@ -1,11 +1,15 @@
 export default {
   title: "Configuração",
   type: "object",
-  required: ["name", "live", "slug", "deliveryFee"],
+  required: ["name", "whatsapp", "live", "slug", "deliveryFee"],
   properties: {
     name: {
       type: "string",
       title: "Nome do seu negócio"
+    },
+    whatsapp: {
+      type: "string",
+      title: "Número do seu Whatsapp"
     },
     live: {
       type: "boolean",
@@ -36,7 +40,11 @@ export default {
           },
           imgSrc: {
             type: "string",
-            title: "URL da Imagem"
+            title: "URL da Imagem "
+          },
+          description: {
+            type: "string",
+            title: "Dados para Depósito"
           }
         }
       }

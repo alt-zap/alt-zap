@@ -2,8 +2,8 @@ import React from "react"
 import { useNavigate } from "@reach/router"
 
 import { useAuth } from "../contexts/AuthContext"
+import TenantForm from "../components/TenantForm"
 
-// uid
 export default () => {
   const { user } = useAuth()
 
@@ -13,10 +13,9 @@ export default () => {
     navigate(`/`)
   }
 
-  console.log({ user })
   return (
     <div className="flex flex-column items-center ph2">
-      <h1>Bem vindo</h1>
+      <TenantForm />
     </div>
   )
 }
