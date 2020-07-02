@@ -24,6 +24,17 @@ export default ({ initialValue, ...props }) => {
   )
 }
 
+const CurrencyInput = ({ value, onChange, ...props }) => {
+  return (
+    <MaskedInput
+      experimentalNumber
+      mask="0[0],00"
+      value={value}
+      onChange={e => onChange(e.target.value)}
+    />
+  )
+}
+
 const uiSchema = {
   paymentMethods: {
     items: {
@@ -33,15 +44,13 @@ const uiSchema = {
     }
   },
   deliveryFee: {
-    "ui:widget": ({ value, onChange, ...props }) => {
-      return (
-        <MaskedInput
-          experimentalNumber
-          mask="0[0],00"
-          value={value}
-          onChange={e => onChange(e.target.value)}
-        />
-      )
+    "ui:widget": CurrencyInput
+  },
+  items: {
+    items: {
+      price: {
+        "ui:widget": CurrencyInput
+      }
     }
   }
 }

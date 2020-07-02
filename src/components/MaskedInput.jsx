@@ -2,6 +2,11 @@ import React, { useMemo, useState } from "react"
 import { Input } from "antd"
 import IMask from "imask"
 
+const toString = number => {
+  const str = number.toString()
+  const len = str.length
+  return `${str.slice(0, len - 2)},${str.slice(len - 2, len)}`
+}
 export default ({
   mask,
   value: initialValue,
@@ -18,7 +23,7 @@ export default ({
   )
 
   const [value, setValue] = useState(
-    initialValue ? masked.resolve(initialValue.toString()) : null
+    initialValue ? toString(initialValue) : null
   )
 
   const innerOnChange = e => {
