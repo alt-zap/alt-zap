@@ -9,19 +9,23 @@ export default {
     },
     whatsapp: {
       type: "string",
-      title: "Número do seu Whatsapp"
+      title: "Número do seu Whatsapp (55(ddd)(numero))",
+      pattern: "^55[0-9]{10,11}$"
     },
     live: {
       type: "boolean",
-      title: "Você está atendendendo agora?"
+      title: "Você está atendendendo agora?",
+      default: false
     },
     slug: {
       type: "string",
-      title: "Slug (URL da sua página)"
+      title: "Slug (URL da sua página)",
+      pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
     },
     deliveryFee: {
       type: "number",
-      title: "Preço da Entrega"
+      title: "Preço da Entrega",
+      pattern: "^\\d{1,2},\\d{2}$"
     },
     paymentMethods: {
       type: "array",
@@ -54,7 +58,7 @@ export default {
       title: "Itens do Cardápio",
       items: {
         type: "object",
-        required: ["title"],
+        required: ["name", "price"],
         properties: {
           name: {
             type: "string",

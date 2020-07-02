@@ -18,7 +18,9 @@ export const TenantContextProvider = ({ slug, children }) => {
       .get()
       .then(function(querySnapshot) {
         const [doc] = querySnapshot.docs
-        setConfig(doc.data())
+        const data = doc.data()
+
+        setConfig(data)
       })
       .catch(function(error) {
         console.log("Error getting documents: ", error)
