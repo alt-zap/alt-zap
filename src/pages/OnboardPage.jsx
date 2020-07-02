@@ -15,12 +15,13 @@ export default () => {
   const navigate = useNavigate()
 
   const saveTenant = useCallback(
-    data => {
+    ({ formData: data }) => {
       setLoading(true)
       const db = firebase.firestore()
-      db.collection("tenant")
+      db.collection("tenants")
         .add({
           userId: user.uid,
+          createdAt: new Date().toISOString(),
           ...data
         })
         .then(ref => {

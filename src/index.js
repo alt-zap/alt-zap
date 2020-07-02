@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import * as firebase from "firebase"
-// import "firebase/analytics"
+import * as firebase from "firebase/app"
+import "firebase/analytics"
 
 import { Router } from "@reach/router"
 
@@ -40,7 +40,7 @@ var firebaseConfig = {
 // Initialize Firebase
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig)
-  // firebase.analytics()
+  firebase.analytics()
 }
 
 const App = () => {
@@ -50,7 +50,7 @@ const App = () => {
         <UserSwitch path="/" />
         <LoginPage path="/login" />
         <OnboardPage path="/onboard" />
-        <EditTenantPage path="/edit-tenant" />
+        <EditTenantPage path="/tenant/:tenantId" />
         <PedidoPage path="/:slug" />
       </Router>
     </AuthContextProvider>

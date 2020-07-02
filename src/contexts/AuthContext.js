@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useCallback } from "react"
-import firebase from "firebase/app"
+import * as firebase from "firebase/app"
 
 import "firebase/auth"
 import "firebase/firestore"
@@ -15,7 +15,6 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(() => {
     const unsub = firebase.auth().onAuthStateChanged(user => {
-      console.log("onAuth", user)
       if (user) {
         firebase
           .firestore()

@@ -1,13 +1,12 @@
 import React from "react"
 
-import TenantForm from "../components/TenantForm"
+import EditTenant from "../components/EditTenant"
+import { TenantContextProvider } from "../contexts/TenantContext"
 
-// uid
-export default () => {
+export default ({ tenantId }) => {
   return (
-    <div>
-      <h1>EditTenant</h1>
-      <TenantForm />
-    </div>
+    <TenantContextProvider tenantId={tenantId}>
+      <EditTenant />
+    </TenantContextProvider>
   )
 }
