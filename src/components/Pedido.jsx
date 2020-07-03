@@ -1,41 +1,42 @@
-import React, { Fragment, useCallback, useState, useMemo } from "react"
-import { Affix, Alert, Button, Divider, Input, Spin } from "antd"
-import { SendOutlined } from "@ant-design/icons"
+import React, { Fragment, useCallback, useState, useMemo } from 'react'
+import { Affix, Alert, Button, Divider, Input, Spin } from 'antd'
+import { SendOutlined } from '@ant-design/icons'
 
-import Endereco from "../components/Endereco"
-import Cardapio from "../components/Cardapio"
-import Totalizer from "../components/Totalizer"
-import OrderSummary from "../components/OrderSummary"
-import PaymentSelector from "../components/PaymentSelector"
-import { useTenantConfig } from "../contexts/TenantContext"
+import Endereco from '../components/Endereco'
+import Cardapio from '../components/Cardapio'
+import Totalizer from '../components/Totalizer'
+import OrderSummary from '../components/OrderSummary'
+import PaymentSelector from '../components/PaymentSelector'
+import { useTenantConfig } from '../contexts/TenantContext'
 
-import { generateLink, eSet } from "../utils"
+import { generateLink, eSet } from '../utils'
 
 export default () => {
   const { tenant, loading } = useTenantConfig()
   const [address, setAddress] = useState(null)
   const [order, setOrder] = useState([])
   const [total, setTotal] = useState(0)
-  const [name, setName] = useState("")
-  const [info, setInfo] = useState("")
+  const [name, setName] = useState('')
+  const [info, setInfo] = useState('')
   const [paymentInfo, setPayment] = useState(null)
 
   const enviarPedido = useCallback(() => {
     const { name: label, change } = paymentInfo
     const whatsappLink = generateLink({
+      whatsapp: tenant.whatsapp,
       address,
       order,
       payment: {
         label,
-        change
+        change,
       },
       name,
       total,
-      info
+      info,
     })
-    var win = window.open(whatsappLink, "_blank")
+    var win = window.open(whatsappLink, '_blank')
     win.focus()
-  }, [address, order, info, paymentInfo, name, total])
+  }, [address, order, info, paymentInfo, name, total, tenant])
 
   const hasOrder = useMemo(() => {
     return order.some(([, quantity]) => parseInt(quantity, 10))
