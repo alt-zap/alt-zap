@@ -4,6 +4,8 @@ import firebase from "firebase/app"
 import "firebase/auth"
 import "firebase/firestore"
 
+import { log } from '../utils'
+
 const AuthContext = React.createContext({})
 
 export const useAuth = () => useContext(AuthContext)
@@ -16,6 +18,8 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const db = firebase.firestore()
     const unsub = firebase.auth().onAuthStateChanged(user => {
+      log('Auth State Changed')
+      log({ user })
       if (user) {
         db.collection("users")
           .where("uid", "==", user.uid)
@@ -30,7 +34,6 @@ export const AuthContextProvider = ({ children }) => {
                * Por que: Num futuro, quero que exista um cadastro mais arrojado dos usuários para, então, poderem
                * cadastrar tenants. Porém, em virtude da minha pressa, estou deixando esse cadastro ser automático por enquanto.
                */
-              console.log(user.uid)
               db.collection("users")
                 .add({
                   uid: user.uid

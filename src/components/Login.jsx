@@ -1,18 +1,13 @@
-import React, { Fragment } from "react"
-import { useNavigate } from "@reach/router"
-import { GoogleLoginButton } from "react-social-login-buttons"
+import React, { Fragment } from "react";
+import { useNavigate } from "@reach/router";
+import { GoogleLoginButton } from "react-social-login-buttons";
 
-import { useAuth } from "../contexts/AuthContext"
+import { useAuth } from "../contexts/AuthContext";
 
 // uid
 export default () => {
-  const { loginWithGoogle, user, loading } = useAuth()
+  const { loginWithGoogle,  loading } = useAuth();
 
-  const navigate = useNavigate()
-
-  if (user) {
-    navigate("/")
-  }
 
   return (
     <div className="flex flex-column items-center ph2">
@@ -26,5 +21,5 @@ export default () => {
         </Fragment>
       )}
     </div>
-  )
-}
+  );
+};
