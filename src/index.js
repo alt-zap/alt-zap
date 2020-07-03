@@ -1,14 +1,21 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import * as firebase from "firebase"
-// import "firebase/analytics"
+import firebase from "firebase/app"
+import "firebase/analytics"
 
 import { Router } from "@reach/router"
 
 import "antd/dist/antd.css"
 import "./index.css"
 
-import HomePage from "./pages/HomePage"
+import PedidoPage from "./pages/PedidoPage"
+import EditTenantPage from "./pages/EditTenantPage"
+import LoginPage from "./pages/LoginPage"
+import OnboardPage from "./pages/OnboardPage"
+import TenantsPage from "./pages/TenantsPage"
+
+import { AuthContextProvider } from "./contexts/AuthContext"
+import UserSwitch from "./components/UserSwitch"
 
 const {
   REACT_APP_FIREBASE_KEY,
@@ -33,14 +40,25 @@ var firebaseConfig = {
 // Initialize Firebase
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig)
-  // firebase.analytics()
+  firebase.analytics()
 }
 
 const App = () => {
   return (
-    <Router>
-      <HomePage path="/:slug" />
-    </Router>
+    <AuthContextProvider>
+      <div className="flex justify-center">
+        <div className="w-90 w-50-l">
+          <Router>
+            <UserSwitch path="/" />
+            <LoginPage path="/login" />
+            <OnboardPage path="/onboard" />
+            <EditTenantPage path="/tenant/:tenantId" />
+            <TenantsPage path="/tenants" />
+            <PedidoPage path="/:slug" />
+          </Router>
+        </div>
+      </div>
+    </AuthContextProvider>
   )
 }
 

@@ -1,9 +1,10 @@
 import React from "react"
 import { Input } from "antd"
-import IMask from "imask"
+import IMask from "imask/esm/imask"
+import "imask/esm/masked/number"
 
 const masked = IMask.createMask({
-  mask: "00[0],00"
+  mask: "00[0],`00"
 })
 
 export default ({ value, onChange, ...props }) => {
