@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react"
 import { Alert } from "antd"
 import { useNavigate } from "@reach/router"
-import * as firebase from "firebase/app"
+import firebase from "firebase/app"
 import "firebase/firestore"
 
 import { useAuth } from "../contexts/AuthContext"
@@ -18,19 +18,31 @@ export default () => {
     ({ formData: data }) => {
       setLoading(true)
       const db = firebase.firestore()
+      const { slug } = data
       db.collection("tenants")
-        .add({
-          userId: user.uid,
-          createdAt: new Date().toISOString(),
-          ...data
-        })
-        .then(ref => {
-          navigate(`/tenant/${ref.id}`)
-        })
-        .catch(error => {
-          console.log({ error })
-          setError("Não foi possível realizar seu cadastro")
-          setLoading(false)
+        .where("slug", "==", slug)
+        .limit(1)
+        .get()
+        .then(res => {
+          if (res.empty) {
+            db.collection("tenants")
+              .add({
+                userId: user.uid,
+                createdAt: new Date().toISOString(),
+                ...data
+              })
+              .then(ref => {
+                navigate(`/tenant/${ref.id}`)
+              })
+              .catch(error => {
+                console.log({ error })
+                setError("Não foi possível realizar seu cadastro")
+                setLoading(false)
+              })
+          } else {
+            setError("Slug já utilizado por outro usuário")
+            setLoading(false)
+          }
         })
     },
     [navigate, user]
@@ -42,12 +54,13 @@ export default () => {
 
   return (
     <div className="flex flex-column items-center ph2">
-      <h1>Bem-vindo</h1>
-      <h3>Vamos, agora, configurar a página do seu negócio</h3>
-      <div className="w-90 w-50-l">
-        {error && <Alert type="error">{error}</Alert>}
-        <TenantForm onSubmit={saveTenant} disabled={loading} />
-      </div>
+      <h1>Novo Negócio</h1>
+      <h3 className="tc">
+        Cadastre aqui seu cardápio e meios de pagamento. Sua página estará
+        online logo em seguida!
+      </h3>
+      {error && <Alert type="error">{error}</Alert>}
+      <TenantForm onSubmit={saveTenant} disabled={loading} />
     </div>
   )
 }
