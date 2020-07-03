@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useCallback } from "react"
 import { Button, Typography } from "antd"
-import CEPInput from "./CEPInput"
+import MaskedInput from "./MaskedInput"
 import { eSet } from "../utils"
 
 export default ({ onAddress }) => {
@@ -29,8 +29,8 @@ export default ({ onAddress }) => {
     if (navigator.geolocation) {
       const H = window.H
       const platform = new H.service.Platform({
-        app_id: "3QJ2bSLt38M4CglGoiHp",
-        apikey: "gHjA5cqevmhypFVTPn__kUvcvPNXPjpPnj57pG6iIno"
+        app_id: process.env.REACT_APP_HERE_APP_ID,
+        apikey: process.env.REACT_APP_HERE_KEY
       })
       const geocoder = platform.getGeocodingService()
       setLoading(true)
@@ -68,7 +68,8 @@ export default ({ onAddress }) => {
     <Fragment>
       <div className="flex flex-col">
         <div className="flex w-100 justify-center">
-          <CEPInput
+          <MaskedInput
+            mask="00000-000"
             onChange={eSet(setCep)}
             value={cep}
             disabled={loading}

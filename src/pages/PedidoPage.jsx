@@ -1,12 +1,12 @@
 import React from "react"
 
 import { TenantContextProvider } from "../contexts/TenantContext"
-import Home from "./Home"
+import Pedido from "../components/Pedido"
 
 export default ({ slug }) => {
   return (
     <TenantContextProvider slug={slug}>
-      <Home />
+      <Pedido />
     </TenantContextProvider>
   )
 }

@@ -16,7 +16,7 @@ export default ({ items, onOrder }) => {
 
   useEffect(() => {
     const order = Object.keys(quantities).map(i => [
-      items[i].nome,
+      items[i].name,
       parseInt(quantities[i], 10),
       items[i].price
     ])
@@ -28,12 +28,12 @@ export default ({ items, onOrder }) => {
       <h2 className="tc">Qual seu pedido?</h2>
       <List
         itemLayout="horizontal"
-        dataSource={items.filter(({ live }) => live)}
-        renderItem={({ headline, imgSrc, nome, items, price }, i) => (
+        dataSource={items ? items.filter(({ live }) => live) : []}
+        renderItem={({ headline, imgSrc, name, items, price }, i) => (
           <List.Item>
             <List.Item.Meta
               avatar={<Avatar src={imgSrc} />}
-              title={nome}
+              title={name}
               description={<Description headline={headline} items={items} />}
             />
             <div className="flex flex-column items-center justify-center w-25 tc">

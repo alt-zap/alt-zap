@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react"
 import { Modal } from "antd"
 import { useNavigate } from "@reach/router"
-import * as firebase from "firebase/app"
+import firebase from "firebase/app"
 import "firebase/firestore"
 
 import TenantForm from "../components/TenantForm"
@@ -28,20 +28,33 @@ export default () => {
         editedLast: new Date().toISOString(),
         ...formData
       }
+      const { slug } = updatedTenant
       db.collection("tenants")
-        .doc(tenantId)
-        .set(updatedTenant)
-        .then(data => {
-          updateTenant(updatedTenant)
-          setModalMsg("Alterações salvas com sucesso")
+        .where("slug", "==", slug)
+        .limit(1)
+        .get()
+        .then(res => {
+          if (res.empty) {
+            return db
+              .collection("tenants")
+              .doc(tenantId)
+              .set(updatedTenant)
+              .then(data => {
+                updateTenant(updatedTenant)
+                setModalMsg("Alterações salvas com sucesso")
+              })
+              .catch(e => {
+                console.log(e)
+                setModalMsg("Não foi possível salvar seus dados")
+              })
+              .finally(() => setLoading(false))
+          } else {
+            setLoading(false)
+            setModalMsg("Slug já utilizado por outro usuário")
+          }
         })
-        .catch(e => {
-          console.log(e)
-          setModalMsg("Não foi possível salvar seus dados")
-        })
-        .finally(() => setLoading(false))
     },
-    [tenantId]
+    [tenantId, updateTenant]
   )
 
   if (loadingTenant || !user) {
@@ -57,15 +70,13 @@ export default () => {
     <div className="flex flex-column items-center pa2">
       <h1>Edite o seu negócio</h1>
       <span className="grey mb2">Alterações entram no ar imediatamente</span>
-      <div className="w-90 w-50-l">
-        <TenantForm
-          initialValue={tenant}
-          onSubmit={saveTenant}
-          disabled={loading}
-        />
-      </div>
+      <TenantForm
+        initialValue={tenant}
+        onSubmit={saveTenant}
+        disabled={loading}
+      />
       <Modal
-        title="Basic Modal"
+        title="Aviso"
         visible={!!modalMsg}
         onOk={() => setModalMsg(null)}
         onCancel={() => setModalMsg(null)}

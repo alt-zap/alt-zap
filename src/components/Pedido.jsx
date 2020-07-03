@@ -12,7 +12,7 @@ import { useTenantConfig } from "../contexts/TenantContext"
 import { generateLink, eSet } from "../utils"
 
 export default () => {
-  const { config, loading } = useTenantConfig()
+  const { tenant, loading } = useTenantConfig()
   const [address, setAddress] = useState(null)
   const [order, setOrder] = useState([])
   const [total, setTotal] = useState(0)
@@ -21,7 +21,7 @@ export default () => {
   const [paymentInfo, setPayment] = useState(null)
 
   const enviarPedido = useCallback(() => {
-    const { label, change } = paymentInfo
+    const { name: label, change } = paymentInfo
     const whatsappLink = generateLink({
       address,
       order,
@@ -45,7 +45,7 @@ export default () => {
     return total > 0 && name && address.logradouro
   }, [total, name, address])
 
-  const { deliveryFee, items, paymentMethods } = config || {}
+  const { deliveryFee, items, paymentMethods } = tenant || {}
   return (
     <div className="App">
       {loading && (
@@ -54,7 +54,13 @@ export default () => {
           <span> Carregando dados...</span>
         </div>
       )}
-      {!loading && config && (
+      {!loading && tenant && !tenant.live && (
+        <Alert
+          type="warning"
+          message="Este estabelecimento não está atendendo agora"
+        />
+      )}
+      {!loading && tenant && tenant.live && (
         <Fragment>
           <Alert
             message="No final, vamos te redirecionar pra o Whatsapp para finalizar seu pedido ;)"

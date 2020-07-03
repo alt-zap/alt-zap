@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useCallback } from "react"
-import * as firebase from "firebase/app"
+import firebase from "firebase/app"
 
 import "firebase/auth"
 import "firebase/firestore"
@@ -14,27 +14,38 @@ export const AuthContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const db = firebase.firestore()
     const unsub = firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        firebase
-          .firestore()
-          .collection("users")
+        db.collection("users")
           .where("uid", "==", user.uid)
           .limit(1)
           .get()
           .then(res => {
-            console.log({ res })
             if (!res.empty) {
-              const [doc] = res
+              const [doc] = res.docs
               setUserDb(doc.data())
+            } else {
+              /**
+               * Por que: Num futuro, quero que exista um cadastro mais arrojado dos usuários para, então, poderem
+               * cadastrar tenants. Porém, em virtude da minha pressa, estou deixando esse cadastro ser automático por enquanto.
+               */
+              console.log(user.uid)
+              db.collection("users")
+                .add({
+                  uid: user.uid
+                })
+                .then(console.log)
+                .catch(console.log)
             }
             setUser(user)
+            setLoading(false)
           })
       } else {
         setUser(null)
         setUserDb(null)
+        setLoading(false)
       }
-      setLoading(false)
     })
     return unsub
   }, [])

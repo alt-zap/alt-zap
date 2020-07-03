@@ -19,9 +19,11 @@
   "description": "Compartilhe seu cardápio e receba pedidos pelo Whatsapp",
   "version": "0.0.180",
   "devDependencies": {
-    "react-scripts": "1.0.0"
+    "react-scripts": "1.0.0",
+    "source-map-explorer": "^2.4.2"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

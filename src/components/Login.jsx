@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 import { useNavigate } from "@reach/router"
 import { GoogleLoginButton } from "react-social-login-buttons"
 
@@ -6,17 +6,25 @@ import { useAuth } from "../contexts/AuthContext"
 
 // uid
 export default () => {
-  const { loginWithGoogle, user } = useAuth()
+  const { loginWithGoogle, user, loading } = useAuth()
 
   const navigate = useNavigate()
 
   if (user) {
+    navigate("/")
   }
 
   return (
     <div className="flex flex-column items-center ph2">
-      <h1>Login</h1>
-      <GoogleLoginButton onClick={() => loginWithGoogle()} />
+      {loading && (
+        <h3 className="grey">Estamoss verificando se você já está logado</h3>
+      )}
+      {!loading && (
+        <Fragment>
+          <h1>Login</h1>
+          <GoogleLoginButton onClick={() => loginWithGoogle()} />
+        </Fragment>
+      )}
     </div>
   )
 }

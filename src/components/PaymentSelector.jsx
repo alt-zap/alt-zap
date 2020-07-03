@@ -9,32 +9,31 @@ const radioStyle = {
   lineHeight: "30px"
 }
 
-export default ({ methods: methodsObj, onPayment }) => {
-  const [paymentInfo, setPaymentInfo] = useState(null)
+export default ({ methods, onPayment }) => {
+  const [selectedIndex, setSelected] = useState(null)
+  const [change, setChange] = useState(null)
 
   useEffect(() => {
-    const label = paymentInfo && methodsObj[paymentInfo.method].label
-    onPayment({ ...paymentInfo, label })
-  }, [onPayment, paymentInfo, methodsObj])
+    const method = methods[selectedIndex]
+    if (!method) return
+    onPayment({ name: method.name, change })
+  }, [onPayment, selectedIndex, methods, change])
 
-  const onChange = useCallback(e => {
-    const method = e.target.value
-    setPaymentInfo({ method, change: "" })
-  }, [])
-
-  const methods = useMemo(() => {
-    return Object.keys(methodsObj)
-  }, [methodsObj])
+  const onChange = useCallback(
+    e => {
+      const methodIndex = e.target.value
+      setSelected(methodIndex)
+    },
+    [setSelected]
+  )
 
   const needsChange = useMemo(() => {
-    return paymentInfo && methodsObj[paymentInfo.method].checkForChange
-  }, [paymentInfo, methodsObj])
+    return selectedIndex && methods[selectedIndex].checksForChange
+  }, [selectedIndex, methods])
 
-  const { methodImage, methodDescription } = useMemo(() => {
-    if (!paymentInfo) return false
-    const { image, description } = methodsObj[paymentInfo.method]
-    return { methodImage: image, methodDescription: description }
-  }, [paymentInfo, methodsObj])
+  const { imgSrc, description, name } = useMemo(() => {
+    return methods[selectedIndex] || {}
+  }, [selectedIndex, methods])
 
   return (
     <div className="flex flex-column items-center w-100 mt2">
@@ -42,48 +41,39 @@ export default ({ methods: methodsObj, onPayment }) => {
       <div>
         <Radio.Group
           onChange={onChange}
-          value={paymentInfo ? paymentInfo.method : null}
+          value={selectedIndex}
           className="w-100"
         >
-          {methods
-            .map(name => ({ name, ...methodsObj[name] }))
-            .map(({ name, label, checkForChange }) => (
-              <Radio
-                style={radioStyle}
-                value={name}
-                key={name}
-                className="w-100"
-              >
-                {label}
-                {checkForChange && needsChange && (
-                  <RealInput
-                    placeholder="Troco para?"
-                    className="ml2 w-50"
-                    value={paymentInfo ? paymentInfo.change : ""}
-                    onChange={e => {
-                      setPaymentInfo({ ...paymentInfo, change: e.target.value })
-                    }}
-                  />
-                )}
-              </Radio>
-            ))}
+          {methods.map(({ name, checkForChange }, i) => (
+            <Radio style={radioStyle} value={i} key={i} className="w-100">
+              {name}
+              {checkForChange && selectedIndex === i && (
+                <RealInput
+                  placeholder="Troco para?"
+                  className="ml2 w-50"
+                  value={change}
+                  onChange={e => {
+                    setChange(e.target.value)
+                  }}
+                />
+              )}
+            </Radio>
+          ))}
         </Radio.Group>
       </div>
       <div className="tc">
-        {(methodDescription || methodImage) && <h4>Informações</h4>}
+        {(description || imgSrc) && <h4>Informações</h4>}
         <div className="flex flex-column items-center">
-          {methodDescription && (
-            <ReactMarkdown source={methodDescription} className="pa1" />
+          {description && (
+            <ReactMarkdown source={description} className="pa1" />
           )}
-          {methodImage && (
-            <img src={methodImage} alt={paymentInfo.label} className="w-70" />
-          )}
+          {imgSrc && <img src={imgSrc} alt={name} className="w-70" />}
         </div>
-        {(methodDescription || methodImage) && (
+        {(description || imgSrc) && (
           <Alert
             message="Envie o comprovante de transferência pelo Whatsapp."
             type="warning"
-            className="mt2"
+            className="mt4"
           />
         )}
       </div>

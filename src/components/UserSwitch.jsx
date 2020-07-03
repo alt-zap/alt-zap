@@ -21,7 +21,7 @@ export default () => {
   }
 
   if (user && userDb) {
-    navigate(`/edit-tenant`)
+    navigate(`/tenants`)
   }
 
   return <span>Wow, you're definitely on trouble</span>
