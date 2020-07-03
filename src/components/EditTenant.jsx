@@ -34,7 +34,7 @@ export default () => {
         .limit(1)
         .get()
         .then(res => {
-          if (res.empty) {
+          if (res.empty || res.docs[0].id === tenantId) {
             return db
               .collection("tenants")
               .doc(tenantId)
