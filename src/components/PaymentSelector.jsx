@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react"
-import { Radio, Alert } from "antd"
-import ReactMarkdown from "react-markdown"
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import { Radio, Alert } from 'antd'
+import ReactMarkdown from 'react-markdown'
 
-import RealInput from "./RealInput"
+import RealInput from './RealInput'
 
 const radioStyle = {
-  height: "30px",
-  lineHeight: "30px"
+  height: '30px',
+  lineHeight: '30px',
 }
 
 export default ({ methods, onPayment }) => {
@@ -44,10 +44,10 @@ export default ({ methods, onPayment }) => {
           value={selectedIndex}
           className="w-100"
         >
-          {methods.map(({ name, checkForChange }, i) => (
+          {methods.map(({ name, checksForChange }, i) => (
             <Radio style={radioStyle} value={i} key={i} className="w-100">
               {name}
-              {checkForChange && selectedIndex === i && (
+              {checksForChange && selectedIndex === i && (
                 <RealInput
                   placeholder="Troco para?"
                   className="ml2 w-50"
