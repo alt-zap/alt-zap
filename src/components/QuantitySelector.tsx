@@ -1,7 +1,14 @@
-import React, { useCallback } from 'react'
+import React, { FC, useCallback } from 'react'
 import { Input, Button } from 'antd'
 
-export default ({ min = 0, max = 20, quantity, onQuantity }) => {
+type Props ={
+  min?: number
+  max?: number
+  quantity: string
+  onQuantity: (data: string) => void
+}
+
+const QuantitySelector: FC<Props> = ({ min = 0, max = 20, quantity, onQuantity }) => {
   const inc = useCallback(() => {
     const val = parseInt(quantity, 10)
     onQuantity(val >= max ? quantity : `${val + 1}`)
@@ -36,3 +43,5 @@ export default ({ min = 0, max = 20, quantity, onQuantity }) => {
     </div>
   )
 }
+
+export default QuantitySelector

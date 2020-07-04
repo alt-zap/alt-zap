@@ -1,10 +1,10 @@
-import React from "react"
-import { Spin } from "antd"
-import { useNavigate } from "@reach/router"
+import React, { FC } from 'react'
+import { Spin } from 'antd'
+import { useNavigate, RouteComponentProps } from '@reach/router'
 
-import { useAuth } from "../contexts/AuthContext"
+import { useAuth } from '../contexts/AuthContext'
 
-export default () => {
+const UserSwitch: FC<RouteComponentProps> = () => {
   const { user, userDb, loading } = useAuth()
   const navigate = useNavigate()
 
@@ -13,7 +13,7 @@ export default () => {
   }
 
   if (!user) {
-    navigate("/login")
+    navigate('/login')
   }
 
   if (user && !userDb) {
@@ -26,3 +26,5 @@ export default () => {
 
   return <span>Wow, you're definitely on trouble</span>
 }
+
+export default UserSwitch

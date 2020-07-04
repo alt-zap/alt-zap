@@ -1,15 +1,15 @@
-import React, { useCallback, useState } from "react"
+import React, { FC, useCallback, useState } from "react"
 import { Alert } from "antd"
-import { useNavigate } from "@reach/router"
+import { useNavigate, RouteComponentProps } from "@reach/router"
 import firebase from "firebase/app"
 import "firebase/firestore"
 
 import { useAuth } from "../contexts/AuthContext"
 import TenantForm from "../components/TenantForm"
 
-export default () => {
+const OnboardPage: FC<RouteComponentProps> = () => {
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState('')
 
   const { user } = useAuth()
   const navigate = useNavigate()
@@ -27,7 +27,7 @@ export default () => {
           if (res.empty) {
             db.collection("tenants")
               .add({
-                userId: user.uid,
+                userId: user!.uid,
                 createdAt: new Date().toISOString(),
                 ...data
               })
@@ -59,8 +59,10 @@ export default () => {
         Cadastre aqui seu cardápio e meios de pagamento. Sua página estará
         online logo em seguida!
       </h3>
-      {error && <Alert type="error">{error}</Alert>}
+      {error && <Alert type="error" message={error}/>}
       <TenantForm onSubmit={saveTenant} disabled={loading} />
     </div>
   )
 }
+
+export default OnboardPage

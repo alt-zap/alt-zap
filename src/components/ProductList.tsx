@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback, useEffect } from 'react'
+import React, { FC, useState, useCallback, useEffect } from 'react'
 import { List, Dropdown, Typography } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 
@@ -8,15 +8,20 @@ import Real from './Real'
 
 const { Text } = Typography
 
-export default ({ items, onOrder }) => {
-  const [quantities, setQuantities] = useState({})
+type Props = {
+  items: TenantConfig['items']
+  onOrder: (a: any) => void
+}
+
+const ProductList: FC<Props> = ({ items, onOrder }) => {
+  const [quantities, setQuantities] = useState<Record<number, string>>({})
   const setForIndex = useCallback(
-    i => value => setQuantities({ ...quantities, [i]: value }),
+    i => (value: string) => setQuantities({ ...quantities, [i]: value }),
     [quantities]
   )
 
   useEffect(() => {
-    const order = Object.keys(quantities).map(i => [
+    const order = (Object.keys(quantities) as unknown as number[]).map(i => [
       items[i].name,
       parseInt(quantities[i], 10),
       items[i].price,
@@ -34,7 +39,8 @@ export default ({ items, onOrder }) => {
           <List.Item>
             <List.Item.Meta
               className="items-center"
-              avatar={<ProductImage src={imgSrc} title={name} />}
+              // Depois, adicionar uma imagem padrão aqui
+              avatar={imgSrc ? <ProductImage src={imgSrc} title={name} /> : null}
               title={name}
               description={<Description headline={headline} items={items} />}
             />
@@ -56,7 +62,9 @@ export default ({ items, onOrder }) => {
   )
 }
 
-const Description = ({ headline, items }) => (
+type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType[number];
+
+const Description: FC<Pick<ArrayElement<TenantConfig['items']>, 'headline' | 'items'>> = ({ headline, items }) => (
   <div className="flex flex-column">
     {headline && <Text code>{headline}</Text>}
     {items && items.length && (
@@ -69,7 +77,7 @@ const Description = ({ headline, items }) => (
   </div>
 )
 
-const MenuForItems = ({ items }) => (
+const MenuForItems: FC<Pick<ArrayElement<TenantConfig['items']>, 'items'>> = ({ items }) => (
   <List
     size="small"
     className="bg-white"
@@ -78,3 +86,5 @@ const MenuForItems = ({ items }) => (
     renderItem={item => <List.Item>{item}</List.Item>}
   />
 )
+
+export default ProductList

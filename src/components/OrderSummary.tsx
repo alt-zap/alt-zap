@@ -1,7 +1,11 @@
-import React from "react"
+import React, { FC } from "react"
 import Real from "./Real"
 
-export default ({ order }) => (
+type Props = {
+  order: [string, number, number][]
+}
+
+const OrderSummary: FC<Props> = ({ order }) => (
   <div className="tc mt3">
     <span className="tc gray tracked-tight f6">ITEMS</span>
     <div className="flex flex-column">
@@ -20,3 +24,5 @@ export default ({ order }) => (
     </div>
   </div>
 )
+
+export default OrderSummary

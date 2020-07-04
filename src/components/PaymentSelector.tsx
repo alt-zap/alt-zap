@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import React, { FC, useState, useEffect, useCallback, useMemo } from 'react'
 import { Radio, Alert } from 'antd'
 import ReactMarkdown from 'react-markdown'
 
@@ -9,18 +9,23 @@ const radioStyle = {
   lineHeight: '30px',
 }
 
-export default ({ methods, onPayment }) => {
-  const [selectedIndex, setSelected] = useState(null)
-  const [change, setChange] = useState(null)
+type Props = {
+  methods: TenantConfig['paymentMethods']
+  onPayment: (data: { name: string; change: string }) => void
+}
+
+const PaymentSelector: FC<Props> = ({ methods, onPayment }) => {
+  const [selectedIndex, setSelected] = useState<number>()
+  const [change, setChange] = useState('')
 
   useEffect(() => {
-    const method = methods[selectedIndex]
+    const method = selectedIndex && methods[selectedIndex]
     if (!method) return
     onPayment({ name: method.name, change })
   }, [onPayment, selectedIndex, methods, change])
 
   const onChange = useCallback(
-    e => {
+    (e) => {
       const methodIndex = e.target.value
       setSelected(methodIndex)
     },
@@ -32,7 +37,7 @@ export default ({ methods, onPayment }) => {
   }, [selectedIndex, methods])
 
   const { imgSrc, description, name } = useMemo(() => {
-    return methods[selectedIndex] || {}
+    return selectedIndex ? methods[selectedIndex] : {} as any
   }, [selectedIndex, methods])
 
   return (
@@ -52,7 +57,7 @@ export default ({ methods, onPayment }) => {
                   placeholder="Troco para?"
                   className="ml2 w-50"
                   value={change}
-                  onChange={e => {
+                  onChange={(e) => {
                     setChange(e.target.value)
                   }}
                 />
@@ -80,3 +85,5 @@ export default ({ methods, onPayment }) => {
     </div>
   )
 }
+
+export default PaymentSelector

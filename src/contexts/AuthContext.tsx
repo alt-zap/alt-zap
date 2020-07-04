@@ -1,42 +1,51 @@
-import React, { useEffect, useState, useContext, useCallback } from "react"
-import firebase from "firebase/app"
+import React, { FC, useEffect, useState, useContext, useCallback } from 'react'
+import firebase from 'firebase/app'
 
-import "firebase/auth"
-import "firebase/firestore"
+import 'firebase/auth'
+import 'firebase/firestore'
 
-import { log } from '../utils'
+import { log, createCtx } from '../utils'
 
-const AuthContext = React.createContext({})
+type Props = {
+  loading?: boolean
+  user?: firebase.User
+  userDb?: {
+    id: string
+  }
+  loginWithGoogle: () => void
+}
 
-export const useAuth = () => useContext(AuthContext)
+const [use, AuthProvider] = createCtx<Props>()
 
-export const AuthContextProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
-  const [userDb, setUserDb] = useState(null)
+export const useAuth = use
+
+export const AuthContextProvider: FC = ({ children }) => {
+  const [user, setUser] = useState<Props['user']>()
+  const [userDb, setUserDb] = useState<Props['userDb']>()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const db = firebase.firestore()
-    const unsub = firebase.auth().onAuthStateChanged(user => {
+    const unsub = firebase.auth().onAuthStateChanged((user) => {
       log('Auth State Changed')
       log({ user })
       if (user) {
-        db.collection("users")
-          .where("uid", "==", user.uid)
+        db.collection('users')
+          .where('uid', '==', user.uid)
           .limit(1)
           .get()
-          .then(res => {
+          .then((res) => {
             if (!res.empty) {
               const [doc] = res.docs
-              setUserDb(doc.data())
+              setUserDb(doc.data() as Props['userDb'])
             } else {
               /**
                * Por que: Num futuro, quero que exista um cadastro mais arrojado dos usuários para, então, poderem
                * cadastrar tenants. Porém, em virtude da minha pressa, estou deixando esse cadastro ser automático por enquanto.
                */
-              db.collection("users")
+              db.collection('users')
                 .add({
-                  uid: user.uid
+                  uid: user.uid,
                 })
                 .then(console.log)
                 .catch(console.log)
@@ -45,8 +54,8 @@ export const AuthContextProvider = ({ children }) => {
             setLoading(false)
           })
       } else {
-        setUser(null)
-        setUserDb(null)
+        setUser(undefined)
+        setUserDb(undefined)
         setLoading(false)
       }
     })
@@ -59,8 +68,8 @@ export const AuthContextProvider = ({ children }) => {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ loading, user, userDb, loginWithGoogle }}>
+    <AuthProvider value={{ loading, user, userDb, loginWithGoogle }}>
       {children}
-    </AuthContext.Provider>
+    </AuthProvider>
   )
 }

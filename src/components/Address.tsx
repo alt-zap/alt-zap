@@ -1,14 +1,18 @@
-import React, { useCallback, useState, Fragment, useEffect } from "react"
-import { Input, Select } from "antd"
+import React, { FC, useCallback, useState, Fragment, useEffect } from 'react'
+import { Input, Select } from 'antd'
 
-import AutoFill from "./AutoFill"
-const eSet = fn => e => fn(e.target.value)
+import AutoFill from './AutoFill'
+import { eSet } from '../utils'
 
-export default ({ onAddress }) => {
-  const [logradouro, setLogradouro] = useState("")
-  const [numero, setNumero] = useState("")
-  const [complemento, setComplemento] = useState("")
-  const [bairro, setBairro] = useState("")
+type Props = {
+  onAddress: (data: Address) => void
+}
+
+const Address: FC<Props> = ({ onAddress }) => {
+  const [logradouro, setLogradouro] = useState('')
+  const [numero, setNumero] = useState('')
+  const [complemento, setComplemento] = useState('')
+  const [bairro, setBairro] = useState('')
 
   // Campina Grande é o meu país
   const setAddress = useCallback(({ logradouro, bairro, numero }) => {
@@ -22,7 +26,7 @@ export default ({ onAddress }) => {
       logradouro,
       numero,
       complemento,
-      bairro
+      bairro,
     })
   }, [onAddress, logradouro, numero, complemento, bairro])
 
@@ -89,3 +93,5 @@ export default ({ onAddress }) => {
     </Fragment>
   )
 }
+
+export default Address

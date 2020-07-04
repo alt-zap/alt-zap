@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from "react"
+import React, { FC, useState, useEffect } from "react"
 import Real from "./Real"
 
-export default ({ order, deliveryFee, onTotal }) => {
+type Props = {
+  order: [string, number, number][]
+  deliveryFee: number
+  onTotal: (total: number) => void
+}
+
+const Totalizer: FC<Props> = ({ order, deliveryFee, onTotal }) => {
   const [total, setTotal] = useState(0)
   useEffect(() => {
     const totalOrder = order.reduce(
@@ -31,3 +37,5 @@ export default ({ order, deliveryFee, onTotal }) => {
     </div>
   )
 }
+
+export default Totalizer

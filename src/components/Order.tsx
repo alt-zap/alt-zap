@@ -2,29 +2,29 @@ import React, { Fragment, useCallback, useState, useMemo } from 'react'
 import { Affix, Alert, Button, Divider, Input, Spin } from 'antd'
 import { SendOutlined } from '@ant-design/icons'
 
-import Endereco from '../components/Endereco'
-import Cardapio from '../components/Cardapio'
-import Totalizer from '../components/Totalizer'
-import OrderSummary from '../components/OrderSummary'
-import PaymentSelector from '../components/PaymentSelector'
+import Address from './Address'
+import ProductList from './ProductList'
+import Totalizer from './Totalizer'
+import OrderSummary from './OrderSummary'
+import PaymentSelector from './PaymentSelector'
 import { useTenantConfig } from '../contexts/TenantContext'
 
 import { generateLink, eSet } from '../utils'
 
 export default () => {
   const { tenant, loading } = useTenantConfig()
-  const [address, setAddress] = useState(null)
+  const [address, setAddress] = useState<Address>()
   const [order, setOrder] = useState([])
   const [total, setTotal] = useState(0)
   const [name, setName] = useState('')
   const [info, setInfo] = useState('')
-  const [paymentInfo, setPayment] = useState(null)
+  const [paymentInfo, setPayment] = useState<PaymentInfo>()
 
   const enviarPedido = useCallback(() => {
-    const { name: label, change } = paymentInfo
+    const { name: label, change } = paymentInfo!
     const whatsappLink = generateLink({
-      whatsapp: tenant.whatsapp,
-      address,
+      whatsapp: tenant!.whatsapp,
+      address: address!,
       order,
       payment: {
         label,
@@ -34,8 +34,8 @@ export default () => {
       total,
       info,
     })
-    var win = window.open(whatsappLink, '_blank')
-    win.focus()
+    const win = window.open(whatsappLink, '_blank')
+    win!.focus()
   }, [address, order, info, paymentInfo, name, total, tenant])
 
   const hasOrder = useMemo(() => {
@@ -43,7 +43,7 @@ export default () => {
   }, [order])
 
   const pedidoValido = useMemo(() => {
-    return total > 0 && name && address.logradouro
+    return total > 0 && name && address && address.logradouro
   }, [total, name, address])
 
   const { deliveryFee, items, paymentMethods } = tenant || {}
@@ -67,9 +67,9 @@ export default () => {
             message="No final, vamos te redirecionar pra o Whatsapp para finalizar seu pedido ;)"
             type="info"
           />
-          <Cardapio items={items} onOrder={setOrder} />
+          <ProductList items={items!} onOrder={setOrder} />
           <Divider />
-          <Endereco onAddress={setAddress} />
+          <Address onAddress={setAddress} />
           <Divider />
           <span>Outras Informações?</span>
           <Input.TextArea
@@ -77,7 +77,6 @@ export default () => {
             onChange={eSet(setInfo)}
             placeholder="Ex: Tira o sal da batata frita"
             className="mv2"
-            size="large"
           />
           <span className="mt2">Seu nome</span>
           <Input
@@ -90,8 +89,7 @@ export default () => {
             {hasOrder && (
               <Totalizer
                 order={order}
-                items={items}
-                deliveryFee={deliveryFee}
+                deliveryFee={deliveryFee!}
                 onTotal={setTotal}
               />
             )}
@@ -100,8 +98,7 @@ export default () => {
           <Divider />
           {hasOrder && (
             <PaymentSelector
-              total={total}
-              methods={paymentMethods}
+              methods={paymentMethods!}
               onPayment={setPayment}
             />
           )}

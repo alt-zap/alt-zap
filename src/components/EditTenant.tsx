@@ -1,14 +1,14 @@
-import React, { useCallback, useState } from "react"
+import React, { FC, useCallback, useState } from "react"
 import { Modal } from "antd"
 import { useNavigate } from "@reach/router"
 import firebase from "firebase/app"
 import "firebase/firestore"
 
-import TenantForm from "../components/TenantForm"
+import TenantForm from "./TenantForm"
 import { useAuth } from "../contexts/AuthContext"
 import { useTenantConfig } from "../contexts/TenantContext"
 
-export default () => {
+const EditTenant: FC = () => {
   const { user } = useAuth()
   const {
     loading: loadingTenant,
@@ -18,7 +18,7 @@ export default () => {
   } = useTenantConfig()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
-  const [modalMsg, setModalMsg] = useState(null)
+  const [modalMsg, setModalMsg] = useState('')
 
   const saveTenant = useCallback(
     ({ formData }) => {
@@ -61,7 +61,7 @@ export default () => {
     return null
   }
 
-  if (tenant.userId !== user.uid) {
+  if (tenant && tenant.userId !== user.uid) {
     navigate("/")
     return null
   }
@@ -78,11 +78,13 @@ export default () => {
       <Modal
         title="Aviso"
         visible={!!modalMsg}
-        onOk={() => setModalMsg(null)}
-        onCancel={() => setModalMsg(null)}
+        onOk={() => setModalMsg('')}
+        onCancel={() => setModalMsg('')}
       >
         <p>{modalMsg}</p>
       </Modal>
     </div>
   )
 }
+
+export default EditTenant

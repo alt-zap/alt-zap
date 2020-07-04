@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react"
+import React, { FC, Fragment, useState, useEffect } from "react"
 import { Button, List } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 
@@ -9,7 +9,7 @@ import "firebase/firestore"
 
 import { useAuth } from "../../contexts/AuthContext"
 
-export default () => {
+const ListTenants: FC = () => {
   const [loading, setLoading] = useState(true)
   const [tenants, setTenants] = useState([])
   const { user } = useAuth()
@@ -59,3 +59,5 @@ export default () => {
     </Fragment>
   )
 }
+
+export default ListTenants

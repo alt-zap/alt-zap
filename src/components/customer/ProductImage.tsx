@@ -1,7 +1,12 @@
-import React, { Fragment, useState } from 'react'
+import React, { FC, Fragment, useState } from 'react'
 import { Modal } from 'antd'
 
-export default ({ src, title }) => {
+type Props = {
+  src: string
+  title: string
+}
+
+const ProductImage: FC<Props> =  ({ src, title }) => {
   const [modalOpened, setOpen] = useState(false)
 
   return (
@@ -26,3 +31,5 @@ export default ({ src, title }) => {
     </Fragment>
   )
 }
+
+export default ProductImage
