@@ -16,12 +16,14 @@ type Props = {
 const ProductList: FC<Props> = ({ items, onOrder }) => {
   const [quantities, setQuantities] = useState<Record<number, string>>({})
   const setForIndex = useCallback(
-    i => (value: string) => setQuantities({ ...quantities, [i]: value }),
+    (i) => (value: string) => setQuantities({ ...quantities, [i]: value }),
     [quantities]
   )
 
   useEffect(() => {
-    const order = (Object.keys(quantities) as unknown as number[]).map(i => [
+    const order = ((Object.keys(
+      quantities
+    ) as unknown) as number[]).map((i) => [
       items[i].name,
       parseInt(quantities[i], 10),
       items[i].price,
@@ -40,7 +42,9 @@ const ProductList: FC<Props> = ({ items, onOrder }) => {
             <List.Item.Meta
               className="items-center"
               // Depois, adicionar uma imagem padrão aqui
-              avatar={imgSrc ? <ProductImage src={imgSrc} title={name} /> : null}
+              avatar={
+                imgSrc ? <ProductImage src={imgSrc} title={name} /> : null
+              }
               title={name}
               description={<Description headline={headline} items={items} />}
             />
@@ -62,14 +66,17 @@ const ProductList: FC<Props> = ({ items, onOrder }) => {
   )
 }
 
-type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType[number];
+type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType[number]
 
-const Description: FC<Pick<ArrayElement<TenantConfig['items']>, 'headline' | 'items'>> = ({ headline, items }) => (
+const Description: FC<Pick<
+  ArrayElement<TenantConfig['items']>,
+  'headline' | 'items'
+>> = ({ headline, items }) => (
   <div className="flex flex-column">
     {headline && <Text code>{headline}</Text>}
     {items && items.length && (
       <Dropdown overlay={<MenuForItems items={items} />}>
-        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+        <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
           Detalhes <DownOutlined />
         </a>
       </Dropdown>
@@ -77,13 +84,15 @@ const Description: FC<Pick<ArrayElement<TenantConfig['items']>, 'headline' | 'it
   </div>
 )
 
-const MenuForItems: FC<Pick<ArrayElement<TenantConfig['items']>, 'items'>> = ({ items }) => (
+const MenuForItems: FC<Pick<ArrayElement<TenantConfig['items']>, 'items'>> = ({
+  items,
+}) => (
   <List
     size="small"
     className="bg-white"
     bordered
     dataSource={items}
-    renderItem={item => <List.Item>{item}</List.Item>}
+    renderItem={(item) => <List.Item>{item}</List.Item>}
   />
 )
 

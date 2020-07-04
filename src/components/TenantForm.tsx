@@ -7,7 +7,8 @@ import tenantConfigSchema from '../schemas/tenantConfigSchema'
 
 const Form = withTheme(AntDTheme)
 
-interface Props extends Omit<FormProps<TenantConfig>, 'schema' | 'uiSchema' | 'formData'> {
+interface Props
+  extends Omit<FormProps<TenantConfig>, 'schema' | 'uiSchema' | 'formData'> {
   initialValue?: TenantConfig
 }
 

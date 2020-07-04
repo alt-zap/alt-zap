@@ -97,10 +97,7 @@ export default () => {
           {hasOrder && <OrderSummary order={order} />}
           <Divider />
           {hasOrder && (
-            <PaymentSelector
-              methods={paymentMethods!}
-              onPayment={setPayment}
-            />
+            <PaymentSelector methods={paymentMethods!} onPayment={setPayment} />
           )}
           <div className="flex justify-center">
             <Button

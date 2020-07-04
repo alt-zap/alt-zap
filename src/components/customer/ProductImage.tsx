@@ -6,7 +6,7 @@ type Props = {
   title: string
 }
 
-const ProductImage: FC<Props> =  ({ src, title }) => {
+const ProductImage: FC<Props> = ({ src, title }) => {
   const [modalOpened, setOpen] = useState(false)
 
   return (

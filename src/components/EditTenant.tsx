@@ -1,12 +1,12 @@
-import React, { FC, useCallback, useState } from "react"
-import { Modal } from "antd"
-import { useNavigate } from "@reach/router"
-import firebase from "firebase/app"
-import "firebase/firestore"
+import React, { FC, useCallback, useState } from 'react'
+import { Modal } from 'antd'
+import { useNavigate } from '@reach/router'
+import firebase from 'firebase/app'
+import 'firebase/firestore'
 
-import TenantForm from "./TenantForm"
-import { useAuth } from "../contexts/AuthContext"
-import { useTenantConfig } from "../contexts/TenantContext"
+import TenantForm from './TenantForm'
+import { useAuth } from '../contexts/AuthContext'
+import { useTenantConfig } from '../contexts/TenantContext'
 
 const EditTenant: FC = () => {
   const { user } = useAuth()
@@ -14,7 +14,7 @@ const EditTenant: FC = () => {
     loading: loadingTenant,
     tenant,
     tenantId,
-    updateTenant
+    updateTenant,
   } = useTenantConfig()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
@@ -26,31 +26,31 @@ const EditTenant: FC = () => {
       const db = firebase.firestore()
       const updatedTenant = {
         editedLast: new Date().toISOString(),
-        ...formData
+        ...formData,
       }
       const { slug } = updatedTenant
-      db.collection("tenants")
-        .where("slug", "==", slug)
+      db.collection('tenants')
+        .where('slug', '==', slug)
         .limit(1)
         .get()
-        .then(res => {
+        .then((res) => {
           if (res.empty || res.docs[0].id === tenantId) {
             return db
-              .collection("tenants")
+              .collection('tenants')
               .doc(tenantId)
               .set(updatedTenant)
-              .then(data => {
+              .then((data) => {
                 updateTenant(updatedTenant)
-                setModalMsg("Alterações salvas com sucesso")
+                setModalMsg('Alterações salvas com sucesso')
               })
-              .catch(e => {
+              .catch((e) => {
                 console.log(e)
-                setModalMsg("Não foi possível salvar seus dados")
+                setModalMsg('Não foi possível salvar seus dados')
               })
               .finally(() => setLoading(false))
           } else {
             setLoading(false)
-            setModalMsg("Slug já utilizado por outro usuário")
+            setModalMsg('Slug já utilizado por outro usuário')
           }
         })
     },
@@ -62,7 +62,7 @@ const EditTenant: FC = () => {
   }
 
   if (tenant && tenant.userId !== user.uid) {
-    navigate("/")
+    navigate('/')
     return null
   }
 

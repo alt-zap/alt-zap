@@ -1,5 +1,5 @@
-import React, { FC } from "react"
-import Real from "./Real"
+import React, { FC } from 'react'
+import Real from './Real'
 
 type Props = {
   order: [string, number, number][]

@@ -1,8 +1,8 @@
-import React, { FC } from "react"
+import React, { FC } from 'react'
 import { RouteComponentProps } from '@reach/router'
 
-import { TenantContextProvider } from "../contexts/TenantContext"
-import Pedido from "../components/Order"
+import { TenantContextProvider } from '../contexts/TenantContext'
+import Pedido from '../components/Order'
 
 type Props = {
   slug: string

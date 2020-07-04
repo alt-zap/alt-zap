@@ -1,13 +1,13 @@
-import React, { FC, Fragment, useState, useEffect } from "react"
-import { Button, List } from "antd"
-import { PlusOutlined } from "@ant-design/icons"
+import React, { FC, Fragment, useState, useEffect } from 'react'
+import { Button, List } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
 
-import { Link, useNavigate } from "@reach/router"
+import { Link, useNavigate } from '@reach/router'
 
-import * as firebase from "firebase/app"
-import "firebase/firestore"
+import * as firebase from 'firebase/app'
+import 'firebase/firestore'
 
-import { useAuth } from "../../contexts/AuthContext"
+import { useAuth } from '../../contexts/AuthContext'
 
 const ListTenants: FC = () => {
   const [loading, setLoading] = useState(true)
@@ -19,12 +19,12 @@ const ListTenants: FC = () => {
     if (!user) return
     const db = firebase.firestore()
     const query = db
-      .collection("tenants")
-      .where("userId", "==", user.uid)
+      .collection('tenants')
+      .where('userId', '==', user.uid)
       .get()
 
     query.then(({ docs }) => {
-      setTenants(docs.map(doc => ({ ...doc.data(), id: doc.id })))
+      setTenants(docs.map((doc) => ({ ...doc.data(), id: doc.id })))
       setLoading(false)
     })
   }, [user])
@@ -49,7 +49,7 @@ const ListTenants: FC = () => {
             <Button
               type="primary"
               icon={<PlusOutlined />}
-              onClick={() => navigate("/onboard")}
+              onClick={() => navigate('/onboard')}
             >
               Adicionar
             </Button>

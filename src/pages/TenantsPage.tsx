@@ -1,8 +1,8 @@
-import React, { FC } from "react"
+import React, { FC } from 'react'
 import { RouteComponentProps } from '@reach/router'
-import ListTenants from "../components/tenant/ListTenants"
+import ListTenants from '../components/tenant/ListTenants'
 
-const TenantsPage: FC<RouteComponentProps> =  () => {
+const TenantsPage: FC<RouteComponentProps> = () => {
   return <ListTenants />
 }
 

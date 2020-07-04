@@ -1,4 +1,4 @@
-import React, { FC, Fragment }from 'react'
+import React, { FC, Fragment } from 'react'
 
 const formatter = new Intl.NumberFormat('pt-BR', {
   style: 'currency',

@@ -11,7 +11,7 @@ const toString = (number: number) => {
 
 interface Props extends React.ComponentPropsWithoutRef<typeof Input> {
   mask: string
-  experimentalNumber?: boolean 
+  experimentalNumber?: boolean
 }
 
 const MaskedInput: FC<Props> = ({
@@ -33,21 +33,24 @@ const MaskedInput: FC<Props> = ({
     initialValue ? toString(initialValue as number) : null
   )
 
-  const innerOnChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    var maskedValue = masked.resolve(e.target.value)
-    setValue(maskedValue)
-    const num = maskedValue && parseInt(maskedValue.replace(',', ''), 10)
-    const toSend = experimentalNumber ? num : maskedValue
-    const event = {
-      ...e,
-      target: {
-        ...e.target,
-        value: toSend as React.ReactText
+  const innerOnChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      var maskedValue = masked.resolve(e.target.value)
+      setValue(maskedValue)
+      const num = maskedValue && parseInt(maskedValue.replace(',', ''), 10)
+      const toSend = experimentalNumber ? num : maskedValue
+      const event = {
+        ...e,
+        target: {
+          ...e.target,
+          value: toSend as React.ReactText,
+        },
       }
-    }
-    // @ts-ignore
-    onChange && onChange(event)
-  }, [])
+      // @ts-ignore
+      onChange && onChange(event)
+    },
+    []
+  )
 
   return (
     <Input
