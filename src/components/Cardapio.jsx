@@ -1,9 +1,10 @@
-import React, { Fragment, useState, useCallback, useEffect } from "react"
-import { List, Avatar, Dropdown, Typography } from "antd"
-import { DownOutlined } from "@ant-design/icons"
+import React, { Fragment, useState, useCallback, useEffect } from 'react'
+import { List, Dropdown, Typography } from 'antd'
+import { DownOutlined } from '@ant-design/icons'
 
-import QuantitySelector from "./QuantitySelector"
-import Real from "./Real"
+import ProductImage from './customer/ProductImage'
+import QuantitySelector from './QuantitySelector'
+import Real from './Real'
 
 const { Text } = Typography
 
@@ -18,7 +19,7 @@ export default ({ items, onOrder }) => {
     const order = Object.keys(quantities).map(i => [
       items[i].name,
       parseInt(quantities[i], 10),
-      items[i].price
+      items[i].price,
     ])
     onOrder(order)
   }, [items, onOrder, quantities])
@@ -32,7 +33,8 @@ export default ({ items, onOrder }) => {
         renderItem={({ headline, imgSrc, name, items, price }, i) => (
           <List.Item>
             <List.Item.Meta
-              avatar={<Avatar src={imgSrc} />}
+              className="items-center"
+              avatar={<ProductImage src={imgSrc} title={name} />}
               title={name}
               description={<Description headline={headline} items={items} />}
             />
@@ -43,7 +45,7 @@ export default ({ items, onOrder }) => {
                 </b>
               </div>
               <QuantitySelector
-                quantity={quantities[i] || "0"}
+                quantity={quantities[i] || '0'}
                 onQuantity={setForIndex(i)}
               />
             </div>
@@ -55,18 +57,16 @@ export default ({ items, onOrder }) => {
 }
 
 const Description = ({ headline, items }) => (
-  <Fragment>
-    <Text code className="mr1">
-      {headline}
-    </Text>
+  <div className="flex flex-column">
+    {headline && <Text code>{headline}</Text>}
     {items && items.length && (
       <Dropdown overlay={<MenuForItems items={items} />}>
         <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-          Mais <DownOutlined />
+          Detalhes <DownOutlined />
         </a>
       </Dropdown>
     )}
-  </Fragment>
+  </div>
 )
 
 const MenuForItems = ({ items }) => (
