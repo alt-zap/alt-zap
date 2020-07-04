@@ -2,7 +2,9 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { Radio, Alert } from 'antd'
 import ReactMarkdown from 'react-markdown'
 
-import RealInput from './RealInput'
+import MaskedInput from './MaskedInput'
+
+import { RealMask } from '../util/masks'
 
 const radioStyle = {
   height: '30px',
@@ -48,13 +50,13 @@ export default ({ methods, onPayment }) => {
             <Radio style={radioStyle} value={i} key={i} className="w-100">
               {name}
               {checksForChange && selectedIndex === i && (
-                <RealInput
+                <MaskedInput
                   placeholder="Troco para?"
                   className="ml2 w-50"
+                  experimentalNumber
+                  mask={RealMask}
                   value={change}
-                  onChange={e => {
-                    setChange(e.target.value)
-                  }}
+                  onChange={e => setChange(e.target.value)}
                 />
               )}
             </Radio>

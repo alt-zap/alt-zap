@@ -5,6 +5,8 @@ import { Theme as AntDTheme } from "@rjsf/antd"
 import MaskedInput from "./MaskedInput"
 import tenantConfigSchema from "../schemas/tenantConfigSchema"
 
+import { RealMask } from '../util/masks'
+
 const Form = withTheme(AntDTheme)
 
 export default ({ initialValue, ...props }) => {
@@ -28,7 +30,7 @@ const CurrencyInput = ({ value, onChange, ...props }) => {
   return (
     <MaskedInput
       experimentalNumber
-      mask="0[0],00"
+      mask={RealMask}
       value={value}
       onChange={e => onChange(e.target.value)}
     />

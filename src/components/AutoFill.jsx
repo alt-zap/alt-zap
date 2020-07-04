@@ -2,6 +2,7 @@ import React, { Fragment, useState, useCallback } from "react"
 import { Button, Typography } from "antd"
 import MaskedInput from "./MaskedInput"
 import { eSet } from "../util/utils"
+import { CEPMask } from "../util/masks"
 
 export default ({ onAddress }) => {
   const [cep, setCep] = useState("")
@@ -69,7 +70,7 @@ export default ({ onAddress }) => {
       <div className="flex flex-col">
         <div className="flex w-100 justify-center">
           <MaskedInput
-            mask="00000-000"
+            mask={CEPMask}
             onChange={eSet(setCep)}
             value={cep}
             disabled={loading}
