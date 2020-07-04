@@ -29,10 +29,6 @@ export default ({ methods, onPayment }) => {
     [setSelected]
   )
 
-  const needsChange = useMemo(() => {
-    return selectedIndex && methods[selectedIndex].checksForChange
-  }, [selectedIndex, methods])
-
   const { imgSrc, description, name } = useMemo(() => {
     return methods[selectedIndex] || {}
   }, [selectedIndex, methods])

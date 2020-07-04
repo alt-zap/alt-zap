@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { List, Dropdown, Typography } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 
@@ -61,7 +61,7 @@ const Description = ({ headline, items }) => (
     {headline && <Text code>{headline}</Text>}
     {items && items.length && (
       <Dropdown overlay={<MenuForItems items={items} />}>
-        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+        <a className="ant-dropdown-link" onClick={e => e.preventDefault()} href="no-redirect">
           Detalhes <DownOutlined />
         </a>
       </Dropdown>

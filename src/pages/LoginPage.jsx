@@ -21,7 +21,7 @@ export default () => {
     if (user) {
       navigate('/')
     }
-  }, [user])
+  }, [user, navigate, userDb])
 
   return (
     <div className="flex flex-column items-center pa2">
