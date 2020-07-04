@@ -37,6 +37,7 @@ export default ({
   return (
     <Input
       {...props}
+      addonBefore={experimentalNumber ? 'R$' : ''}
       value={experimentalNumber ? value : initialValue}
       onChange={innerOnChange}
     />
