@@ -4,6 +4,7 @@ import { withTheme, FormProps } from '@rjsf/core'
 import { Theme as AntDTheme } from '@rjsf/antd'
 import MaskedInput from './MaskedInput'
 import tenantConfigSchema from '../schemas/tenantConfigSchema'
+import { masks } from '../constants'
 
 const Form = withTheme(AntDTheme)
 
@@ -44,7 +45,7 @@ const CurrencyInput: FC<CurrencyInputProps> = ({
     <MaskedInput
       disabled={disabled}
       experimentalNumber
-      mask="0[0],00"
+      mask={masks.REAL}
       value={value}
       onChange={(e) => onChange(e.target.value)}
     />
