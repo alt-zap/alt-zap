@@ -48,7 +48,7 @@ export default () => {
 
   const { deliveryFee, items, paymentMethods } = tenant || {}
   return (
-    <div className="App">
+    <div className="mv3">
       {loading && (
         <div className="flex flex-column items-center">
           <Spin />

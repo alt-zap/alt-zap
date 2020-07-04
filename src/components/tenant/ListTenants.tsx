@@ -9,22 +9,25 @@ import 'firebase/firestore'
 
 import { useAuth } from '../../contexts/AuthContext'
 
+interface TenantForList extends TenantConfig {
+  id: string
+}
+
 const ListTenants: FC = () => {
   const [loading, setLoading] = useState(true)
-  const [tenants, setTenants] = useState([])
+  const [tenants, setTenants] = useState<TenantForList[]>([])
   const { user } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
     if (!user) return
     const db = firebase.firestore()
-    const query = db
-      .collection('tenants')
-      .where('userId', '==', user.uid)
-      .get()
+    const query = db.collection('tenants').where('userId', '==', user.uid).get()
 
     query.then(({ docs }) => {
-      setTenants(docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      setTenants(
+        docs.map((doc) => ({ ...doc.data(), id: doc.id })) as TenantForList[]
+      )
       setLoading(false)
     })
   }, [user])

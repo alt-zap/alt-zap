@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useContext } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
@@ -44,8 +44,9 @@ export const TenantContextProvider: FC<Props> = ({
             .where('slug', '==', slug)
             .get()
 
-    // @ts-ignore
+    
     query()
+      // @ts-ignore
       .then((querySnapshot: any) => {
         const [doc] = querySnapshot.docs || [querySnapshot]
         const data = doc.data()

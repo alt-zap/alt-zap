@@ -32,10 +32,6 @@ const PaymentSelector: FC<Props> = ({ methods, onPayment }) => {
     [setSelected]
   )
 
-  const needsChange = useMemo(() => {
-    return selectedIndex && methods[selectedIndex].checksForChange
-  }, [selectedIndex, methods])
-
   const { imgSrc, description, name } = useMemo(() => {
     return selectedIndex ? methods[selectedIndex] : ({} as any)
   }, [selectedIndex, methods])

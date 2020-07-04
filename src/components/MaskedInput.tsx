@@ -49,7 +49,7 @@ const MaskedInput: FC<Props> = ({
       // @ts-ignore
       onChange && onChange(event)
     },
-    []
+    [experimentalNumber, masked, onChange]
   )
 
   return (

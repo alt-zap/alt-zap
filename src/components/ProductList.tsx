@@ -1,6 +1,6 @@
 import React, { FC, useState, useCallback, useEffect } from 'react'
 import { List, Dropdown, Typography } from 'antd'
-import { DownOutlined } from '@ant-design/icons'
+import { PlusOutlined } from '@ant-design/icons'
 
 import ProductImage from './customer/ProductImage'
 import QuantitySelector from './QuantitySelector'
@@ -76,9 +76,9 @@ const Description: FC<Pick<
     {headline && <Text code>{headline}</Text>}
     {items && items.length && (
       <Dropdown overlay={<MenuForItems items={items} />}>
-        <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-          Detalhes <DownOutlined />
-        </a>
+        <div className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+          Detalhes <PlusOutlined />
+        </div>
       </Dropdown>
     )}
   </div>

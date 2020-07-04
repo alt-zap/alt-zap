@@ -32,16 +32,17 @@ const TenantForm: FC<Props> = ({ initialValue, ...props }) => {
 type CurrencyInputProps = {
   value: string
   onChange: (data: string) => void
+  disabled: boolean
 }
 
 const CurrencyInput: FC<CurrencyInputProps> = ({
   value,
   onChange,
-  ...props
+  disabled
 }) => {
   return (
     <MaskedInput
-      {...props}
+      disabled={disabled}
       experimentalNumber
       mask="0[0],00"
       value={value}
