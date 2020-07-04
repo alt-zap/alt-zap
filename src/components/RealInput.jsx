@@ -4,7 +4,7 @@ import IMask from "imask/esm/imask"
 import "imask/esm/masked/number"
 
 const masked = IMask.createMask({
-  mask: "00[0],`00"
+  mask: "R$00[0],00"
 })
 
 export default ({ value, onChange, ...props }) => {
