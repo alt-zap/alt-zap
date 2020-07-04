@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from 'react'
 import { useNavigate } from '@reach/router'
 import { GoogleLoginButton } from 'react-social-login-buttons'
 
-import { log } from '../utils'
+import { log } from '../util/utils'
 import { useAuth } from '../contexts/AuthContext'
 
 // uid

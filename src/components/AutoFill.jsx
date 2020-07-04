@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useCallback } from "react"
 import { Button, Typography } from "antd"
 import MaskedInput from "./MaskedInput"
-import { eSet } from "../utils"
+import { eSet } from "../util/utils"
 
 export default ({ onAddress }) => {
   const [cep, setCep] = useState("")

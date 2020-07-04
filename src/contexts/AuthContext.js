@@ -4,7 +4,7 @@ import firebase from "firebase/app"
 import "firebase/auth"
 import "firebase/firestore"
 
-import { log } from '../utils'
+import { log } from '../util/utils'
 
 const AuthContext = React.createContext({})
 

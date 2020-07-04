@@ -9,7 +9,7 @@ import OrderSummary from '../components/OrderSummary'
 import PaymentSelector from '../components/PaymentSelector'
 import { useTenantConfig } from '../contexts/TenantContext'
 
-import { generateLink, eSet } from '../utils'
+import { generateLink, eSet } from '../util/utils'
 
 export default () => {
   const { tenant, loading } = useTenantConfig()
