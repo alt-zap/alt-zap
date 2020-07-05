@@ -1,6 +1,7 @@
 import React, { FC, Fragment, useEffect } from 'react'
 import { useNavigate, RouteComponentProps } from '@reach/router'
 import { GoogleLoginButton } from 'react-social-login-buttons'
+
 import { log } from '../utils'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -14,8 +15,10 @@ const LoginPage: FC<RouteComponentProps> = () => {
     log({ user })
     if (user && !userDb) {
       navigate('/onboard')
+
       return
     }
+
     if (user) {
       navigate('/')
     }

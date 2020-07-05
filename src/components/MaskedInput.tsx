@@ -35,7 +35,8 @@ const MaskedInput: FC<Props> = ({
 
   const innerOnChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      var maskedValue = masked.resolve(e.target.value)
+      const maskedValue = masked.resolve(e.target.value)
+
       setValue(maskedValue)
       const num = maskedValue && parseInt(maskedValue.replace(',', ''), 10)
       const toSend = experimentalNumber ? num : maskedValue
@@ -46,8 +47,10 @@ const MaskedInput: FC<Props> = ({
           value: toSend as React.ReactText,
         },
       }
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
-      onChange && onChange(event)
+      onChange?.(event)
     },
     [experimentalNumber, masked, onChange]
   )
@@ -55,6 +58,7 @@ const MaskedInput: FC<Props> = ({
   return (
     <Input
       {...props}
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       value={experimentalNumber ? value : initialValue}
       onChange={innerOnChange}

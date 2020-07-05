@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+
 import MaskedInput from './MaskedInput'
 
 type Props = Omit<React.ComponentPropsWithoutRef<typeof MaskedInput>, 'mask'>

@@ -1,9 +1,7 @@
 import React, { FC, Fragment, useState, useEffect } from 'react'
 import { Button, List } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-
 import { Link, useNavigate } from '@reach/router'
-
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
 
@@ -44,7 +42,13 @@ const ListTenants: FC = () => {
               itemLayout="horizontal"
               dataSource={tenants}
               renderItem={({ name, id }) => (
-                <List.Item actions={[<Link to={`/tenant/${id}`}>editar</Link>]}>
+                <List.Item
+                  actions={[
+                    <Link key={0} to={`/tenant/${id}`}>
+                      editar
+                    </Link>,
+                  ]}
+                >
                   {name}
                 </List.Item>
               )}

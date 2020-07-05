@@ -2,22 +2,27 @@ import React from 'react'
 
 type Elements = HTMLInputElement | HTMLTextAreaElement
 
-export const eSet = (fn: (data: string) => void) => (e: React.ChangeEvent<Elements>) => fn(e.target.value)
+export const eSet = (fn: (data: string) => void) => (
+  e: React.ChangeEvent<Elements>
+) => fn(e.target.value)
 
-export const log= (...msgs: any) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const log = (...msgs: any) => {
+  // eslint-disable-next-line no-console
   if (process.env.NODE_ENV === 'development') console.log(...msgs)
 }
 
 const toString = (number: number) => {
   const str = number.toString()
   const len = str.length
+
   return `${str.slice(0, len - 2)},${str.slice(len - 2, len)}`
 }
 
 type GenerateLinkParams = {
   name: string
   address: Address
-  order: [string, string][]
+  order: Array<[string, string]>
   payment: {
     label: string
     change?: string
@@ -39,8 +44,10 @@ export const generateLink = ({
   const { logradouro, numero, complemento, bairro } = address
   const { label, change } = payment
   const items = order
+    // eslint-disable-next-line no-shadow
     .map(([name, quantity]) => `*${quantity}* - ${name}`)
     .join('\r\n')
+
   const text = `*Novo Pedido!*
 *Nome:* ${name}
 
@@ -65,12 +72,16 @@ ${change ? `Precisa de troco para R$ *${change}*` : ''}`
 }
 
 export function createCtx<A extends {} | null>() {
-  const ctx = React.createContext<A | undefined>(undefined);
+  const ctx = React.createContext<A | undefined>(undefined)
+
   function useCtx() {
-    const c = React.useContext(ctx);
+    const c = React.useContext(ctx)
+
     if (c === undefined)
-      throw new Error("useCtx must be inside a Provider with a value");
-    return c;
+      throw new Error('useCtx must be inside a Provider with a value')
+
+    return c
   }
-  return [useCtx, ctx.Provider] as const; // 'as const' makes TypeScript infer a tuple
+
+  return [useCtx, ctx.Provider] as const // 'as const' makes TypeScript infer a tuple
 }

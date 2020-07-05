@@ -6,6 +6,7 @@ import 'firebase/firestore'
 
 import { useAuth } from '../contexts/AuthContext'
 import TenantForm from '../components/TenantForm'
+import { log } from '../utils'
 
 const OnboardPage: FC<RouteComponentProps> = () => {
   const [loading, setLoading] = useState(false)
@@ -19,6 +20,7 @@ const OnboardPage: FC<RouteComponentProps> = () => {
       setLoading(true)
       const db = firebase.firestore()
       const { slug } = data
+
       db.collection('tenants')
         .where('slug', '==', slug)
         .limit(1)
@@ -27,6 +29,7 @@ const OnboardPage: FC<RouteComponentProps> = () => {
           if (res.empty) {
             db.collection('tenants')
               .add({
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 userId: user!.uid,
                 createdAt: new Date().toISOString(),
                 ...data,
@@ -34,8 +37,8 @@ const OnboardPage: FC<RouteComponentProps> = () => {
               .then((ref) => {
                 navigate(`/tenant/${ref.id}`)
               })
-              .catch((error) => {
-                console.log({ error })
+              .catch((err) => {
+                log({ err })
                 setError('Não foi possível realizar seu cadastro')
                 setLoading(false)
               })

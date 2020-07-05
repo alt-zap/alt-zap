@@ -1,8 +1,9 @@
 import React, { FC } from 'react'
+
 import Real from './Real'
 
 type Props = {
-  order: [string, number, number][]
+  order: Array<[string, number, number]>
 }
 
 const OrderSummary: FC<Props> = ({ order }) => (

@@ -33,26 +33,21 @@ export const TenantContextProvider: FC<Props> = ({
     if (!slug && !tenantId) return
     const db = firebase.firestore()
     const query = tenantId
-      ? () =>
-          db
-            .collection('tenants')
-            .doc(tenantId)
-            .get()
-      : () =>
-          db
-            .collection('tenants')
-            .where('slug', '==', slug)
-            .get()
+      ? () => db.collection('tenants').doc(tenantId).get()
+      : () => db.collection('tenants').where('slug', '==', slug).get()
 
-    
     query()
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((querySnapshot: any) => {
         const [doc] = querySnapshot.docs || [querySnapshot]
         const data = doc.data()
+
         setId(doc.id)
         setTenant(data)
       })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .catch((error: any) => {
         log('Error getting documents: ', error)
       })

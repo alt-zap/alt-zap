@@ -16,11 +16,13 @@ const QuantitySelector: FC<Props> = ({
 }) => {
   const inc = useCallback(() => {
     const val = parseInt(quantity, 10)
+
     onQuantity(val >= max ? quantity : `${val + 1}`)
   }, [onQuantity, quantity, max])
 
   const dec = useCallback(() => {
     const val = parseInt(quantity, 10)
+
     onQuantity(val <= min ? quantity : `${val - 1}`)
   }, [onQuantity, quantity, min])
 

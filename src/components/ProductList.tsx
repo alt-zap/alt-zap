@@ -28,6 +28,7 @@ const ProductList: FC<Props> = ({ items, onOrder }) => {
       parseInt(quantities[i], 10),
       items[i].price,
     ])
+
     onOrder(order)
   }, [items, onOrder, quantities])
 
@@ -37,7 +38,7 @@ const ProductList: FC<Props> = ({ items, onOrder }) => {
       <List
         itemLayout="horizontal"
         dataSource={items ? items.filter(({ live }) => live) : []}
-        renderItem={({ headline, imgSrc, name, items, price }, i) => (
+        renderItem={({ headline, imgSrc, name, items: subitems, price }, i) => (
           <List.Item>
             <List.Item.Meta
               className="items-center"
@@ -46,7 +47,7 @@ const ProductList: FC<Props> = ({ items, onOrder }) => {
                 imgSrc ? <ProductImage src={imgSrc} title={name} /> : null
               }
               title={name}
-              description={<Description headline={headline} items={items} />}
+              description={<Description headline={headline} items={subitems} />}
             />
             <div className="flex flex-column items-center justify-center w-25 tc">
               <div className="tc pb1">
@@ -74,9 +75,15 @@ const Description: FC<Pick<
 >> = ({ headline, items }) => (
   <div className="flex flex-column">
     {headline && <Text code>{headline}</Text>}
-    {items && items.length && (
+    {items?.length && (
       <Dropdown overlay={<MenuForItems items={items} />}>
-        <div className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+        <div
+          className="ant-dropdown-link"
+          role="button"
+          tabIndex={0}
+          onClick={(e) => e.preventDefault()}
+          onKeyPress={(e) => e.preventDefault()}
+        >
           Detalhes <PlusOutlined />
         </div>
       </Dropdown>

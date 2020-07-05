@@ -7,6 +7,7 @@ import 'firebase/firestore'
 import TenantForm from './TenantForm'
 import { useAuth } from '../contexts/AuthContext'
 import { useTenantConfig } from '../contexts/TenantContext'
+import { log } from '../utils'
 
 const EditTenant: FC = () => {
   const { user } = useAuth()
@@ -16,6 +17,7 @@ const EditTenant: FC = () => {
     tenantId,
     updateTenant,
   } = useTenantConfig()
+
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [modalMsg, setModalMsg] = useState('')
@@ -28,7 +30,9 @@ const EditTenant: FC = () => {
         editedLast: new Date().toISOString(),
         ...formData,
       }
+
       const { slug } = updatedTenant
+
       db.collection('tenants')
         .where('slug', '==', slug)
         .limit(1)
@@ -39,19 +43,19 @@ const EditTenant: FC = () => {
               .collection('tenants')
               .doc(tenantId)
               .set(updatedTenant)
-              .then((data) => {
+              .then(() => {
                 updateTenant(updatedTenant)
                 setModalMsg('Alterações salvas com sucesso')
               })
               .catch((e) => {
-                console.log(e)
+                log(e)
                 setModalMsg('Não foi possível salvar seus dados')
               })
               .finally(() => setLoading(false))
-          } else {
-            setLoading(false)
-            setModalMsg('Slug já utilizado por outro usuário')
           }
+
+          setLoading(false)
+          setModalMsg('Slug já utilizado por outro usuário')
         })
     },
     [tenantId, updateTenant]
@@ -63,6 +67,7 @@ const EditTenant: FC = () => {
 
   if (tenant && tenant.userId !== user.uid) {
     navigate('/')
+
     return null
   }
 

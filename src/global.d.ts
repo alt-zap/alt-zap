@@ -5,20 +5,20 @@ declare interface TenantConfig {
   whatsapp: string
   live: boolean
   deliveryFee: number
-  paymentMethods: {
+  paymentMethods: Array<{
     name: string
     checksForChange?: boolean
     imgSrc?: string
     description?: string
-  }[]
-  items: {
+  }>
+  items: Array<{
     headline?: string
     imgSrc?: string
     live: boolean
     name: string
-    price:  number
+    price: number
     items?: string[]
-  }[]
+  }>
 }
 
 declare interface PaymentInfo {
@@ -33,4 +33,4 @@ declare interface Address {
   complemento?: string
 }
 
-declare module '@rjsf/antd';
+declare module '@rjsf/antd'

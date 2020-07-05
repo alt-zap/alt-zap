@@ -20,6 +20,7 @@ const PaymentSelector: FC<Props> = ({ methods, onPayment }) => {
 
   useEffect(() => {
     const method = selectedIndex && methods[selectedIndex]
+
     if (!method) return
     onPayment({ name: method.name, change })
   }, [onPayment, selectedIndex, methods, change])
@@ -27,12 +28,14 @@ const PaymentSelector: FC<Props> = ({ methods, onPayment }) => {
   const onChange = useCallback(
     (e) => {
       const methodIndex = e.target.value
+
       setSelected(methodIndex)
     },
     [setSelected]
   )
 
   const { imgSrc, description, name } = useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return selectedIndex ? methods[selectedIndex] : ({} as any)
   }, [selectedIndex, methods])
 
@@ -45,9 +48,9 @@ const PaymentSelector: FC<Props> = ({ methods, onPayment }) => {
           value={selectedIndex}
           className="w-100"
         >
-          {methods.map(({ name, checksForChange }, i) => (
+          {methods.map(({ name: methodName, checksForChange }, i) => (
             <Radio style={radioStyle} value={i} key={i} className="w-100">
-              {name}
+              {methodName}
               {checksForChange && selectedIndex === i && (
                 <RealInput
                   placeholder="Troco para?"

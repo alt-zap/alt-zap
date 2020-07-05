@@ -1,6 +1,7 @@
 import React, { FC, Fragment, useState, useCallback } from 'react'
 import { Button, Typography } from 'antd'
-import { eSet } from '../utils'
+
+import { eSet, log } from '../utils'
 import CepInput from './CEPInput'
 
 type Props = {
@@ -16,6 +17,7 @@ const AutoFill: FC<Props> = ({ onAddress }) => {
     setLoading(true)
     setError('')
     const soNumeros = cep.replace('-', '').trim()
+
     fetch(`https://viacep.com.br/ws/${soNumeros}/json/`)
       .then((response) => response.json())
       .then((data) => {
@@ -30,44 +32,52 @@ const AutoFill: FC<Props> = ({ onAddress }) => {
   }, [cep, onAddress])
 
   const pegaCoordenadas = useCallback(() => {
-    if (navigator.geolocation) {
-      const H = (window as any).H
-      const platform = new H.service.Platform({
-        app_id: process.env.REACT_APP_HERE_APP_ID,
-        apikey: process.env.REACT_APP_HERE_KEY,
-      })
-      const geocoder = platform.getGeocodingService()
-      setLoading(true)
-      navigator.geolocation.getCurrentPosition((position) => {
-        geocoder.reverseGeocode(
-          {
-            mode: 'retrieveAddresses',
-            maxresults: 1,
-            prox: position.coords.latitude + ',' + position.coords.longitude,
-          },
-          (data: any) => {
-            setLoading(false)
-            try {
-              const address = data.Response.View[0].Result[0].Location.Address
-              console.log(address)
-              const {
-                Street: logradouro,
-                District: bairro,
-                HouseNumber: numero,
-              } = address
-              onAddress({ logradouro, bairro, numero })
-            } catch (e) {
-              setError('Não foi possível buscar sua localização')
-            }
-          },
-          (error: any) => {
-            console.error(error)
-            setLoading(false)
-          }
-        )
-      })
+    if (!navigator.geolocation) {
+      return
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { H } = window as any
+    const platform = new H.service.Platform({
+      app_id: process.env.REACT_APP_HERE_APP_ID,
+      apikey: process.env.REACT_APP_HERE_KEY,
+    })
+
+    const geocoder = platform.getGeocodingService()
+
+    setLoading(true)
+    navigator.geolocation.getCurrentPosition((position) => {
+      geocoder.reverseGeocode(
+        {
+          mode: 'retrieveAddresses',
+          maxresults: 1,
+          prox: `${position.coords.latitude},${position.coords.longitude}`,
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (data: any) => {
+          setLoading(false)
+          try {
+            const address = data.Response.View[0].Result[0].Location.Address
+
+            const {
+              Street: logradouro,
+              District: bairro,
+              HouseNumber: numero,
+            } = address
+
+            onAddress({ logradouro, bairro, numero })
+          } catch (e) {
+            setError('Não foi possível buscar sua localização')
+          }
+        },
+        (err: unknown) => {
+          log(err)
+          setLoading(false)
+        }
+      )
+    })
   }, [onAddress])
+
   return (
     <Fragment>
       <div className="flex flex-col">
@@ -77,7 +87,7 @@ const AutoFill: FC<Props> = ({ onAddress }) => {
             value={cep}
             disabled={loading}
             size="large"
-            placeholder={'CEP'}
+            placeholder="CEP"
             className="w-30 mr2"
           />
           <Button

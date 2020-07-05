@@ -26,6 +26,7 @@ export const AuthContextProvider: FC = ({ children }) => {
 
   useEffect(() => {
     const db = firebase.firestore()
+    // eslint-disable-next-line no-shadow
     const unsub = firebase.auth().onAuthStateChanged((user) => {
       log('Auth State Changed')
       log({ user })
@@ -37,6 +38,7 @@ export const AuthContextProvider: FC = ({ children }) => {
           .then((res) => {
             if (!res.empty) {
               const [doc] = res.docs
+
               setUserDb(doc.data() as Props['userDb'])
             } else {
               /**
@@ -47,9 +49,10 @@ export const AuthContextProvider: FC = ({ children }) => {
                 .add({
                   uid: user.uid,
                 })
-                .then(console.log)
-                .catch(console.log)
+                .then(log)
+                .catch(log)
             }
+
             setUser(user)
             setLoading(false)
           })
@@ -59,11 +62,13 @@ export const AuthContextProvider: FC = ({ children }) => {
         setLoading(false)
       }
     })
+
     return unsub
   }, [])
 
   const loginWithGoogle = useCallback(() => {
     const googleProvider = new firebase.auth.GoogleAuthProvider()
+
     firebase.auth().signInWithRedirect(googleProvider)
   }, [])
 

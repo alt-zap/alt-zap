@@ -11,6 +11,7 @@ type Props = {
 
 const Real: FC<Props> = ({ cents }) => {
   const parsedCents = typeof cents === 'string' ? parseInt(cents, 10) : cents
+
   return <Fragment>{formatter.format(parsedCents / 100)}</Fragment>
 }
 

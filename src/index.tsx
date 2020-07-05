@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import firebase from 'firebase/app'
 import 'firebase/analytics'
-
 import { Router } from '@reach/router'
 
 import 'antd/dist/antd.css'
@@ -12,7 +11,6 @@ import EditTenantPage from './pages/EditTenantPage'
 import LoginPage from './pages/LoginPage'
 import OnboardPage from './pages/OnboardPage'
 import TenantsPage from './pages/TenantsPage'
-
 import { AuthContextProvider } from './contexts/AuthContext'
 import UserSwitch from './pages/UserSwitchPage'
 
@@ -25,7 +23,7 @@ const {
 } = process.env
 
 // Your web app's Firebase configuration
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: REACT_APP_FIREBASE_KEY,
   authDomain: `${REACT_APP_FIREBASE_PROJECT_ID}.firebaseapp.com`,
   databaseURL: `https://${REACT_APP_FIREBASE_PROJECT_ID}.firebaseio.com`,

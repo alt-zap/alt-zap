@@ -1,22 +1,26 @@
 import React, { FC, useState, useEffect } from 'react'
+
 import Real from './Real'
 
 type Props = {
-  order: [string, number, number][]
+  order: Array<[string, number, number]>
   deliveryFee: number
   onTotal: (total: number) => void
 }
 
 const Totalizer: FC<Props> = ({ order, deliveryFee, onTotal }) => {
   const [total, setTotal] = useState(0)
+
   useEffect(() => {
     const totalOrder = order.reduce(
       (acc, [, quantity, price]) => acc + quantity * price,
       0
     )
+
     const sum = totalOrder + deliveryFee
+
     setTotal(sum)
-    onTotal && onTotal(sum)
+    onTotal?.(sum)
   }, [order, deliveryFee, onTotal])
 
   return (

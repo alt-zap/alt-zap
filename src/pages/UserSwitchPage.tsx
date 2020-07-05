@@ -24,7 +24,7 @@ const UserSwitch: FC<RouteComponentProps> = () => {
     navigate(`/tenants`)
   }
 
-  return <span>Wow, you're definitely on trouble</span>
+  return <span>Wow, you definitely on trouble</span>
 }
 
 export default UserSwitch

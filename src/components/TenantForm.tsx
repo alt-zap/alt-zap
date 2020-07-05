@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { Button } from 'antd'
 import { withTheme, FormProps } from '@rjsf/core'
 import { Theme as AntDTheme } from '@rjsf/antd'
+
 import MaskedInput from './MaskedInput'
 import tenantConfigSchema from '../schemas/tenantConfigSchema'
 import { masks } from '../constants'
@@ -13,23 +14,6 @@ interface Props
   initialValue?: TenantConfig
 }
 
-const TenantForm: FC<Props> = ({ initialValue, ...props }) => {
-  return (
-    <div className="flex flex-column w-100 bg-light-gray br3 pa2 tc">
-      <Form
-        {...props}
-        schema={tenantConfigSchema}
-        uiSchema={uiSchema}
-        formData={initialValue}
-      >
-        <Button type="primary" size="large" htmlType="submit">
-          Salvar Dados
-        </Button>
-      </Form>
-    </div>
-  )
-}
-
 type CurrencyInputProps = {
   value: string
   onChange: (data: string) => void
@@ -39,7 +23,7 @@ type CurrencyInputProps = {
 const CurrencyInput: FC<CurrencyInputProps> = ({
   value,
   onChange,
-  disabled
+  disabled,
 }) => {
   return (
     <MaskedInput
@@ -70,6 +54,23 @@ const uiSchema = {
       },
     },
   },
+}
+
+const TenantForm: FC<Props> = ({ initialValue, ...props }) => {
+  return (
+    <div className="flex flex-column w-100 bg-light-gray br3 pa2 tc">
+      <Form
+        {...props}
+        schema={tenantConfigSchema}
+        uiSchema={uiSchema}
+        formData={initialValue}
+      >
+        <Button type="primary" size="large" htmlType="submit">
+          Salvar Dados
+        </Button>
+      </Form>
+    </div>
+  )
 }
 
 export default TenantForm

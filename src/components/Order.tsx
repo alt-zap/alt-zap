@@ -8,7 +8,6 @@ import Totalizer from './Totalizer'
 import OrderSummary from './OrderSummary'
 import PaymentSelector from './PaymentSelector'
 import { useTenantConfig } from '../contexts/TenantContext'
-
 import { generateLink, eSet } from '../utils'
 
 export default () => {
@@ -34,7 +33,9 @@ export default () => {
       total,
       info,
     })
+
     const win = window.open(whatsappLink, '_blank')
+
     win!.focus()
   }, [address, order, info, paymentInfo, name, total, tenant])
 
@@ -46,7 +47,8 @@ export default () => {
     return total > 0 && name && address && address.logradouro
   }, [total, name, address])
 
-  const { deliveryFee, items, paymentMethods } = tenant || {}
+  const { deliveryFee, items, paymentMethods } = tenant ?? {}
+
   return (
     <div className="mv3">
       {loading && (

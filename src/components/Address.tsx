@@ -15,6 +15,7 @@ const Address: FC<Props> = ({ onAddress }) => {
   const [bairro, setBairro] = useState('')
 
   // Campina Grande é o meu país
+  // eslint-disable-next-line no-shadow
   const setAddress = useCallback(({ logradouro, bairro, numero }) => {
     setLogradouro(logradouro)
     setBairro(bairro)
