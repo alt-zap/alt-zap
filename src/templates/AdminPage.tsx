@@ -42,7 +42,8 @@ const AdminPage: FC = ({ children }) => {
           <div className="w-100 w-60-l">{children}</div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
-          Alt Zap ©2020 Campina Grande - PB
+          Alt Zap ©2020 -{' '}
+          <a href="https://github.com/lucis/alt-zap">Estamos no Github</a>
         </Footer>
       </Layout>
     </Layout>
