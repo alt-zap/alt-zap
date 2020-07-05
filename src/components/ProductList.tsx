@@ -2,7 +2,7 @@ import React, { FC, useState, useCallback, useEffect } from 'react'
 import { List, Dropdown, Typography } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 
-import ProductImage from './customer/ProductImage'
+import ProductImage from './common/ProductImage'
 import QuantitySelector from './QuantitySelector'
 import Real from './Real'
 

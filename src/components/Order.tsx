@@ -6,7 +6,7 @@ import Address from './Address'
 import ProductList from './ProductList'
 import Totalizer from './Totalizer'
 import OrderSummary from './OrderSummary'
-import PaymentSelector from './PaymentSelector'
+import PaymentSelector from './customer/PaymentSelector'
 import { useTenantConfig } from '../contexts/TenantContext'
 import { generateLink, eSet } from '../utils'
 

@@ -12,12 +12,14 @@ const toString = (number: number) => {
 interface Props extends React.ComponentPropsWithoutRef<typeof Input> {
   mask: string
   experimentalNumber?: boolean
+  placeholder: string
 }
 
 const MaskedInput: FC<Props> = ({
   mask,
   value: initialValue,
   experimentalNumber,
+  placeholder,
   onChange,
   ...props
 }) => {
@@ -61,6 +63,8 @@ const MaskedInput: FC<Props> = ({
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       value={experimentalNumber ? value : initialValue}
+      addonBefore={experimentalNumber ? 'R$' : ''}
+      placeholder={placeholder}
       onChange={innerOnChange}
     />
   )

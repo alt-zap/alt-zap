@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect, useCallback, useMemo } from 'react'
 import { Radio, Alert } from 'antd'
 import ReactMarkdown from 'react-markdown'
 
-import RealInput from './RealInput'
+import RealInput from '../common/RealInput'
 
 const radioStyle = {
   height: '30px',
@@ -19,7 +19,7 @@ const PaymentSelector: FC<Props> = ({ methods, onPayment }) => {
   const [change, setChange] = useState('')
 
   useEffect(() => {
-    const method = selectedIndex && methods[selectedIndex]
+    const method = typeof selectedIndex === 'number' && methods[selectedIndex]
 
     if (!method) return
     onPayment({ name: method.name, change })

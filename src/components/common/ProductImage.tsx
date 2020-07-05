@@ -28,7 +28,7 @@ const ProductImage: FC<Props> = ({ src, title }) => {
         visible={modalOpened}
       >
         <div className="flex justify-center">
-          <img src={src} alt={title} title={title} className="br2" />
+          <img src={src} alt={title} title={title} className="br2 shadow-1" />
         </div>
       </Modal>
     </Fragment>
