@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback, useState, useMemo } from 'react'
 import { Modal } from 'antd'
 import { useNavigate } from '@reach/router'
 import firebase from 'firebase/app'
@@ -61,6 +61,10 @@ const EditTenant: FC = () => {
     [tenantId, updateTenant]
   )
 
+  const url = useMemo(() => `https://alt-zap.vercel.app/${tenant?.slug}`, [
+    tenant,
+  ])
+
   if (loadingTenant || !user) {
     return null
   }
@@ -75,6 +79,13 @@ const EditTenant: FC = () => {
     <div className="flex flex-column items-center pa2">
       <h1>Edite o seu negócio</h1>
       <span className="grey mb2">Alterações entram no ar imediatamente</span>
+      <h4>
+        Compartilhe o link{' '}
+        <a target="_blank" rel="noopener noreferrer" href={url}>
+          {url}
+        </a>{' '}
+        para seus clientes
+      </h4>
       <TenantForm
         initialValue={tenant}
         onSubmit={saveTenant}

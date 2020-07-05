@@ -43,18 +43,14 @@ if (!firebase.apps.length) {
 const App = () => {
   return (
     <AuthContextProvider>
-      <div className="flex justify-center">
-        <div className="w-90 w-50-l">
-          <Router>
-            <UserSwitch path="/" />
-            <LoginPage path="/login" />
-            <OnboardPage path="/onboard" />
-            <EditTenantPage path="/tenant/:tenantId" />
-            <TenantsPage path="/tenants" />
-            <PedidoPage path="/:slug" />
-          </Router>
-        </div>
-      </div>
+      <Router>
+        <UserSwitch path="/" />
+        <LoginPage path="/login" />
+        <OnboardPage path="/onboard" />
+        <EditTenantPage path="/tenant/:tenantId" />
+        <TenantsPage path="/tenants" />
+        <PedidoPage path="/:slug" />
+      </Router>
     </AuthContextProvider>
   )
 }

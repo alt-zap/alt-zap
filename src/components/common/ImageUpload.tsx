@@ -64,8 +64,8 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange }) => {
   )
 
   return (
-    <div className="flex pa2 ma2 justify-between">
-      <div className="flex flex-column flex-grow-1">
+    <div className="flex justify-between items-center">
+      <div className="flex flex-column flex-grow-1 mr2">
         <Input
           className="mr2"
           value={value}

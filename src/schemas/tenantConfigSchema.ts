@@ -27,14 +27,13 @@ const schema: JSONSchema7 = {
     deliveryFee: {
       type: 'number',
       title: 'Preço da Entrega',
-      pattern: '^\\d{1,2},\\d{2}$',
     },
     paymentMethods: {
       type: 'array',
       title: 'Métodos de Pagamento',
       items: {
         type: 'object',
-        required: [],
+        required: ['name'],
         properties: {
           name: {
             type: 'string',
@@ -75,6 +74,7 @@ const schema: JSONSchema7 = {
             type: 'boolean',
             title: 'Ativo?',
             description: 'O produto está sendo entregue agora?',
+            default: true,
           },
           imgSrc: {
             type: 'string',

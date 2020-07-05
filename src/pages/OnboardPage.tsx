@@ -4,6 +4,7 @@ import { useNavigate, RouteComponentProps } from '@reach/router'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
+import AdminPage from '../templates/AdminPage'
 import { useAuth } from '../contexts/AuthContext'
 import TenantForm from '../components/TenantForm'
 import { log } from '../utils'
@@ -56,15 +57,17 @@ const OnboardPage: FC<RouteComponentProps> = () => {
   }
 
   return (
-    <div className="flex flex-column items-center ph2">
-      <h1>Novo Negócio</h1>
-      <h3 className="tc">
-        Cadastre aqui seu cardápio e meios de pagamento. Sua página estará
-        online logo em seguida!
-      </h3>
-      {error && <Alert type="error" message={error} />}
-      <TenantForm onSubmit={saveTenant} disabled={loading} />
-    </div>
+    <AdminPage>
+      <div className="flex flex-column items-center ph2">
+        <h1>Novo Negócio</h1>
+        <h3 className="tc">
+          Cadastre aqui seu cardápio e meios de pagamento. Sua página estará
+          online logo em seguida!
+        </h3>
+        {error && <Alert type="error" message={error} />}
+        <TenantForm onSubmit={saveTenant} disabled={loading} />
+      </div>
+    </AdminPage>
   )
 }
 
