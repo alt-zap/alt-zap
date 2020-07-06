@@ -1,5 +1,4 @@
 {
-  "homepage": "https://alt-zap.vercel.app",
   "dependencies": {
     "@ant-design/icons": "4.2.1",
     "@reach/router": "1.3.4",
