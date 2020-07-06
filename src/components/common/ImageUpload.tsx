@@ -64,7 +64,10 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange }) => {
   )
 
   return (
-    <div className="flex justify-between items-center">
+    <div
+      className="flex justify-between items-center"
+      style={{ minWidth: '200px' }}
+    >
       <div className="flex flex-column flex-grow-1 mr2">
         <Input
           className="mr2"
