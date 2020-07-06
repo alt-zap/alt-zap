@@ -62,7 +62,11 @@ const LoginPage: FC<RouteComponentProps> = () => {
                   </div>
                 </div>
                 <div className="flex justify-center pt3 mt3">
-                  <img className="w-80 w-50-l" src={intro} alt="Alt Zap" />
+                  <img
+                    className="w-80 w-50-l h-auto"
+                    src={intro}
+                    alt="Alt Zap"
+                  />
                 </div>
                 <div className="flex mt4 mb1 pl2">
                   <span className="f4 fw3">Feito para:</span>
