@@ -37,6 +37,9 @@
     "react-scripts": "^3.4.1",
     "source-map-explorer": "^2.4.2"
   },
+  "optionalDependencies": {
+    "cypress": "^4.9.0"
+  },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
