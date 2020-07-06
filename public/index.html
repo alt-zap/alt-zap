@@ -32,27 +32,17 @@
       property="og:description"
       content="GRATUITO - Organize seus pedidos de delivery, configure seu catálogo/cardápio rapidamente e venda mais!"
     />
-    <meta property="og:image" content="%PUBLIC_URL%/meta.png" />
+    <meta property="og:site_name" content="Alt Zap  - Compartilhe seus produtos" />
+    <meta name="twitter:image:alt" content="Compartilhe seus produtos e receba pedidos pelo Whatsapp" />
+    <meta property="og:image" content="https://alt-zap.vercel.app/meta.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="628" />
 
-    <meta property="og:image" content="%PUBLIC_URL%/zap.png" />
+    <meta property="og:image" content="https://alt-zap.vercel.app/zap.png" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="400" />
     <meta property="og:image:height" content="400" />
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://metatags.io/" />
-    <meta
-      property="twitter:title"
-      content="Alt Zap - Compartilhe seus produtos e receba pedidos pelo Whatsapp"
-    />
-    <meta
-      property="twitter:description"
-      content="GRATUITO - Organize seus pedidos de delivery, configure seu catálogo/cardápio rapidamente e venda mais!"
-    />
-    <meta property="twitter:image" content="%PUBLIC_URL%/meta.png" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -85,10 +75,196 @@
     <title>
       ALT ZAP - Compartilhe seus produtos e receba pedidos pelo Whatsapp
     </title>
+
+    <style type="text/css">
+      #alt-splash-screen {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #001529;
+        z-index: 99999;
+        pointer-events: none;
+      }
+
+      #alt-splash-screen .center {
+        display: block;
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      #alt-splash-screen .logo {
+        width: 128px;
+        margin: 0 auto;
+      }
+
+      #alt-splash-screen .logo img {
+        filter: drop-shadow(0px 10px 6px rgba(0, 0, 0, 0.2));
+      }
+
+      #alt-splash-screen .spinner-wrapper {
+        display: block;
+        position: relative;
+        width: 100%;
+        min-height: 100px;
+        height: 100px;
+      }
+
+      #alt-splash-screen .spinner-wrapper .spinner {
+        position: absolute;
+        overflow: hidden;
+        left: 50%;
+        margin-left: -50px;
+        animation: outer-rotate 2.91667s linear infinite;
+      }
+
+      #alt-splash-screen .spinner-wrapper .spinner .inner {
+        width: 100px;
+        height: 100px;
+        position: relative;
+        animation: sporadic-rotate 5.25s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+      }
+
+      #alt-splash-screen .spinner-wrapper .spinner .inner .gap {
+        position: absolute;
+        left: 49px;
+        right: 49px;
+        top: 0;
+        bottom: 0;
+        border-top: 10px solid;
+        box-sizing: border-box;
+      }
+
+      #alt-splash-screen .spinner-wrapper .spinner .inner .left,
+      #alt-splash-screen .spinner-wrapper .spinner .inner .right {
+        position: absolute;
+        top: 0;
+        height: 100px;
+        width: 50px;
+        overflow: hidden;
+      }
+
+      #alt-splash-screen .spinner-wrapper .spinner .inner .left .half-circle,
+      #alt-splash-screen .spinner-wrapper .spinner .inner .right .half-circle {
+        position: absolute;
+        top: 0;
+        width: 100px;
+        height: 100px;
+        box-sizing: border-box;
+        border: 10px solid #61dafb;
+        border-bottom-color: transparent;
+        border-radius: 50%;
+      }
+
+      #alt-splash-screen .spinner-wrapper .spinner .inner .left {
+        left: 0;
+      }
+
+      #alt-splash-screen .spinner-wrapper .spinner .inner .left .half-circle {
+        left: 0;
+        border-right-color: transparent;
+        animation: left-wobble 1.3125s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+        -webkit-animation: left-wobble 1.3125s cubic-bezier(0.35, 0, 0.25, 1)
+          infinite;
+      }
+
+      #alt-splash-screen .spinner-wrapper .spinner .inner .right {
+        right: 0;
+      }
+
+      #alt-splash-screen .spinner-wrapper .spinner .inner .right .half-circle {
+        right: 0;
+        border-left-color: transparent;
+        animation: right-wobble 1.3125s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+        -webkit-animation: right-wobble 1.3125s cubic-bezier(0.35, 0, 0.25, 1)
+          infinite;
+      }
+
+      @keyframes outer-rotate {
+        0% {
+          transform: rotate(0deg) scale(0.5);
+        }
+        100% {
+          transform: rotate(360deg) scale(0.5);
+        }
+      }
+
+      @keyframes left-wobble {
+        0%,
+        100% {
+          transform: rotate(130deg);
+        }
+        50% {
+          transform: rotate(-5deg);
+        }
+      }
+
+      @keyframes right-wobble {
+        0%,
+        100% {
+          transform: rotate(-130deg);
+        }
+        50% {
+          transform: rotate(5deg);
+        }
+      }
+
+      @keyframes sporadic-rotate {
+        12.5% {
+          transform: rotate(135deg);
+        }
+        25% {
+          transform: rotate(270deg);
+        }
+        37.5% {
+          transform: rotate(405deg);
+        }
+        50% {
+          transform: rotate(540deg);
+        }
+        62.5% {
+          transform: rotate(675deg);
+        }
+        75% {
+          transform: rotate(810deg);
+        }
+        87.5% {
+          transform: rotate(945deg);
+        }
+        100% {
+          transform: rotate(1080deg);
+        }
+      }
+    </style>
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div id="alt-splash-screen">
+        <div class="center">
+          <div class="logo">
+            <img width="128" src="assets/images/logo.svg" alt="Alt Zap" />
+          </div>
+          <div class="spinner-wrapper">
+            <div class="spinner">
+              <div class="inner">
+                <div class="gap"></div>
+                <div class="left">
+                  <div class="half-circle"></div>
+                </div>
+                <div class="right">
+                  <div class="half-circle"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <link
       rel="stylesheet"
       href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"
