@@ -11,11 +11,7 @@ type Props = {
 const OrderPage: FC<RouteComponentProps<Props>> = ({ slug }) => {
   return (
     <TenantContextProvider slug={slug}>
-      <div className="flex justify-center">
-        <div className="w-90 w-50-l">
-          <Pedido />
-        </div>
-      </div>
+      <Pedido />
     </TenantContextProvider>
   )
 }

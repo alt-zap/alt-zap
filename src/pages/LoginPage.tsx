@@ -1,7 +1,7 @@
 import React, { FC, Fragment, useEffect } from 'react'
 import { useNavigate, RouteComponentProps } from '@reach/router'
 import { GoogleLoginButton } from 'react-social-login-buttons'
-import { Layout, Button } from 'antd'
+import { Layout, Button, Divider, Alert } from 'antd'
 
 import { log } from '../utils'
 import { useAuth } from '../contexts/AuthContext'
@@ -51,7 +51,7 @@ const LoginPage: FC<RouteComponentProps> = () => {
           <Content className="flex justify-center">
             <div className="w-100 w-60-l">
               <div className="flex flex-column">
-                <span className="black f3 f1-l fw2 ph2 pt3 mt2 pb2 pa4 tc">
+                <span className="black f3 f1-l fw2 ph2 pt3 mt2 mb3 pb2 pa4 tc">
                   Compartilhe seus produtos e receba pedidos pelo Whatsapp
                 </span>
                 <div className="flex justify-center">
@@ -62,18 +62,22 @@ const LoginPage: FC<RouteComponentProps> = () => {
                   </div>
                 </div>
                 <div className="flex justify-center pt3 mt3">
-                  <img className="w-80 w-50-l" src={intro} alt="Alt Zap" />
+                  <img
+                    className="w-80 w-50-l h-auto"
+                    src={intro}
+                    alt="Alt Zap"
+                  />
                 </div>
-                <div className="flex justify-center mt4 mb3">
-                  <span className="f3 fw3">Feito para:</span>
+                <div className="flex mt4 mb1 pl2">
+                  <span className="f4 fw3">Feito para:</span>
                 </div>
-                <div className="flex flex-wrap">
+                <div className="flex flex-wrap ml1">
                   {[
                     'HAMBURGUERIAS',
                     'LOJAS DE ROUPA',
                     'PIZZARIAS',
                     'DOCERIAS',
-                    'O QUE VOCE QUISER',
+                    'O QUE VOCÊ QUISER',
                   ].map((text, i) => (
                     <span
                       key={i}
@@ -81,37 +85,80 @@ const LoginPage: FC<RouteComponentProps> = () => {
                         color: i === 4 ? '#1890FF' : '#000',
                         whiteSpace: 'nowrap',
                       }}
-                      className="bg-light-gray shadow-1 pv1 ph2 b ma2 mh1 br4"
+                      className="bg-light-gray shadow-1 pv1 ph2 b ma2 mh1 br4 f7"
                     >
                       {text}
                     </span>
                   ))}
                 </div>
                 <div className="flex flex-column items-center mt4">
+                  <span className="f3 fw3 mb3">Como funciona</span>
+                  <ol>
+                    <li>
+                      Você configura seu <b>catálogo de produtos</b> no nosso
+                      sistema. Dá pra colocar nome, imagem e descrição.
+                    </li>
+                    <Divider />
+                    <li>
+                      Você configura os <b>meios de pagamento</b> que você
+                      aceita, podendo fornecer informações para pagamento
+                      (PicPay, Nuconta...).
+                    </li>
+                    <Divider />
+                    <li>
+                      Após isso, iremos{' '}
+                      <b>gerar um link único para o seu negócio.</b> Se parece
+                      com algo assim: <i>alt-zap.vercel.app/bar-do-lucis</i>.
+                    </li>
+                    <Divider />
+                    <li>
+                      Você compartilha esse link com seus clientes nas redes
+                      sociais, e eles poderão{' '}
+                      <b> selecionar os produtos e o endereço de entrega.</b>
+                    </li>
+                    <Divider />
+                    <li>
+                      No final, encaminhamos o cliente para o Whatsapp{' '}
+                      <b>com o pedido pronto para enviar até você.</b>
+                    </li>
+                  </ol>
+                </div>
+                <div className="flex flex-column items-center mt4 ph1">
                   <span className="f3 fw3 mb3">Funcionalidades</span>
                   <ul>
                     <li>
-                      Compartilhamento da página do seu negócio por uma URL
-                      pública
+                      Preenchimento automático de endereço por CEP ou
+                      localização
                     </li>
                     <li>
-                      Preenchimento automático de endereço para seus clientes
-                    </li>
-                    <li>
-                      Edite seus produtos, podendo desabilitá-los
+                      Produtos cadastrados podem ser desabilitados
                       temporariamente
                     </li>
-                    <li>
-                      No final, encaminhamos o cliente para o Whatsapp com o
-                      pedido pronto!
-                    </li>
+                    <li>Meios de Pagamento com descrição e imagem</li>
                   </ul>
+                  <Alert
+                    type="info"
+                    className="ma2"
+                    message={
+                      <Fragment>
+                        {`O AltZap está em fase beta e futuramente traremos várias
+                    outras funcionalidades. Caso você se interesse em
+                    desenvolver, visite nosso `}
+                        <a
+                          href="https://github.com/lucis/alt-zap"
+                          rel="noopener"
+                        >
+                          Github
+                        </a>
+                      </Fragment>
+                    }
+                  />
                 </div>
                 <div className="flex flex-column items-center mt4">
                   <Button
                     type="primary"
                     size="large"
-                    className="mr2 pt2 mt3"
+                    className="br2 pt2 mt2"
                     onClick={() => navigate('/altburguer-cg')}
                   >
                     Veja um modelo!
@@ -125,7 +172,7 @@ const LoginPage: FC<RouteComponentProps> = () => {
                 <div className="flex justify-center">
                   <GoogleLoginButton
                     text="Entre com o Google"
-                    style={{ maxWidth: '100' }}
+                    style={{ maxWidth: '300px' }}
                     onClick={() => loginWithGoogle()}
                   />
                 </div>

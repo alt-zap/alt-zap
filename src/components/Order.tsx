@@ -1,5 +1,5 @@
-import React, { Fragment, useCallback, useState, useMemo } from 'react'
-import { Affix, Alert, Button, Divider, Input, Spin } from 'antd'
+import React, { FC, useCallback, useState, useMemo } from 'react'
+import { Affix, Alert, Button, Divider, Input, Spin, Layout } from 'antd'
 import { SendOutlined } from '@ant-design/icons'
 
 import Address from './Address'
@@ -10,7 +10,9 @@ import PaymentSelector from './customer/PaymentSelector'
 import { useTenantConfig } from '../contexts/TenantContext'
 import { generateLink, eSet } from '../utils'
 
-export default () => {
+const { Header } = Layout
+
+const Order: FC = () => {
   const { tenant, loading } = useTenantConfig()
   const [address, setAddress] = useState<Address>()
   const [order, setOrder] = useState([])
@@ -50,9 +52,9 @@ export default () => {
   const { deliveryFee, items, paymentMethods } = tenant ?? {}
 
   return (
-    <div className="mv3">
+    <div>
       {loading && (
-        <div className="flex flex-column items-center">
+        <div className="flex flex-column items-center mt3">
           <Spin />
           <span> Carregando dados...</span>
         </div>
@@ -64,58 +66,73 @@ export default () => {
         />
       )}
       {!loading && tenant && tenant.live && (
-        <Fragment>
-          <Alert
-            message="No final, vamos te redirecionar pra o Whatsapp para finalizar seu pedido ;)"
-            type="info"
-          />
-          <ProductList items={items!} onOrder={setOrder} />
-          <Divider />
-          <Address onAddress={setAddress} />
-          <Divider />
-          <span>Outras Informações?</span>
-          <Input.TextArea
-            value={info}
-            onChange={eSet(setInfo)}
-            placeholder="Ex: Tira o sal da batata frita"
-            className="mv2"
-          />
-          <span className="mt2">Seu nome</span>
-          <Input
-            value={name}
-            onChange={eSet(setName)}
-            className="mt2"
-            size="large"
-          />
-          <Affix offsetBottom={-5} className="mt4">
-            {hasOrder && (
-              <Totalizer
-                order={order}
-                deliveryFee={deliveryFee!}
-                onTotal={setTotal}
+        <Layout className="pb3">
+          <Header
+            style={{ position: 'fixed', zIndex: 1, width: '100%' }}
+            className="flex justify-center tc mb3"
+          >
+            <span className="fw2 f3 white">{tenant.name}</span>
+          </Header>
+          <div className="flex justify-center" style={{ marginTop: '80px' }}>
+            <div className="w-90 w-50-l">
+              <Alert
+                message="No final, vamos te redirecionar pra o Whatsapp para finalizar seu pedido ;)"
+                type="info"
               />
-            )}
-          </Affix>
-          {hasOrder && <OrderSummary order={order} />}
-          <Divider />
-          {hasOrder && (
-            <PaymentSelector methods={paymentMethods!} onPayment={setPayment} />
-          )}
-          <div className="flex justify-center">
-            <Button
-              icon={<SendOutlined />}
-              type="primary"
-              className="mt4"
-              size="large"
-              shape="round"
-              disabled={!pedidoValido}
-              onClick={enviarPedido}
-            >
-              Enviar Pedido
-            </Button>
+              <ProductList items={items!} onOrder={setOrder} />
+              <Divider />
+              <Address onAddress={setAddress} />
+              <Divider />
+              <span>Outras Informações?</span>
+              <Input.TextArea
+                value={info}
+                onChange={eSet(setInfo)}
+                placeholder="Ex: Tira o sal da batata frita"
+                className="mv2"
+              />
+              <span className="mt2">Seu nome</span>
+              <Input
+                value={name}
+                onChange={eSet(setName)}
+                className="mt2"
+                size="large"
+              />
+              <Affix offsetBottom={-5} className="mt4">
+                {hasOrder && (
+                  <Totalizer
+                    order={order}
+                    deliveryFee={deliveryFee!}
+                    onTotal={setTotal}
+                  />
+                )}
+              </Affix>
+              {hasOrder && <OrderSummary order={order} />}
+              <Divider />
+              {hasOrder && (
+                <PaymentSelector
+                  methods={paymentMethods!}
+                  onPayment={setPayment}
+                />
+              )}
+              <div className="flex justify-center">
+                <Button
+                  icon={<SendOutlined />}
+                  type="primary"
+                  className="mt4"
+                  size="large"
+                  shape="round"
+                  disabled={!pedidoValido}
+                  onClick={enviarPedido}
+                >
+                  Enviar Pedido
+                </Button>
+              </div>
+            </div>
           </div>
-        </Fragment>
+        </Layout>
       )}
     </div>
   )
 }
+
+export default Order
