@@ -15,11 +15,10 @@ const ProductImage: FC<Props> = ({ src, title }) => {
         className="pointer dim"
         onClick={() => setOpen(true)}
         onKeyPress={() => setOpen(true)}
-        style={{ maxWidth: '4rem' }}
         role="button"
         tabIndex={0}
       >
-        <img src={src} alt={title} title={title} className="br2" />
+        <img src={src} alt={title} title={title} className="br3" />
       </div>
       <Modal
         title={title}
