@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 
 import ProductImage from './ProductImage'
+import QuantitySelector from './QuantitySelector'
 import Real from '../Real'
 
 type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType[number]
@@ -36,6 +37,7 @@ const ProductSummary: FC<Props> = ({
           <Real cents={price} />
         </span>
       </div>
+      <QuantitySelector />
     </div>
   )
 }
