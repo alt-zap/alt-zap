@@ -6,7 +6,7 @@ import Real from '../Real'
 type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType[number]
 
 type Props = {
-  product: ArrayElement<TenantConfig['items']>
+  product: Omit<ArrayElement<TenantConfig['items']>, 'live'>
 }
 
 const ProductSummary: FC<Props> = ({
@@ -14,15 +14,18 @@ const ProductSummary: FC<Props> = ({
 }) => {
   return (
     <div className="shadow-1 br3 flex pa3">
-      <div className="w-34">
-        <ProductImage src={imgSrc} aspectRatio />
+      <div className="w-34" style={{ minWidth: '110px' }}>
+        {imgSrc ? <ProductImage src={imgSrc} title={name} /> : null}
       </div>
       <div className="flex flex-column ml3 justify-between">
         <div className="flex flex-column">
-          <span className="f3 fw2" style={{ marginTop: '-6px' }}>
+          <span
+            className={`${name.length > 20 ? 'f4' : 'f3 fw2'}`}
+            style={{ lineHeight: '25px' }}
+          >
             {name}
           </span>
-          <span className="f4 fw2 silver" style={{ marginTop: '-5px' }}>
+          <span className="f4 fw2 silver" style={{ lineHeight: '20px' }}>
             {headline}
           </span>
         </div>
