@@ -1,5 +1,6 @@
 import React, { FC, Fragment, useState } from 'react'
 import { Modal } from 'antd'
+import { isMobile } from 'react-device-detect'
 
 import ProductImage from './ProductImage'
 import QuantitySelector from './QuantitySelector'
@@ -25,7 +26,9 @@ const ProductSummary: FC<Props> = ({
   return (
     <Fragment>
       <div
-        className="shadow-1 br3 flex pa3 bg-white pointer hvr-float"
+        className={`shadow-1 br3 flex pa3 bg-white pointer ${
+          isMobile ? '' : 'hvr-float'
+        }`}
         onClick={() => setDetailsModal(true)}
         onKeyPress={() => setDetailsModal(true)}
         role="button"
@@ -48,14 +51,11 @@ const ProductSummary: FC<Props> = ({
             >
               {name}
             </span>
-            <span className="f4 fw2 silver" style={{ lineHeight: '20px' }}>
+            <span className="f5 fw2 silver" style={{ lineHeight: '20px' }}>
               {headline}
             </span>
           </div>
-          <span
-            className="b black"
-            style={{ marginBottom: '-6px', fontSize: '1.9rem' }}
-          >
+          <span className="b black f3" style={{ marginBottom: '-6px' }}>
             <Real cents={price} />
           </span>
         </div>

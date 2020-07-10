@@ -36,13 +36,16 @@ const QuantitySelector: FC<Props> = ({
   return (
     <div className="flex flex-column">
       <button
-        className="pointer shadow-1"
+        className="pointer shadow-1 flex justify-center items-center"
         style={{
           width: '36.6px',
           height: '36.6px',
           borderRadius: '10px 10px 0 0',
           borderColor: 'transparent',
-          backgroundColor: '#041527',
+          backgroundColor:
+            parseInt(quantity, 10) !== max
+              ? '#041527'
+              : 'rgba(105, 114, 123,1)',
           color: 'white',
           fontSize: '25px',
           padding: 0,
@@ -57,7 +60,6 @@ const QuantitySelector: FC<Props> = ({
           viewBox="0 0 23 23"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          style={{ marginBottom: '5px' }}
         >
           <rect x="9.2002" width="4.6" height="23" fill="white" />
           <rect
@@ -71,6 +73,7 @@ const QuantitySelector: FC<Props> = ({
       </button>
       <input
         type="text"
+        readOnly
         className="tc bn shadow-1 f4"
         value={quantity}
         style={{
@@ -84,7 +87,10 @@ const QuantitySelector: FC<Props> = ({
           height: '36.6px',
           borderRadius: '0 0 10px 10px',
           borderColor: 'transparent',
-          backgroundColor: '#041527',
+          backgroundColor:
+            !quantity || parseInt(quantity, 10) === min
+              ? 'rgba(105, 114, 123,1)'
+              : '#041527',
           color: 'white',
           fontSize: '25px',
           padding: 0,

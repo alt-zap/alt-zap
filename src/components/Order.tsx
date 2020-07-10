@@ -74,7 +74,7 @@ const Order: FC = () => {
             <span className="fw2 f3 white">{tenant.name}</span>
           </Header>
           <div className="flex justify-center" style={{ marginTop: '80px' }}>
-            <div className="w-90 w-50-l">
+            <div className="w-100 ph2 ph0-l w-50-l">
               <Alert
                 message="No final, vamos te redirecionar pra o Whatsapp para finalizar seu pedido ;)"
                 type="info"
