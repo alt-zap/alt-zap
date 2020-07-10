@@ -9,8 +9,15 @@ export default {
   decorators: [(story: any) => <div className="pa2">{story()}</div>, withKnobs],
 }
 
+const commonProps = {
+  selectedQuantity: '0',
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  setQuantity: (a: string) => {},
+}
+
 export const CommonSize = () => (
   <ProductSummary
+    {...commonProps}
     product={{
       name: text('Name', 'O Pioneiro'),
       imgSrc: 'https://i.imgur.com/Y880XEG.png',
@@ -22,6 +29,7 @@ export const CommonSize = () => (
 
 export const BigTitle = () => (
   <ProductSummary
+    {...commonProps}
     product={{
       name: 'Combo 1 Hambúrguer + Duas Cocas + Batata',
       imgSrc: 'https://i.imgur.com/Y880XEG.png',
@@ -33,6 +41,7 @@ export const BigTitle = () => (
 
 export const BigHeadline = () => (
   <ProductSummary
+    {...commonProps}
     product={{
       name: 'O Pioneiro',
       imgSrc: 'https://i.imgur.com/Y880XEG.png',

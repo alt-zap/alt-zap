@@ -9,5 +9,7 @@ export default {
   decorators: [(story: any) => <div className="pa2">{story()}</div>, withKnobs],
 }
 
-export const NoValue = () => <RealInput />
-export const OnzeReais = () => <RealInput value={text('Value', '')} />
+export const NoValue = () => <RealInput placeholder="Reais" />
+export const OnzeReais = () => (
+  <RealInput placeholder="Reais" value={text('Value', '')} />
+)

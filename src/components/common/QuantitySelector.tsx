@@ -13,17 +13,25 @@ const QuantitySelector: FC<Props> = ({
   quantity,
   onQuantity,
 }) => {
-  const inc = useCallback(() => {
-    const val = parseInt(quantity, 10)
+  const inc = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      const val = parseInt(quantity, 10)
 
-    onQuantity(val >= max ? quantity : `${val + 1}`)
-  }, [onQuantity, quantity, max])
+      onQuantity(val >= max ? quantity : `${val + 1}`)
+      e.stopPropagation()
+    },
+    [onQuantity, quantity, max]
+  )
 
-  const dec = useCallback(() => {
-    const val = parseInt(quantity, 10)
+  const dec = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      const val = parseInt(quantity, 10)
 
-    onQuantity(val <= min ? quantity : `${val - 1}`)
-  }, [onQuantity, quantity, min])
+      onQuantity(val <= min ? quantity : `${val - 1}`)
+      e.stopPropagation()
+    },
+    [onQuantity, quantity, min]
+  )
 
   return (
     <div className="flex flex-column">

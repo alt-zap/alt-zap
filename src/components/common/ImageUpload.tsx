@@ -1,5 +1,5 @@
 import React, { FC, useState, useCallback } from 'react'
-import { Input, Upload, Button, message } from 'antd'
+import { Input, Upload, Modal, Button, message } from 'antd'
 import ImgCrop from 'antd-img-crop'
 import { UploadOutlined, LoadingOutlined } from '@ant-design/icons'
 import firebase from 'firebase'
@@ -20,6 +20,7 @@ type Props = {
 
 const ImageUpload: FC<Props> = ({ disabled, value, onChange }) => {
   const [loading, setLoading] = useState(false)
+  const [modal, setModal] = useState(false)
 
   const handleUpload = useCallback(
     (file) => {
@@ -92,7 +93,19 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange }) => {
           </ImgCrop>
         </div>
       </div>
-      <ProductImage src={value} title="" />
+      <div style={{ maxWidth: '4rem' }}>
+        <ProductImage src={value} title="" onClick={() => setModal(true)} />
+      </div>
+      <Modal
+        title="Nova Imagem"
+        footer={null}
+        onCancel={() => setModal(false)}
+        visible={modal}
+      >
+        <div className="flex justify-center">
+          <img src={value} alt="" />
+        </div>
+      </Modal>
     </div>
   )
 }
