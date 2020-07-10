@@ -1,37 +1,22 @@
-import React, { FC, Fragment, useState } from 'react'
-import { Modal } from 'antd'
+import React, { FC } from 'react'
 
 type Props = {
   src: string
   title: string
+  onClick?: () => void
 }
 
-const ProductImage: FC<Props> = ({ src, title }) => {
-  const [modalOpened, setOpen] = useState(false)
-
+const ProductImage: FC<Props> = ({ src, onClick, title }) => {
   return (
-    <Fragment>
-      <div
-        className="pointer dim"
-        onClick={() => setOpen(true)}
-        onKeyPress={() => setOpen(true)}
-        style={{ maxWidth: '4rem' }}
-        role="button"
-        tabIndex={0}
-      >
-        <img src={src} alt={title} title={title} className="br2" />
-      </div>
-      <Modal
-        title={title}
-        footer={null}
-        onCancel={() => setOpen(false)}
-        visible={modalOpened}
-      >
-        <div className="flex justify-center">
-          <img src={src} alt={title} title={title} className="br2 shadow-1" />
-        </div>
-      </Modal>
-    </Fragment>
+    <div
+      className="pointer"
+      onClick={() => onClick?.()}
+      onKeyPress={() => onClick?.()}
+      role="button"
+      tabIndex={0}
+    >
+      <img src={src} alt={title} title={title} className="br3 shadow-1" />
+    </div>
   )
 }
 

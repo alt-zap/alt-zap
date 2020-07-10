@@ -14,6 +14,8 @@ declare interface TenantConfig {
   items: Array<{
     headline?: string
     imgSrc?: string
+    // To be markdown!
+    description?: string
     live: boolean
     name: string
     price: number

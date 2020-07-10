@@ -57,7 +57,7 @@ ${items}
 
 *Endereço:* 
 ${logradouro} - ${numero}
-${complemento || '(s/c)'} - ${bairro}
+${complemento ?? '(s/c)'} - ${bairro}
 
 *Outras Informações:*
 ${info} 
@@ -85,3 +85,5 @@ export function createCtx<A extends {} | null>() {
 
   return [useCtx, ctx.Provider] as const // 'as const' makes TypeScript infer a tuple
 }
+
+export type Element<ArrayType extends readonly unknown[]> = ArrayType[number]
