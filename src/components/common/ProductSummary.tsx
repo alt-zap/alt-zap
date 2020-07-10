@@ -11,12 +11,14 @@ type Props = {
 }
 
 const ProductSummary: FC<Props> = ({
-  product: { name, headline, price, imgSrc },
+  product: { name, headline, price, imgSrc, description },
 }) => {
   return (
     <div className="shadow-1 br3 flex pa3">
       <div className="w-34" style={{ minWidth: '110px' }}>
-        {imgSrc ? <ProductImage src={imgSrc} title={name} /> : null}
+        {imgSrc ? (
+          <ProductImage src={imgSrc} title={name} description={description} />
+        ) : null}
       </div>
       <div className="flex flex-column ml3 justify-between">
         <div className="flex flex-column">
@@ -37,7 +39,9 @@ const ProductSummary: FC<Props> = ({
           <Real cents={price} />
         </span>
       </div>
-      <QuantitySelector />
+      <div className="flex justify-end" style={{ flex: 1 }}>
+        <QuantitySelector />
+      </div>
     </div>
   )
 }
