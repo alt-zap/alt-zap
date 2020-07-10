@@ -5,6 +5,7 @@ import 'firebase/analytics'
 import { Router } from '@reach/router'
 
 import 'antd/dist/antd.css'
+import './font.css'
 
 import PedidoPage from './pages/OrderPage'
 import EditTenantPage from './pages/EditTenantPage'
