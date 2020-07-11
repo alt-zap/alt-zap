@@ -14,6 +14,10 @@ const schema: JSONSchema7 = {
       title: 'Número do seu Whatsapp (55(ddd)(numero))',
       pattern: '^55[0-9]{10,11}$',
     },
+    instagram: {
+      type: 'string',
+      title: 'Username do Instagram (sem @)',
+    },
     live: {
       type: 'boolean',
       title: 'Você está atendendendo agora?',
