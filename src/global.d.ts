@@ -3,6 +3,7 @@ declare interface TenantConfig {
   slug: string
   userId: string
   whatsapp: string
+  instagram?: string
   live: boolean
   deliveryFee: number
   paymentMethods: Array<{

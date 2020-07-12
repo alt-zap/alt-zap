@@ -9,6 +9,8 @@ import OrderSummary from './OrderSummary'
 import PaymentSelector from './customer/PaymentSelector'
 import { useTenantConfig } from '../contexts/TenantContext'
 import { generateLink, eSet } from '../utils'
+import instagram from '../assets/instagram.svg'
+import whatsapp from '../assets/whatsapp.svg'
 
 const { Header } = Layout
 
@@ -68,10 +70,40 @@ const Order: FC = () => {
       {!loading && tenant && tenant.live && (
         <Layout className="pb3">
           <Header
-            style={{ position: 'fixed', zIndex: 1, width: '100%' }}
-            className="flex justify-center tc mb3"
+            style={{
+              position: 'fixed',
+              zIndex: 1,
+              width: '100%',
+              padding: '0 10px',
+            }}
+            className="flex justify-between tc mb3"
           >
+            {tenant?.instagram ? (
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`https://instagram.com/${tenant?.instagram}`}
+                title="Ir para o Instagram"
+              >
+                <img src={instagram} alt="Ir para o Instagram" width="30" />
+              </a>
+            ) : (
+              <div />
+            )}
             <span className="fw2 f3 white">{tenant.name}</span>
+            <a
+              href={`https://wa.me/${tenant?.whatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Ir para o WhatsApp"
+            >
+              <img
+                src={whatsapp}
+                alt="Ir para o WhatsApp"
+                width="30"
+                style={{ fill: 'white' }}
+              />
+            </a>
           </Header>
           <div className="flex justify-center" style={{ marginTop: '80px' }}>
             <div className="w-100 ph2 ph0-l w-50-l">
