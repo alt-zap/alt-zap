@@ -78,14 +78,16 @@ const Order: FC = () => {
             }}
             className="flex justify-between tc mb3"
           >
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={`https://instagram.com/${tenant?.instagram}`}
-              title="Ir para o Instagram"
-            >
-              <img src={instagram} alt="Ir para o Instagram" width="30" />
-            </a>
+            {tenant?.instagram && (
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`https://instagram.com/${tenant?.instagram}`}
+                title="Ir para o Instagram"
+              >
+                <img src={instagram} alt="Ir para o Instagram" width="30" />
+              </a>
+            )}
             <span className="fw2 f3 white">{tenant.name}</span>
             <a
               href={`https://wa.me/${tenant?.whatsapp}`}
