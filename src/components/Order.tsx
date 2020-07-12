@@ -78,7 +78,7 @@ const Order: FC = () => {
             }}
             className="flex justify-between tc mb3"
           >
-            {tenant?.instagram && (
+            {tenant?.instagram ? (
               <a
                 target="_blank"
                 rel="noopener noreferrer"
@@ -87,6 +87,8 @@ const Order: FC = () => {
               >
                 <img src={instagram} alt="Ir para o Instagram" width="30" />
               </a>
+            ) : (
+              <div />
             )}
             <span className="fw2 f3 white">{tenant.name}</span>
             <a
