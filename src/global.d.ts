@@ -36,4 +36,24 @@ declare interface Address {
   complemento?: string
 }
 
+// May change that later
+declare type AssemblyType = 'UNISELECT' | 'MULTISELECT' | 'TEXT'
+
+declare interface AssemblyOption {
+  name: string
+  description?: string
+  price?: number
+  live?: boolean
+}
+
+declare interface Assembly {
+  name: string
+  live: boolean
+  type: AssemblyType
+  min?: number
+  max?: number
+  price?: number
+  options: AssemblyOption[]
+}
+
 declare module '@rjsf/antd'
