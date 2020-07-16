@@ -14,6 +14,7 @@ import OnboardPage from './pages/OnboardPage'
 import TenantsPage from './pages/TenantsPage'
 import { AuthContextProvider } from './contexts/AuthContext'
 import UserSwitch from './pages/UserSwitchPage'
+import AdminPage from './templates/AdminPage'
 
 const {
   REACT_APP_FIREBASE_KEY,
@@ -48,8 +49,10 @@ const App = () => {
         <UserSwitch path="/" />
         <LoginPage path="/login" />
         <OnboardPage path="/onboard" />
-        <EditTenantPage path="/tenant/:tenantId" />
-        <TenantsPage path="/tenants" />
+        <AdminPage path="/tenants/">
+          <EditTenantPage path=":tenantId" />
+          <TenantsPage path="/" />
+        </AdminPage>
         <PedidoPage path="/:slug" />
       </Router>
     </AuthContextProvider>

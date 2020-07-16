@@ -12,9 +12,7 @@ type Props = {
 const EditTenantPage: FC<RouteComponentProps<Props>> = ({ tenantId }) => {
   return (
     <TenantContextProvider tenantId={tenantId}>
-      <AdminPage>
-        <EditTenant />
-      </AdminPage>
+      <EditTenant />
     </TenantContextProvider>
   )
 }

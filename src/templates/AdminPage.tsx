@@ -1,13 +1,13 @@
 import React, { FC } from 'react'
+import { RouteComponentProps, useNavigate } from '@reach/router'
 import { Layout, Menu } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
-import { useNavigate } from '@reach/router'
 
 import logo from '../assets/logo.png'
 
 const { Header, Content, Footer, Sider } = Layout
 
-const AdminPage: FC = ({ children }) => {
+const AdminPage: FC<RouteComponentProps> = ({ children }) => {
   const navigate = useNavigate()
 
   return (
