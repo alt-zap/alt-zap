@@ -44,7 +44,7 @@ const ListTenants: FC = () => {
               renderItem={({ name, id }) => (
                 <List.Item
                   actions={[
-                    <Link key={0} to={`/tenant/${id}`}>
+                    <Link key={0} to={`/tenants/${id}`}>
                       editar
                     </Link>,
                   ]}

@@ -49,7 +49,7 @@ const App = () => {
         <UserSwitch path="/" />
         <LoginPage path="/login" />
         <OnboardPage path="/onboard" />
-        <AdminPage path="/tenants/">
+        <AdminPage path="/tenants">
           <EditTenantPage path=":tenantId" />
           <TenantsPage path="/" />
         </AdminPage>
