@@ -22,6 +22,35 @@ declare interface TenantConfig {
     price: number
     items?: string[]
   }>
+  // new stuff
+  menus: Menu[]
+  templateAssembly: Assembly[]
+  selectedMenu: number
+}
+
+declare interface Menu {
+  name: string
+  slug: string
+  categories: Category[]
+}
+
+declare interface Category {
+  name: string
+  slug: string
+  live: boolean
+  products: Product[]
+}
+
+declare interface Product {
+  name: string
+  description?: string
+  live: boolean
+  price: number
+  imgSrc?: string
+  highlight: boolean
+  min?: number
+  max?: number
+  assemblyOptions?: Assembly[]
 }
 
 declare interface PaymentInfo {
