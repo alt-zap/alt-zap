@@ -12,6 +12,6 @@ addParameters({
 })
 
 configure(
-  require.context('../src/components/common', true, /\.stories\.tsx$/),
+  [require.context('../src/components/stories', true, /\.stories\.tsx$/)],
   module
 )
