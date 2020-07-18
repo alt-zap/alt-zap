@@ -95,7 +95,7 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange, large }) => {
           </ImgCrop>
         </div>
       </div>
-      <div style={{ maxWidth: '4rem' }}>
+      <div style={{ maxWidth: large ? '4.9rem' : '4rem' }}>
         <ProductImage src={value} title="" onClick={() => setModal(true)} />
       </div>
       <Modal
@@ -105,7 +105,13 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange, large }) => {
         visible={modal}
       >
         <div className="flex justify-center">
-          <img src={value} alt="" />
+          <img
+            src={
+              value ||
+              'https://www.bauducco.com.br/wp-content/uploads/2017/09/default-placeholder-1-2.png'
+            }
+            alt=""
+          />
         </div>
       </Modal>
     </div>
