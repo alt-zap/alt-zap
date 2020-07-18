@@ -3,7 +3,6 @@ import { RouteComponentProps } from '@reach/router'
 
 import EditTenant from '../components/EditTenant'
 import { TenantContextProvider } from '../contexts/TenantContext'
-import AdminPage from '../templates/AdminPage'
 
 type Props = {
   tenantId: string

@@ -5,6 +5,7 @@ declare interface TenantConfig {
   whatsapp: string
   instagram?: string
   logoSrc?: string
+  color?: string
   live: boolean
   deliveryFee: number
   paymentMethods: Array<{

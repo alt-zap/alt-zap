@@ -14,8 +14,8 @@ const MAX_WIDTH = 500
 
 type Props = {
   disabled?: boolean
-  value: string
-  onChange: (data: string) => void
+  value?: string
+  onChange?: (data: string) => void
   large?: boolean
 }
 
@@ -52,7 +52,7 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange, large }) => {
         })
         .then((fireBaseUrl) => {
           message.success('Arquivo enviado com sucesso')
-          onChange(fireBaseUrl)
+          onChange?.(fireBaseUrl)
         })
         .catch((e) => {
           log(e)
@@ -76,7 +76,7 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange, large }) => {
           size={large ? 'large' : 'middle'}
           value={value}
           disabled={loading || disabled}
-          onChange={eSet(onChange)}
+          onChange={onChange && eSet(onChange)}
         />
         <div className="flex justify-end mt2">
           <ImgCrop modalTitle="Edite a imagem" modalCancel="Cancelar">
@@ -107,7 +107,7 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange, large }) => {
         <div className="flex justify-center">
           <img
             src={
-              value ||
+              value ??
               'https://www.bauducco.com.br/wp-content/uploads/2017/09/default-placeholder-1-2.png'
             }
             alt=""
