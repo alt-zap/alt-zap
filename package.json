@@ -18,6 +18,7 @@
     "react": "latest",
     "react-device-detect": "^1.13.1",
     "react-dom": "latest",
+    "react-hook-form": "^6.0.7",
     "react-markdown": "4.3.1",
     "react-social-login-buttons": "3.1.0",
     "slugify": "^1.4.4",

@@ -16,9 +16,10 @@ type Props = {
   disabled?: boolean
   value: string
   onChange: (data: string) => void
+  large?: boolean
 }
 
-const ImageUpload: FC<Props> = ({ disabled, value, onChange }) => {
+const ImageUpload: FC<Props> = ({ disabled, value, onChange, large }) => {
   const [loading, setLoading] = useState(false)
   const [modal, setModal] = useState(false)
 
@@ -72,6 +73,7 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange }) => {
       <div className="flex flex-column flex-grow-1 mr2">
         <Input
           className="mr2"
+          size={large ? 'large' : 'middle'}
           value={value}
           disabled={loading || disabled}
           onChange={eSet(onChange)}
