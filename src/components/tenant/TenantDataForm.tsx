@@ -3,6 +3,7 @@ import React, { FC } from 'react'
 import { Form, Button, Input } from 'antd'
 import slugify from 'slugify'
 import { Rule } from 'antd/lib/form'
+import InputMask from 'react-input-mask'
 
 import ImageUpload from '../common/ImageUpload'
 import ColorPicker from '../common/ColorPicker'
@@ -108,7 +109,9 @@ const TenantDataForm: FC<Props> = ({ initialData }) => {
             name="whatsapp"
             rules={rules.whatsapp}
           >
-            <TextInput placeholder="ex: (83) 99934-2545" />
+            <InputMask mask="+55 (99) 99999-9999">
+              <TextInput placeholder="ex: (83) 99934-2545" />
+            </InputMask>
           </Item>
         </div>
         <div className="w-50 mr1">

@@ -38,7 +38,6 @@ const ColorPicker: FC<Props> = ({ value, onChange }) => {
         <div
           style={{
             position: 'absolute',
-            right: '10px',
             zIndex: 2,
           }}
         >
