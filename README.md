@@ -2,7 +2,7 @@
 
 Compartilhe seu cardápio facilmente e receba pedidos pelo Whatsapp.
 
-<img src="https://user-images.githubusercontent.com/18706156/85962309-7b15bd80-b986-11ea-8297-bc0a8c19f298.png" width="400" />
+<img src="https://user-images.githubusercontent.com/18706156/87861502-3776f980-c91d-11ea-9d48-c33c941d2636.png" width="420" />
 
 ## Funcionalidades
 
@@ -13,10 +13,8 @@ Compartilhe seu cardápio facilmente e receba pedidos pelo Whatsapp.
 
 ## Como usar
 
-[AINDA EM DESENVOLVIMENTO]
-
-1. Se cadastre em https://alt-zap.vercel.app/
-2. Crie um **Novo Cardápio**.
+1. Faça o login em https://alt-zap.vercel.app/
+2. Crie um **Novo Cardápio** e siga os passos.
 3. Pronto! Agora é só oferecer o link para seus clientes :)
 
 ## Desenvolvimento
