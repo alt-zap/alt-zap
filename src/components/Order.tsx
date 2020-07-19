@@ -12,7 +12,7 @@ import { generateLink, eSet } from '../utils'
 import instagram from '../assets/instagram.svg'
 import whatsapp from '../assets/whatsapp.svg'
 
-const { Header } = Layout
+const { Header, Footer } = Layout
 
 const Order: FC = () => {
   const { tenant, loading } = useTenantConfig()
@@ -56,7 +56,7 @@ const Order: FC = () => {
   return (
     <div>
       {loading && (
-        <div className="flex flex-column items-center mt3">
+        <div className="flex flex-column items-center pt3">
           <Spin />
           <span> Carregando dados...</span>
         </div>
@@ -161,6 +161,10 @@ const Order: FC = () => {
               </div>
             </div>
           </div>
+          <Footer className="tc mt2">
+            <b>Alt Zap ©2020 </b> - Gostou?{' '}
+            <a href="https://alt-zap.vercel.app">Crie o seu!</a>
+          </Footer>
         </Layout>
       )}
     </div>

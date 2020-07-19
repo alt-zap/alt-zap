@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { RouteComponentProps } from '@reach/router'
 
 import { TenantContextProvider } from '../contexts/TenantContext'
-import Pedido from '../components/Order'
+import Order from '../components/Order'
 
 type Props = {
   slug: string
@@ -11,7 +11,7 @@ type Props = {
 const OrderPage: FC<RouteComponentProps<Props>> = ({ slug }) => {
   return (
     <TenantContextProvider slug={slug}>
-      <Pedido />
+      <Order />
     </TenantContextProvider>
   )
 }
