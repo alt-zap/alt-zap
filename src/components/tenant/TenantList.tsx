@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
-import { Card, List, Typography } from 'antd'
-import { InfoCircleOutlined } from '@ant-design/icons'
+import React, { FC, Fragment } from 'react'
+import { Button, Card, List, Typography, Skeleton } from 'antd'
+import { InfoCircleOutlined, PlusOutlined } from '@ant-design/icons'
 
 const { Text } = Typography
 
@@ -8,17 +8,27 @@ interface TenantForList extends TenantConfig {
   id: string
 }
 type Props = {
+  loading?: boolean
   tenants: Array<Pick<TenantForList, 'name' | 'id' | 'slug' | 'items'>>
   onSelectTenant: (tenantId: string) => void
+  onAddTenant: () => void
 }
 
-const TenantList: FC<Props> = ({ tenants, onSelectTenant }) => {
+const TenantList: FC<Props> = ({
+  loading,
+  tenants,
+  onSelectTenant,
+  onAddTenant,
+}) => {
   return (
-    <div>
+    <Fragment>
       <List
         grid={{
-          column: 1,
+          column: 2,
+          xs: 1,
+          sm: 2,
         }}
+        className="bg-white w-100"
         header={
           <div className="flex justify-center">
             <span className="fw2 f4">Lista de Negócios</span>
@@ -42,13 +52,32 @@ const TenantList: FC<Props> = ({ tenants, onSelectTenant }) => {
               actions={[<InfoCircleOutlined key="info" />]}
             >
               <div className="flex flex-column">
-                <span>{`${item.items?.length} produtos cadastrados`}</span>
+                <span>{`${
+                  item.items?.length || '0'
+                } produtos cadastrados`}</span>
               </div>
             </Card>
           </List.Item>
         )}
-      />
-    </div>
+      >
+        {loading && (
+          <Card
+            style={{
+              maxWidth: '300px',
+              width: '90%',
+              margin: '16px 0 10px 16px',
+            }}
+          >
+            <Skeleton loading avatar active />
+          </Card>
+        )}
+        <div className="pt1 pb3 flex justify-center">
+          <Button icon={<PlusOutlined />} onClick={() => onAddTenant()}>
+            Adicionar
+          </Button>
+        </div>
+      </List>
+    </Fragment>
   )
 }
 

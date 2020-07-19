@@ -10,6 +10,7 @@ export default {
 
 export const One = () => (
   <TenantList
+    onAddTenant={() => {}}
     onSelectTenant={() => {}}
     tenants={[
       {
@@ -29,6 +30,7 @@ export const One = () => (
 )
 export const Two = () => (
   <TenantList
+    onAddTenant={() => {}}
     onSelectTenant={() => {}}
     tenants={[
       {

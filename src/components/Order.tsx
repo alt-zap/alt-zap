@@ -1,6 +1,8 @@
 import React, { FC, useCallback, useState, useMemo } from 'react'
 import { Affix, Alert, Button, Divider, Input, Spin, Layout } from 'antd'
 import { SendOutlined } from '@ant-design/icons'
+import * as firebase from 'firebase/app'
+import 'firebase/analytics'
 
 import Address from './Address'
 import ProductList from './ProductList'
@@ -8,7 +10,7 @@ import Totalizer from './Totalizer'
 import OrderSummary from './OrderSummary'
 import PaymentSelector from './customer/PaymentSelector'
 import { useTenantConfig } from '../contexts/TenantContext'
-import { generateLink, eSet } from '../utils'
+import { generateLink, eSet, log } from '../utils'
 import instagram from '../assets/instagram.svg'
 import whatsapp from '../assets/whatsapp.svg'
 
@@ -37,6 +39,21 @@ const Order: FC = () => {
       total,
       info,
     })
+
+    try {
+      const analytics = firebase.analytics()
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      analytics.logEvent('purchase', {
+        tenant: tenant?.name,
+        value: total / 100,
+        currency: 'BRA',
+      })
+    } catch (e) {
+      log(e)
+      log('Erro ao enviar evento ao Analytics')
+    }
 
     const win = window.open(whatsappLink, '_blank')
 
