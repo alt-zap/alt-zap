@@ -14,11 +14,12 @@ const MAX_WIDTH = 500
 
 type Props = {
   disabled?: boolean
-  value: string
-  onChange: (data: string) => void
+  value?: string
+  onChange?: (data: string) => void
+  large?: boolean
 }
 
-const ImageUpload: FC<Props> = ({ disabled, value, onChange }) => {
+const ImageUpload: FC<Props> = ({ disabled, value, onChange, large }) => {
   const [loading, setLoading] = useState(false)
   const [modal, setModal] = useState(false)
 
@@ -51,7 +52,7 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange }) => {
         })
         .then((fireBaseUrl) => {
           message.success('Arquivo enviado com sucesso')
-          onChange(fireBaseUrl)
+          onChange?.(fireBaseUrl)
         })
         .catch((e) => {
           log(e)
@@ -72,9 +73,10 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange }) => {
       <div className="flex flex-column flex-grow-1 mr2">
         <Input
           className="mr2"
+          size={large ? 'large' : 'middle'}
           value={value}
           disabled={loading || disabled}
-          onChange={eSet(onChange)}
+          onChange={onChange && eSet(onChange)}
         />
         <div className="flex justify-end mt2">
           <ImgCrop modalTitle="Edite a imagem" modalCancel="Cancelar">
@@ -93,7 +95,7 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange }) => {
           </ImgCrop>
         </div>
       </div>
-      <div style={{ maxWidth: '4rem' }}>
+      <div style={{ maxWidth: large ? '4.9rem' : '4rem' }}>
         <ProductImage src={value} title="" onClick={() => setModal(true)} />
       </div>
       <Modal
@@ -103,7 +105,13 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange }) => {
         visible={modal}
       >
         <div className="flex justify-center">
-          <img src={value} alt="" />
+          <img
+            src={
+              value ??
+              'https://www.bauducco.com.br/wp-content/uploads/2017/09/default-placeholder-1-2.png'
+            }
+            alt=""
+          />
         </div>
       </Modal>
     </div>

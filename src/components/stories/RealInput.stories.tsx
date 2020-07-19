@@ -1,7 +1,7 @@
 import React from 'react'
 import { withKnobs, text } from '@storybook/addon-knobs'
 
-import RealInput from './RealInput'
+import RealInput from '../common/RealInput'
 
 export default {
   title: 'common|RealInput',

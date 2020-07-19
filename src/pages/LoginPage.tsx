@@ -1,7 +1,7 @@
-import React, { FC, Fragment, useEffect } from 'react'
+import React, { FC, Fragment, useEffect, useState } from 'react'
 import { useNavigate, RouteComponentProps } from '@reach/router'
 import { GoogleLoginButton } from 'react-social-login-buttons'
-import { Layout, Button, Divider, Alert } from 'antd'
+import { Layout, Button, Divider, Alert, Spin } from 'antd'
 
 import { log } from '../utils'
 import { useAuth } from '../contexts/AuthContext'
@@ -11,6 +11,7 @@ import intro from '../assets/intro.png'
 const { Header, Content, Footer } = Layout
 
 const LoginPage: FC<RouteComponentProps> = () => {
+  const [waiting, setWaiting] = useState(false)
   const { loginWithGoogle, user, userDb, loading } = useAuth()
 
   const navigate = useNavigate()
@@ -32,23 +33,46 @@ const LoginPage: FC<RouteComponentProps> = () => {
   return (
     <Fragment>
       {loading && (
-        <h3 className="grey">Estamos verificando se você já está logado</h3>
+        <div className="flex items-center flex-column mt3">
+          <Spin />
+          Estamos configurando seu ambiente!
+        </div>
       )}
       {!loading && (
         <Layout>
-          <Header>
-            <div className="flex justify-center">
-              <div>
-                <img
-                  src={logo}
-                  alt="Alt Zap"
-                  className="pa2"
-                  style={{ maxHeight: '55px' }}
-                />
-              </div>
+          <Header
+            style={{
+              position: 'fixed',
+              zIndex: 1,
+              width: '100%',
+              padding: '0 10px',
+            }}
+            className="flex justify-between tc mb3"
+          >
+            <div style={{ flex: 1 }} />
+            <div>
+              <img
+                src={logo}
+                alt="Alt Zap"
+                className="pa2"
+                style={{ maxHeight: '55px' }}
+              />
+            </div>
+            <div style={{ flex: 1 }} className="flex justify-end">
+              <button
+                onClick={() => loginWithGoogle()}
+                onKeyPress={() => loginWithGoogle()}
+                tabIndex={0}
+                className="f5 f4-l white fw2 bg-transparent bn pointer dim"
+              >
+                Login
+              </button>
             </div>
           </Header>
-          <Content className="flex justify-center">
+          <Content
+            className="flex justify-center"
+            style={{ marginTop: '80px' }}
+          >
             <div className="w-100 w-60-l">
               <div className="flex flex-column">
                 <span className="black f3 f1-l fw2 ph2 pt3 mt2 mb3 pb2 pa4 tc">
@@ -172,8 +196,17 @@ const LoginPage: FC<RouteComponentProps> = () => {
                 <div className="flex justify-center">
                   <GoogleLoginButton
                     text="Entre com o Google"
-                    style={{ maxWidth: '300px' }}
-                    onClick={() => loginWithGoogle()}
+                    style={{
+                      maxWidth: '300px',
+                      ...(waiting && {
+                        backgroundColor: '#ccc',
+                        cursor: 'none',
+                      }),
+                    }}
+                    onClick={() => {
+                      setWaiting(true)
+                      loginWithGoogle()
+                    }}
                   />
                 </div>
               </div>

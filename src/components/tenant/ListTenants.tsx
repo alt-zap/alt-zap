@@ -1,11 +1,10 @@
 import React, { FC, Fragment, useState, useEffect } from 'react'
-import { Button, List } from 'antd'
-import { PlusOutlined } from '@ant-design/icons'
-import { Link, useNavigate } from '@reach/router'
+import { useNavigate } from '@reach/router'
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
 
 import { useAuth } from '../../contexts/AuthContext'
+import TenantList from './TenantList'
 
 interface TenantForList extends TenantConfig {
   id: string
@@ -32,37 +31,16 @@ const ListTenants: FC = () => {
 
   return (
     <Fragment>
-      {user && (
-        <div className="flex flex-column items-center">
-          <h1>{`Olá, ${user.displayName}`}</h1>
-          <div className="flex br2 mt2 flex-column items-center bg-light-gray pa3 w-90">
-            <h4>Lista de negócios</h4>
-            <List
-              loading={loading}
-              itemLayout="horizontal"
-              dataSource={tenants}
-              renderItem={({ name, id }) => (
-                <List.Item
-                  actions={[
-                    <Link key={0} to={`/tenant/${id}`}>
-                      editar
-                    </Link>,
-                  ]}
-                >
-                  {name}
-                </List.Item>
-              )}
-            />
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => navigate('/onboard')}
-            >
-              Adicionar
-            </Button>
-          </div>
+      <div className="flex flex-column items-center">
+        <div className="flex br2 mt2 flex-column items-center pa3 w-90">
+          <TenantList
+            loading={loading}
+            tenants={tenants}
+            onSelectTenant={(id) => navigate(`/tenants/${id}`)}
+            onAddTenant={() => navigate('/onboard')}
+          />
         </div>
-      )}
+      </div>
     </Fragment>
   )
 }
