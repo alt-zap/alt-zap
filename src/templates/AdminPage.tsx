@@ -43,7 +43,7 @@ const AdminPage: FC<RouteComponentProps> = ({ children }) => {
             onClick={() => navigate('/tenants')}
             icon={<HomeOutlined />}
           >
-            Página Inicial
+            Minha Página
           </Menu.Item>
         </Menu>
       </Sider>
@@ -72,7 +72,7 @@ const AdminPage: FC<RouteComponentProps> = ({ children }) => {
             >
               <a
                 href="#"
-                className="ant-dropdown-link f4 white"
+                className="ant-dropdown-link f5 f4-l white"
                 onClick={(e) => e.preventDefault()}
                 onKeyPress={(e) => e.preventDefault()}
               >
@@ -83,7 +83,7 @@ const AdminPage: FC<RouteComponentProps> = ({ children }) => {
           )}
         </Header>
         <Content className="flex justify-center">
-          <div className="w-100 w-60-l">{children}</div>
+          <div className="w-100 w-60-l pt4 pt2-l">{children}</div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
           Alt Zap ©2020 -{' '}
