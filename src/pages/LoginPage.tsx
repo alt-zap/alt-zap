@@ -60,6 +60,8 @@ const LoginPage: FC<RouteComponentProps> = () => {
             </div>
             <div style={{ flex: 1 }} className="flex justify-end">
               <button
+                onClick={() => loginWithGoogle()}
+                onKeyPress={() => loginWithGoogle()}
                 tabIndex={0}
                 className="f5 f4-l white fw2 bg-transparent bn pointer dim"
               >
