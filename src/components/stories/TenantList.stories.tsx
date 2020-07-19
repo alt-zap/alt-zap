@@ -10,8 +10,10 @@ export default {
 
 export const One = () => (
   <TenantList
+    onSelectTenant={() => {}}
     tenants={[
       {
+        id: '',
         name: 'Alt Burger CG',
         slug: 'altburger-cg',
         items: [
@@ -27,8 +29,10 @@ export const One = () => (
 )
 export const Two = () => (
   <TenantList
+    onSelectTenant={() => {}}
     tenants={[
       {
+        id: '2',
         name: 'Cavalcantes Burger',
         slug: 'cavalcantes-burguer',
         items: [
@@ -40,6 +44,7 @@ export const Two = () => (
         ],
       },
       {
+        id: '3',
         name: 'Alt Burger CG',
         slug: 'altburger-cg',
         items: [

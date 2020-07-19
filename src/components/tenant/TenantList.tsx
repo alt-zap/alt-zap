@@ -1,14 +1,18 @@
 import React, { FC } from 'react'
-import { Card, List } from 'antd'
-import { EditOutlined, AlignLeftOutlined } from '@ant-design/icons'
-import { useNavigate } from '@reach/router'
+import { Card, List, Typography } from 'antd'
+import { InfoCircleOutlined } from '@ant-design/icons'
+
+const { Text } = Typography
 
 interface TenantForList extends TenantConfig {
   id: string
 }
-type Props = { tenants: Array<Partial<TenantForList>> }
+type Props = {
+  tenants: Array<Pick<TenantForList, 'name' | 'id' | 'slug' | 'items'>>
+  onSelectTenant: (tenantId: string) => void
+}
 
-const TenantList: FC<Props> = ({ tenants, on }) => {
+const TenantList: FC<Props> = ({ tenants, onSelectTenant }) => {
   return (
     <div>
       <List
@@ -25,14 +29,21 @@ const TenantList: FC<Props> = ({ tenants, on }) => {
         renderItem={(item, i) => (
           <List.Item className={`${i ? '' : 'mt3'}`}>
             <Card
-              title={item.name}
+              title={
+                <div className="flex flex-column">
+                  <span className="fw4">{item.name}</span>
+                  <Text code className="f6">{`/${item.slug}`}</Text>
+                </div>
+              }
               hoverable
               tabIndex={0}
-              onClick={() => navigate(`/tenants/${item.id}`)}
-              onKeyPress={() => navigate(`/tenants/${item.id}`)}
-              actions={[<EditOutlined key="edit" />]}
+              onClick={() => onSelectTenant(item.id)}
+              onKeyPress={() => onSelectTenant(item.id)}
+              actions={[<InfoCircleOutlined key="info" />]}
             >
-              15 produtos cadastrados
+              <div className="flex flex-column">
+                <span>{`${item.items?.length} produtos cadastrados`}</span>
+              </div>
             </Card>
           </List.Item>
         )}
