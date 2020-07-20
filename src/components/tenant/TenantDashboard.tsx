@@ -44,28 +44,34 @@ const TenantDashboard: FC<Props> = ({ tenant }) => {
           <Statistic title="Produtos" value={tenant.items?.length} />
         </Row>
       </PageHeader>
-      <Divider>Categorias</Divider>
-      <List
-        size="small"
-        bordered
-        itemLayout="horizontal"
-        dataSource={tenant?.menus?.[0]?.categories}
-        renderItem={(category) => (
-          <List.Item>
-            <List.Item.Meta
-              title={<a href="https://ant.design">{category.name}</a>}
-              description={`${category.products.length} produtos`}
-            />
-          </List.Item>
-        )}
-      >
-        <div className="pt1 pb3 flex justify-center">
-          <Button icon={<PlusOutlined />} onClick={() => onAddTenant()}>
-            Adicionar
-          </Button>
+      <div className="flex flex-column flex-row-l">
+        <div className="w-100 w-50-l ph2">
+          <Divider>Produtos</Divider>
         </div>
-      </List>
-      <Divider>Produtos</Divider>
+        <div className="w-100 w-50-l ph2">
+          <Divider>Categorias</Divider>
+          <List
+            size="small"
+            bordered
+            itemLayout="horizontal"
+            dataSource={tenant?.menus?.[0]?.categories}
+            renderItem={(category) => (
+              <List.Item>
+                <List.Item.Meta
+                  title={<a href="https://ant.design">{category.name}</a>}
+                  description={`${category.products.length} produtos`}
+                />
+              </List.Item>
+            )}
+          >
+            <div className="pt1 pb3 flex justify-center">
+              <Button icon={<PlusOutlined />} onClick={() => onAddTenant()}>
+                Adicionar
+              </Button>
+            </div>
+          </List>
+        </div>
+      </div>
     </div>
   )
 }
