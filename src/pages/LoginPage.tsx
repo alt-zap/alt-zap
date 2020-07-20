@@ -3,7 +3,6 @@ import { useNavigate, RouteComponentProps } from '@reach/router'
 import { GoogleLoginButton } from 'react-social-login-buttons'
 import { Layout, Button, Divider, Alert, Spin } from 'antd'
 
-import { log } from '../utils'
 import { useAuth } from '../contexts/AuthContext'
 import logo from '../assets/logo.png'
 import intro from '../assets/intro.png'
@@ -17,8 +16,6 @@ const LoginPage: FC<RouteComponentProps> = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    log('Login Effect')
-    log({ user })
     if (user && !userDb) {
       navigate('/onboard')
 
