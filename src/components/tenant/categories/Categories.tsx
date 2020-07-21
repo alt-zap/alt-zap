@@ -23,7 +23,8 @@ const Categories: FC = () => {
           <List.Item>
             <List.Item.Meta
               title={<span className="f5 fw4">{category.name}</span>}
-              description={`${category.products.length} produtos`}
+              // TODO: Solve this
+              description={`${category.products?.length ?? 0} produtos`}
             />
             <div>
               <Button

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useCallback } from 'react'
+import React, { FC, useEffect, useState, useCallback, useMemo } from 'react'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
@@ -22,6 +22,13 @@ type ContextProps = {
   // TODO: This prop is being used for two things. Not ideal.
   categoriesLoading?: boolean
   editCategory: (category: Category) => void
+  addCategory: (category: Category) => void
+  isCategoryUnique: (slug: string) => boolean
+  products?: Product[]
+  // TODO: This prop is being used for two things. Not ideal.
+  productsLoading?: boolean
+  editProduct: (product: Product) => void
+  addProduct: (product: Product) => void
   updateTenant: (data: TenantConfig) => void
 }
 
@@ -66,6 +73,16 @@ export const TenantContextProvider: FC<Props> = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const editCategory = useCallback((category: Category) => {}, [])
 
+  const categoriesList = useMemo(
+    () => tenant?.menus[0]?.categories?.map(({ slug: s }) => s),
+    [tenant]
+  )
+
+  const isCategoryUnique = useCallback(
+    (categorySlug: string) => !categoriesList?.includes(categorySlug),
+    [categoriesList]
+  )
+
   return (
     <TenantProvider
       value={{
@@ -74,6 +91,10 @@ export const TenantContextProvider: FC<Props> = ({
         tenant,
         updateTenant: setTenant,
         editCategory,
+        isCategoryUnique,
+        addCategory: () => {},
+        editProduct: () => {},
+        addProduct: () => {},
       }}
     >
       {children}

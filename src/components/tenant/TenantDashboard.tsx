@@ -3,6 +3,7 @@ import { EditOutlined } from '@ant-design/icons'
 import { PageHeader, Tag, Button, Statistic, Row, Divider } from 'antd'
 
 import Categories from './categories/Categories'
+import Products from './products/Products'
 import { useTenantConfig } from '../../contexts/TenantContext'
 
 const TenantDashboard: FC = () => {
@@ -37,6 +38,7 @@ const TenantDashboard: FC = () => {
       <div className="flex flex-column flex-row-l">
         <div className="w-100 w-50-l ph2">
           <Divider>Produtos</Divider>
+          <Products />
         </div>
         <div className="w-100 w-50-l ph2">
           <Divider>Categorias</Divider>

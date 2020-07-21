@@ -5,17 +5,16 @@ import { Rule } from 'antd/lib/form'
 import slugify from 'slugify'
 
 import TextInput from '../../common/TextInput'
-import { useTenantConfig } from '../../../contexts/TenantContext'
 
 const { Item } = Form
 
 const labelFor = (label: string) => <span className="f4 fw1">{label}</span>
 
-type CategoryData = Pick<Category, 'id' | 'name' | 'live' | 'slug'>
+type ProductData = Pick<Product, 'id' | 'name' | 'live' | 'slug'>
 
 type Props = {
-  initialData?: Partial<CategoryData>
-  onValidSubmit: (data: CategoryData) => void
+  initialData?: Partial<ProductData>
+  onValidSubmit: (data: ProductData) => void
   loading?: boolean
   editMode?: boolean
 }
@@ -39,20 +38,19 @@ const rules: Record<string, Rule[]> = {
 
 // Checar se o nome já não existe
 
-const CategoryForm: FC<Props> = ({
+const ProductForm: FC<Props> = ({
   editMode,
   onValidSubmit,
   loading,
   initialData,
 }) => {
   const [form] = Form.useForm()
-  const { isCategoryUnique } = useTenantConfig()
 
   return (
     <Form
       form={form}
       layout="vertical"
-      onFinish={(store) => onValidSubmit(store as CategoryData)}
+      onFinish={(store) => onValidSubmit(store as ProductData)}
       initialValues={initialData}
     >
       <Item label={labelFor('Nome')} name="name" rules={rules.name}>
@@ -67,21 +65,7 @@ const CategoryForm: FC<Props> = ({
           }}
         />
       </Item>
-      <Item
-        label={labelFor('Slug')}
-        name="slug"
-        rules={[
-          {
-            validator: (_, slug) => {
-              if (!isCategoryUnique(slug)) {
-                return Promise.reject('Já existe uma categoria com esse slug')
-              }
-
-              return Promise.resolve()
-            },
-          },
-        ]}
-      >
+      <Item label={labelFor('Slug')} name="slug" rules={rules.slug}>
         <TextInput disabled />
       </Item>
       <Form.Item label={labelFor('Ativa')} name="live" valuePropName="checked">
@@ -100,4 +84,4 @@ const CategoryForm: FC<Props> = ({
   )
 }
 
-export default CategoryForm
+export default ProductForm

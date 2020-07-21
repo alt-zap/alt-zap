@@ -42,10 +42,16 @@ declare interface Category {
   name: string
   slug: string
   live: boolean
-  products: Product[]
+  products?: Product[]
 }
 
 declare interface Product {
+  id?: string
+  // Loosely coupled
+  category: {
+    id: string
+    name: string
+  }
   name: string
   description?: string
   live: boolean
