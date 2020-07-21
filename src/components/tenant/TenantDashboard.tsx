@@ -1,24 +1,14 @@
 import React, { FC } from 'react'
-import { EditOutlined, PlusOutlined } from '@ant-design/icons'
-import {
-  PageHeader,
-  Tag,
-  Button,
-  Statistic,
-  List,
-  Row,
-  Typography,
-  Divider,
-} from 'antd'
+import { EditOutlined } from '@ant-design/icons'
+import { PageHeader, Tag, Button, Statistic, Row, Divider } from 'antd'
 
-const { Text } = Typography
+import Categories from './categories/Categories'
+import { useTenantConfig } from '../../contexts/TenantContext'
 
-type Props = {
-  tenant: Partial<TenantConfig>
-}
+const TenantDashboard: FC = () => {
+  const { tenant } = useTenantConfig()
 
-const TenantDashboard: FC<Props> = ({ tenant }) => {
-  return (
+  return tenant ? (
     <div className="flex flex-column">
       <PageHeader
         onBack={() => window.history.back()}
@@ -50,30 +40,11 @@ const TenantDashboard: FC<Props> = ({ tenant }) => {
         </div>
         <div className="w-100 w-50-l ph2">
           <Divider>Categorias</Divider>
-          <List
-            size="small"
-            bordered
-            itemLayout="horizontal"
-            dataSource={tenant?.menus?.[0]?.categories}
-            renderItem={(category) => (
-              <List.Item>
-                <List.Item.Meta
-                  title={<a href="https://ant.design">{category.name}</a>}
-                  description={`${category.products.length} produtos`}
-                />
-              </List.Item>
-            )}
-          >
-            <div className="pt1 pb3 flex justify-center">
-              <Button icon={<PlusOutlined />} onClick={() => onAddTenant()}>
-                Adicionar
-              </Button>
-            </div>
-          </List>
+          <Categories />
         </div>
       </div>
     </div>
-  )
+  ) : null
 }
 
 export default TenantDashboard

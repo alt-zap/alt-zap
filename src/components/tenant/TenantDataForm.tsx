@@ -1,24 +1,15 @@
 /* eslint-disable react/jsx-handler-names */
 import React, { FC } from 'react'
-import { Form, Button, Input } from 'antd'
+import { Form, Button } from 'antd'
 import slugify from 'slugify'
 import { Rule } from 'antd/lib/form'
 import InputMask from 'react-input-mask'
 
 import ImageUpload from '../common/ImageUpload'
 import ColorPicker from '../common/ColorPicker'
+import TextInput from '../common/TextInput'
 
 const { Item } = Form
-
-const TextInput: FC<React.ComponentPropsWithoutRef<typeof Input>> = (props) => (
-  <Input
-    size="large"
-    className="fw1"
-    spellCheck="false"
-    autoComplete="off"
-    {...props}
-  />
-)
 
 type TenantMetadata = Pick<
   TenantConfig,

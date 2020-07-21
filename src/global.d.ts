@@ -31,12 +31,14 @@ declare interface TenantConfig {
 }
 
 declare interface Menu {
+  id?: string
   name: string
   slug: string
   categories: Category[]
 }
 
 declare interface Category {
+  id?: string
   name: string
   slug: string
   live: boolean
