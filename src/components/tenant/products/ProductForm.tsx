@@ -8,45 +8,96 @@ import {
   Select,
   Divider,
   InputNumber,
-  List,
 } from 'antd'
 import { Rule } from 'antd/lib/form'
 import ptBR from 'antd/es/locale/pt_BR'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 
-import TextInput from '../../common/TextInput'
-import ImageUpload from '../../common/ImageUpload'
-import TextareaInput from '../../common/TextareaInput'
+import TextInputOriginal from '../../common/TextInput'
+import ImageUploadOriginal from '../../common/ImageUpload'
+import TextareaInputOriginal from '../../common/TextareaInput'
 import { useTenantConfig } from '../../../contexts/TenantContext'
 import CurrencyInput from '../../common/CurrencyInput'
 
 const { Item } = Form
 const { Option } = Select
 
-const NumberInput: FC<React.ComponentPropsWithoutRef<typeof InputNumber>> = (
-  props
-) => (
-  <InputNumber
-    size="large"
-    className="fw1"
-    spellCheck="false"
-    autoComplete="off"
-    {...props}
-  />
-)
+// const NumberInput = React.forwardRef<
+//   HTMLDivElement,
+//   React.ComponentPropsWithoutRef<typeof InputNumber>
+// >(function NumberInput(props, ref) {
+//   return (
+//     <div ref={ref}>
+//       <InputNumber
+//         size="large"
+//         className="fw1"
+//         spellCheck="false"
+//         autoComplete="off"
+//         {...props}
+//       />
+//     </div>
+//   )
+// })
 
-const PriceInput: FC<React.ComponentPropsWithoutRef<typeof CurrencyInput>> = (
-  props
-) => (
-  <CurrencyInput
-    addonBefore="R$"
-    size="large"
-    className="fw1"
-    spellCheck="false"
-    autoComplete="off"
-    {...props}
-  />
-)
+// const PriceInput = React.forwardRef<
+//   HTMLDivElement,
+//   React.ComponentPropsWithoutRef<typeof CurrencyInput>
+// >(function PriceInput(props, ref) {
+//   return (
+//     <div ref={ref}>
+//       <CurrencyInput
+//         addonBefore="R$"
+//         size="large"
+//         className="fw1"
+//         spellCheck="false"
+//         autoComplete="off"
+//         {...props}
+//       />
+//     </div>
+//   )
+// })
+
+function forwardRef<Props>(Component: FC<Props>, extraProps?: any) {
+  return React.forwardRef<HTMLDivElement, Props>(function WrappedComp(
+    props,
+    ref
+  ) {
+    return (
+      <div ref={ref}>
+        <Component {...extraProps} {...props} />
+      </div>
+    )
+  })
+}
+
+const TextareaInput = forwardRef<
+  React.ComponentPropsWithoutRef<typeof TextareaInputOriginal>
+>(TextareaInputOriginal)
+
+const TextInput = forwardRef<
+  React.ComponentPropsWithoutRef<typeof TextInputOriginal>
+>(TextInputOriginal)
+
+const LogoUpload = forwardRef<
+  React.ComponentPropsWithoutRef<typeof ImageUploadOriginal>
+>(ImageUploadOriginal)
+
+const PriceInput = forwardRef<
+  React.ComponentPropsWithoutRef<typeof CurrencyInput>
+>(CurrencyInput, {
+  addonBefore: 'R$',
+  size: 'large',
+  className: 'fw1',
+  spellCheck: 'false',
+})
+
+const NumberInput = forwardRef<
+  React.ComponentPropsWithoutRef<typeof InputNumber>
+>(InputNumber, {
+  size: 'large',
+  className: 'fw1',
+  spellCheck: 'false',
+})
 
 const labelFor = (label: string, small?: boolean) => (
   <span className={`${small ? '' : 'f4 fw1'}`}>{label}</span>
@@ -137,6 +188,7 @@ const ProductForm: FC<Props> = ({
         layout="vertical"
         onFinish={(store) => onValidSubmit?.(store as ProductData)}
         initialValues={initialData}
+        autoComplete="off"
       >
         <div className="flex justify-between">
           <div className="w-80">
@@ -159,7 +211,7 @@ const ProductForm: FC<Props> = ({
           </div>
         </div>
         <Item
-          name="select"
+          name="category"
           label={labelFor('Categoria')}
           rules={rules.category}
         >
@@ -184,7 +236,7 @@ const ProductForm: FC<Props> = ({
           name="logoSrc"
           rules={rules.logoSrc}
         >
-          <ImageUpload large />
+          <LogoUpload large />
         </Item>
 
         <Divider>Exibição</Divider>
