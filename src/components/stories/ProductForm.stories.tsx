@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react'
 
 import ProductForm from '../tenant/products/ProductForm'
@@ -24,6 +25,33 @@ const exampleCategories = [
   },
 ]
 
+const initialData = {
+  name: 'Bia de Calcinha',
+  select: '2',
+  logoSrc: 'htpss',
+  price: 1000,
+  assemblyOptions: [
+    {
+      name: 'Sabor',
+      live: true,
+      price: 100,
+      min: 0,
+      max: 20,
+      options: [
+        {
+          first: 'Lucis',
+          last: 'Boy',
+        },
+        {
+          first: 'Bia',
+          last: 'Cunha',
+        },
+      ],
+      type: 'UNISELECT',
+    },
+  ],
+}
+
 export const classic = () => (
   <TenantProvider
     value={
@@ -32,10 +60,24 @@ export const classic = () => (
       } as any
     }
   >
-    <ProductForm />
+    <ProductForm onValidSubmit={(a) => console.log(a)} />
   </TenantProvider>
 )
 
+export const withData = () => (
+  <TenantProvider
+    value={
+      {
+        categories: exampleCategories,
+      } as any
+    }
+  >
+    <ProductForm
+      onValidSubmit={(a) => console.log(a)}
+      initialData={initialData}
+    />
+  </TenantProvider>
+)
 // export const WithData = () => (
 //   <ProductForm
 //     initialData={{

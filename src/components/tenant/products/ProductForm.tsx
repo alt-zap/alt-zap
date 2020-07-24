@@ -1,8 +1,18 @@
 /* eslint-disable no-console */
 import React, { FC } from 'react'
-import { Button, Form, Switch, Select, Divider, InputNumber } from 'antd'
+import {
+  ConfigProvider,
+  Button,
+  Form,
+  Switch,
+  Select,
+  Divider,
+  InputNumber,
+  List,
+} from 'antd'
 import { Rule } from 'antd/lib/form'
-import InputMask from 'react-input-mask'
+import ptBR from 'antd/es/locale/pt_BR'
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 
 import TextInput from '../../common/TextInput'
 import ImageUpload from '../../common/ImageUpload'
@@ -50,6 +60,12 @@ type Props = {
 }
 
 const rules: Record<string, Rule[]> = {
+  required: [
+    {
+      required: true,
+      message: 'Esse campo é obrigatório',
+    },
+  ],
   name: [
     {
       required: true,
@@ -82,7 +98,25 @@ const rules: Record<string, Rule[]> = {
       message: 'Você deve informar um preço',
     },
   ],
+  assemblyName: [
+    { required: true, message: 'Você deve informar o nome do item' },
+  ],
 }
+
+const assemblyOptionsTypes = [
+  {
+    label: 'Seleção Única',
+    name: 'UNISELECT',
+  },
+  {
+    label: 'Múltipla Escolha',
+    name: 'MULTISELECT',
+  },
+  {
+    label: 'Texto Livre',
+    name: 'TEXT',
+  },
+]
 
 // https://www.npmjs.com/package/react-currency-masked-input ??
 const ProductForm: FC<Props> = ({
@@ -95,114 +129,297 @@ const ProductForm: FC<Props> = ({
   const { categories } = useTenantConfig()
 
   return (
-    <Form
-      form={form}
-      layout="vertical"
-      onFinish={(store) => onValidSubmit?.(store as ProductData)}
-      initialValues={initialData}
-    >
-      <div className="flex justify-between">
-        <div className="w-80">
-          <Item label={labelFor('Nome')} name="name" rules={rules.name}>
-            <TextInput disabled={loading} />
-          </Item>
-        </div>
-        <div>
-          <Form.Item
-            label={labelFor('Disponível')}
-            name="live"
-            valuePropName="checked"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <Switch />
-          </Form.Item>
-        </div>
-      </div>
-      <Item name="select" label={labelFor('Categoria')} rules={rules.category}>
-        <Select size="large" placeholder="Selecione a categoria">
-          {categories?.map(({ name, id }) => (
-            <Option value={id} key={id}>
-              {name}
-            </Option>
-          ))}
-        </Select>
-      </Item>
-      <Item
-        label={labelFor('Descrição')}
-        name="description"
-        rules={rules.description}
+    <ConfigProvider locale={ptBR}>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={(store) => onValidSubmit?.(store as ProductData)}
+        initialValues={initialData}
       >
-        <TextareaInput disabled={loading} />
-      </Item>
-
-      <Item label={labelFor('Logomarca')} name="logoSrc" rules={rules.logoSrc}>
-        <ImageUpload large />
-      </Item>
-
-      <Divider>Exibição</Divider>
-
-      <div className="flex justify-around">
-        <div>
-          <Item label={labelFor('Modo de Exibição')}>
-            <Select
-              defaultValue="Horizontal"
-              size="large"
-              placeholder="Selecione a categoria"
-              disabled
-            />
-          </Item>
-        </div>
-        <div>
-          <Form.Item
-            label={labelFor('Destaque')}
-            name="highlight"
-            valuePropName="checked"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <Switch />
-          </Form.Item>
-        </div>
-      </div>
-      <Divider>Oferta</Divider>
-
-      <div className="flex justify-center justify-between-l flex-wrap">
-        <div className="w-70 w-50-l pr3">
-          <Item label={labelFor('Preço Base')} name="price" rules={rules.price}>
-            <PriceInput />
-          </Item>
-        </div>
-        <div className="flex justify-around flex-auto w-100 w-auto-l">
-          <div className="w-30 w-50-l">
-            <Item label={labelFor('Mínimo')} name="min" rules={rules.min}>
-              <NumberInput disabled={loading} />
+        <div className="flex justify-between">
+          <div className="w-80">
+            <Item label={labelFor('Nome')} name="name" rules={rules.name}>
+              <TextInput disabled={loading} />
             </Item>
           </div>
-          <div className="w-30 w-50-l">
-            <Item label={labelFor('Máximo')} name="max" rules={rules.max}>
-              <NumberInput disabled={loading} />
-            </Item>
+          <div>
+            <Form.Item
+              label={labelFor('Disponível')}
+              name="live"
+              valuePropName="checked"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Switch />
+            </Form.Item>
           </div>
         </div>
-      </div>
+        <Item
+          name="select"
+          label={labelFor('Categoria')}
+          rules={rules.category}
+        >
+          <Select size="large" placeholder="Selecione a categoria">
+            {categories?.map(({ name, id }) => (
+              <Option value={id} key={id}>
+                {name}
+              </Option>
+            ))}
+          </Select>
+        </Item>
+        <Item
+          label={labelFor('Descrição')}
+          name="description"
+          rules={rules.description}
+        >
+          <TextareaInput disabled={loading} />
+        </Item>
 
-      <Divider>Opções de Montagem</Divider>
-      <Button
-        loading={loading}
-        size="large"
-        type="primary"
-        block
-        htmlType="submit"
-      >
-        {`${editMode ? 'Salvar' : 'Adicionar'}`}
-      </Button>
-    </Form>
+        <Item
+          label={labelFor('Logomarca')}
+          name="logoSrc"
+          rules={rules.logoSrc}
+        >
+          <ImageUpload large />
+        </Item>
+
+        <Divider>Exibição</Divider>
+
+        <div className="flex justify-around">
+          <div>
+            <Item label={labelFor('Modo de Exibição')}>
+              <Select
+                defaultValue="Horizontal"
+                size="large"
+                placeholder="Selecione a categoria"
+                disabled
+              />
+            </Item>
+          </div>
+          <div>
+            <Form.Item
+              label={labelFor('Destaque')}
+              name="highlight"
+              valuePropName="checked"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Switch />
+            </Form.Item>
+          </div>
+        </div>
+        <Divider>Oferta</Divider>
+
+        <div className="flex justify-center justify-between-l flex-wrap">
+          <div className="w-70 w-50-l pr3">
+            <Item
+              label={labelFor('Preço Base')}
+              name="price"
+              rules={rules.price}
+            >
+              <PriceInput />
+            </Item>
+          </div>
+          <div className="flex justify-around flex-auto w-100 w-auto-l">
+            <div className="w-30 w-50-l">
+              <Item label={labelFor('Mínimo')} name="min" rules={rules.min}>
+                <NumberInput disabled={loading} />
+              </Item>
+            </div>
+            <div className="w-30 w-50-l">
+              <Item label={labelFor('Máximo')} name="max" rules={rules.max}>
+                <NumberInput disabled={loading} />
+              </Item>
+            </div>
+          </div>
+        </div>
+
+        <Divider>Opções de Montagem</Divider>
+
+        <Form.List name="assemblyOptions">
+          {(fields, { add, remove }) => {
+            return (
+              <div>
+                {fields.map((field) => (
+                  <div
+                    key={`${field.key}`}
+                    className="flex flex-column bg-light-gray br3 bw1 pa2 mt2"
+                  >
+                    <div className="flex justify-between">
+                      <div className="w-70">
+                        <Form.Item
+                          {...field}
+                          name={[field.name, 'name']}
+                          fieldKey={[field.fieldKey, 'name']}
+                          rules={rules.assemblyName}
+                          label={labelFor('Nome do Item')}
+                        >
+                          <TextInput placeholder="ex: Sabor" />
+                        </Form.Item>
+                      </div>
+                      <div className="w-20">
+                        <Form.Item
+                          {...field}
+                          name={[field.name, 'live']}
+                          fieldKey={[field.fieldKey, 'live']}
+                          valuePropName="checked"
+                          rules={rules.required}
+                          label={labelFor('Ativo')}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <Switch />
+                        </Form.Item>
+                      </div>
+                    </div>
+                    <div className="flex">
+                      <div className="w-50">
+                        <Item
+                          label={labelFor('Preço')}
+                          name={[field.name, 'price']}
+                          fieldKey={[field.fieldKey, 'price']}
+                        >
+                          <PriceInput />
+                        </Item>
+                      </div>
+                      <div className="w-50">
+                        <Item
+                          {...field}
+                          name={[field.name, 'type']}
+                          fieldKey={[field.fieldKey, 'type']}
+                          label={labelFor('Tipo')}
+                          rules={rules.required}
+                        >
+                          <Select size="large" placeholder="Selecione o tipo">
+                            {assemblyOptionsTypes?.map(({ name, label }) => (
+                              <Option value={name} key={name}>
+                                {label}
+                              </Option>
+                            ))}
+                          </Select>
+                        </Item>
+                      </div>
+                    </div>
+                    <div className="flex justify-around flex-auto w-100 w-auto-l">
+                      <div className="w-30 w-50-l">
+                        <Item
+                          label={labelFor('Mínimo')}
+                          name={[field.name, 'min']}
+                          fieldKey={[field.fieldKey, 'min']}
+                          rules={rules.required}
+                        >
+                          <NumberInput disabled={loading} />
+                        </Item>
+                      </div>
+                      <div className="w-30 w-50-l">
+                        <Item
+                          label={labelFor('Máximo')}
+                          name={[field.name, 'max']}
+                          fieldKey={[field.fieldKey, 'max']}
+                          rules={rules.max}
+                        >
+                          <NumberInput disabled={loading} />
+                        </Item>
+                      </div>
+                    </div>
+                    <Divider orientation="left">Opções</Divider>
+                    <div>
+                      <Form.List name={[field.name, 'options']}>
+                        {(optionFields, { add: optionAdd }) => {
+                          return (
+                            <div>
+                              {optionFields.map((optionField) => (
+                                <div key={`${field.key}-${optionField.key}`}>
+                                  <Form.Item
+                                    {...optionField}
+                                    name={[optionField.name, 'first']}
+                                    fieldKey={[optionField.fieldKey, 'first']}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message: 'Missing first name',
+                                      },
+                                    ]}
+                                  >
+                                    <TextInput placeholder="First Name" />
+                                  </Form.Item>
+                                  <Form.Item
+                                    {...optionField}
+                                    name={[optionField.name, 'last']}
+                                    fieldKey={[optionField.fieldKey, 'last']}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message: 'Missing last name',
+                                      },
+                                    ]}
+                                  >
+                                    <TextInput placeholder="Last Name" />
+                                  </Form.Item>
+                                </div>
+                              ))}
+
+                              <Form.Item>
+                                <Button
+                                  type="dashed"
+                                  onClick={() => {
+                                    optionAdd()
+                                  }}
+                                  block
+                                >
+                                  <PlusOutlined /> Add option
+                                </Button>
+                              </Form.Item>
+                            </div>
+                          )
+                        }}
+                      </Form.List>
+                    </div>
+                  </div>
+                ))}
+                <Form.Item>
+                  <Button
+                    type="dashed"
+                    onClick={() => {
+                      add()
+                    }}
+                    block
+                  >
+                    <PlusOutlined /> Add field
+                  </Button>
+                </Form.Item>
+              </div>
+            )
+          }}
+        </Form.List>
+        <List dataSource={[]} bordered />
+
+        <Button
+          loading={loading}
+          size="large"
+          type="primary"
+          block
+          htmlType="submit"
+        >
+          {`${editMode ? 'Salvar' : 'Adicionar'}`}
+        </Button>
+      </Form>
+    </ConfigProvider>
   )
 }
 
 export default ProductForm
+
+// <div className="flex flex-col justify-center">
+//   <MinusCircleOutlined
+//     onClick={() => {
+//       remove(field.name)
+//     }}
+//   />
+// </div>
