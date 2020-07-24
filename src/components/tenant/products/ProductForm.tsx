@@ -48,7 +48,9 @@ const PriceInput: FC<React.ComponentPropsWithoutRef<typeof CurrencyInput>> = (
   />
 )
 
-const labelFor = (label: string) => <span className="f4 fw1">{label}</span>
+const labelFor = (label: string, small?: boolean) => (
+  <span className={`${small ? '' : 'f4 fw1'}`}>{label}</span>
+)
 
 type ProductData = Pick<Product, 'id' | 'name' | 'live'>
 
@@ -256,7 +258,7 @@ const ProductForm: FC<Props> = ({
                           name={[field.name, 'name']}
                           fieldKey={[field.fieldKey, 'name']}
                           rules={rules.assemblyName}
-                          label={labelFor('Nome do Item')}
+                          label={labelFor('Nome do Campo')}
                         >
                           <TextInput placeholder="ex: Sabor" />
                         </Form.Item>
@@ -279,7 +281,7 @@ const ProductForm: FC<Props> = ({
                       </div>
                     </div>
                     <div className="flex">
-                      <div className="w-50">
+                      <div className="w-50 pr2">
                         <Item
                           label={labelFor('Preço')}
                           name={[field.name, 'price']}
@@ -288,7 +290,7 @@ const ProductForm: FC<Props> = ({
                           <PriceInput />
                         </Item>
                       </div>
-                      <div className="w-50">
+                      <div className="w-50 pl2">
                         <Item
                           {...field}
                           name={[field.name, 'type']}
@@ -335,47 +337,83 @@ const ProductForm: FC<Props> = ({
                           return (
                             <div>
                               {optionFields.map((optionField) => (
-                                <div key={`${field.key}-${optionField.key}`}>
-                                  <Form.Item
-                                    {...optionField}
-                                    name={[optionField.name, 'first']}
-                                    fieldKey={[optionField.fieldKey, 'first']}
-                                    rules={[
-                                      {
-                                        required: true,
-                                        message: 'Missing first name',
-                                      },
-                                    ]}
-                                  >
-                                    <TextInput placeholder="First Name" />
-                                  </Form.Item>
-                                  <Form.Item
-                                    {...optionField}
-                                    name={[optionField.name, 'last']}
-                                    fieldKey={[optionField.fieldKey, 'last']}
-                                    rules={[
-                                      {
-                                        required: true,
-                                        message: 'Missing last name',
-                                      },
-                                    ]}
-                                  >
-                                    <TextInput placeholder="Last Name" />
-                                  </Form.Item>
+                                <div
+                                  key={`${field.key}-${optionField.key}`}
+                                  className="bg-white br3 flex flex-column pa3 mt2"
+                                >
+                                  <div className="flex justify-between">
+                                    <div className="w-70">
+                                      <Form.Item
+                                        {...optionField}
+                                        name={[field.name, 'name']}
+                                        fieldKey={[field.fieldKey, 'name']}
+                                        rules={rules.required}
+                                        label={labelFor('Nome da Opção', true)}
+                                      >
+                                        <TextInput placeholder="ex: Calabresa" />
+                                      </Form.Item>
+                                    </div>
+                                    <div className="w-20">
+                                      <Form.Item
+                                        {...optionField}
+                                        name={[optionField.name, 'live']}
+                                        fieldKey={[
+                                          optionField.fieldKey,
+                                          'live',
+                                        ]}
+                                        valuePropName="checked"
+                                        rules={rules.required}
+                                        label={labelFor('Ativo', true)}
+                                        style={{
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                        }}
+                                      >
+                                        <Switch />
+                                      </Form.Item>
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <div className="w-60 pr3">
+                                      <Form.Item
+                                        {...optionField}
+                                        name={[optionField.name, 'description']}
+                                        fieldKey={[
+                                          optionField.fieldKey,
+                                          'description',
+                                        ]}
+                                        label={labelFor('Descrição', true)}
+                                      >
+                                        <TextInput placeholder="Ex: Contém Lactose" />
+                                      </Form.Item>
+                                    </div>
+                                    <div className="w-40">
+                                      <Form.Item
+                                        {...optionField}
+                                        name={[field.name, 'price']}
+                                        fieldKey={[field.fieldKey, 'price']}
+                                        label={labelFor('Preço', true)}
+                                      >
+                                        <PriceInput />
+                                      </Form.Item>
+                                    </div>
+                                  </div>
                                 </div>
                               ))}
 
-                              <Form.Item>
-                                <Button
-                                  type="dashed"
-                                  onClick={() => {
-                                    optionAdd()
-                                  }}
-                                  block
-                                >
-                                  <PlusOutlined /> Add option
-                                </Button>
-                              </Form.Item>
+                              <div className="mt3">
+                                <Form.Item>
+                                  <Button
+                                    type="dashed"
+                                    onClick={() => {
+                                      optionAdd()
+                                    }}
+                                    block
+                                  >
+                                    <PlusOutlined /> Adicionar Opção
+                                  </Button>
+                                </Form.Item>
+                              </div>
                             </div>
                           )
                         }}
@@ -383,22 +421,23 @@ const ProductForm: FC<Props> = ({
                     </div>
                   </div>
                 ))}
-                <Form.Item>
-                  <Button
-                    type="dashed"
-                    onClick={() => {
-                      add()
-                    }}
-                    block
-                  >
-                    <PlusOutlined /> Add field
-                  </Button>
-                </Form.Item>
+                <div className="mt3">
+                  <Form.Item>
+                    <Button
+                      type="dashed"
+                      onClick={() => {
+                        add()
+                      }}
+                      block
+                    >
+                      <PlusOutlined /> Adicionar Campo
+                    </Button>
+                  </Form.Item>
+                </div>
               </div>
             )
           }}
         </Form.List>
-        <List dataSource={[]} bordered />
 
         <Button
           loading={loading}
@@ -407,7 +446,7 @@ const ProductForm: FC<Props> = ({
           block
           htmlType="submit"
         >
-          {`${editMode ? 'Salvar' : 'Adicionar'}`}
+          {`${editMode ? 'Salvar' : 'Adicionar Produto'}`}
         </Button>
       </Form>
     </ConfigProvider>
