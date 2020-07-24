@@ -16,6 +16,7 @@
     "moment": "latest",
     "react": "latest",
     "react-color": "^2.18.1",
+    "react-currency-masked-input": "^2.5.0",
     "react-device-detect": "^1.13.1",
     "react-dom": "latest",
     "react-input-mask": "^3.0.0-alpha.2",
@@ -30,6 +31,7 @@
   "description": "Compartilhe seu cardápio e receba pedidos pelo Whatsapp",
   "version": "0.0.180",
   "devDependencies": {
+    "@sambego/storybook-state": "^2.0.1",
     "@storybook/addon-knobs": "^5.3.19",
     "@storybook/addon-viewport": "^5.3.19",
     "@storybook/react": "^5.3.19",
