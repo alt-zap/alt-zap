@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { Address, OrderProducts } from './typings'
+
 type Elements = HTMLInputElement | HTMLTextAreaElement
 
 export const eSet = (fn: (data: string) => void) => (
@@ -9,7 +11,7 @@ export const eSet = (fn: (data: string) => void) => (
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const log = (...msgs: any) => {
   // eslint-disable-next-line no-console
-  if (process.env.NODE_ENV === 'development') console.log(...msgs)
+  if (window?.location?.hostname === 'localhost') console.log(...msgs)
 }
 
 const toString = (number: number) => {
@@ -22,7 +24,7 @@ const toString = (number: number) => {
 type GenerateLinkParams = {
   name: string
   address: Address
-  order: Array<[string, string]>
+  order: OrderProducts[]
   payment: {
     label: string
     change?: string
