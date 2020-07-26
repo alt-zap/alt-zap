@@ -25,7 +25,7 @@
         "origin": "AUTHORED",
         "exported": true
     },
-    "lucis.alt/currency-input@1.0.0": {
+    "lucis.alt/currency-input@1.0.5": {
         "files": [
             {
                 "relativePath": "src/components/common/CurrencyInput.tsx",

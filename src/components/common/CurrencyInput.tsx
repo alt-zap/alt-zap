@@ -3,6 +3,7 @@ import { Input } from 'antd'
 
 interface Props extends React.ComponentPropsWithoutRef<typeof Input> {
   separator?: string
+  valueAsString?: boolean
 }
 
 // Extracted from https://github.com/ianmcnally/react-currency-masked-input/blob/3989ce3dfa69dbf78da00424811376c483aceb98/src/services/currency-conversion.js
@@ -34,7 +35,7 @@ const addDecimalToNumber = (number: string, separator: string) => {
   return dollars + separator + cents
 }
 
-export const toCurrency = (value: string, separator: string) => {
+export const toCurrency = (separator: string, value?: string) => {
   const digits = getDigitsFromValue(value)
   const digitsWithPadding = padDigits(digits)
 
@@ -45,6 +46,7 @@ const CurrencyInput: FC<Props> = ({
   onChange,
   separator = ',',
   value,
+  valueAsString,
   ...props
 }) => {
   const handleChange = useCallback(
@@ -58,17 +60,19 @@ const CurrencyInput: FC<Props> = ({
       event.persist()
 
       onChange?.(({
-        target: { value: cents },
+        target: {
+          value: valueAsString ? toCurrency(separator, stringValue) : cents,
+        },
       } as unknown) as React.ChangeEvent<HTMLInputElement>)
     },
-    [onChange]
+    [onChange, valueAsString, separator]
   )
 
   const innerValue = useMemo(() => {
-    const stringValue = typeof value === 'number' ? value.toString() : null
+    const stringValue = typeof value === 'number' ? value.toString() : value
 
     if (stringValue) {
-      return toCurrency(stringValue, separator)
+      return toCurrency(separator, stringValue as string)
     }
   }, [value, separator])
 
