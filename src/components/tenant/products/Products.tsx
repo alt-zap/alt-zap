@@ -1,5 +1,16 @@
-import React, { FC, Fragment, useState, useCallback } from 'react'
-import { Button, List, Modal, Skeleton, Avatar, Divider, Tag } from 'antd'
+import React, { FC, Fragment, useState, useMemo, useCallback } from 'react'
+import {
+  Button,
+  List,
+  Form,
+  Modal,
+  Skeleton,
+  Avatar,
+  Divider,
+  Tag,
+  Input,
+  Select,
+} from 'antd'
 import { PlusOutlined, EditOutlined } from '@ant-design/icons'
 
 import { useTenantConfig } from '../../../contexts/TenantContext'
@@ -7,24 +18,91 @@ import AddProduct from './AddProduct'
 import EditProduct from './EditProduct'
 import Real from '../../Real'
 
+const { Item } = Form
+const { Option } = Select
+
 const Products: FC = () => {
+  const [filters, setFilters] = useState<Record<string, string>>({})
+
   const [addModal, setAddModal] = useState(false)
   const [selectedProduct, setProduct] = useState<Product>()
 
-  const { products, productsLoading } = useTenantConfig()
+  const { products, productsLoading, categories } = useTenantConfig()
 
   const getColorForCategory = useCallback((id: string) => {
     // TODO: Use real logic
     return ['#2db7f5', '#87d068', '#108ee9'][parseInt(id, 10)]
   }, [])
 
+  const filteredProducts = useMemo(() => {
+    return products?.filter(({ name, category }) => {
+      const selectedCategory = filters.category
+
+      const matchName = filters.name
+        ? name.toLowerCase().includes(filters.name.toLowerCase())
+        : true
+
+      const matchCategory = selectedCategory
+        ? category.id === selectedCategory
+        : true
+
+      return matchName && matchCategory
+    })
+  }, [products, filters])
+
   return (
     <Fragment>
+      <div className="flex flex-column">
+        <Form
+          initialValues={{
+            category: '',
+          }}
+          className=""
+          layout="vertical"
+          onFieldsChange={(_, fields) => {
+            const newFilters = fields.reduce(
+              (acc, cur) => ({
+                ...acc,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                [(cur as any).name[0]]: cur.value,
+              }),
+              {}
+            )
+
+            setFilters(newFilters)
+          }}
+        >
+          <div
+            className="flex items-center pa2 b--black-20 b--solid mb2"
+            style={{ borderWidth: '1px' }}
+          >
+            <div className="w-60 pr3">
+              <Item name="name" label="Filtar por Nome">
+                <Input size="large" placeholder="ex: Burguer" />
+              </Item>
+            </div>
+
+            <Item name="category" label="ou por Categoria" className="w-60">
+              <Select size="large" placeholder="Selecione a categoria">
+                <Option value="" key={0}>
+                  Todas
+                </Option>
+                {categories?.map(({ name, id }) => (
+                  <Option value={id} key={id}>
+                    {name}
+                  </Option>
+                ))}
+              </Select>
+            </Item>
+          </div>
+        </Form>
+      </div>
+
       <List
         size="small"
         bordered
         itemLayout="horizontal"
-        dataSource={products}
+        dataSource={filteredProducts}
         renderItem={(product) => (
           <List.Item>
             <List.Item.Meta
