@@ -1,10 +1,17 @@
 import React, { FC } from 'react'
-import { EditOutlined } from '@ant-design/icons'
-import { PageHeader, Tag, Button, Statistic, Row, Divider } from 'antd'
+import { PageHeader, Tag, Button, Statistic, Row, Divider, Tabs } from 'antd'
+import {
+  CarOutlined,
+  EditOutlined,
+  MenuOutlined,
+  ScheduleOutlined,
+} from '@ant-design/icons'
 
 import Categories from './categories/Categories'
 import Products from './products/Products'
 import { useTenantConfig } from '../../contexts/TenantContext'
+
+const { TabPane } = Tabs
 
 const TenantDashboard: FC = () => {
   const { tenant } = useTenantConfig()
@@ -35,16 +42,50 @@ const TenantDashboard: FC = () => {
           <Statistic title="Produtos" value={tenant.items?.length} />
         </Row>
       </PageHeader>
-      <div className="flex flex-column flex-row-l">
-        <div className="w-100 w-50-l ph2">
-          <Divider>Produtos</Divider>
-          <Products />
-        </div>
-        <div className="w-100 w-50-l ph2">
-          <Divider>Categorias</Divider>
-          <Categories />
-        </div>
-      </div>
+      <Tabs defaultActiveKey="2">
+        <TabPane
+          tab={
+            <span>
+              <MenuOutlined />
+              Menu de Produtos
+            </span>
+          }
+          key="1"
+        >
+          <div className="flex flex-column flex-row-l">
+            <div className="w-100 w-50-l ph2">
+              <Divider>Produtos</Divider>
+              <Products />
+            </div>
+            <div className="w-100 w-50-l ph2">
+              <Divider>Categorias</Divider>
+              <Categories />
+            </div>
+          </div>
+        </TabPane>
+        <TabPane
+          tab={
+            <span>
+              <ScheduleOutlined />
+              Horário de Funcionamento
+            </span>
+          }
+          key="2"
+        >
+          Tab 2
+        </TabPane>
+        <TabPane
+          tab={
+            <span>
+              <CarOutlined />
+              Logística
+            </span>
+          }
+          key="3"
+        >
+          Logística
+        </TabPane>
+      </Tabs>
     </div>
   ) : null
 }
