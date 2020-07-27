@@ -39,6 +39,14 @@ const dayOptions = [
     value: 'FRIDAY',
     label: 'Sexta-Feira',
   },
+  {
+    value: 'SATURDAY',
+    label: 'Sábado',
+  },
+  {
+    value: 'SUNDAY',
+    label: 'Domingo',
+  },
 ]
 
 // TODO: Make this works because the current UX sucks

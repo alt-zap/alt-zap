@@ -4,18 +4,18 @@ import ProductForm from './ProductForm'
 import { useTenantConfig } from '../../../contexts/TenantContext'
 
 type Props = {
-  category: Partial<Product>
+  product: Partial<Product>
   onFinish: () => void
 }
 
-const EditProduct: FC<Props> = ({ category }) => {
+const EditProduct: FC<Props> = ({ product }) => {
   const { editProduct, categoriesLoading } = useTenantConfig()
 
   return (
     <ProductForm
       editMode
-      onValidSubmit={(data) => editProduct(data)}
-      initialData={category}
+      onValidSubmit={(data) => editProduct(data as Product)}
+      initialData={product}
       loading={categoriesLoading}
     />
   )

@@ -12,6 +12,7 @@ import {
   Select,
 } from 'antd'
 import { PlusOutlined, EditOutlined } from '@ant-design/icons'
+import { Img } from 'react-image'
 
 import { useTenantConfig } from '../../../contexts/TenantContext'
 import AddProduct from './AddProduct'
@@ -107,7 +108,14 @@ const Products: FC = () => {
           <List.Item>
             <List.Item.Meta
               avatar={
-                <Avatar shape="square" size="large" src={product.imgSrc} />
+                <Img
+                  width="44"
+                  className="br2 mt1"
+                  src={product.imgSrc as string}
+                  loader={
+                    <Skeleton.Image style={{ width: '44px', height: '44px' }} />
+                  }
+                />
               }
               description={
                 <div>

@@ -5,12 +5,14 @@ import {
   EditOutlined,
   MenuOutlined,
   ScheduleOutlined,
+  DollarOutlined,
 } from '@ant-design/icons'
 
 import { useTenantConfig } from '../../contexts/TenantContext'
 import OpeningHours from './OpeningHours'
 import MenuDashboard from './menus/MenuDashboard'
 import LogisticsDashboard from './logistics/LogisticsDashboard'
+import PaymentsDashboard from './payments/PaymentsDashboard'
 
 const { TabPane } = Tabs
 
@@ -43,7 +45,7 @@ const TenantDashboard: FC = () => {
           <Statistic title="Produtos" value={tenant.items?.length} />
         </Row>
       </PageHeader>
-      <Tabs defaultActiveKey="3">
+      <Tabs defaultActiveKey="4">
         <TabPane
           tab={
             <span>
@@ -76,6 +78,17 @@ const TenantDashboard: FC = () => {
           key="3"
         >
           <LogisticsDashboard />
+        </TabPane>
+        <TabPane
+          tab={
+            <span>
+              <DollarOutlined />
+              Meios de Pagamento
+            </span>
+          }
+          key="4"
+        >
+          <PaymentsDashboard />
         </TabPane>
       </Tabs>
     </div>

@@ -26,6 +26,7 @@
     "react-currency-masked-input": "^2.5.0",
     "react-device-detect": "^1.13.1",
     "react-dom": "latest",
+    "react-image": "^4.0.3",
     "react-input-mask": "^3.0.0-alpha.2",
     "react-markdown": "4.3.1",
     "react-social-login-buttons": "3.1.0",
