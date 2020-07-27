@@ -75,7 +75,7 @@ const OpeningHours: FC = () => {
                 {fields.map((field) => (
                   <div
                     key={field.key}
-                    className="flex flex-wrap justify-center items-center b--black-20 b--solid pa2 pt3 mt3"
+                    className="flex flex-wrap flex-nowrap-l justify-center items-center b--black-20 b--solid pa2 pt3 mt3"
                     style={{ borderWidth: '1px' }}
                   >
                     <div className="pv2-2 pv0 pr2 w-100 w-40-l">

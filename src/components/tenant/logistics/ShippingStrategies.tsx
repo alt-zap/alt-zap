@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import { Form, Switch } from 'antd'
+import { Button, Form, Switch } from 'antd'
 
 import CurrencyInput from '../../common/CurrencyInput'
 
@@ -7,11 +7,12 @@ const { Item } = Form
 
 const ShippingStrategies: FC = () => {
   const [deliveryFee, setFee] = useState(0)
+  const [loading, setLoading] = useState(false)
 
   return (
     <div className="flex flex-column">
       <div
-        className="b--solid b--black-20 br1 flex justify-between pa3"
+        className="b--solid b--black-20 br1 flex justify-between pa3 flex-wrap"
         style={{ borderWidth: '1px' }}
       >
         <div className="flex flex-column">
@@ -21,19 +22,23 @@ const ShippingStrategies: FC = () => {
             cada compra caso o cliente escolha por Entrega
           </span>
         </div>
-        <div className="pr2">
-          <Item label="Preço">
-            <CurrencyInput
-              addonBefore="R$"
-              value={deliveryFee}
-              onChange={(e) => setFee(e.target.value)}
-            />
-          </Item>
-        </div>
-        <div className="w-20 w-10-l">
-          <Item label="Ativo">
-            <Switch />
-          </Item>
+        <div className="flex w-100 w-auto-l justify-center items-center">
+          <div className="pr2 flex flex-column">
+            <Item label="Preço">
+              <CurrencyInput
+                addonBefore="R$"
+                value={deliveryFee}
+                // TODO: Mudar o tipo de Currency Input
+                // TODO: Tem que ajeitar o layout no mobile
+                onChange={(e) => setFee((e.target.value as unknown) as number)}
+              />
+            </Item>
+          </div>
+          <div className="w-20 w-10-l">
+            <Item label="Ativo">
+              <Switch />
+            </Item>
+          </div>
         </div>
       </div>
       <div
@@ -53,6 +58,15 @@ const ShippingStrategies: FC = () => {
           </Item>
         </div>
       </div>
+      <Button
+        loading={loading}
+        size="large"
+        type="primary"
+        block
+        className="mt3"
+      >
+        Salvar
+      </Button>
     </div>
   )
 }
