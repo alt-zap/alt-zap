@@ -62,7 +62,13 @@ const OpeningHours: FC = () => {
     <div className="flex justify-center">
       <div style={{ maxWidth: '600px' }}>
         <Divider>Horário Semanal</Divider>
-        <Form layout="vertical" onFinish={console.log}>
+        <Form
+          layout="vertical"
+          onFinish={(data) => {
+            // eslint-disable-next-line no-console
+            console.log({ data })
+          }}
+        >
           <Form.List name="intervals">
             {(fields, { add, remove }) => (
               <div>
@@ -99,6 +105,7 @@ const OpeningHours: FC = () => {
                         rules={[{ required: true }]}
                       >
                         <RangePicker
+                          picker="time"
                           size="large"
                           format="HH:mm"
                           minuteStep={15}

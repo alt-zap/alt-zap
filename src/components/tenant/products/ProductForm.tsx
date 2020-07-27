@@ -22,41 +22,6 @@ import CurrencyInput from '../../common/CurrencyInput'
 const { Item } = Form
 const { Option } = Select
 
-// const NumberInput = React.forwardRef<
-//   HTMLDivElement,
-//   React.ComponentPropsWithoutRef<typeof InputNumber>
-// >(function NumberInput(props, ref) {
-//   return (
-//     <div ref={ref}>
-//       <InputNumber
-//         size="large"
-//         className="fw1"
-//         spellCheck="false"
-//         autoComplete="off"
-//         {...props}
-//       />
-//     </div>
-//   )
-// })
-
-// const PriceInput = React.forwardRef<
-//   HTMLDivElement,
-//   React.ComponentPropsWithoutRef<typeof CurrencyInput>
-// >(function PriceInput(props, ref) {
-//   return (
-//     <div ref={ref}>
-//       <CurrencyInput
-//         addonBefore="R$"
-//         size="large"
-//         className="fw1"
-//         spellCheck="false"
-//         autoComplete="off"
-//         {...props}
-//       />
-//     </div>
-//   )
-// })
-
 function forwardRef<Props>(Component: FC<Props>, extraProps?: any) {
   return React.forwardRef<HTMLDivElement, Props>(function WrappedComp(
     props,
@@ -137,12 +102,6 @@ const rules: Record<string, Rule[]> = {
     {
       required: true,
       message: 'Você deve selecionar uma categoria para o produto',
-    },
-  ],
-  logoSrc: [
-    {
-      required: true,
-      message: 'Você deve adicionar ou fazer o upload de uma logomarca',
     },
   ],
   price: [
@@ -231,11 +190,7 @@ const ProductForm: FC<Props> = ({
           <TextareaInput disabled={loading} />
         </Item>
 
-        <Item
-          label={labelFor('Logomarca')}
-          name="logoSrc"
-          rules={rules.logoSrc}
-        >
+        <Item label={labelFor('Imagem')} name="imgSrc">
           <LogoUpload large />
         </Item>
 

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { PageHeader, Tag, Button, Statistic, Row, Divider, Tabs } from 'antd'
+import { PageHeader, Tag, Button, Statistic, Row, Tabs } from 'antd'
 import {
   CarOutlined,
   EditOutlined,
@@ -7,9 +7,10 @@ import {
   ScheduleOutlined,
 } from '@ant-design/icons'
 
-import Categories from './categories/Categories'
-import Products from './products/Products'
 import { useTenantConfig } from '../../contexts/TenantContext'
+import OpeningHours from './OpeningHours'
+import MenuDashboard from './menus/MenuDashboard'
+import LogisticsDashboard from './logistics/LogisticsDashboard'
 
 const { TabPane } = Tabs
 
@@ -42,7 +43,7 @@ const TenantDashboard: FC = () => {
           <Statistic title="Produtos" value={tenant.items?.length} />
         </Row>
       </PageHeader>
-      <Tabs defaultActiveKey="2">
+      <Tabs defaultActiveKey="3">
         <TabPane
           tab={
             <span>
@@ -52,16 +53,7 @@ const TenantDashboard: FC = () => {
           }
           key="1"
         >
-          <div className="flex flex-column flex-row-l">
-            <div className="w-100 w-50-l ph2">
-              <Divider>Produtos</Divider>
-              <Products />
-            </div>
-            <div className="w-100 w-50-l ph2">
-              <Divider>Categorias</Divider>
-              <Categories />
-            </div>
-          </div>
+          <MenuDashboard />
         </TabPane>
         <TabPane
           tab={
@@ -72,7 +64,7 @@ const TenantDashboard: FC = () => {
           }
           key="2"
         >
-          Tab 2
+          <OpeningHours />
         </TabPane>
         <TabPane
           tab={
@@ -83,7 +75,7 @@ const TenantDashboard: FC = () => {
           }
           key="3"
         >
-          Logística
+          <LogisticsDashboard />
         </TabPane>
       </Tabs>
     </div>

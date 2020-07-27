@@ -4,7 +4,7 @@ import { SendOutlined } from '@ant-design/icons'
 import * as firebase from 'firebase/app'
 import 'firebase/analytics'
 
-import Address from './Address'
+import Address from './AddressForm'
 import ProductList from './ProductList'
 import Totalizer from './Totalizer'
 import OrderSummary from './OrderSummary'
