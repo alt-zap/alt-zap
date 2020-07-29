@@ -67,7 +67,7 @@ const ShippingStrategies: FC = () => {
             adicionada nenhuma taxa no pedido
           </span>
         </div>
-        <div className="w-30 pl3 w-10-l">
+        <div className="w-30 pl3 w-20-l">
           <Item label="Ativo">
             <Switch />
           </Item>

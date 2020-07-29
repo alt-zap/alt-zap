@@ -16,12 +16,23 @@ import PaymentsDashboard from './payments/PaymentsDashboard'
 
 const { TabPane } = Tabs
 
+const renderTabBar = (props: any, DefaultTabBar: any) => (
+  <DefaultTabBar
+    {...props}
+    className="site-custom-tab-bar"
+    style={{ backgroundColor: 'white', paddingLeft: '8px' }}
+  />
+)
+
 const TenantDashboard: FC = () => {
   const { tenant } = useTenantConfig()
 
   return tenant ? (
     <div className="flex flex-column">
       <PageHeader
+        style={{
+          backgroundColor: 'white',
+        }}
         onBack={() => window.history.back()}
         title={tenant.name}
         tags={
@@ -45,7 +56,7 @@ const TenantDashboard: FC = () => {
           <Statistic title="Produtos" value={tenant.items?.length} />
         </Row>
       </PageHeader>
-      <Tabs defaultActiveKey="4">
+      <Tabs defaultActiveKey="4" renderTabBar={renderTabBar}>
         <TabPane
           tab={
             <span>
@@ -66,7 +77,9 @@ const TenantDashboard: FC = () => {
           }
           key="2"
         >
-          <OpeningHours />
+          <div className="flex justify-center justify-start-l">
+            <OpeningHours />
+          </div>
         </TabPane>
         <TabPane
           tab={

@@ -8,10 +8,11 @@ import {
   Select,
   Divider,
   InputNumber,
+  Tooltip,
 } from 'antd'
 import { Rule } from 'antd/lib/form'
 import ptBR from 'antd/es/locale/pt_BR'
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 
 import TextInputOriginal from '../../common/TextInput'
 import ImageUploadOriginal from '../../common/ImageUpload'
@@ -130,7 +131,6 @@ const assemblyOptionsTypes = [
   },
 ]
 
-// https://www.npmjs.com/package/react-currency-masked-input ??
 const ProductForm: FC<Props> = ({
   editMode,
   onValidSubmit,
@@ -340,7 +340,10 @@ const ProductForm: FC<Props> = ({
                     <Divider orientation="left">Opções</Divider>
                     <div>
                       <Form.List name={[field.name, 'options']}>
-                        {(optionFields, { add: optionAdd }) => {
+                        {(
+                          optionFields,
+                          { add: optionAdd, remove: optionRemove }
+                        ) => {
                           return (
                             <div>
                               {optionFields.map((optionField) => (
@@ -352,8 +355,11 @@ const ProductForm: FC<Props> = ({
                                     <div className="w-70">
                                       <Form.Item
                                         {...optionField}
-                                        name={[field.name, 'name']}
-                                        fieldKey={[field.fieldKey, 'name']}
+                                        name={[optionField.name, 'name']}
+                                        fieldKey={[
+                                          optionField.fieldKey,
+                                          'name',
+                                        ]}
                                         rules={rules.required}
                                         label={labelFor('Nome da Opção', true)}
                                       >
@@ -380,30 +386,65 @@ const ProductForm: FC<Props> = ({
                                       </Form.Item>
                                     </div>
                                   </div>
-                                  <div className="flex justify-between">
-                                    <div className="w-60 pr3">
+                                  <div className="w-100">
+                                    <Form.Item
+                                      {...optionField}
+                                      name={[optionField.name, 'description']}
+                                      fieldKey={[
+                                        optionField.fieldKey,
+                                        'description',
+                                      ]}
+                                      label={labelFor('Descrição', true)}
+                                    >
+                                      <TextInput placeholder="Ex: Contém Lactose" />
+                                    </Form.Item>
+                                  </div>
+                                  <div className="flex justify-around">
+                                    <div className="w-40 pr3">
                                       <Form.Item
                                         {...optionField}
-                                        name={[optionField.name, 'description']}
+                                        name={[optionField.name, 'price']}
                                         fieldKey={[
                                           optionField.fieldKey,
-                                          'description',
+                                          'price',
                                         ]}
-                                        label={labelFor('Descrição', true)}
-                                      >
-                                        <TextInput placeholder="Ex: Contém Lactose" />
-                                      </Form.Item>
-                                    </div>
-                                    <div className="w-40">
-                                      <Form.Item
-                                        {...optionField}
-                                        name={[field.name, 'price']}
-                                        fieldKey={[field.fieldKey, 'price']}
                                         label={labelFor('Preço', true)}
                                       >
                                         <PriceInput />
                                       </Form.Item>
                                     </div>
+                                    <div className="w-40">
+                                      <Form.Item
+                                        {...optionField}
+                                        name={[
+                                          optionField.name,
+                                          'initialQuantity',
+                                        ]}
+                                        fieldKey={[
+                                          optionField.fieldKey,
+                                          'initialQuantity',
+                                        ]}
+                                        label="Quantidade Inicial"
+                                      >
+                                        <NumberInput />
+                                      </Form.Item>
+                                    </div>
+                                  </div>
+
+                                  <div className="flex justify-center">
+                                    <Tooltip title="Remover Item">
+                                      <Button
+                                        danger
+                                        onClick={() =>
+                                          optionRemove(optionField.name)
+                                        }
+                                        onKeyPress={() =>
+                                          optionRemove(optionField.name)
+                                        }
+                                        shape="circle"
+                                        icon={<DeleteOutlined />}
+                                      />
+                                    </Tooltip>
                                   </div>
                                 </div>
                               ))}
@@ -420,6 +461,18 @@ const ProductForm: FC<Props> = ({
                                     <PlusOutlined /> Adicionar Opção
                                   </Button>
                                 </Form.Item>
+                              </div>
+                              <div className="flex justify-center">
+                                <Tooltip title="Remover Item">
+                                  <Button
+                                    danger
+                                    type="primary"
+                                    onClick={() => remove(field.name)}
+                                    onKeyPress={() => remove(field.name)}
+                                    shape="circle"
+                                    icon={<DeleteOutlined />}
+                                  />
+                                </Tooltip>
                               </div>
                             </div>
                           )

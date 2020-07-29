@@ -1,12 +1,14 @@
 import React from 'react'
+import { Layout } from 'antd'
 
 import TenantDashboard from '../tenant/TenantDashboard'
 import { TenantProvider } from '../../contexts/TenantContext'
 
+const { Content, Footer, Sider } = Layout
+
 export default {
   title: 'tenant|TenantDashboard',
   component: TenantDashboard,
-  decorators: [(story: any) => <div className="pa2">{story()}</div>],
 }
 
 const exampleTenant = {
@@ -108,5 +110,43 @@ export const Loading = () => (
     }}
   >
     <TenantDashboard />
+  </TenantProvider>
+)
+
+export const withLayout = () => (
+  <TenantProvider
+    value={{
+      tenant: (exampleTenant as unknown) as TenantConfig,
+      categories: exampleCategories,
+      products: exampleProducts,
+      loading: false,
+      updateTenant: () => {},
+      editCategory: () => {},
+      addCategory: () => {},
+      addProduct: () => {},
+      editProduct: () => {},
+      isCategoryUnique: (slug) => slug !== 'principal',
+    }}
+  >
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider breakpoint="lg" collapsedWidth="0">
+        <div className="flex justify-center">jeu</div>
+      </Sider>
+      <Layout>
+        <Content>
+          <TenantDashboard />
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>
+          Alt Zap ©2020 -{' '}
+          <a
+            target="_black"
+            rel="noopener noreferer"
+            href="https://github.com/lucis/alt-zap"
+          >
+            Estamos no Github
+          </a>
+        </Footer>
+      </Layout>
+    </Layout>
   </TenantProvider>
 )

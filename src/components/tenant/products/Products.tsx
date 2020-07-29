@@ -74,8 +74,8 @@ const Products: FC = () => {
           }}
         >
           <div
-            className="flex items-center pa2 b--black-20 b--solid mb2"
-            style={{ borderWidth: '1px' }}
+            className="flex items-center pa2 mb2 br1"
+            style={{ border: '1px solid #d9d9d9' }}
           >
             <div className="w-60 pr3">
               <Item name="name" label="Filtar por Nome">

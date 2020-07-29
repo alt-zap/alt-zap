@@ -67,92 +67,90 @@ const dayOptions = [
 
 const OpeningHours: FC = () => {
   return (
-    <div className="flex justify-center">
-      <div style={{ maxWidth: '600px' }}>
-        <Divider>Horário Semanal</Divider>
-        <Form
-          layout="vertical"
-          onFinish={(data) => {
-            // eslint-disable-next-line no-console
-            console.log({ data })
-          }}
-        >
-          <Form.List name="intervals">
-            {(fields, { add, remove }) => (
-              <div>
-                {fields.map((field) => (
-                  <div
-                    key={field.key}
-                    className="flex flex-wrap flex-nowrap-l justify-center items-center b--black-20 b--solid pa2 pt3 mt3"
-                    style={{ borderWidth: '1px' }}
-                  >
-                    <div className="pv2-2 pv0 pr2 w-100 w-40-l">
-                      <Item
-                        {...field}
-                        className="w-100"
-                        name={[field.name, 'day']}
-                        fieldKey={[field.fieldKey, 'day']}
-                        label="Dia (ou dias)"
-                        rules={[{ required: true }]}
-                      >
-                        <Select size="large" placeholder="Selecione o tipo">
-                          {dayOptions.map(({ value, label }) => (
-                            <Option value={value} key={value}>
-                              {label}
-                            </Option>
-                          ))}
-                        </Select>
-                      </Item>
-                    </div>
-                    <div className="w-100 w-auto-l flex justify-between items-center">
-                      <Item
-                        {...field}
-                        name={[field.name, 'time']}
-                        fieldKey={[field.fieldKey, 'time']}
-                        label="Intervalo de Horas"
-                        rules={[{ required: true }]}
-                      >
-                        <RangePicker
-                          picker="time"
-                          size="large"
-                          format="HH:mm"
-                          minuteStep={15}
-                        />
-                      </Item>
-                      <MinusCircleOutlined
-                        className="pa3"
-                        alt="Remover"
-                        onClick={() => {
-                          remove(field.name)
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-                <div className="mt3">
-                  <Form.Item>
-                    <Button
-                      type="dashed"
-                      onClick={() => {
-                        add()
-                      }}
-                      block
+    <div className="w-90 w-50-l bg-white ph3 pt1 pb2 ml0 ml4-l mt2 br1">
+      <Divider>Horário Semanal</Divider>
+      <Form
+        layout="vertical"
+        onFinish={(data) => {
+          // eslint-disable-next-line no-console
+          console.log({ data })
+        }}
+      >
+        <Form.List name="intervals">
+          {(fields, { add, remove }) => (
+            <div>
+              {fields.map((field) => (
+                <div
+                  key={field.key}
+                  className="flex flex-wrap flex-nowrap-l justify-center items-center b--black-20 b--solid pa2 pt3 mt3"
+                  style={{ borderWidth: '1px' }}
+                >
+                  <div className="pv2-2 pv0 pr2 w-100 w-40-l">
+                    <Item
+                      {...field}
+                      className="w-100"
+                      name={[field.name, 'day']}
+                      fieldKey={[field.fieldKey, 'day']}
+                      label="Dia (ou dias)"
+                      rules={[{ required: true }]}
                     >
-                      <PlusOutlined /> Adicionar Intervalo
-                    </Button>
-                  </Form.Item>
+                      <Select size="large" placeholder="Selecione o tipo">
+                        {dayOptions.map(({ value, label }) => (
+                          <Option value={value} key={value}>
+                            {label}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Item>
+                  </div>
+                  <div className="w-100 w-auto-l flex justify-between items-center">
+                    <Item
+                      {...field}
+                      name={[field.name, 'time']}
+                      fieldKey={[field.fieldKey, 'time']}
+                      label="Intervalo de Horas"
+                      rules={[{ required: true }]}
+                    >
+                      <RangePicker
+                        picker="time"
+                        size="large"
+                        format="HH:mm"
+                        minuteStep={15}
+                      />
+                    </Item>
+                    <MinusCircleOutlined
+                      className="pa3"
+                      alt="Remover"
+                      onClick={() => {
+                        remove(field.name)
+                      }}
+                    />
+                  </div>
                 </div>
+              ))}
+              <div className="mt3">
+                <Form.Item>
+                  <Button
+                    type="dashed"
+                    onClick={() => {
+                      add()
+                    }}
+                    block
+                  >
+                    <PlusOutlined /> Adicionar Intervalo
+                  </Button>
+                </Form.Item>
               </div>
-            )}
-          </Form.List>
+            </div>
+          )}
+        </Form.List>
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit" block>
-              Salvar
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
+        <Form.Item>
+          <Button type="primary" size="large" htmlType="submit" block>
+            Salvar
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   )
 }

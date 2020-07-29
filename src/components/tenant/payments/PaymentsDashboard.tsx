@@ -9,7 +9,7 @@ const { Item } = Form
 const PaymentsDashboard: FC = () => {
   return (
     <div className="flex justify-center">
-      <div className="w-100 w-50-l">
+      <div className="w-90 w-50-l bg-white mv2 ml4-l ml-0 pb3 ph3 br1">
         <Divider>Meios de Pagamento</Divider>
         <Form
           layout="vertical"
@@ -100,7 +100,7 @@ const PaymentsDashboard: FC = () => {
           </Form.List>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button size="large" type="primary" htmlType="submit" block>
               Salvar
             </Button>
           </Form.Item>
