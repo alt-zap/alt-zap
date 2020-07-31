@@ -9,14 +9,14 @@ type Props = {
 }
 
 const EditCategory: FC<Props> = ({ category }) => {
-  const { editCategory, categoriesLoading } = useTenantConfig()
+  const { editCategory, categoryLoading } = useTenantConfig()
 
   return (
     <CategoryForm
       editMode
       onValidSubmit={(data) => editCategory(data)}
       initialData={category}
-      loading={categoriesLoading}
+      loading={categoryLoading}
     />
   )
 }

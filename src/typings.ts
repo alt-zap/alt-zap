@@ -24,8 +24,9 @@ export interface TenantConfig {
     price: number
     items?: string[]
   }>
-  // new stuff
+  // won't happen
   menus: Menu[]
+  categories?: Category[]
   templateAssembly: Assembly[]
   selectedMenu: number
 }

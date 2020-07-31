@@ -3,6 +3,7 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 
 import { createCtx, log, Element } from '../utils'
+import { TenantConfig } from '../typings'
 
 type Props = {
   slug?: string
@@ -19,10 +20,9 @@ type ContextProps = {
   tenantId?: string
   tenant?: TenantConfig
   categories?: CategoriesCollection[]
-  // TODO: This prop is being used for two things. Not ideal.
-  categoriesLoading?: boolean
+  categoryLoading?: boolean
   editCategory: (category: Category) => void
-  addCategory: (category: Partial<Category>) => Promise<void>
+  addCategory: (category: Category) => Promise<void>
   isCategoryUnique: (slug: string) => boolean
   products?: Product[]
   // TODO: This prop is being used for two things. Not ideal.
@@ -42,6 +42,7 @@ export const TenantContextProvider: FC<Props> = ({
   const [tenant, setTenant] = useState<TenantConfig>()
   const [id, setId] = useState(tenantId)
   const [loading, setLoading] = useState(true)
+  const [categoryLoading, setCategoryLoading] = useState(false)
 
   useEffect(() => {
     if (!slug && !tenantId) return
@@ -74,19 +75,38 @@ export const TenantContextProvider: FC<Props> = ({
   const editCategory = useCallback((category: Category) => {}, [])
 
   const addCategory = useCallback(
-    (category: Partial<Category>) => {
+    (category: Category) => {
+      if (!tenant) {
+        return Promise.reject()
+      }
+
+      setCategoryLoading(true)
+
       const db = firebase.firestore()
       const ref = db.collection('tenants').doc(tenantId)
 
+      const toAdd = tenant?.categories
+        ? firebase.firestore.FieldValue.arrayUnion(category)
+        : [category]
+
       return ref
         .update({
-          categories: firebase.firestore.FieldValue.arrayUnion(category),
+          categories: toAdd,
         })
         .then(() => {
-          // TODO: Add Category to local array
+          const { categories: current } = tenant
+
+          // Adding newly-added category to local array
+          setTenant({
+            ...tenant,
+            categories: current ? [...current, category] : [category],
+          })
+        })
+        .finally(() => {
+          setCategoryLoading(false)
         })
     },
-    [tenantId]
+    [tenantId, tenant]
   )
 
   const categoriesList = useMemo(
@@ -108,6 +128,7 @@ export const TenantContextProvider: FC<Props> = ({
         updateTenant: setTenant,
         editCategory,
         isCategoryUnique,
+        categoryLoading,
         addCategory,
         editProduct: () => {},
         addProduct: () => {},

@@ -6,7 +6,7 @@ import { useTenantConfig } from '../../../contexts/TenantContext'
 type Props = { onFinish: () => void }
 
 const AddProduct: FC<Props> = ({ onFinish }) => {
-  const { categoriesLoading } = useTenantConfig()
+  const { productsLoading } = useTenantConfig()
 
   const createProduct = useCallback(
     (data: Partial<Product>) => {
@@ -18,9 +18,7 @@ const AddProduct: FC<Props> = ({ onFinish }) => {
     [onFinish]
   )
 
-  return (
-    <ProductForm onValidSubmit={createProduct} loading={categoriesLoading} />
-  )
+  return <ProductForm onValidSubmit={createProduct} loading={productsLoading} />
 }
 
 export default AddProduct

@@ -9,14 +9,14 @@ type Props = {
 }
 
 const EditProduct: FC<Props> = ({ product }) => {
-  const { editProduct, categoriesLoading } = useTenantConfig()
+  const { editProduct, productsLoading } = useTenantConfig()
 
   return (
     <ProductForm
       editMode
       onValidSubmit={(data) => editProduct(data as Product)}
       initialData={product}
-      loading={categoriesLoading}
+      loading={productsLoading}
     />
   )
 }

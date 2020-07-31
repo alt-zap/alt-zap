@@ -10,7 +10,7 @@ const Categories: FC = () => {
   const [addModal, setAddModal] = useState(false)
   const [selectedCategory, setCategory] = useState<Category>()
 
-  const { categories, categoriesLoading } = useTenantConfig()
+  const { tenant, loading } = useTenantConfig()
 
   return (
     <Fragment>
@@ -18,7 +18,7 @@ const Categories: FC = () => {
         size="small"
         bordered
         itemLayout="horizontal"
-        dataSource={categories}
+        dataSource={tenant?.categories}
         renderItem={(category) => (
           <List.Item>
             <List.Item.Meta
@@ -36,7 +36,7 @@ const Categories: FC = () => {
           </List.Item>
         )}
       >
-        {categoriesLoading && (
+        {loading && (
           <List.Item
             style={{
               maxWidth: '300px',
