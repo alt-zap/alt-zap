@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-handler-names */
 import React, { FC } from 'react'
-import { Form, Button } from 'antd'
+import { Form, Button, Select } from 'antd'
 import slugify from 'slugify'
 import { Rule } from 'antd/lib/form'
 import InputMask from 'react-input-mask'
@@ -10,6 +10,7 @@ import ColorPicker from '../common/ColorPicker'
 import TextInput from '../common/TextInput'
 
 const { Item } = Form
+const { Option } = Select
 
 type TenantMetadata = Pick<
   TenantConfig,
@@ -54,9 +55,33 @@ const rules: Record<string, Rule[]> = {
       message: 'Forneça um usuário válido',
     },
   ],
+  required: [
+    {
+      required: true,
+      message: 'Este campo é obrigatório',
+    },
+  ],
 }
+// TODO: Mudar para pegar isso dinamicamente
 
-const labelFor = (label: string) => <span className="f4 fw1">{label}</span>
+const categories = [
+  {
+    name: 'Hamburgueria',
+    value: 'hamburgueria',
+  },
+  {
+    name: 'Pizzaria',
+    value: 'pizzaria',
+  },
+  {
+    name: 'Loja',
+    value: 'loja',
+  },
+  {
+    name: 'Restaurante',
+    value: 'restaurante',
+  },
+]
 
 const TenantDataForm: FC<Props> = ({ initialData }) => {
   const [form] = Form.useForm()
@@ -70,20 +95,13 @@ const TenantDataForm: FC<Props> = ({ initialData }) => {
       onFinish={console.log}
       initialValues={initialData}
     >
-      <Item
-        label={labelFor('Nome do seu negócio')}
-        name="name"
-        rules={rules.name}
-      >
+      <Item label="Nome do seu negócio" name="name" rules={rules.name}>
         <TextInput />
       </Item>
-      <Item
-        label={labelFor('URL da sua página')}
-        name="slug"
-        rules={rules.slug}
-      >
+      <Item label="URL da sua página" name="slug" rules={rules.slug}>
         <TextInput
-          addonBefore="https://alt-zap.vercel.app/"
+          addonBefore="https://"
+          addonAfter=".alt.app.br"
           onFocus={() => {
             const { name, slug } = form.getFieldsValue()
 
@@ -93,32 +111,33 @@ const TenantDataForm: FC<Props> = ({ initialData }) => {
           }}
         />
       </Item>
+      <Item label="Categoria" name="category" rules={rules.required}>
+        <Select size="large" placeholder="Selecione a categoria">
+          {categories?.map(({ name, value }) => (
+            <Option value={value} key={value}>
+              {name}
+            </Option>
+          ))}
+        </Select>
+      </Item>
       <div className="flex">
         <div className="w-50 mr1">
-          <Item
-            label={labelFor('Whatsapp')}
-            name="whatsapp"
-            rules={rules.whatsapp}
-          >
+          <Item label="Whatsapp" name="whatsapp" rules={rules.whatsapp}>
             <InputMask mask="+55 (99) 99999-9999">
               <TextInput placeholder="ex: (83) 99934-2545" />
             </InputMask>
           </Item>
         </div>
         <div className="w-50 mr1">
-          <Item
-            label={labelFor('Instagram')}
-            name="instagram"
-            rules={rules.instagram}
-          >
+          <Item label="Instagram" name="instagram" rules={rules.instagram}>
             <TextInput addonBefore="@" />
           </Item>
         </div>
       </div>
-      <Item label={labelFor('Logomarca')} name="logoSrc" rules={rules.logoSrc}>
+      <Item label="Logomarca" name="logoSrc" rules={rules.logoSrc}>
         <ImageUpload large />
       </Item>
-      <Item label={labelFor('Cor do Tema')} name="color" rules={rules.color}>
+      <Item label="Cor do Tema" name="color" rules={rules.color}>
         <ColorPicker />
       </Item>
       <Button size="large" type="primary" block htmlType="submit">

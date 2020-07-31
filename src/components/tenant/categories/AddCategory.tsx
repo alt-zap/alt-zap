@@ -6,16 +6,15 @@ import { useTenantConfig } from '../../../contexts/TenantContext'
 type Props = { onFinish: () => void }
 
 const AddCategory: FC<Props> = ({ onFinish }) => {
-  const { categoriesLoading } = useTenantConfig()
+  const { categoriesLoading, addCategory } = useTenantConfig()
 
   const createCategory = useCallback(
     (data: Partial<Category>) => {
-      // TODO: Use the Tenant's function
-      Promise.resolve(data).then(() => {
+      addCategory(data).then(() => {
         onFinish()
       })
     },
-    [onFinish]
+    [onFinish, addCategory]
   )
 
   return (

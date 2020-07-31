@@ -8,13 +8,14 @@ import 'antd/dist/antd.css'
 import './font.css'
 
 import PedidoPage from './pages/OrderPage'
-import EditTenantPage from './pages/EditTenantPage'
+import LegacyEditTenantPage from './pages/EditTenantPage'
 import LoginPage from './pages/LoginPage'
 import OnboardPage from './pages/OnboardPage'
 import TenantsPage from './pages/TenantsPage'
 import { AuthContextProvider } from './contexts/AuthContext'
 import UserSwitch from './pages/UserSwitchPage'
 import AdminPage from './templates/AdminPage'
+import TenantDashboardPage from './pages/TenantDashboardPage'
 
 const {
   REACT_APP_FIREBASE_KEY,
@@ -50,9 +51,10 @@ const App = () => {
         <LoginPage path="/login" />
         <OnboardPage path="/onboard" />
         <AdminPage path="/tenants">
-          <EditTenantPage path=":tenantId" />
+          <TenantDashboardPage path="/:tenantId" />
           <TenantsPage path="/" />
         </AdminPage>
+        <LegacyEditTenantPage path="/tenants-legacy/:tenantId" />
         <PedidoPage path="/:slug" />
       </Router>
     </AuthContextProvider>

@@ -22,7 +22,7 @@ type ContextProps = {
   // TODO: This prop is being used for two things. Not ideal.
   categoriesLoading?: boolean
   editCategory: (category: Category) => void
-  addCategory: (category: Category) => void
+  addCategory: (category: Partial<Category>) => Promise<void>
   isCategoryUnique: (slug: string) => boolean
   products?: Product[]
   // TODO: This prop is being used for two things. Not ideal.
@@ -73,8 +73,24 @@ export const TenantContextProvider: FC<Props> = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const editCategory = useCallback((category: Category) => {}, [])
 
+  const addCategory = useCallback(
+    (category: Partial<Category>) => {
+      const db = firebase.firestore()
+      const ref = db.collection('tenants').doc(tenantId)
+
+      return ref
+        .update({
+          categories: firebase.firestore.FieldValue.arrayUnion(category),
+        })
+        .then(() => {
+          // TODO: Add Category to local array
+        })
+    },
+    [tenantId]
+  )
+
   const categoriesList = useMemo(
-    () => tenant?.menus[0]?.categories?.map(({ slug: s }) => s),
+    () => tenant?.menus?.[0]?.categories?.map(({ slug: s }) => s),
     [tenant]
   )
 
@@ -92,7 +108,7 @@ export const TenantContextProvider: FC<Props> = ({
         updateTenant: setTenant,
         editCategory,
         isCategoryUnique,
-        addCategory: () => {},
+        addCategory,
         editProduct: () => {},
         addProduct: () => {},
       }}

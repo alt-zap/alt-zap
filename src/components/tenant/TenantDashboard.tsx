@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { PageHeader, Tag, Button, Statistic, Row, Tabs } from 'antd'
+import React, { FC, Fragment, useState } from 'react'
+import { PageHeader, Tag, Button, Statistic, Row, Tabs, Modal } from 'antd'
 import {
   CarOutlined,
   EditOutlined,
@@ -7,15 +7,18 @@ import {
   ScheduleOutlined,
   DollarOutlined,
 } from '@ant-design/icons'
+import { useNavigate } from '@reach/router'
 
 import { useTenantConfig } from '../../contexts/TenantContext'
 import OpeningHours from './OpeningHours'
 import MenuDashboard from './menus/MenuDashboard'
 import LogisticsDashboard from './logistics/LogisticsDashboard'
 import PaymentsDashboard from './payments/PaymentsDashboard'
+import EditTenant from './EditTenant'
 
 const { TabPane } = Tabs
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const renderTabBar = (props: any, DefaultTabBar: any) => (
   <DefaultTabBar
     {...props}
@@ -25,7 +28,9 @@ const renderTabBar = (props: any, DefaultTabBar: any) => (
 )
 
 const TenantDashboard: FC = () => {
+  const [editingMetadata, setEditMetadata] = useState(false)
   const { tenant } = useTenantConfig()
+  const navigate = useNavigate()
 
   return tenant ? (
     <div className="flex flex-column">
@@ -33,7 +38,7 @@ const TenantDashboard: FC = () => {
         style={{
           backgroundColor: 'white',
         }}
-        onBack={() => window.history.back()}
+        onBack={() => navigate(-1)}
         title={tenant.name}
         tags={
           <Tag color={tenant.live ? 'blue' : 'red'}>
@@ -41,7 +46,7 @@ const TenantDashboard: FC = () => {
           </Tag>
         }
         extra={[
-          <Button key="1" type="primary">
+          <Button key="1" type="primary" onClick={() => setEditMetadata(true)}>
             Editar
             <EditOutlined />
           </Button>,
@@ -56,7 +61,7 @@ const TenantDashboard: FC = () => {
           <Statistic title="Produtos" value={tenant.items?.length} />
         </Row>
       </PageHeader>
-      <Tabs defaultActiveKey="4" renderTabBar={renderTabBar}>
+      <Tabs defaultActiveKey="1" renderTabBar={renderTabBar}>
         <TabPane
           tab={
             <span>
@@ -104,6 +109,13 @@ const TenantDashboard: FC = () => {
           <PaymentsDashboard />
         </TabPane>
       </Tabs>
+      <Modal
+        footer={null}
+        visible={editingMetadata}
+        onCancel={() => setEditMetadata(false)}
+      >
+        <EditTenant />
+      </Modal>
     </div>
   ) : null
 }

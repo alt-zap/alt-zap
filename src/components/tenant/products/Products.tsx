@@ -74,7 +74,7 @@ const Products: FC = () => {
           }}
         >
           <div
-            className="flex items-center pa2 mb2 br1"
+            className="flex items-center pa3 mb2 br1"
             style={{ border: '1px solid #d9d9d9' }}
           >
             <div className="w-60 pr3">
@@ -103,7 +103,7 @@ const Products: FC = () => {
         size="small"
         bordered
         itemLayout="horizontal"
-        dataSource={filteredProducts}
+        dataSource={filteredProducts ?? undefined}
         renderItem={(product) => (
           <List.Item>
             <List.Item.Meta
@@ -151,6 +151,9 @@ const Products: FC = () => {
           >
             <Skeleton loading active />
           </List.Item>
+        )}
+        {!productsLoading && !products && (
+          <div className="tc flex justify-center pt4 pb3">Não há produtos</div>
         )}
         <div className="pt1 pb3 flex justify-center">
           <Button icon={<PlusOutlined />} onClick={() => setAddModal(true)}>

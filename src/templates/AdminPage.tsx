@@ -82,9 +82,7 @@ const AdminPage: FC<RouteComponentProps> = ({ children }) => {
             </Dropdown>
           )}
         </Header>
-        <Content className="flex justify-center">
-          <div className="w-100 w-60-l pt4 pt2-l">{children}</div>
-        </Content>
+        <Content>{children}</Content>
         <Footer style={{ textAlign: 'center' }}>
           Alt Zap ©2020 -{' '}
           <a
