@@ -25,7 +25,6 @@ const {
   REACT_APP_FIREBASE_MEASUREMENT_ID,
 } = process.env
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: REACT_APP_FIREBASE_KEY,
   authDomain: `${REACT_APP_FIREBASE_PROJECT_ID}.firebaseapp.com`,
@@ -37,9 +36,16 @@ const firebaseConfig = {
   measurementId: REACT_APP_FIREBASE_MEASUREMENT_ID,
 }
 
-// Initialize Firebase
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig)
+
+  if (window?.location.hostname === 'localhost') {
+    firebase.firestore().settings({
+      host: 'localhost:4004',
+      ssl: false,
+    })
+  }
+
   firebase.analytics()
 }
 
