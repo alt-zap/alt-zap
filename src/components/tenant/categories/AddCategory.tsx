@@ -8,6 +8,7 @@ import {
   addCategory,
   isCategoryUnique,
 } from '../../../contexts/TenantContext'
+import { Category } from '../../../typings'
 
 type Props = { onFinish: () => void }
 

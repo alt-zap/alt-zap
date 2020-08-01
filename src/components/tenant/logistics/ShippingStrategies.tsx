@@ -7,7 +7,7 @@ const { Item } = Form
 
 const ShippingStrategies: FC = () => {
   const [deliveryFee, setFee] = useState(0)
-  const [loading, setLoading] = useState(false)
+  const [loading] = useState(false)
 
   return (
     <div className="flex flex-column">

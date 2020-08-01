@@ -8,6 +8,7 @@ import {
   isCategoryUnique,
   editCategory,
 } from '../../../contexts/TenantContext'
+import { Category } from '../../../typings'
 
 type Props = {
   category: Partial<Category>

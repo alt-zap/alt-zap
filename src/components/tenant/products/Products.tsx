@@ -1,16 +1,5 @@
 import React, { FC, Fragment, useState, useMemo, useCallback } from 'react'
-import {
-  Button,
-  List,
-  Form,
-  Modal,
-  Skeleton,
-  Avatar,
-  Divider,
-  Tag,
-  Input,
-  Select,
-} from 'antd'
+import { Button, List, Modal, Skeleton, Divider, Tag } from 'antd'
 import { PlusOutlined, EditOutlined } from '@ant-design/icons'
 import { Img } from 'react-image'
 
@@ -18,9 +7,8 @@ import { useTenantConfig } from '../../../contexts/TenantContext'
 import AddProduct from './AddProduct'
 import EditProduct from './EditProduct'
 import Real from '../../Real'
-
-const { Item } = Form
-const { Option } = Select
+import ProductsFilters from './ProductsFilters'
+import { Product } from '../../../typings'
 
 const Products: FC = () => {
   const [filters, setFilters] = useState<Record<string, string>>({})
@@ -28,12 +16,20 @@ const Products: FC = () => {
   const [addModal, setAddModal] = useState(false)
   const [selectedProduct, setProduct] = useState<Product>()
 
-  const { products, productsLoading, categories } = useTenantConfig()
+  const { products, productsLoading, tenant } = useTenantConfig()
 
-  const getColorForCategory = useCallback((id: string) => {
-    // TODO: Use real logic
-    return ['#2db7f5', '#87d068', '#108ee9'][parseInt(id, 10)]
+  const getColorForCategory = useCallback((index: number) => {
+    return ['#2db7f5', '#87d068', '#108ee9'][index]
   }, [])
+
+  const getCategoryName = useCallback(
+    (index) => {
+      const category = tenant?.categories?.[index]
+
+      return category?.name ?? ''
+    },
+    [tenant]
+  )
 
   const filteredProducts = useMemo(() => {
     return products?.filter(({ name, category }) => {
@@ -44,7 +40,7 @@ const Products: FC = () => {
         : true
 
       const matchCategory = selectedCategory
-        ? category.id === selectedCategory
+        ? category === parseInt(selectedCategory, 10)
         : true
 
       return matchName && matchCategory
@@ -54,49 +50,12 @@ const Products: FC = () => {
   return (
     <Fragment>
       <div className="flex flex-column">
-        <Form
-          initialValues={{
-            category: '',
-          }}
-          className=""
-          layout="vertical"
-          onFieldsChange={(_, fields) => {
-            const newFilters = fields.reduce(
-              (acc, cur) => ({
-                ...acc,
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                [(cur as any).name[0]]: cur.value,
-              }),
-              {}
-            )
-
-            setFilters(newFilters)
-          }}
-        >
-          <div
-            className="flex items-center pa3 mb2 br1"
-            style={{ border: '1px solid #d9d9d9' }}
-          >
-            <div className="w-60 pr3">
-              <Item name="name" label="Filtar por Nome">
-                <Input size="large" placeholder="ex: Burguer" />
-              </Item>
-            </div>
-
-            <Item name="category" label="ou por Categoria" className="w-60">
-              <Select size="large" placeholder="Selecione a categoria">
-                <Option value="" key={0}>
-                  Todas
-                </Option>
-                {categories?.map(({ name, id }) => (
-                  <Option value={id} key={id}>
-                    {name}
-                  </Option>
-                ))}
-              </Select>
-            </Item>
-          </div>
-        </Form>
+        {products?.length && tenant?.categories && (
+          <ProductsFilters
+            onChangeFilters={(data) => setFilters(data)}
+            categories={tenant?.categories}
+          />
+        )}
       </div>
 
       <List
@@ -120,10 +79,10 @@ const Products: FC = () => {
               description={
                 <div>
                   <Tag
-                    color={getColorForCategory(product.category.id)}
+                    color={getColorForCategory(product.category)}
                     style={{ marginRight: 0 }}
                   >
-                    {product.category.name}
+                    {getCategoryName(product.category)}
                   </Tag>
                   <Divider type="vertical" />
                   <Real cents={product.price} />
@@ -162,7 +121,7 @@ const Products: FC = () => {
         </div>
       </List>
       <Modal
-        title="Editar Categoria"
+        title="Editar Produto"
         visible={!!selectedProduct}
         onCancel={() => setProduct(undefined)}
         footer={null}
@@ -175,7 +134,7 @@ const Products: FC = () => {
         )}
       </Modal>
       <Modal
-        title="Adicionar Categoria"
+        title="Adicionar Produto"
         visible={addModal}
         onCancel={() => setAddModal(false)}
         footer={null}

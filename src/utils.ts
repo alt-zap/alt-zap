@@ -89,3 +89,13 @@ export function createCtx<A extends {} | null>() {
 }
 
 export type Element<ArrayType extends readonly unknown[]> = ArrayType[number]
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const sanitizeForFirebase = (obj: any) => {
+  Object.keys(obj).forEach((key) => {
+    if (obj[key] && typeof obj[key] === 'object') sanitizeForFirebase(obj[key])
+    else if (obj[key] === undefined) delete obj[key]
+  })
+
+  return obj
+}

@@ -25,6 +25,7 @@ const exampleCategories = [
   },
 ]
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const initialData = {
   name: 'Bia de Calcinha',
   select: '2',
@@ -59,7 +60,7 @@ export const classic = () => (
       loading: false,
     }}
   >
-    <ProductForm onValidSubmit={(a) => console.log(a)} />
+    <ProductForm categories={[]} onValidSubmit={(a) => console.log(a)} />
   </TenantStateProvider>
 )
 
@@ -70,10 +71,7 @@ export const withData = () => (
       categories: exampleCategories,
     }}
   >
-    <ProductForm
-      onValidSubmit={(a) => console.log(a)}
-      initialData={initialData}
-    />
+    <ProductForm onValidSubmit={(a) => console.log(a)} categories={[]} />
   </TenantStateProvider>
 )
 // export const WithData = () => (

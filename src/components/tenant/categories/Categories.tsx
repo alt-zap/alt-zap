@@ -2,9 +2,10 @@ import React, { FC, Fragment, useState } from 'react'
 import { Button, List, Modal, Skeleton } from 'antd'
 import { PlusOutlined, EditOutlined } from '@ant-design/icons'
 
-import { useTenantConfig } from '../../../contexts/TenantContext'
 import AddCategory from './AddCategory'
 import EditCategory from './EditCategory'
+import { useTenantConfig } from '../../../contexts/TenantContext'
+import { Category } from '../../../typings'
 
 const Categories: FC = () => {
   const [addModal, setAddModal] = useState(false)

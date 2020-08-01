@@ -37,7 +37,7 @@ declare interface Menu {
   categories: Category[]
 }
 
-declare interface Category {
+declare interface OldCategory {
   id?: string
   name: string
   slug: string

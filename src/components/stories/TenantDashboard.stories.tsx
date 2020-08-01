@@ -3,6 +3,7 @@ import { Layout } from 'antd'
 
 import TenantDashboard from '../tenant/TenantDashboard'
 import { TenantStateProvider } from '../../contexts/TenantContext'
+import { Product, TenantConfig } from '../../typings'
 
 const { Content, Footer, Sider } = Layout
 
@@ -11,10 +12,24 @@ export default {
   component: TenantDashboard,
 }
 
+const exampleCategories = [
+  {
+    name: 'Principal',
+    slug: 'principal',
+    live: true,
+  },
+  {
+    name: 'Hamburgueres',
+    slug: 'hamburgueres',
+    live: true,
+  },
+]
+
 const exampleTenant = {
   name: 'Alt Burger CG',
   slug: 'altburger-cg',
   live: true,
+  categories: exampleCategories,
   menus: [
     {
       name: 'Principal',
@@ -23,21 +38,6 @@ const exampleTenant = {
   ],
 }
 
-const exampleCategories = [
-  {
-    id: '1',
-    name: 'Principal',
-    slug: 'principal',
-    live: true,
-  },
-  {
-    id: '2',
-    name: 'Hamburgueres',
-    slug: 'hamburgueres',
-    live: true,
-  },
-]
-
 const exampleProducts: Product[] = [
   {
     name: 'Double Cheese Burguer',
@@ -45,10 +45,7 @@ const exampleProducts: Product[] = [
     live: true,
     price: 2000,
     highlight: false,
-    category: {
-      id: '1',
-      name: 'Principal',
-    },
+    category: 1,
   },
   {
     name: 'Triplo Smash Bacon',
@@ -56,10 +53,7 @@ const exampleProducts: Product[] = [
     live: true,
     price: 1600,
     highlight: false,
-    category: {
-      id: '1',
-      name: 'Principal',
-    },
+    category: 1,
   },
   {
     name: 'CHUT Burger',
@@ -68,10 +62,7 @@ const exampleProducts: Product[] = [
     live: false,
     price: 2250,
     highlight: false,
-    category: {
-      id: '2',
-      name: 'Hamburguers',
-    },
+    category: 2,
   },
 ]
 
@@ -79,7 +70,6 @@ export const Active = () => (
   <TenantStateProvider
     value={{
       tenant: (exampleTenant as unknown) as TenantConfig,
-      categories: exampleCategories,
       products: exampleProducts,
       loading: false,
     }}
@@ -105,7 +95,6 @@ export const withLayout = () => (
   <TenantStateProvider
     value={{
       tenant: (exampleTenant as unknown) as TenantConfig,
-      categories: exampleCategories,
       products: exampleProducts,
       loading: false,
     }}

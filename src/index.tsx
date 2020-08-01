@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom'
 import firebase from 'firebase/app'
 import 'firebase/analytics'
 import { Router } from '@reach/router'
+import { ConfigProvider } from 'antd'
+import ptBR from 'antd/es/locale/pt_BR'
 
 import 'antd/dist/antd.css'
 import './font.css'
@@ -52,17 +54,19 @@ if (!firebase.apps.length) {
 const App = () => {
   return (
     <AuthContextProvider>
-      <Router>
-        <UserSwitch path="/" />
-        <LoginPage path="/login" />
-        <OnboardPage path="/onboard" />
-        <AdminPage path="/tenants">
-          <TenantDashboardPage path="/:tenantId" />
-          <TenantsPage path="/" />
-        </AdminPage>
-        <LegacyEditTenantPage path="/tenants-legacy/:tenantId" />
-        <PedidoPage path="/:slug" />
-      </Router>
+      <ConfigProvider locale={ptBR}>
+        <Router>
+          <UserSwitch path="/" />
+          <LoginPage path="/login" />
+          <OnboardPage path="/onboard" />
+          <AdminPage path="/tenants">
+            <TenantDashboardPage path="/:tenantId" />
+            <TenantsPage path="/" />
+          </AdminPage>
+          <LegacyEditTenantPage path="/tenants-legacy/:tenantId" />
+          <PedidoPage path="/:slug" />
+        </Router>
+      </ConfigProvider>
     </AuthContextProvider>
   )
 }

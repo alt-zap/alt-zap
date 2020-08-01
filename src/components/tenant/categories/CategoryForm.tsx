@@ -5,6 +5,7 @@ import { Rule } from 'antd/lib/form'
 import slugify from 'slugify'
 
 import TextInput from '../../common/TextInput'
+import { Category } from '../../../typings'
 
 const { Item } = Form
 

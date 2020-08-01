@@ -2,12 +2,14 @@ import React, { FC, useEffect, useReducer } from 'react'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
-import { createCtx, log } from '../utils'
+import { createCtx, log, sanitizeForFirebase } from '../utils'
 import {
   TenantConfig,
   TenantContextState,
   TenantContextActions as Actions,
   TenantContextActions,
+  Product,
+  Category,
 } from '../typings'
 
 type Props = {
@@ -47,6 +49,40 @@ const tenantStateReducer = (
           ...(state.tenant as TenantConfig),
           categories: newCategories,
         },
+      }
+    }
+
+    case 'ADD_PRODUCT': {
+      const product = action.args || {}
+
+      const current = state.products
+
+      return {
+        ...state,
+        products: current ? [...current, product] : [product],
+      }
+    }
+
+    case 'SET_PRODUCTS': {
+      const products = action.args || {}
+
+      return {
+        ...state,
+        products,
+      }
+    }
+
+    case 'PRODUCT_START_LOADING': {
+      return {
+        ...state,
+        productsLoading: true,
+      }
+    }
+
+    case 'PRODUCT_STOP_LOADING': {
+      return {
+        ...state,
+        productsLoading: false,
       }
     }
 
@@ -109,6 +145,32 @@ export const TenantContextProvider: FC<Props> = ({
     loading: true,
     tenantId,
   })
+
+  useEffect(() => {
+    if (!tenantId) return
+
+    dispatch({ type: 'PRODUCT_START_LOADING' })
+    const db = firebase.firestore()
+    const query = db
+      .collection('tenants')
+      .doc(tenantId)
+      .collection('products')
+      .get()
+
+    query
+      .then((querySnapshot) => {
+        const { docs } = querySnapshot
+        const products = docs.map((doc) => doc.data() as Product)
+
+        dispatch({ type: 'SET_PRODUCTS', args: products })
+      })
+      .catch((error: unknown) => {
+        log('Error fetching products: ', error)
+      })
+      .finally(() => {
+        dispatch({ type: 'PRODUCT_STOP_LOADING' })
+      })
+  }, [tenantId])
 
   useEffect(() => {
     if (!tenantId) return
@@ -230,5 +292,32 @@ export const addCategory = async (
     })
     .finally(() => {
       dispatch({ type: 'CATEGORY_STOP_LOADING' })
+    })
+}
+
+export const addProduct = async (
+  dispatch: Dispatch,
+  {
+    product,
+    tenantId,
+  }: {
+    product: Product
+    tenantId?: string
+  }
+) => {
+  if (!tenantId) {
+    return Promise.reject()
+  }
+
+  const db = firebase.firestore()
+  const ref = db.collection('tenants').doc(tenantId).collection('products')
+
+  return ref
+    .add(sanitizeForFirebase(product))
+    .then(() => {
+      dispatch({ type: 'ADD_PRODUCT', args: product })
+    })
+    .finally(() => {
+      dispatch({ type: 'PRODUCT_STOP_LOADING' })
     })
 }

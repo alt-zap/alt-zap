@@ -50,11 +50,7 @@ export interface Category {
 
 export interface Product {
   id?: string
-  // Loosely coupled
-  category: {
-    id: string
-    name: string
-  }
+  category: number
   name: string
   description?: string
   live: boolean
@@ -125,3 +121,7 @@ export type TenantContextActions =
   | Action<'START_LOADING'>
   | Action<'STOP_LOADING'>
   | Action<'SET_TENANT', { args: TenantConfig }>
+  | Action<'PRODUCT_START_LOADING'>
+  | Action<'PRODUCT_STOP_LOADING'>
+  | Action<'ADD_PRODUCT', { args: Product }>
+  | Action<'SET_PRODUCTS', { args: Product[] }>
