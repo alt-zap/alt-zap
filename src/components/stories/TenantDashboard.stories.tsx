@@ -2,7 +2,7 @@ import React from 'react'
 import { Layout } from 'antd'
 
 import TenantDashboard from '../tenant/TenantDashboard'
-import { TenantProvider } from '../../contexts/TenantContext'
+import { TenantStateProvider } from '../../contexts/TenantContext'
 
 const { Content, Footer, Sider } = Layout
 
@@ -76,56 +76,38 @@ const exampleProducts: Product[] = [
 ]
 
 export const Active = () => (
-  <TenantProvider
+  <TenantStateProvider
     value={{
       tenant: (exampleTenant as unknown) as TenantConfig,
       categories: exampleCategories,
       products: exampleProducts,
       loading: false,
-      updateTenant: () => {},
-      editCategory: () => {},
-      addCategory: () => Promise.resolve(),
-      addProduct: () => {},
-      editProduct: () => {},
-      isCategoryUnique: (slug) => slug !== 'principal',
     }}
   >
     <TenantDashboard />
-  </TenantProvider>
+  </TenantStateProvider>
 )
 
 export const Loading = () => (
-  <TenantProvider
+  <TenantStateProvider
     value={{
       tenant: (exampleTenant as unknown) as TenantConfig,
       categoryLoading: true,
       productsLoading: true,
       loading: false,
-      updateTenant: () => {},
-      editCategory: () => {},
-      addCategory: () => Promise.resolve(),
-      addProduct: () => {},
-      editProduct: () => {},
-      isCategoryUnique: (slug) => slug !== 'principal',
     }}
   >
     <TenantDashboard />
-  </TenantProvider>
+  </TenantStateProvider>
 )
 
 export const withLayout = () => (
-  <TenantProvider
+  <TenantStateProvider
     value={{
       tenant: (exampleTenant as unknown) as TenantConfig,
       categories: exampleCategories,
       products: exampleProducts,
       loading: false,
-      updateTenant: () => {},
-      editCategory: () => {},
-      addCategory: () => Promise.resolve(),
-      addProduct: () => {},
-      editProduct: () => {},
-      isCategoryUnique: (slug) => slug !== 'principal',
     }}
   >
     <Layout style={{ minHeight: '100vh' }}>
@@ -148,5 +130,5 @@ export const withLayout = () => (
         </Footer>
       </Layout>
     </Layout>
-  </TenantProvider>
+  </TenantStateProvider>
 )

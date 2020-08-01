@@ -9,12 +9,13 @@ type Props = {
 }
 
 const EditProduct: FC<Props> = ({ product }) => {
-  const { editProduct, productsLoading } = useTenantConfig()
+  const { productsLoading } = useTenantConfig()
 
   return (
     <ProductForm
       editMode
-      onValidSubmit={(data) => editProduct(data as Product)}
+      // eslint-disable-next-line no-console
+      onValidSubmit={(data) => console.log(data)}
       initialData={product}
       loading={productsLoading}
     />

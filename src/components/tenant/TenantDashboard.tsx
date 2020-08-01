@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { PageHeader, Tag, Button, Statistic, Row, Tabs, Modal } from 'antd'
 import {
   CarOutlined,
@@ -32,6 +32,7 @@ const TenantDashboard: FC = () => {
   const { tenant } = useTenantConfig()
   const navigate = useNavigate()
 
+  // TODO: Deal with loading state here
   return tenant ? (
     <div className="flex flex-column">
       <PageHeader

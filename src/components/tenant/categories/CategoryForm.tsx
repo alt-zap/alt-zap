@@ -5,7 +5,6 @@ import { Rule } from 'antd/lib/form'
 import slugify from 'slugify'
 
 import TextInput from '../../common/TextInput'
-import { useTenantConfig } from '../../../contexts/TenantContext'
 
 const { Item } = Form
 
@@ -46,7 +45,6 @@ const CategoryForm: FC<Props> = ({
   initialData,
 }) => {
   const [form] = Form.useForm()
-  const { isCategoryUnique } = useTenantConfig()
 
   return (
     <Form
@@ -67,21 +65,7 @@ const CategoryForm: FC<Props> = ({
           }}
         />
       </Item>
-      <Item
-        label={labelFor('Slug')}
-        name="slug"
-        rules={[
-          {
-            validator: (_, slug) => {
-              if (!isCategoryUnique(slug)) {
-                return Promise.reject('Já existe uma categoria com esse slug')
-              }
-
-              return Promise.resolve()
-            },
-          },
-        ]}
-      >
+      <Item label={labelFor('Slug')} name="slug">
         <TextInput disabled />
       </Item>
       <Form.Item label={labelFor('Ativa')} name="live" valuePropName="checked">

@@ -2,7 +2,7 @@
 import React from 'react'
 
 import ProductForm from '../tenant/products/ProductForm'
-import { TenantProvider } from '../../contexts/TenantContext'
+import { TenantStateProvider } from '../../contexts/TenantContext'
 
 export default {
   title: 'tenant|ProductForm',
@@ -53,30 +53,28 @@ const initialData = {
 }
 
 export const classic = () => (
-  <TenantProvider
-    value={
-      {
-        categories: exampleCategories,
-      } as any
-    }
+  <TenantStateProvider
+    value={{
+      categories: exampleCategories,
+      loading: false,
+    }}
   >
     <ProductForm onValidSubmit={(a) => console.log(a)} />
-  </TenantProvider>
+  </TenantStateProvider>
 )
 
 export const withData = () => (
-  <TenantProvider
-    value={
-      {
-        categories: exampleCategories,
-      } as any
-    }
+  <TenantStateProvider
+    value={{
+      loading: false,
+      categories: exampleCategories,
+    }}
   >
     <ProductForm
       onValidSubmit={(a) => console.log(a)}
       initialData={initialData}
     />
-  </TenantProvider>
+  </TenantStateProvider>
 )
 // export const WithData = () => (
 //   <ProductForm

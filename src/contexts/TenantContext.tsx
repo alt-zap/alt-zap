@@ -1,140 +1,234 @@
-import React, { FC, useEffect, useState, useCallback, useMemo } from 'react'
+import React, { FC, useEffect, useReducer } from 'react'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
-import { createCtx, log, Element } from '../utils'
-import { TenantConfig } from '../typings'
+import { createCtx, log } from '../utils'
+import {
+  TenantConfig,
+  TenantContextState,
+  TenantContextActions as Actions,
+  TenantContextActions,
+} from '../typings'
 
 type Props = {
   slug?: string
   tenantId?: string
 }
 
-interface CategoriesCollection
-  extends Element<Element<TenantConfig['menus']>['categories']> {
-  id: string
+const tenantStateReducer = (
+  state: TenantContextState,
+  action: Actions
+): TenantContextState => {
+  switch (action.type) {
+    case 'ADD_CATEGORY': {
+      const category = action.args || {}
+
+      const current = state.tenant?.categories
+
+      return {
+        ...state,
+        tenant: {
+          ...(state.tenant as TenantConfig),
+          categories: current ? [...current, category] : [category],
+        },
+      }
+    }
+
+    case 'EDIT_CATEGORY': {
+      const { categoryData, index } = action.args || {}
+
+      const newCategories = [...(state.tenant?.categories as Category[])]
+
+      newCategories[index] = categoryData
+
+      return {
+        ...state,
+        tenant: {
+          ...(state.tenant as TenantConfig),
+          categories: newCategories,
+        },
+      }
+    }
+
+    case 'CATEGORY_START_LOADING': {
+      return {
+        ...state,
+        categoryLoading: true,
+      }
+    }
+
+    case 'CATEGORY_STOP_LOADING': {
+      return {
+        ...state,
+        categoryLoading: false,
+      }
+    }
+
+    case 'START_LOADING': {
+      return {
+        ...state,
+        loading: true,
+      }
+    }
+
+    case 'STOP_LOADING': {
+      return {
+        ...state,
+        loading: false,
+      }
+    }
+
+    case 'SET_TENANT': {
+      const tenant = action.args || {}
+
+      return {
+        ...state,
+        tenant,
+      }
+    }
+
+    default: {
+      return state
+    }
+  }
 }
 
-type ContextProps = {
-  loading: boolean
-  tenantId?: string
-  tenant?: TenantConfig
-  categories?: CategoriesCollection[]
-  categoryLoading?: boolean
-  editCategory: (category: Category) => void
-  addCategory: (category: Category) => Promise<void>
-  isCategoryUnique: (slug: string) => boolean
-  products?: Product[]
-  // TODO: This prop is being used for two things. Not ideal.
-  productsLoading?: boolean
-  editProduct: (product: Product) => void
-  addProduct: (product: Product) => void
-  updateTenant: (data: TenantConfig) => void
-}
+type Dispatch = (action: TenantContextActions) => void
 
-export const [useTenantConfig, TenantProvider] = createCtx<ContextProps>()
+export const [useTenantConfig, TenantStateProvider] = createCtx<
+  TenantContextState
+>()
+export const [useTenantDispatch, TenantDispatchProvider] = createCtx<Dispatch>()
 
 export const TenantContextProvider: FC<Props> = ({
   slug,
   tenantId,
   children,
 }) => {
-  const [tenant, setTenant] = useState<TenantConfig>()
-  const [id, setId] = useState(tenantId)
-  const [loading, setLoading] = useState(true)
-  const [categoryLoading, setCategoryLoading] = useState(false)
+  const [state, dispatch] = useReducer(tenantStateReducer, {
+    loading: true,
+    tenantId,
+  })
 
   useEffect(() => {
-    if (!slug && !tenantId) return
+    if (!tenantId) return
+
+    if (slug) {
+      return log(
+        `We no longer support slug querying for the TenantContext. Please, move away from the old Order Page!`
+      )
+    }
+
+    dispatch({ type: 'START_LOADING' })
     const db = firebase.firestore()
-    const query = tenantId
-      ? () => db.collection('tenants').doc(tenantId).get()
-      : () => db.collection('tenants').where('slug', '==', slug).get()
+    const query = db.collection('tenants').doc(tenantId).get()
 
-    query()
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .then((querySnapshot: any) => {
-        const [doc] = querySnapshot.docs || [querySnapshot]
-        const data = doc.data()
+    query
+      .then((querySnapshot) => {
+        const data = querySnapshot.data() as TenantConfig
 
-        setId(doc.id)
-        setTenant(data)
+        dispatch({ type: 'SET_TENANT', args: data })
       })
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .catch((error: any) => {
-        log('Error getting documents: ', error)
+      .catch((error: unknown) => {
+        log('Error fetching Tenant data: ', error)
       })
       .finally(() => {
-        setLoading(false)
+        dispatch({ type: 'STOP_LOADING' })
       })
   }, [slug, tenantId])
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const editCategory = useCallback((category: Category) => {}, [])
-
-  const addCategory = useCallback(
-    (category: Category) => {
-      if (!tenant) {
-        return Promise.reject()
-      }
-
-      setCategoryLoading(true)
-
-      const db = firebase.firestore()
-      const ref = db.collection('tenants').doc(tenantId)
-
-      const toAdd = tenant?.categories
-        ? firebase.firestore.FieldValue.arrayUnion(category)
-        : [category]
-
-      return ref
-        .update({
-          categories: toAdd,
-        })
-        .then(() => {
-          const { categories: current } = tenant
-
-          // Adding newly-added category to local array
-          setTenant({
-            ...tenant,
-            categories: current ? [...current, category] : [category],
-          })
-        })
-        .finally(() => {
-          setCategoryLoading(false)
-        })
-    },
-    [tenantId, tenant]
-  )
-
-  const categoriesList = useMemo(
-    () => tenant?.menus?.[0]?.categories?.map(({ slug: s }) => s),
-    [tenant]
-  )
-
-  const isCategoryUnique = useCallback(
-    (categorySlug: string) => !categoriesList?.includes(categorySlug),
-    [categoriesList]
-  )
-
   return (
-    <TenantProvider
-      value={{
-        loading,
-        tenantId: id,
-        tenant,
-        updateTenant: setTenant,
-        editCategory,
-        isCategoryUnique,
-        categoryLoading,
-        addCategory,
-        editProduct: () => {},
-        addProduct: () => {},
-      }}
-    >
-      {children}
-    </TenantProvider>
+    <TenantStateProvider value={state}>
+      <TenantDispatchProvider value={dispatch}>
+        {children}
+      </TenantDispatchProvider>
+    </TenantStateProvider>
   )
+}
+
+export const isCategoryUnique = (
+  categorySlug: string,
+  categories?: Category[]
+) => !categories?.some(({ slug }) => slug === categorySlug)
+
+export const editCategory = async (
+  dispatch: Dispatch,
+  {
+    category,
+    categories,
+    index,
+    tenantId,
+  }: {
+    category: Category
+    categories: Category[]
+    tenantId: string
+    index: number
+  }
+) => {
+  if (!tenantId) {
+    return Promise.reject()
+  }
+
+  dispatch({ type: 'CATEGORY_START_LOADING' })
+
+  const db = firebase.firestore()
+  const ref = db.collection('tenants').doc(tenantId)
+
+  const newCategories = [...categories]
+
+  newCategories[index] = category
+
+  return ref
+    .update({
+      categories: newCategories,
+    })
+    .then(() => {
+      dispatch({
+        type: 'EDIT_CATEGORY',
+        args: {
+          categoryData: category,
+          index,
+        },
+      })
+    })
+    .finally(() => {
+      dispatch({ type: 'CATEGORY_STOP_LOADING' })
+    })
+}
+
+export const addCategory = async (
+  dispatch: Dispatch,
+  {
+    category,
+    tenantId,
+    firstCategory,
+  }: {
+    category: Category
+    tenantId?: string
+    firstCategory?: boolean
+  }
+) => {
+  if (!tenantId) {
+    return Promise.reject()
+  }
+
+  dispatch({ type: 'CATEGORY_START_LOADING' })
+
+  const db = firebase.firestore()
+  const ref = db.collection('tenants').doc(tenantId)
+
+  const toAdd = !firstCategory
+    ? firebase.firestore.FieldValue.arrayUnion(category)
+    : [category]
+
+  return ref
+    .update({
+      categories: toAdd,
+    })
+    .then(() => {
+      dispatch({ type: 'ADD_CATEGORY', args: category })
+    })
+    .finally(() => {
+      dispatch({ type: 'CATEGORY_STOP_LOADING' })
+    })
 }

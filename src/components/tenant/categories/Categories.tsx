@@ -8,7 +8,10 @@ import EditCategory from './EditCategory'
 
 const Categories: FC = () => {
   const [addModal, setAddModal] = useState(false)
-  const [selectedCategory, setCategory] = useState<Category>()
+  const [selectedCategory, setCategory] = useState<{
+    category: Category
+    index: number
+  }>()
 
   const { tenant, loading } = useTenantConfig()
 
@@ -19,7 +22,7 @@ const Categories: FC = () => {
         bordered
         itemLayout="horizontal"
         dataSource={tenant?.categories}
-        renderItem={(category) => (
+        renderItem={(category, index) => (
           <List.Item>
             <List.Item.Meta
               title={<span className="f5 fw4">{category.name}</span>}
@@ -28,7 +31,7 @@ const Categories: FC = () => {
             />
             <div>
               <Button
-                onClick={() => setCategory(category)}
+                onClick={() => setCategory({ category, index })}
                 shape="circle"
                 icon={<EditOutlined />}
               />
@@ -62,7 +65,8 @@ const Categories: FC = () => {
         {selectedCategory && (
           <EditCategory
             onFinish={() => setCategory(undefined)}
-            category={selectedCategory}
+            category={selectedCategory.category}
+            index={selectedCategory.index}
           />
         )}
       </Modal>

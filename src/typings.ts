@@ -1,3 +1,5 @@
+import { Element } from './utils'
+
 export interface TenantConfig {
   name: string
   slug: string
@@ -97,3 +99,29 @@ export interface Assembly {
   price?: number
   options: AssemblyOption[]
 }
+
+export interface CategoriesCollection
+  extends Element<Element<TenantConfig['menus']>['categories']> {
+  id: string
+}
+
+export type TenantContextState = {
+  loading: boolean
+  tenantId?: string
+  tenant?: TenantConfig
+  categories?: CategoriesCollection[]
+  categoryLoading?: boolean
+  products?: Product[]
+  productsLoading?: boolean
+}
+
+type Action<K, V = void> = V extends void ? { type: K } : { type: K } & V
+
+export type TenantContextActions =
+  | Action<'ADD_CATEGORY', { args: Category }>
+  | Action<'EDIT_CATEGORY', { args: { categoryData: Category; index: number } }>
+  | Action<'CATEGORY_START_LOADING'>
+  | Action<'CATEGORY_STOP_LOADING'>
+  | Action<'START_LOADING'>
+  | Action<'STOP_LOADING'>
+  | Action<'SET_TENANT', { args: TenantConfig }>

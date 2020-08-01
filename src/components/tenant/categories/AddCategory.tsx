@@ -2,21 +2,41 @@ import React, { FC, useCallback } from 'react'
 import { message } from 'antd'
 
 import CategoryForm from './CategoryForm'
-import { useTenantConfig } from '../../../contexts/TenantContext'
+import {
+  useTenantConfig,
+  useTenantDispatch,
+  addCategory,
+  isCategoryUnique,
+} from '../../../contexts/TenantContext'
 
 type Props = { onFinish: () => void }
 
 const AddCategory: FC<Props> = ({ onFinish }) => {
-  const { categoryLoading, addCategory } = useTenantConfig()
+  const { categoryLoading, tenantId, tenant } = useTenantConfig()
+  const dispatch = useTenantDispatch()
 
   const createCategory = useCallback(
-    (data: Category) => {
-      addCategory(data).then(() => {
+    (category: Category) => {
+      if (!tenantId || !tenant) {
+        return
+      }
+
+      const { categories } = tenant
+
+      if (!isCategoryUnique(category.slug, categories)) {
+        message.error(`Já existe uma categoria "${category.name}".`)
+      }
+
+      addCategory(dispatch, {
+        category,
+        tenantId,
+        firstCategory: !categories || !categories.length,
+      }).then(() => {
         onFinish()
         message.success('Categoria cadastrada com sucesso')
       })
     },
-    [onFinish, addCategory]
+    [onFinish, dispatch, tenant, tenantId]
   )
 
   return (

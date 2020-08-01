@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import { RouteComponentProps } from '@reach/router'
 
-import EditTenant from '../components/EditTenant'
 import { TenantContextProvider } from '../contexts/TenantContext'
 
 type Props = {
@@ -11,7 +10,7 @@ type Props = {
 const EditTenantPage: FC<RouteComponentProps<Props>> = ({ tenantId }) => {
   return (
     <TenantContextProvider tenantId={tenantId}>
-      <EditTenant />
+      <div>Moved Permanently</div>
     </TenantContextProvider>
   )
 }
