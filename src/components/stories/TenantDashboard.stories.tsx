@@ -1,5 +1,6 @@
 import React from 'react'
 import { Layout } from 'antd'
+import { Router, RouteComponentProps } from '@reach/router'
 
 import TenantDashboard from '../tenant/TenantDashboard'
 import { TenantStateProvider } from '../../contexts/TenantContext'
@@ -78,16 +79,22 @@ export const Active = () => (
   </TenantStateProvider>
 )
 
+export const Dashboard: React.FC<RouteComponentProps> = () => {
+  return <TenantDashboard />
+}
+
 export const Loading = () => (
   <TenantStateProvider
     value={{
-      tenant: (exampleTenant as unknown) as TenantConfig,
+      tenant: undefined,
       categoryLoading: true,
       productsLoading: true,
-      loading: false,
+      loading: true,
     }}
   >
-    <TenantDashboard />
+    <Router>
+      <Dashboard default />
+    </Router>
   </TenantStateProvider>
 )
 

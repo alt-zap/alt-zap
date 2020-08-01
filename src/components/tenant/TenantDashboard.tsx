@@ -1,5 +1,14 @@
 import React, { FC, useState } from 'react'
-import { PageHeader, Tag, Button, Statistic, Row, Tabs, Modal } from 'antd'
+import {
+  PageHeader,
+  Tag,
+  Button,
+  Statistic,
+  Row,
+  Tabs,
+  Modal,
+  Skeleton,
+} from 'antd'
 import {
   CarOutlined,
   EditOutlined,
@@ -29,39 +38,50 @@ const renderTabBar = (props: any, DefaultTabBar: any) => (
 
 const TenantDashboard: FC = () => {
   const [editingMetadata, setEditMetadata] = useState(false)
-  const { tenant } = useTenantConfig()
+  const { tenant, loading } = useTenantConfig()
   const navigate = useNavigate()
 
   // TODO: Deal with loading state here
-  return tenant ? (
+  return (
     <div className="flex flex-column">
-      <PageHeader
-        style={{
-          backgroundColor: 'white',
-        }}
-        onBack={() => navigate(-1)}
-        title={tenant.name}
-        tags={
-          <Tag color={tenant.live ? 'blue' : 'red'}>
-            {tenant.live ? 'Aberto' : 'Fechado'}
-          </Tag>
-        }
-        extra={[
-          <Button key="1" type="primary" onClick={() => setEditMetadata(true)}>
-            Editar
-            <EditOutlined />
-          </Button>,
-        ]}
-      >
-        <Row>
-          <Statistic
-            title="Categorias"
-            value="1"
-            style={{ margin: '0 32px 0 0' }}
-          />
-          <Statistic title="Produtos" value={tenant.items?.length} />
-        </Row>
-      </PageHeader>
+      {loading && !tenant && (
+        <div className="pl4 pv1 bg-white">
+          <Skeleton active />
+        </div>
+      )}
+      {tenant && (
+        <PageHeader
+          style={{
+            backgroundColor: 'white',
+          }}
+          onBack={() => navigate(-1)}
+          title={tenant.name}
+          tags={
+            <Tag color={tenant?.live ? 'blue' : 'red'}>
+              {tenant.live ? 'Aberto' : 'Fechado'}
+            </Tag>
+          }
+          extra={[
+            <Button
+              key="1"
+              type="primary"
+              onClick={() => setEditMetadata(true)}
+            >
+              Editar
+              <EditOutlined />
+            </Button>,
+          ]}
+        >
+          <Row>
+            <Statistic
+              title="Categorias"
+              value="1"
+              style={{ margin: '0 32px 0 0' }}
+            />
+            <Statistic title="Produtos" value={tenant.items?.length} />
+          </Row>
+        </PageHeader>
+      )}
       <Tabs defaultActiveKey="1" renderTabBar={renderTabBar}>
         <TabPane
           tab={
@@ -118,7 +138,7 @@ const TenantDashboard: FC = () => {
         <EditTenant />
       </Modal>
     </div>
-  ) : null
+  )
 }
 
 export default TenantDashboard
