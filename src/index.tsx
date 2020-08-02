@@ -2,9 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import firebase from 'firebase/app'
 import 'firebase/analytics'
-import { Router } from '@reach/router'
+import { Router, globalHistory } from '@reach/router'
 import { ConfigProvider } from 'antd'
 import ptBR from 'antd/es/locale/pt_BR'
+import { QueryParamProvider } from 'use-query-params'
 
 import 'antd/dist/antd.css'
 import './font.css'
@@ -56,15 +57,17 @@ const App = () => {
     <AuthContextProvider>
       <ConfigProvider locale={ptBR}>
         <Router>
-          <UserSwitch path="/" />
-          <LoginPage path="/login" />
-          <OnboardPage path="/onboard" />
-          <AdminPage path="/tenants">
-            <TenantDashboardPage path="/:tenantId" />
-            <TenantsPage path="/" />
-          </AdminPage>
-          <LegacyEditTenantPage path="/tenants-legacy/:tenantId" />
-          <PedidoPage path="/:slug" />
+          <QueryParamProvider {...{ path: '/' }} reachHistory={globalHistory}>
+            <UserSwitch path="/" />
+            <LoginPage path="/login" />
+            <OnboardPage path="/onboard" />
+            <AdminPage path="/tenants">
+              <TenantDashboardPage path="/:tenantId" />
+              <TenantsPage path="/" />
+            </AdminPage>
+            <LegacyEditTenantPage path="/tenants-legacy/:tenantId" />
+            <PedidoPage path="/:slug" />
+          </QueryParamProvider>
         </Router>
       </ConfigProvider>
     </AuthContextProvider>

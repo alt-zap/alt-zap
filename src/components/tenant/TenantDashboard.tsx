@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useCallback } from 'react'
 import {
   PageHeader,
   Tag,
@@ -17,6 +17,7 @@ import {
   DollarOutlined,
 } from '@ant-design/icons'
 import { useNavigate } from '@reach/router'
+import { useQueryParam, StringParam } from 'use-query-params'
 
 import { useTenantConfig } from '../../contexts/TenantContext'
 import OpeningHours from './OpeningHours'
@@ -37,9 +38,18 @@ const renderTabBar = (props: any, DefaultTabBar: any) => (
 )
 
 const TenantDashboard: FC = () => {
+  const [tabId, setTabId] = useQueryParam('tabId', StringParam)
+
   const [editingMetadata, setEditMetadata] = useState(false)
   const { tenant, loading, productsLoading, products } = useTenantConfig()
   const navigate = useNavigate()
+
+  const handleTabChange = useCallback(
+    (tab) => {
+      setTabId(tab)
+    },
+    [setTabId]
+  )
 
   // TODO: Deal with loading state here
   return (
@@ -86,7 +96,11 @@ const TenantDashboard: FC = () => {
           </Row>
         </PageHeader>
       )}
-      <Tabs defaultActiveKey="1" renderTabBar={renderTabBar}>
+      <Tabs
+        renderTabBar={renderTabBar}
+        onChange={handleTabChange}
+        activeKey={tabId ?? '1'}
+      >
         <TabPane
           tab={
             <span>
