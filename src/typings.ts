@@ -31,6 +31,7 @@ export interface TenantConfig {
   categories?: Category[]
   templateAssembly: Assembly[]
   selectedMenu: number
+  address?: Address
 }
 
 export interface Menu {
@@ -126,3 +127,4 @@ export type TenantContextActions =
   | Action<'ADD_PRODUCT', { args: Product }>
   | Action<'EDIT_PRODUCT', { args: Product }>
   | Action<'SET_PRODUCTS', { args: Product[] }>
+  | Action<'SET_ADDRESS', { args: Address }>

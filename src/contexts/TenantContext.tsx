@@ -1,149 +1,20 @@
 import React, { FC, useEffect, useReducer } from 'react'
-import firebase from 'firebase/app'
+import firebase, { firestore } from 'firebase/app'
 import 'firebase/firestore'
 
 import { createCtx, log, sanitizeForFirebase } from '../utils'
 import {
   TenantConfig,
   TenantContextState,
-  TenantContextActions as Actions,
   TenantContextActions,
   Product,
   Category,
 } from '../typings'
+import { tenantStateReducer } from './tenantReducer'
 
 type Props = {
   slug?: string
   tenantId?: string
-}
-
-const tenantStateReducer = (
-  state: TenantContextState,
-  action: Actions
-): TenantContextState => {
-  switch (action.type) {
-    case 'ADD_CATEGORY': {
-      const category = action.args || {}
-
-      const current = state.tenant?.categories
-
-      return {
-        ...state,
-        tenant: {
-          ...(state.tenant as TenantConfig),
-          categories: current ? [...current, category] : [category],
-        },
-      }
-    }
-
-    case 'EDIT_CATEGORY': {
-      const { categoryData, index } = action.args || {}
-
-      const newCategories = [...(state.tenant?.categories as Category[])]
-
-      newCategories[index] = categoryData
-
-      return {
-        ...state,
-        tenant: {
-          ...(state.tenant as TenantConfig),
-          categories: newCategories,
-        },
-      }
-    }
-
-    case 'ADD_PRODUCT': {
-      const product = action.args || {}
-
-      const current = state.products
-
-      return {
-        ...state,
-        products: current ? [...current, product] : [product],
-      }
-    }
-
-    case 'EDIT_PRODUCT': {
-      const product = action.args || {}
-
-      const index = state.products?.findIndex(
-        ({ id }) => id === product.id
-      ) as number
-
-      const newProducts = [...(state.products as Product[])]
-
-      newProducts[index] = product
-
-      return {
-        ...state,
-        products: newProducts,
-      }
-    }
-
-    case 'SET_PRODUCTS': {
-      const products = action.args || {}
-
-      return {
-        ...state,
-        products,
-      }
-    }
-
-    case 'PRODUCT_START_LOADING': {
-      return {
-        ...state,
-        productsLoading: true,
-      }
-    }
-
-    case 'PRODUCT_STOP_LOADING': {
-      return {
-        ...state,
-        productsLoading: false,
-      }
-    }
-
-    case 'CATEGORY_START_LOADING': {
-      return {
-        ...state,
-        categoryLoading: true,
-      }
-    }
-
-    case 'CATEGORY_STOP_LOADING': {
-      return {
-        ...state,
-        categoryLoading: false,
-      }
-    }
-
-    case 'START_LOADING': {
-      return {
-        ...state,
-        loading: true,
-      }
-    }
-
-    case 'STOP_LOADING': {
-      return {
-        ...state,
-        loading: false,
-      }
-    }
-
-    case 'SET_TENANT': {
-      const tenant = action.args || {}
-
-      return {
-        ...state,
-        tenant,
-      }
-    }
-
-    default: {
-      return state
-    }
-  }
 }
 
 type Dispatch = (action: TenantContextActions) => void
@@ -226,6 +97,12 @@ export const TenantContextProvider: FC<Props> = ({
     </TenantStateProvider>
   )
 }
+
+const tenantRef = (db: firestore.Firestore, tenantId: string) =>
+  db.collection('tenants').doc(tenantId)
+
+const productsRef = (db: firestore.Firestore, tenantId: string) =>
+  tenantRef(db, tenantId).collection('products')
 
 export const countProductPerCategory = (
   categoryIndex: number,
@@ -387,5 +264,31 @@ export const editProduct = async (
     })
     .finally(() => {
       dispatch({ type: 'PRODUCT_STOP_LOADING' })
+    })
+}
+
+export const setAddress = async (
+  dispatch: Dispatch,
+  {
+    address,
+    tenantId,
+  }: {
+    address: Address
+    tenantId?: string
+  }
+) => {
+  if (!tenantId) {
+    return Promise.reject('Tenant ID missing')
+  }
+
+  const db = firebase.firestore()
+  const ref = tenantRef(db, tenantId)
+
+  return ref
+    .update({
+      address: sanitizeForFirebase(address),
+    })
+    .then(() => {
+      dispatch({ type: 'SET_ADDRESS', args: address })
     })
 }
