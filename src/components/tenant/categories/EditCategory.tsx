@@ -9,6 +9,7 @@ import {
   editCategory,
 } from '../../../contexts/TenantContext'
 import { Category } from '../../../typings'
+import { useAltIntl } from '../../../intlConfig'
 
 type Props = {
   category: Partial<Category>
@@ -17,6 +18,7 @@ type Props = {
 }
 
 const EditCategory: FC<Props> = ({ category, index, onFinish }) => {
+  const intl = useAltIntl()
   const { categoryLoading, tenant, tenantId } = useTenantConfig()
   const dispatch = useTenantDispatch()
 
@@ -29,7 +31,14 @@ const EditCategory: FC<Props> = ({ category, index, onFinish }) => {
       const { categories } = tenant
 
       if (!isCategoryUnique(editedCategory.slug, categories)) {
-        message.error(`Já existe uma categoria "${editedCategory.name}".`)
+        message.error(
+          intl.formatMessage(
+            { id: 'tenant.categories.alreadyExists' },
+            {
+              name: editedCategory.name,
+            }
+          )
+        )
       }
 
       editCategory(dispatch, {
@@ -40,10 +49,12 @@ const EditCategory: FC<Props> = ({ category, index, onFinish }) => {
         tenantId,
       }).then(() => {
         onFinish()
-        message.success('Categoria cadastrada com sucesso')
+        message.success(
+          intl.formatMessage({ id: 'tenant.categories.editSuccess' })
+        )
       })
     },
-    [dispatch, tenant, tenantId, index, onFinish]
+    [dispatch, tenant, tenantId, index, onFinish, intl]
   )
 
   return (

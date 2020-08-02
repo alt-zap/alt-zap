@@ -6,10 +6,9 @@ import slugify from 'slugify'
 
 import TextInput from '../../common/TextInput'
 import { Category } from '../../../typings'
+import { Message, useAltIntl } from '../../../intlConfig'
 
 const { Item } = Form
-
-const labelFor = (label: string) => <span className="f4 fw1">{label}</span>
 
 type CategoryData = Pick<Category, 'id' | 'name' | 'live' | 'slug'>
 
@@ -37,14 +36,13 @@ const rules: Record<string, Rule[]> = {
   ],
 }
 
-// Checar se o nome já não existe
-
 const CategoryForm: FC<Props> = ({
   editMode,
   onValidSubmit,
   loading,
   initialData,
 }) => {
+  const intl = useAltIntl()
   const [form] = Form.useForm()
 
   return (
@@ -54,7 +52,11 @@ const CategoryForm: FC<Props> = ({
       onFinish={(store) => onValidSubmit(store as CategoryData)}
       initialValues={initialData}
     >
-      <Item label={labelFor('Nome')} name="name" rules={rules.name}>
+      <Item
+        label={<Message id="tenant.categories.name" />}
+        name="name"
+        rules={rules.name}
+      >
         <TextInput
           disabled={loading}
           onChange={(e) => {
@@ -66,10 +68,14 @@ const CategoryForm: FC<Props> = ({
           }}
         />
       </Item>
-      <Item label={labelFor('Slug')} name="slug">
+      <Item label={<Message id="tenant.slug" />} name="slug">
         <TextInput disabled />
       </Item>
-      <Form.Item label={labelFor('Ativa')} name="live" valuePropName="checked">
+      <Form.Item
+        label={<Message id="tenant.categories.live" />}
+        name="live"
+        valuePropName="checked"
+      >
         <Switch />
       </Form.Item>
       <Button
@@ -79,7 +85,7 @@ const CategoryForm: FC<Props> = ({
         block
         htmlType="submit"
       >
-        {`${editMode ? 'Salvar' : 'Adicionar'}`}
+        {intl.formatMessage({ id: editMode ? 'save' : 'add' })}
       </Button>
     </Form>
   )

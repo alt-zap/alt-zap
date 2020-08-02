@@ -9,10 +9,12 @@ import {
   isCategoryUnique,
 } from '../../../contexts/TenantContext'
 import { Category } from '../../../typings'
+import { useAltIntl } from '../../../intlConfig'
 
 type Props = { onFinish: () => void }
 
 const AddCategory: FC<Props> = ({ onFinish }) => {
+  const intl = useAltIntl()
   const { categoryLoading, tenantId, tenant } = useTenantConfig()
   const dispatch = useTenantDispatch()
 
@@ -25,7 +27,14 @@ const AddCategory: FC<Props> = ({ onFinish }) => {
       const { categories } = tenant
 
       if (!isCategoryUnique(category.slug, categories)) {
-        message.error(`Já existe uma categoria "${category.name}".`)
+        message.error(
+          intl.formatMessage(
+            { id: 'tenant.categories.alreadyExists' },
+            {
+              name: category.name,
+            }
+          )
+        )
       }
 
       addCategory(dispatch, {
@@ -34,10 +43,12 @@ const AddCategory: FC<Props> = ({ onFinish }) => {
         firstCategory: !categories || !categories.length,
       }).then(() => {
         onFinish()
-        message.success('Categoria cadastrada com sucesso')
+        message.success(
+          intl.formatMessage({ id: 'tenant.categories.addSuccess' })
+        )
       })
     },
-    [onFinish, dispatch, tenant, tenantId]
+    [onFinish, dispatch, tenant, tenantId, intl]
   )
 
   return (

@@ -9,8 +9,10 @@ import {
   countProductPerCategory,
 } from '../../../contexts/TenantContext'
 import { Category } from '../../../typings'
+import { useAltIntl, Message } from '../../../intlConfig'
 
 const Categories: FC = () => {
+  const intl = useAltIntl()
   const [addModal, setAddModal] = useState(false)
   const [selectedCategory, setCategory] = useState<{
     category: Category
@@ -40,7 +42,14 @@ const Categories: FC = () => {
           <List.Item>
             <List.Item.Meta
               title={<span className="f5 fw4">{category.name}</span>}
-              description={`${productsCount[index]} produtos`}
+              description={intl.formatMessage(
+                {
+                  id: 'tenant.categories.productCount',
+                },
+                {
+                  count: `${productsCount[index]}`,
+                }
+              )}
             />
             <div>
               <Button
@@ -65,12 +74,12 @@ const Categories: FC = () => {
         )}
         <div className="pt1 pb3 flex justify-center">
           <Button icon={<PlusOutlined />} onClick={() => setAddModal(true)}>
-            Adicionar
+            <Message id="add" />
           </Button>
         </div>
       </List>
       <Modal
-        title="Editar Categoria"
+        title={<Message id="tenant.categories.edit" />}
         visible={!!selectedCategory}
         onCancel={() => setCategory(undefined)}
         footer={null}
@@ -84,7 +93,7 @@ const Categories: FC = () => {
         )}
       </Modal>
       <Modal
-        title="Adicionar Categoria"
+        title={<Message id="tenant.categories.add" />}
         visible={addModal}
         onCancel={() => setAddModal(false)}
         footer={null}

@@ -124,7 +124,7 @@ const Products: FC = () => {
         </div>
       </List>
       <Modal
-        title="Editar Produto"
+        title={<Message id="tenant.product.edit" />}
         visible={!!selectedProduct}
         onCancel={() => setProduct(undefined)}
         footer={null}
@@ -137,7 +137,7 @@ const Products: FC = () => {
         )}
       </Modal>
       <Modal
-        title="Adicionar Produto"
+        title={<Message id="tenant.product.add" />}
         visible={addModal}
         onCancel={() => setAddModal(false)}
         footer={null}

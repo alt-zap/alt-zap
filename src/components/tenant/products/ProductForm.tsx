@@ -8,7 +8,6 @@ import {
   Divider,
   InputNumber,
   Tooltip,
-  message,
 } from 'antd'
 import { Rule } from 'antd/lib/form'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'

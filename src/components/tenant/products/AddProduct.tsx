@@ -8,6 +8,7 @@ import {
   addProduct,
 } from '../../../contexts/TenantContext'
 import { Product } from '../../../typings'
+import { Message } from '../../../intlConfig'
 
 type Props = { onFinish: () => void }
 
@@ -33,7 +34,7 @@ const AddProduct: FC<Props> = ({ onFinish }) => {
     return (
       <Alert
         type="warning"
-        message="Você deve primeiro adicionar uma categoria"
+        message={<Message id="tenant.product.shouldAddCategory" />}
       />
     )
   }

@@ -10,6 +10,7 @@ import { IntlProvider } from 'react-intl'
 
 import 'antd/dist/antd.css'
 import './font.css'
+import 'tachyons/css/tachyons.min.css'
 
 import PedidoPage from './pages/OrderPage'
 import LegacyEditTenantPage from './pages/EditTenantPage'
