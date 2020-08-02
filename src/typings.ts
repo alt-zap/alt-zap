@@ -32,6 +32,17 @@ export interface TenantConfig {
   templateAssembly: Assembly[]
   selectedMenu: number
   address?: Address
+  shippingStrategies?: ShippingStrategies
+}
+
+export type ShippingStrategies = {
+  deliveryFixed: {
+    price: number
+    active: boolean
+  }
+  takeaway: {
+    active: boolean
+  }
 }
 
 export interface Menu {
