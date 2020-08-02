@@ -124,4 +124,5 @@ export type TenantContextActions =
   | Action<'PRODUCT_START_LOADING'>
   | Action<'PRODUCT_STOP_LOADING'>
   | Action<'ADD_PRODUCT', { args: Product }>
+  | Action<'EDIT_PRODUCT', { args: Product }>
   | Action<'SET_PRODUCTS', { args: Product[] }>

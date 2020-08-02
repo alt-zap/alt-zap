@@ -1,10 +1,13 @@
-import React, { FC, Fragment, useState } from 'react'
+import React, { FC, Fragment, useState, useMemo } from 'react'
 import { Button, List, Modal, Skeleton } from 'antd'
 import { PlusOutlined, EditOutlined } from '@ant-design/icons'
 
 import AddCategory from './AddCategory'
 import EditCategory from './EditCategory'
-import { useTenantConfig } from '../../../contexts/TenantContext'
+import {
+  useTenantConfig,
+  countProductPerCategory,
+} from '../../../contexts/TenantContext'
 import { Category } from '../../../typings'
 
 const Categories: FC = () => {
@@ -14,7 +17,17 @@ const Categories: FC = () => {
     index: number
   }>()
 
-  const { tenant, loading } = useTenantConfig()
+  const { tenant, loading, products } = useTenantConfig()
+
+  const productsCount = useMemo(() => {
+    if (!products) return []
+
+    return (
+      tenant?.categories?.map((_, index) =>
+        countProductPerCategory(index, products)
+      ) ?? []
+    )
+  }, [tenant, products])
 
   return (
     <Fragment>
@@ -27,8 +40,7 @@ const Categories: FC = () => {
           <List.Item>
             <List.Item.Meta
               title={<span className="f5 fw4">{category.name}</span>}
-              // TODO: Solve this
-              description={`${category.products?.length ?? 0} produtos`}
+              description={`${productsCount[index]} produtos`}
             />
             <div>
               <Button

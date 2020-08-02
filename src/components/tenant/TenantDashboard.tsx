@@ -38,7 +38,7 @@ const renderTabBar = (props: any, DefaultTabBar: any) => (
 
 const TenantDashboard: FC = () => {
   const [editingMetadata, setEditMetadata] = useState(false)
-  const { tenant, loading } = useTenantConfig()
+  const { tenant, loading, productsLoading, products } = useTenantConfig()
   const navigate = useNavigate()
 
   // TODO: Deal with loading state here
@@ -73,12 +73,16 @@ const TenantDashboard: FC = () => {
           ]}
         >
           <Row>
-            <Statistic
-              title="Categorias"
-              value="1"
-              style={{ margin: '0 32px 0 0' }}
-            />
-            <Statistic title="Produtos" value={tenant.items?.length} />
+            {!productsLoading ? (
+              <Statistic
+                title="Produtos"
+                value={products?.length}
+                style={{ margin: '0 32px 0 0' }}
+              />
+            ) : (
+              <Skeleton.Button active size="large" shape="square" />
+            )}
+            <Statistic title="Categorias" value={tenant?.categories?.length} />
           </Row>
         </PageHeader>
       )}

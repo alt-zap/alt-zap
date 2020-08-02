@@ -63,6 +63,23 @@ const tenantStateReducer = (
       }
     }
 
+    case 'EDIT_PRODUCT': {
+      const product = action.args || {}
+
+      const index = state.products?.findIndex(
+        ({ id }) => id === product.id
+      ) as number
+
+      const newProducts = [...(state.products as Product[])]
+
+      newProducts[index] = product
+
+      return {
+        ...state,
+        products: newProducts,
+      }
+    }
+
     case 'SET_PRODUCTS': {
       const products = action.args || {}
 
@@ -160,7 +177,9 @@ export const TenantContextProvider: FC<Props> = ({
     query
       .then((querySnapshot) => {
         const { docs } = querySnapshot
-        const products = docs.map((doc) => doc.data() as Product)
+        const products = docs.map(
+          (doc) => ({ ...doc.data(), id: doc.id } as Product)
+        )
 
         dispatch({ type: 'SET_PRODUCTS', args: products })
       })
@@ -206,6 +225,13 @@ export const TenantContextProvider: FC<Props> = ({
       </TenantDispatchProvider>
     </TenantStateProvider>
   )
+}
+
+export const countProductPerCategory = (
+  categoryIndex: number,
+  products: Product[]
+) => {
+  return products.filter(({ category }) => category === categoryIndex).length
 }
 
 export const isCategoryUnique = (
@@ -314,8 +340,50 @@ export const addProduct = async (
 
   return ref
     .add(sanitizeForFirebase(product))
+    .then((doc) => {
+      dispatch({ type: 'ADD_PRODUCT', args: { ...product, id: doc.id } })
+    })
+    .finally(() => {
+      dispatch({ type: 'PRODUCT_STOP_LOADING' })
+    })
+}
+
+export const editProduct = async (
+  dispatch: Dispatch,
+  {
+    product,
+    tenantId,
+  }: {
+    product: Product
+    tenantId?: string
+  }
+) => {
+  if (!tenantId) {
+    return Promise.reject('You should inform the tenantId')
+  }
+
+  if (!product.id) {
+    return Promise.reject('O produto informado não contém ID')
+  }
+
+  dispatch({ type: 'PRODUCT_START_LOADING' })
+
+  const db = firebase.firestore()
+  const ref = db
+    .collection('tenants')
+    .doc(tenantId)
+    .collection('products')
+    .doc(product.id)
+
+  const { id, ...productData } = product
+
+  return ref
+    .update(sanitizeForFirebase(productData))
     .then(() => {
-      dispatch({ type: 'ADD_PRODUCT', args: product })
+      dispatch({
+        type: 'EDIT_PRODUCT',
+        args: product,
+      })
     })
     .finally(() => {
       dispatch({ type: 'PRODUCT_STOP_LOADING' })

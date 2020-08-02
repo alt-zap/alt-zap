@@ -1,18 +1,39 @@
-import React, { FC } from 'react'
+import React, { FC, useCallback } from 'react'
 import { Alert } from 'antd'
 
 import ProductForm from './ProductForm'
-import { useTenantConfig } from '../../../contexts/TenantContext'
+import {
+  useTenantConfig,
+  useTenantDispatch,
+  editProduct,
+} from '../../../contexts/TenantContext'
 import { Product } from '../../../typings'
 
 type Props = {
   product: Product
-  // Probably need some id here
   onFinish: () => void
 }
 
-const EditProduct: FC<Props> = ({ product }) => {
-  const { productsLoading, tenant } = useTenantConfig()
+const EditProduct: FC<Props> = ({ product, onFinish }) => {
+  const { productsLoading, tenant, tenantId } = useTenantConfig()
+  const dispatch = useTenantDispatch()
+
+  const handleEditProduct = useCallback(
+    (editedProduct: Product) => {
+      const editPromise = editProduct(dispatch, {
+        product: {
+          ...editedProduct,
+          id: product.id,
+        },
+        tenantId,
+      })
+
+      editPromise.then(() => {
+        onFinish()
+      })
+    },
+    [tenantId, dispatch, onFinish, product]
+  )
 
   if (!tenant?.categories) {
     return (
@@ -24,8 +45,7 @@ const EditProduct: FC<Props> = ({ product }) => {
     <ProductForm
       editMode
       categories={tenant.categories}
-      // eslint-disable-next-line no-console
-      onValidSubmit={(data) => console.log(data)}
+      onValidSubmit={handleEditProduct}
       initialData={product}
       loading={productsLoading}
     />
