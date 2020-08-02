@@ -29,6 +29,7 @@
     "react-dom": "latest",
     "react-image": "^4.0.3",
     "react-input-mask": "^3.0.0-alpha.2",
+    "react-intl": "^5.4.5",
     "react-markdown": "4.3.1",
     "react-social-login-buttons": "3.1.0",
     "slugify": "^1.4.4",

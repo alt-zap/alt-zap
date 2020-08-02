@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { Form, Select, Input } from 'antd'
 
 import { Category } from '../../../typings'
+import { Message, useAltIntl } from '../../../intlConfig'
 
 const { Option } = Select
 const { Item } = Form
@@ -12,6 +13,8 @@ type Props = {
 }
 
 const ProductsFilter: FC<Props> = ({ onChangeFilters, categories }) => {
+  const intl = useAltIntl()
+
   return (
     <Form
       initialValues={{
@@ -37,15 +40,20 @@ const ProductsFilter: FC<Props> = ({ onChangeFilters, categories }) => {
         style={{ border: '1px solid #d9d9d9' }}
       >
         <div className="w-60 pr3">
-          <Item name="name" label="Filtar por Nome">
-            <Input size="large" placeholder="ex: Burguer" />
+          <Item name="name" label={<Message id="tenant.filterByName" />}>
+            <Input
+              size="large"
+              placeholder={intl.formatMessage({
+                id: 'tenant.productNamePlaceholder',
+              })}
+            />
           </Item>
         </div>
 
         <Item name="category" label="ou por Categoria" className="w-60">
           <Select size="large" placeholder="Selecione a categoria">
             <Option value="" key="todas">
-              Todas
+              <Message id="all.f" />
             </Option>
             {categories?.map(({ name }, index) => (
               <Option value={index} key={index}>

@@ -25,6 +25,7 @@ import MenuDashboard from './menus/MenuDashboard'
 import LogisticsDashboard from './logistics/LogisticsDashboard'
 import PaymentsDashboard from './payments/PaymentsDashboard'
 import EditTenant from './EditTenant'
+import { Message } from '../../intlConfig'
 
 const { TabPane } = Tabs
 
@@ -77,7 +78,7 @@ const TenantDashboard: FC = () => {
               type="primary"
               onClick={() => setEditMetadata(true)}
             >
-              Editar
+              <Message id="tenant.edit" />
               <EditOutlined />
             </Button>,
           ]}
@@ -85,14 +86,17 @@ const TenantDashboard: FC = () => {
           <Row>
             {!productsLoading ? (
               <Statistic
-                title="Produtos"
+                title={<Message id="tenant.products" />}
                 value={products?.length}
                 style={{ margin: '0 32px 0 0' }}
               />
             ) : (
               <Skeleton.Button active size="large" shape="square" />
             )}
-            <Statistic title="Categorias" value={tenant?.categories?.length} />
+            <Statistic
+              title={<Message id="tenant.categories" />}
+              value={tenant?.categories?.length}
+            />
           </Row>
         </PageHeader>
       )}
@@ -105,7 +109,7 @@ const TenantDashboard: FC = () => {
           tab={
             <span>
               <MenuOutlined />
-              Menu de Produtos
+              <Message id="tenant.sections.menu" />
             </span>
           }
           key="1"
@@ -116,7 +120,7 @@ const TenantDashboard: FC = () => {
           tab={
             <span>
               <ScheduleOutlined />
-              Horário de Funcionamento
+              <Message id="tenant.sections.schedule" />
             </span>
           }
           key="2"
@@ -129,7 +133,7 @@ const TenantDashboard: FC = () => {
           tab={
             <span>
               <CarOutlined />
-              Logística
+              <Message id="tenant.sections.logistics" />
             </span>
           }
           key="3"
@@ -140,7 +144,7 @@ const TenantDashboard: FC = () => {
           tab={
             <span>
               <DollarOutlined />
-              Meios de Pagamento
+              <Message id="tenant.sections.payments" />
             </span>
           }
           key="4"

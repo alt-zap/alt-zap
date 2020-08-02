@@ -8,6 +8,7 @@ import {
   editProduct,
 } from '../../../contexts/TenantContext'
 import { Product } from '../../../typings'
+import { Message } from '../../../intlConfig'
 
 type Props = {
   product: Product
@@ -37,7 +38,10 @@ const EditProduct: FC<Props> = ({ product, onFinish }) => {
 
   if (!tenant?.categories) {
     return (
-      <Alert type="warning" message="Você deve ter categorias cadastradas" />
+      <Alert
+        type="warning"
+        message={<Message id="tenant.categories.noCategories" />}
+      />
     )
   }
 

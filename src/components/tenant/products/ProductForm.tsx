@@ -8,6 +8,7 @@ import {
   Divider,
   InputNumber,
   Tooltip,
+  message,
 } from 'antd'
 import { Rule } from 'antd/lib/form'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
@@ -17,6 +18,7 @@ import ImageUploadOriginal from '../../common/ImageUpload'
 import TextareaInputOriginal from '../../common/TextareaInput'
 import CurrencyInput from '../../common/CurrencyInput'
 import { Category, Product } from '../../../typings'
+import { Message, useAltIntl } from '../../../intlConfig'
 
 const { Item } = Form
 const { Option } = Select
@@ -136,6 +138,7 @@ const ProductForm: FC<Props> = ({
   loading,
   initialData,
 }) => {
+  const intl = useAltIntl()
   const [form] = Form.useForm()
 
   return (
@@ -145,17 +148,20 @@ const ProductForm: FC<Props> = ({
       onFinish={(store) => onValidSubmit?.(store as Product)}
       initialValues={initialData}
       autoComplete="off"
-      scrollToFirstError
     >
       <div className="flex justify-between">
         <div className="w-80">
-          <Item label={labelFor('Nome')} name="name" rules={rules.name}>
+          <Item
+            label={<Message id="tenant.product.name" />}
+            name="name"
+            rules={rules.name}
+          >
             <TextInput disabled={loading} />
           </Item>
         </div>
         <div>
           <Form.Item
-            label={labelFor('Disponível')}
+            label={<Message id="tenant.product.live" />}
             name="live"
             valuePropName="checked"
             style={{
@@ -169,10 +175,13 @@ const ProductForm: FC<Props> = ({
       </div>
       <Item
         name="category"
-        label={labelFor('Categoria')}
+        label={<Message id="tenant.product.category" />}
         rules={rules.category}
       >
-        <Select size="large" placeholder="Selecione a categoria">
+        <Select
+          size="large"
+          placeholder={<Message id="tenant.product.categoryPlaceholder" />}
+        >
           {categories?.map(({ name }, index) => (
             <Option value={index} key={index}>
               {name}
@@ -181,33 +190,30 @@ const ProductForm: FC<Props> = ({
         </Select>
       </Item>
       <Item
-        label={labelFor('Descrição')}
+        label={<Message id="tenant.product.description" />}
         name="description"
         rules={rules.description}
       >
         <TextareaInput disabled={loading} />
       </Item>
 
-      <Item label={labelFor('Imagem')} name="imgSrc">
+      <Item label={<Message id="tenant.product.imgSrc" />} name="imgSrc">
         <LogoUpload large />
       </Item>
 
-      <Divider>Exibição</Divider>
+      <Divider>
+        <Message id="tenant.product.display" />
+      </Divider>
 
       <div className="flex justify-around">
         <div>
-          <Item label={labelFor('Modo de Exibição')}>
-            <Select
-              defaultValue="Horizontal"
-              size="large"
-              placeholder="Selecione a categoria"
-              disabled
-            />
+          <Item label={<Message id="tenant.product.displayMode" />}>
+            <Select defaultValue="Horizontal" size="large" disabled />
           </Item>
         </div>
         <div>
           <Form.Item
-            label={labelFor('Destaque')}
+            label={<Message id="tenant.product.highlight" />}
             name="highlight"
             valuePropName="checked"
             style={{
@@ -219,25 +225,41 @@ const ProductForm: FC<Props> = ({
           </Form.Item>
         </div>
       </div>
-      <Divider>Oferta</Divider>
+      <Divider>
+        <Message id="tenant.product.offer" />
+      </Divider>
 
       <div className="flex justify-center justify-between-l flex-wrap">
         <div className="w-50 pr3">
-          <Item label={labelFor('Preço Base')} name="price" rules={rules.price}>
+          <Item
+            label={<Message id="tenant.product.basePrice" />}
+            name="price"
+            rules={rules.price}
+          >
             <PriceInput />
           </Item>
         </div>
         <div className="flex justify-around flex-auto w-100 w-auto-l">
-          <Item label={labelFor('Mínimo')} name="min" rules={rules.min}>
+          <Item
+            label={<Message id="tenant.product.min" />}
+            name="min"
+            rules={rules.min}
+          >
             <NumberInput disabled={loading} />
           </Item>
-          <Item label={labelFor('Máximo')} name="max" rules={rules.max}>
+          <Item
+            label={<Message id="tenant.product.max" />}
+            name="max"
+            rules={rules.max}
+          >
             <NumberInput disabled={loading} />
           </Item>
         </div>
       </div>
 
-      <Divider>Opções de Montagem</Divider>
+      <Divider>
+        <Message id="tenant.product.assemblyOptions" />
+      </Divider>
 
       <Form.List name="assemblyOptions">
         {(fields, { add, remove }) => {
@@ -281,7 +303,7 @@ const ProductForm: FC<Props> = ({
                   <div className="flex">
                     <div className="w-50 pr2">
                       <Item
-                        label={labelFor('Preço')}
+                        label={<Message id="tenant.product.price" />}
                         name={[field.name, 'price']}
                         fieldKey={[field.fieldKey, 'price']}
                       >
@@ -293,10 +315,15 @@ const ProductForm: FC<Props> = ({
                         {...field}
                         name={[field.name, 'type']}
                         fieldKey={[field.fieldKey, 'type']}
-                        label={labelFor('Tipo')}
+                        label={<Message id="tenant.product.type" />}
                         rules={rules.required}
                       >
-                        <Select size="large" placeholder="Selecione o tipo">
+                        <Select
+                          size="large"
+                          placeholder={
+                            <Message id="tenant.product.placeholderType" />
+                          }
+                        >
                           {assemblyOptionsTypes?.map(({ name, label }) => (
                             <Option value={name} key={name}>
                               {label}
@@ -308,7 +335,7 @@ const ProductForm: FC<Props> = ({
                   </div>
                   <div className="flex justify-around flex-auto w-100 w-auto-l">
                     <Item
-                      label={labelFor('Mínimo')}
+                      label={<Message id="tenant.product.min" />}
                       name={[field.name, 'min']}
                       fieldKey={[field.fieldKey, 'min']}
                       rules={rules.required}
@@ -316,7 +343,7 @@ const ProductForm: FC<Props> = ({
                       <NumberInput disabled={loading} />
                     </Item>
                     <Item
-                      label={labelFor('Máximo')}
+                      label={<Message id="tenant.product.max" />}
                       name={[field.name, 'max']}
                       fieldKey={[field.fieldKey, 'max']}
                       rules={rules.max}
@@ -324,7 +351,9 @@ const ProductForm: FC<Props> = ({
                       <NumberInput disabled={loading} />
                     </Item>
                   </div>
-                  <Divider orientation="left">Opções</Divider>
+                  <Divider orientation="left">
+                    <Message id="tenant.product.options" />
+                  </Divider>
                   <div>
                     <Form.List name={[field.name, 'options']}>
                       {(
@@ -345,9 +374,16 @@ const ProductForm: FC<Props> = ({
                                       name={[optionField.name, 'name']}
                                       fieldKey={[optionField.fieldKey, 'name']}
                                       rules={rules.required}
-                                      label="Nome da Opção"
+                                      label={
+                                        <Message id="tenant.product.optionName" />
+                                      }
                                     >
-                                      <TextInput placeholder="ex: Calabresa" />
+                                      <TextInput
+                                        placeholder={intl.formatMessage({
+                                          id:
+                                            'tenant.product.placeholderOption',
+                                        })}
+                                      />
                                     </Form.Item>
                                   </div>
                                   <div className="w-20">
@@ -357,7 +393,7 @@ const ProductForm: FC<Props> = ({
                                       fieldKey={[optionField.fieldKey, 'live']}
                                       valuePropName="checked"
                                       rules={rules.required}
-                                      label="Ativo"
+                                      label={<Message id="tenant.live" />}
                                       initialValue
                                       style={{
                                         display: 'flex',
@@ -376,9 +412,16 @@ const ProductForm: FC<Props> = ({
                                       optionField.fieldKey,
                                       'description',
                                     ]}
-                                    label="Descrição"
+                                    label={
+                                      <Message id="tenant.product.description" />
+                                    }
                                   >
-                                    <TextInput placeholder="Ex: Contém Lactose" />
+                                    <TextInput
+                                      placeholder={intl.formatMessage({
+                                        id:
+                                          'tenant.product.placeholderDescription',
+                                      })}
+                                    />
                                   </Form.Item>
                                 </div>
                                 <div className="flex justify-around">
@@ -387,7 +430,9 @@ const ProductForm: FC<Props> = ({
                                       {...optionField}
                                       name={[optionField.name, 'price']}
                                       fieldKey={[optionField.fieldKey, 'price']}
-                                      label="Preço"
+                                      label={
+                                        <Message id="tenant.product.price" />
+                                      }
                                     >
                                       <PriceInput />
                                     </Form.Item>
@@ -403,7 +448,9 @@ const ProductForm: FC<Props> = ({
                                         optionField.fieldKey,
                                         'initialQuantity',
                                       ]}
-                                      label="Quantidade Inicial"
+                                      label={
+                                        <Message id="tenant.product.initialQuantity" />
+                                      }
                                     >
                                       <NumberInput />
                                     </Form.Item>
@@ -411,7 +458,11 @@ const ProductForm: FC<Props> = ({
                                 </div>
 
                                 <div className="flex justify-center">
-                                  <Tooltip title="Remover Item">
+                                  <Tooltip
+                                    title={intl.formatMessage({
+                                      id: 'tenant.product.removeOption',
+                                    })}
+                                  >
                                     <Button
                                       danger
                                       onClick={() =>
@@ -437,12 +488,17 @@ const ProductForm: FC<Props> = ({
                                   }}
                                   block
                                 >
-                                  <PlusOutlined /> Adicionar Opção
+                                  <PlusOutlined />{' '}
+                                  <Message id="tenant.product.addOption" />
                                 </Button>
                               </Form.Item>
                             </div>
                             <div className="flex justify-center">
-                              <Tooltip title="Remover Item">
+                              <Tooltip
+                                title={intl.formatMessage({
+                                  id: 'tenant.product.removeItem',
+                                })}
+                              >
                                 <Button
                                   danger
                                   type="primary"
@@ -469,7 +525,7 @@ const ProductForm: FC<Props> = ({
                     }}
                     block
                   >
-                    <PlusOutlined /> Adicionar Campo
+                    <PlusOutlined /> <Message id="tenant.product.addField" />
                   </Button>
                 </Form.Item>
               </div>
@@ -485,7 +541,7 @@ const ProductForm: FC<Props> = ({
         block
         htmlType="submit"
       >
-        {`${editMode ? 'Salvar' : 'Adicionar Produto'}`}
+        {intl.formatMessage({ id: editMode ? 'save' : 'tenant.product.add' })}
       </Button>
     </Form>
   )

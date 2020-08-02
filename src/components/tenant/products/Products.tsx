@@ -9,6 +9,7 @@ import EditProduct from './EditProduct'
 import Real from '../../Real'
 import ProductsFilters from './ProductsFilters'
 import { Product } from '../../../typings'
+import { Message } from '../../../intlConfig'
 
 const Products: FC = () => {
   const [filters, setFilters] = useState<Record<string, string>>({})
@@ -112,11 +113,13 @@ const Products: FC = () => {
           </List.Item>
         )}
         {!productsLoading && !products && (
-          <div className="tc flex justify-center pt4 pb3">Não há produtos</div>
+          <div className="tc flex justify-center pt4 pb3">
+            <Message id="tenant.noProducts" />
+          </div>
         )}
         <div className="pt1 pb3 flex justify-center">
           <Button icon={<PlusOutlined />} onClick={() => setAddModal(true)}>
-            Adicionar
+            <Message id="add" />
           </Button>
         </div>
       </List>

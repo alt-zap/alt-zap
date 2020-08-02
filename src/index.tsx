@@ -6,6 +6,7 @@ import { Router, globalHistory } from '@reach/router'
 import { ConfigProvider } from 'antd'
 import ptBR from 'antd/es/locale/pt_BR'
 import { QueryParamProvider } from 'use-query-params'
+import { IntlProvider } from 'react-intl'
 
 import 'antd/dist/antd.css'
 import './font.css'
@@ -19,6 +20,7 @@ import { AuthContextProvider } from './contexts/AuthContext'
 import UserSwitch from './pages/UserSwitchPage'
 import AdminPage from './templates/AdminPage'
 import TenantDashboardPage from './pages/TenantDashboardPage'
+import { intlConfig } from './intlConfig'
 
 const {
   REACT_APP_FIREBASE_KEY,
@@ -55,21 +57,27 @@ if (!firebase.apps.length) {
 const App = () => {
   return (
     <AuthContextProvider>
-      <ConfigProvider locale={ptBR}>
-        <Router>
-          <QueryParamProvider {...{ path: '/' }} reachHistory={globalHistory}>
-            <UserSwitch path="/" />
-            <LoginPage path="/login" />
-            <OnboardPage path="/onboard" />
-            <AdminPage path="/tenants">
-              <TenantDashboardPage path="/:tenantId" />
-              <TenantsPage path="/" />
-            </AdminPage>
-            <LegacyEditTenantPage path="/tenants-legacy/:tenantId" />
-            <PedidoPage path="/:slug" />
-          </QueryParamProvider>
-        </Router>
-      </ConfigProvider>
+      <IntlProvider
+        locale={intlConfig.locale}
+        defaultLocale={intlConfig.locale}
+        messages={intlConfig.messages}
+      >
+        <ConfigProvider locale={ptBR}>
+          <Router>
+            <QueryParamProvider {...{ path: '/' }} reachHistory={globalHistory}>
+              <UserSwitch path="/" />
+              <LoginPage path="/login" />
+              <OnboardPage path="/onboard" />
+              <AdminPage path="/tenants">
+                <TenantDashboardPage path="/:tenantId" />
+                <TenantsPage path="/" />
+              </AdminPage>
+              <LegacyEditTenantPage path="/tenants-legacy/:tenantId" />
+              <PedidoPage path="/:slug" />
+            </QueryParamProvider>
+          </Router>
+        </ConfigProvider>
+      </IntlProvider>
     </AuthContextProvider>
   )
 }
