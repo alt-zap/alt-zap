@@ -9,6 +9,7 @@ import {
   TenantContextActions,
   Product,
   Category,
+  ShippingStrategies,
 } from '../typings'
 import { tenantStateReducer } from './tenantReducer'
 
@@ -23,6 +24,12 @@ export const [useTenantConfig, TenantStateProvider] = createCtx<
   TenantContextState
 >()
 export const [useTenantDispatch, TenantDispatchProvider] = createCtx<Dispatch>()
+
+const tenantRef = (db: firestore.Firestore, tenantId: string) =>
+  db.collection('tenants').doc(tenantId)
+
+const productsRef = (db: firestore.Firestore, tenantId: string) =>
+  tenantRef(db, tenantId).collection('products')
 
 export const TenantContextProvider: FC<Props> = ({
   slug,
@@ -39,11 +46,7 @@ export const TenantContextProvider: FC<Props> = ({
 
     dispatch({ type: 'PRODUCT_START_LOADING' })
     const db = firebase.firestore()
-    const query = db
-      .collection('tenants')
-      .doc(tenantId)
-      .collection('products')
-      .get()
+    const query = productsRef(db, tenantId).get()
 
     query
       .then((querySnapshot) => {
@@ -73,7 +76,7 @@ export const TenantContextProvider: FC<Props> = ({
 
     dispatch({ type: 'START_LOADING' })
     const db = firebase.firestore()
-    const query = db.collection('tenants').doc(tenantId).get()
+    const query = tenantRef(db, tenantId).get()
 
     query
       .then((querySnapshot) => {
@@ -97,12 +100,6 @@ export const TenantContextProvider: FC<Props> = ({
     </TenantStateProvider>
   )
 }
-
-const tenantRef = (db: firestore.Firestore, tenantId: string) =>
-  db.collection('tenants').doc(tenantId)
-
-const productsRef = (db: firestore.Firestore, tenantId: string) =>
-  tenantRef(db, tenantId).collection('products')
 
 export const countProductPerCategory = (
   categoryIndex: number,
@@ -137,7 +134,7 @@ export const editCategory = async (
   dispatch({ type: 'CATEGORY_START_LOADING' })
 
   const db = firebase.firestore()
-  const ref = db.collection('tenants').doc(tenantId)
+  const ref = tenantRef(db, tenantId)
 
   const newCategories = [...categories]
 
@@ -180,7 +177,7 @@ export const addCategory = async (
   dispatch({ type: 'CATEGORY_START_LOADING' })
 
   const db = firebase.firestore()
-  const ref = db.collection('tenants').doc(tenantId)
+  const ref = tenantRef(db, tenantId)
 
   const toAdd = !firstCategory
     ? firebase.firestore.FieldValue.arrayUnion(category)
@@ -213,7 +210,7 @@ export const addProduct = async (
   }
 
   const db = firebase.firestore()
-  const ref = db.collection('tenants').doc(tenantId).collection('products')
+  const ref = productsRef(db, tenantId)
 
   return ref
     .add(sanitizeForFirebase(product))
@@ -246,11 +243,7 @@ export const editProduct = async (
   dispatch({ type: 'PRODUCT_START_LOADING' })
 
   const db = firebase.firestore()
-  const ref = db
-    .collection('tenants')
-    .doc(tenantId)
-    .collection('products')
-    .doc(product.id)
+  const ref = productsRef(db, tenantId).doc(product.id)
 
   const { id, ...productData } = product
 
@@ -290,5 +283,31 @@ export const setAddress = async (
     })
     .then(() => {
       dispatch({ type: 'SET_ADDRESS', args: address })
+    })
+}
+
+export const setShippingStrategies = async (
+  dispatch: Dispatch,
+  {
+    shippingStrategies,
+    tenantId,
+  }: {
+    shippingStrategies: ShippingStrategies
+    tenantId?: string
+  }
+) => {
+  if (!tenantId) {
+    return Promise.reject('Tenant ID missing')
+  }
+
+  const db = firebase.firestore()
+  const ref = tenantRef(db, tenantId)
+
+  return ref
+    .update({
+      shippingStrategies: sanitizeForFirebase(shippingStrategies),
+    })
+    .then(() => {
+      dispatch({ type: 'SET_SHIPPING', args: shippingStrategies })
     })
 }

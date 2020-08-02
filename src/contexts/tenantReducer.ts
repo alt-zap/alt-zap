@@ -141,6 +141,18 @@ export const tenantStateReducer = (
       }
     }
 
+    case 'SET_SHIPPING': {
+      const shippingStrategies = action.args
+
+      return {
+        ...state,
+        tenant: {
+          ...(state.tenant as TenantConfig),
+          shippingStrategies,
+        },
+      }
+    }
+
     default: {
       return state
     }

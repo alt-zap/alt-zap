@@ -37,7 +37,7 @@ export interface TenantConfig {
 
 export type ShippingStrategies = {
   deliveryFixed: {
-    price: number
+    price?: number
     active: boolean
   }
   takeaway: {
@@ -139,3 +139,4 @@ export type TenantContextActions =
   | Action<'EDIT_PRODUCT', { args: Product }>
   | Action<'SET_PRODUCTS', { args: Product[] }>
   | Action<'SET_ADDRESS', { args: Address }>
+  | Action<'SET_SHIPPING', { args: ShippingStrategies }>
