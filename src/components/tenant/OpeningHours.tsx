@@ -2,6 +2,8 @@ import React, { FC } from 'react'
 import { Button, Form, Divider, Select, TimePicker } from 'antd'
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons'
 
+import { useAltIntl, Message } from '../../intlConfig'
+
 const { Item } = Form
 const { Option } = Select
 const { RangePicker } = TimePicker
@@ -66,9 +68,13 @@ const dayOptions = [
 // }
 
 const OpeningHours: FC = () => {
+  const intl = useAltIntl()
+
   return (
     <div className="w-90 w-50-l bg-white ph3 pt1 pb2 ml0 ml4-l mt2 br1">
-      <Divider>Horário Semanal</Divider>
+      <Divider>
+        <Message id="tenant.hours.weekTitle" />
+      </Divider>
       <Form
         layout="vertical"
         onFinish={(data) => {
@@ -91,10 +97,15 @@ const OpeningHours: FC = () => {
                       className="w-100"
                       name={[field.name, 'day']}
                       fieldKey={[field.fieldKey, 'day']}
-                      label="Dia (ou dias)"
+                      label={<Message id="tenant.hours.day" />}
                       rules={[{ required: true }]}
                     >
-                      <Select size="large" placeholder="Selecione o tipo">
+                      <Select
+                        size="large"
+                        placeholder={
+                          <Message id="tenant.hours.dayPlaceholder" />
+                        }
+                      >
                         {dayOptions.map(({ value, label }) => (
                           <Option value={value} key={value}>
                             {label}
@@ -108,7 +119,7 @@ const OpeningHours: FC = () => {
                       {...field}
                       name={[field.name, 'time']}
                       fieldKey={[field.fieldKey, 'time']}
-                      label="Intervalo de Horas"
+                      label={<Message id="tenant.hours.hourInterval" />}
                       rules={[{ required: true }]}
                     >
                       <RangePicker
@@ -120,7 +131,7 @@ const OpeningHours: FC = () => {
                     </Item>
                     <MinusCircleOutlined
                       className="pa3"
-                      alt="Remover"
+                      alt={intl.formatMessage({ id: 'tenant.hours.remove' })}
                       onClick={() => {
                         remove(field.name)
                       }}
@@ -137,7 +148,7 @@ const OpeningHours: FC = () => {
                     }}
                     block
                   >
-                    <PlusOutlined /> Adicionar Intervalo
+                    <PlusOutlined /> <Message id="tenant.hours.addInterval" />
                   </Button>
                 </Form.Item>
               </div>
@@ -147,7 +158,7 @@ const OpeningHours: FC = () => {
 
         <Form.Item>
           <Button type="primary" size="large" htmlType="submit" block>
-            Salvar
+            <Message id="save" />
           </Button>
         </Form.Item>
       </Form>

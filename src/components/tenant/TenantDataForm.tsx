@@ -1,13 +1,20 @@
 /* eslint-disable react/jsx-handler-names */
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 import { Form, Button, Select } from 'antd'
 import slugify from 'slugify'
-import { Rule } from 'antd/lib/form'
 import InputMask from 'react-input-mask'
 
 import ImageUpload from '../common/ImageUpload'
 import ColorPicker from '../common/ColorPicker'
 import TextInput from '../common/TextInput'
+import {
+  Message,
+  useAltIntl,
+  IntlRules,
+  IntlSelect,
+  prepareRules,
+  prepareSelect,
+} from '../../intlConfig'
 
 const { Item } = Form
 const { Option } = Select
@@ -23,67 +30,70 @@ type Props = {
   onSubmit?: (data: TenantMetadata) => void
 }
 
-const rules: Record<string, Rule[]> = {
+const intlRules: IntlRules = {
   name: [
     {
       required: true,
-      message: 'Você deve preencher o nome do negócio',
+      message: 'tenant.data.nameRequired',
     },
     {
       min: 4,
-      message: 'O nome deve ter pelo menos 4 caracteres',
+      message: 'tenant.data.nameMin',
     },
     {
       max: 30,
-      message: 'O nome deve ter no máximo 30 caracteres',
+      message: 'tenant.data.nameMax',
     },
   ],
   slug: [
     {
       required: true,
-      message: 'Você deve preencher a URL',
+      message: 'tenant.data.slugRequired',
     },
     {
       pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/g,
-      message: 'A URL não pode ter caracteres especiais',
+      message: 'tenant.data.slugPattern',
     },
   ],
-  whatsapp: [{ required: true, message: 'Você deve preencher o Whatsapp' }],
+  whatsapp: [{ required: true, message: 'tenant.data.whatsappRequired' }],
   instagram: [
     {
       pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/g,
-      message: 'Forneça um usuário válido',
+      message: 'tenant.data.instagramPattern',
     },
   ],
   required: [
     {
       required: true,
-      message: 'Este campo é obrigatório',
+      message: 'mandatoryField',
     },
   ],
 }
-// TODO: Mudar para pegar isso dinamicamente
 
-const categories = [
+const intlCategories: IntlSelect = [
   {
-    name: 'Hamburgueria',
+    name: 'tenant.category.hamburgueria',
     value: 'hamburgueria',
   },
   {
-    name: 'Pizzaria',
+    name: 'tenant.category.pizzaria',
     value: 'pizzaria',
   },
   {
-    name: 'Loja',
+    name: 'tenant.category.loja',
     value: 'loja',
   },
   {
-    name: 'Restaurante',
+    name: 'tenant.category.restaurante',
     value: 'restaurante',
   },
 ]
 
 const TenantDataForm: FC<Props> = ({ initialData }) => {
+  const intl = useAltIntl()
+  const rules = useMemo(() => prepareRules(intlRules, intl), [intl])
+  const categories = useMemo(() => prepareSelect(intlCategories, intl), [intl])
+
   const [form] = Form.useForm()
 
   return (
@@ -95,10 +105,10 @@ const TenantDataForm: FC<Props> = ({ initialData }) => {
       onFinish={console.log}
       initialValues={initialData}
     >
-      <Item label="Nome do seu negócio" name="name" rules={rules.name}>
+      <Item label={<Message id="tenant.name" />} name="name" rules={rules.name}>
         <TextInput />
       </Item>
-      <Item label="URL da sua página" name="slug" rules={rules.slug}>
+      <Item label={<Message id="tenant.url" />} name="slug" rules={rules.slug}>
         <TextInput
           addonBefore="https://"
           addonAfter=".alt.app.br"
@@ -111,8 +121,15 @@ const TenantDataForm: FC<Props> = ({ initialData }) => {
           }}
         />
       </Item>
-      <Item label="Categoria" name="category" rules={rules.required}>
-        <Select size="large" placeholder="Selecione a categoria">
+      <Item
+        label={<Message id="tenant.category" />}
+        name="category"
+        rules={rules.required}
+      >
+        <Select
+          size="large"
+          placeholder={<Message id="tenant.categoryPlaceholder" />}
+        >
           {categories?.map(({ name, value }) => (
             <Option value={value} key={value}>
               {name}
@@ -122,26 +139,46 @@ const TenantDataForm: FC<Props> = ({ initialData }) => {
       </Item>
       <div className="flex">
         <div className="w-50 mr1">
-          <Item label="Whatsapp" name="whatsapp" rules={rules.whatsapp}>
+          <Item
+            label={<Message id="tenant.whatsapp" />}
+            name="whatsapp"
+            rules={rules.whatsapp}
+          >
             <InputMask mask="+55 (99) 99999-9999">
-              <TextInput placeholder="ex: (83) 99934-2545" />
+              <TextInput
+                placeholder={intl.formatMessage({
+                  id: 'tenant.whatsappPlaceholder',
+                })}
+              />
             </InputMask>
           </Item>
         </div>
         <div className="w-50 mr1">
-          <Item label="Instagram" name="instagram" rules={rules.instagram}>
+          <Item
+            label={<Message id="tenant.instagram" />}
+            name="instagram"
+            rules={rules.instagram}
+          >
             <TextInput addonBefore="@" />
           </Item>
         </div>
       </div>
-      <Item label="Logomarca" name="logoSrc" rules={rules.logoSrc}>
+      <Item
+        label={<Message id="tenant.logoSrc" />}
+        name="logoSrc"
+        rules={rules.logoSrc}
+      >
         <ImageUpload large />
       </Item>
-      <Item label="Cor do Tema" name="color" rules={rules.color}>
+      <Item
+        label={<Message id="tenant.color" />}
+        name="color"
+        rules={rules.color}
+      >
         <ColorPicker />
       </Item>
       <Button size="large" type="primary" block htmlType="submit">
-        Enviar
+        <Message id="save" />
       </Button>
     </Form>
   )

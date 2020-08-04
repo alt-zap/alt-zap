@@ -76,6 +76,51 @@ export const intlConfig = {
     'imageupload.extensionError': 'Envie um arquivo .png ou .jpg válido',
     'imageupload.success': 'Imagem enviada com sucesso!',
     'imageupload.error': 'Ocorreu um erro ao enviar sua imagem',
+    'tenant.shipping.success': 'Informações alteradas com sucesso',
+    'tenant.shipping.deliveryFixed': 'Entrega com preço fixo',
+    'tenant.shipping.deliveryFixedDesc':
+      'Caso você determine um valor, este será somado automaticamente em cada compra caso o cliente escolha por Entrega',
+    'tenant.shipping.errorFee': 'Informe a taxa',
+    'tenant.shipping.takeAway': 'Retirada no Local',
+    'tenant.shipping.takeAwayDesc':
+      'O cliente poderá visualizar o endereço da sua unidade. Não é adicionada nenhuma taxa no pedido',
+    'tenant.paymentMethods': 'Meios de Pagamento',
+    'tenant.paymentForm.name': 'Nome',
+    'tenant.paymentForm.namePlaceholder': 'Ex: Nubank',
+    'tenant.paymentForm.checkForChange': 'Preçisa de Troco?',
+    'tenant.paymentForm.desc': 'Informações Extras',
+    'tenant.paymentForm.imgSrc': 'Imagem',
+    'tenant.paymentForm.add': 'Adicionar Meio de Pagamento',
+    'tenant.logistics.strategies': 'Modalidades',
+    'tenant.address.success': 'Endereço atualizado com sucesso',
+    'tenant.address.title': 'Endereço da Unidade',
+    'tenant.hours.weekTitle': 'Horário Semanal',
+    'tenant.hours.day': 'Dia (ou intervalo)',
+    'tenant.hours.dayPlaceholder': 'Selecione',
+    'tenant.hours.hourInterval': 'Intervalo de Horas',
+    'tenant.hours.remove': 'Remover',
+    'tenant.hours.addInterval': 'Adicionar Janela de Tempo',
+    'tenant.name': 'Nome do seu negócio',
+    'tenant.url': 'URL da sua página',
+    'tenant.category': 'Categoria',
+    'tenant.categoryPlaceholder': 'Selecione a categoria',
+    'tenant.whatsapp': 'WhatsApp',
+    'tenant.whatsappPlaceholder': 'ex: (83) 99934-2545',
+    'tenant.instagram': 'Instagram',
+    'tenant.logoSrc': 'Logomarca',
+    'tenant.color': 'Cor do Tema',
+    'tenant.data.nameRequired': 'Você deve preencher o nome do negócio',
+    'tenant.data.nameMin': 'O nome deve ter pelo menos 4 caracteres',
+    'tenant.data.nameMax': 'O nome deve ter no máximo 30 caracteres',
+    'tenant.data.slugRequired': 'Você deve preencher a URL',
+    'tenant.data.slugPattern': 'A URL não pode ter caracteres especiais',
+    'tenant.data.whatsappRequired': 'Você deve preencher o Whatsapp',
+    'tenant.data.instagramPattern': 'Forneça um usuário válido',
+    mandatoryField: 'Este campo é obrigatório',
+    'tenant.category.hamburgueria': 'Hamburgueria',
+    'tenant.category.pizzaria': 'Pizzaria',
+    'tenant.category.loja': 'Loja',
+    'tenant.category.restaurante': 'Restaurante',
   },
 }
 
@@ -104,14 +149,26 @@ export const useAltIntl = () => {
   }
 }
 
+type AltMessage = keyof typeof intlConfig['messages']
+
 type IntlRule = {
-  message?: keyof typeof intlConfig['messages']
+  message?: AltMessage
   required?: boolean
+  pattern?: RegExp
   min?: number
   max?: number
 }
 
 export type IntlRules = Record<string, IntlRule[]>
+
+export type IntlSelect = Array<{ name: AltMessage; value: string }>
+
+export const prepareSelect = (select: IntlSelect, intl: IntlShape) => {
+  return select.map(({ name, value }) => ({
+    value,
+    name: intl.formatMessage({ id: name }),
+  }))
+}
 
 export const prepareRules = (rules: IntlRules, intl: IntlShape) => {
   const fields = Object.keys(rules)

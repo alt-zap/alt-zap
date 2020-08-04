@@ -8,10 +8,12 @@ import {
   setShippingStrategies,
 } from '../../../contexts/TenantContext'
 import { ShippingStrategies as ShippingType } from '../../../typings'
+import { useAltIntl, Message } from '../../../intlConfig'
 
 const { Item } = Form
 
 const ShippingStrategies: FC = () => {
+  const intl = useAltIntl()
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
 
@@ -27,13 +29,13 @@ const ShippingStrategies: FC = () => {
         tenantId,
       })
         .then(() => {
-          message.success('Informações alteradas com sucesso')
+          message.success(intl.formatMessage({ id: 'tenant.shipping.success' }))
         })
         .finally(() => {
           setLoading(false)
         })
     },
-    [dispatch, setLoading, tenantId]
+    [dispatch, setLoading, tenantId, intl]
   )
 
   return (
@@ -52,10 +54,11 @@ const ShippingStrategies: FC = () => {
             style={{ borderWidth: '1px' }}
           >
             <div className="flex flex-column w-100 w-70-l">
-              <span className="fw6 f5">Entrega com preço fixo</span>
+              <span className="fw6 f5">
+                <Message id="tenant.shipping.deliveryFixed" />
+              </span>
               <span className="light-silver">
-                Caso você determine um valor, este será somado automaticamente
-                em cada compra caso o cliente escolha por Entrega
+                <Message id="tenant.shipping.deliveryFixedDesc" />
               </span>
             </div>
             <div className="flex w-100 w-auto-l justify-around-l justify-center items-center">
@@ -70,7 +73,11 @@ const ShippingStrategies: FC = () => {
                           getFieldValue(['deliveryFixed', 'active']) &&
                           typeof value === 'undefined'
                         ) {
-                          return Promise.reject('Informe a taxa')
+                          return Promise.reject(
+                            intl.formatMessage({
+                              id: 'tenant.shipping.errorFee',
+                            })
+                          )
                         }
 
                         return Promise.resolve()
@@ -111,10 +118,11 @@ const ShippingStrategies: FC = () => {
             style={{ borderWidth: '1px' }}
           >
             <div className="flex flex-column">
-              <span className="fw6 f5">Retirada no Local</span>
+              <span className="fw6 f5">
+                <Message id="tenant.shipping.takeAway" />
+              </span>
               <span className="light-silver">
-                O cliente poderá visualizar o endereço da sua unidade. Não é
-                adicionada nenhuma taxa no pedido
+                <Message id="tenant.shipping.takeAwayDesc" />
               </span>
             </div>
             <div className="w-30 pl3 w-20-l">
@@ -136,7 +144,7 @@ const ShippingStrategies: FC = () => {
             block
             className="mt3"
           >
-            Salvar
+            <Message id="save" />
           </Button>
         </Form>
       )}

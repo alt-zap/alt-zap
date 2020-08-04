@@ -4,6 +4,7 @@ import { Divider } from 'antd'
 
 import ShippingStrategies from './ShippingStrategies'
 import TenantAddress from './TenantAddress'
+import { Message } from '../../../intlConfig'
 
 const LogisticsDashboard: FC = () => {
   return (
@@ -12,7 +13,9 @@ const LogisticsDashboard: FC = () => {
         <TenantAddress />
       </div>
       <div className="w-90 w-50-l bg-white mv2 ml0 mh4-l pb3 ph3 br1">
-        <Divider>Modalidades</Divider>
+        <Divider>
+          <Message id="tenant.logistics.strategies" />
+        </Divider>
         <ShippingStrategies />
       </div>
     </div>

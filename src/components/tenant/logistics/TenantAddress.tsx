@@ -8,8 +8,10 @@ import {
   setAddress,
 } from '../../../contexts/TenantContext'
 import { Address } from '../../../typings'
+import { useAltIntl, Message } from '../../../intlConfig'
 
 const TenantAddress: FC = () => {
+  const intl = useAltIntl()
   const { tenant, tenantId, loading: tenantLoading } = useTenantConfig()
   const [loading, setLoading] = useState(false)
 
@@ -23,18 +25,20 @@ const TenantAddress: FC = () => {
         tenantId,
       })
         .then(() => {
-          message.success('Endereço atualizado com sucesso')
+          message.success(intl.formatMessage({ id: 'tenant.address.success' }))
         })
         .finally(() => {
           setLoading(false)
         })
     },
-    [tenantId, dispatch, setLoading]
+    [tenantId, dispatch, setLoading, intl]
   )
 
   return (
     <>
-      <Divider>Endereço da Unidade</Divider>
+      <Divider>
+        <Message id="tenant.address.title" />
+      </Divider>
       {tenantLoading ? (
         <Skeleton active />
       ) : (
