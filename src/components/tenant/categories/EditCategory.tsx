@@ -1,5 +1,6 @@
 import React, { FC, useCallback } from 'react'
 import { message } from 'antd'
+import * as Sentry from '@sentry/react'
 
 import CategoryForm from './CategoryForm'
 import {
@@ -47,12 +48,16 @@ const EditCategory: FC<Props> = ({ category, index, onFinish }) => {
         category: editedCategory,
         index,
         tenantId,
-      }).then(() => {
-        onFinish()
-        message.success(
-          intl.formatMessage({ id: 'tenant.categories.editSuccess' })
-        )
       })
+        .then(() => {
+          onFinish()
+          message.success(
+            intl.formatMessage({ id: 'tenant.categories.editSuccess' })
+          )
+        })
+        .catch((e) => {
+          Sentry.captureException(e)
+        })
     },
     [dispatch, tenant, tenantId, index, onFinish, intl]
   )

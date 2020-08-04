@@ -1,12 +1,16 @@
 /* eslint-disable no-console */
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 import { Button, Form, Switch } from 'antd'
-import { Rule } from 'antd/lib/form'
 import slugify from 'slugify'
 
 import TextInput from '../../common/TextInput'
 import { Category } from '../../../typings'
-import { Message, useAltIntl } from '../../../intlConfig'
+import {
+  Message,
+  useAltIntl,
+  IntlRules,
+  prepareRules,
+} from '../../../intlConfig'
 
 const { Item } = Form
 
@@ -19,19 +23,19 @@ type Props = {
   editMode?: boolean
 }
 
-const rules: Record<string, Rule[]> = {
+const rules: IntlRules = {
   name: [
     {
       required: true,
-      message: 'Você deve preencher o nome da categoria',
+      message: 'tenant.categories.nameRequired',
     },
     {
       min: 4,
-      message: 'O nome deve ter pelo menos 4 caracteres',
+      message: 'tenant.categories.nameMin',
     },
     {
       max: 30,
-      message: 'O nome deve ter no máximo 30 caracteres',
+      message: 'tenant.categories.nameMax',
     },
   ],
 }
@@ -43,6 +47,8 @@ const CategoryForm: FC<Props> = ({
   initialData,
 }) => {
   const intl = useAltIntl()
+  const intlRules = useMemo(() => prepareRules(rules, intl), [intl])
+
   const [form] = Form.useForm()
 
   return (
@@ -55,7 +61,7 @@ const CategoryForm: FC<Props> = ({
       <Item
         label={<Message id="tenant.categories.name" />}
         name="name"
-        rules={rules.name}
+        rules={intlRules.name}
       >
         <TextInput
           disabled={loading}

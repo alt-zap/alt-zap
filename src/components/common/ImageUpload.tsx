@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { log, eSet } from '../../utils'
 import { ImageTools } from '../../tools/ImageTools'
 import ProductImage from './ProductImage'
+import { useAltIntl } from '../../intlConfig'
 
 const VALID_EXTENSIONS = ['png', 'jpg', 'jpeg']
 const MAX_WIDTH = 500
@@ -22,6 +23,7 @@ type Props = {
 const ImageUpload: FC<Props> = ({ disabled, value, onChange, large }) => {
   const [loading, setLoading] = useState(false)
   const [modal, setModal] = useState(false)
+  const intl = useAltIntl()
 
   const handleUpload = useCallback(
     (file) => {
@@ -29,7 +31,9 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange, large }) => {
       const [, ext] = file.name.split('.')
 
       if (!ext || !VALID_EXTENSIONS.includes(ext)) {
-        return message.error('Envie um arquivo .png ou .jpg válido')
+        return message.error(
+          intl.formatMessage({ id: 'imageupload.extensionError' })
+        )
       }
 
       const storage = firebase.storage()
@@ -56,13 +60,14 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange, large }) => {
         })
         .catch((e) => {
           log(e)
+          // LOG ERROR
           message.error('Ocorreu um erro ao enviar sua imagem')
         })
         .finally(() => {
           setLoading(false)
         })
     },
-    [onChange]
+    [onChange, intl]
   )
 
   return (

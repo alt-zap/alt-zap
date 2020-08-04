@@ -7,6 +7,7 @@ import { ConfigProvider } from 'antd'
 import ptBR from 'antd/es/locale/pt_BR'
 import { QueryParamProvider } from 'use-query-params'
 import { IntlProvider } from 'react-intl'
+import * as Sentry from '@sentry/react'
 
 import 'antd/dist/antd.css'
 import './font.css'
@@ -58,29 +59,38 @@ if (!firebase.apps.length) {
 const App = () => {
   return (
     <AuthContextProvider>
-      <IntlProvider
-        locale={intlConfig.locale}
-        defaultLocale={intlConfig.locale}
-        messages={intlConfig.messages}
-      >
-        <ConfigProvider locale={ptBR}>
-          <Router>
-            <QueryParamProvider {...{ path: '/' }} reachHistory={globalHistory}>
-              <UserSwitch path="/" />
-              <LoginPage path="/login" />
-              <OnboardPage path="/onboard" />
-              <AdminPage path="/tenants">
-                <TenantDashboardPage path="/:tenantId" />
-                <TenantsPage path="/" />
-              </AdminPage>
-              <LegacyEditTenantPage path="/tenants-legacy/:tenantId" />
-              <PedidoPage path="/:slug" />
-            </QueryParamProvider>
-          </Router>
-        </ConfigProvider>
-      </IntlProvider>
+      <Sentry.ErrorBoundary fallback={null} showDialog>
+        <IntlProvider
+          locale={intlConfig.locale}
+          defaultLocale={intlConfig.locale}
+          messages={intlConfig.messages}
+        >
+          <ConfigProvider locale={ptBR}>
+            <Router>
+              <QueryParamProvider
+                {...{ path: '/' }}
+                reachHistory={globalHistory}
+              >
+                <UserSwitch path="/" />
+                <LoginPage path="/login" />
+                <OnboardPage path="/onboard" />
+                <AdminPage path="/tenants">
+                  <TenantDashboardPage path="/:tenantId" />
+                  <TenantsPage path="/" />
+                </AdminPage>
+                <LegacyEditTenantPage path="/tenants-legacy/:tenantId" />
+                <PedidoPage path="/:slug" />
+              </QueryParamProvider>
+            </Router>
+          </ConfigProvider>
+        </IntlProvider>
+      </Sentry.ErrorBoundary>
     </AuthContextProvider>
   )
 }
+
+Sentry.init({
+  dsn: process.env.REACT_APP_SENTRY_DSN,
+})
 
 ReactDOM.render(<App />, document.getElementById('root'))

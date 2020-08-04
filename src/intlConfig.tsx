@@ -1,5 +1,11 @@
 import React, { FC } from 'react'
-import { FormattedMessage, useIntl, MessageDescriptor } from 'react-intl'
+import {
+  FormattedMessage,
+  useIntl,
+  MessageDescriptor,
+  IntlShape,
+} from 'react-intl'
+import { Rule } from 'antd/lib/form'
 
 export const intlConfig = {
   locale: 'pt',
@@ -15,7 +21,7 @@ export const intlConfig = {
     'tenant.categories.add': 'Adicionar Categoria',
     'tenant.categories.live': 'Ativa',
     'tenant.categories.edit': 'Editar Categoria',
-    'tenant.categories.productCount': '%s produtos',
+    'tenant.categories.productCount': '{count} produtos',
     'tenant.categories.alreadyExists': 'Já existe uma categoria %s',
     'tenant.categories.addSuccess': 'Categoria cadastrada com sucesso',
     'tenant.categories.editSuccess': 'Categoria editada com sucesso',
@@ -67,6 +73,9 @@ export const intlConfig = {
     'tenant.product.shouldAddCategory':
       'Você deve primeiro adicionar uma categoria',
     'tenant.product.imgSrc': 'Imagem',
+    'imageupload.extensionError': 'Envie um arquivo .png ou .jpg válido',
+    'imageupload.success': 'Imagem enviada com sucesso!',
+    'imageupload.error': 'Ocorreu um erro ao enviar sua imagem',
   },
 }
 
@@ -93,4 +102,30 @@ export const useAltIntl = () => {
       values?: Record<string, string>
     ) => intl.formatMessage(descriptor, values),
   }
+}
+
+type IntlRule = {
+  message?: keyof typeof intlConfig['messages']
+  required?: boolean
+  min?: number
+  max?: number
+}
+
+export type IntlRules = Record<string, IntlRule[]>
+
+export const prepareRules = (rules: IntlRules, intl: IntlShape) => {
+  const fields = Object.keys(rules)
+
+  return fields.reduce((acc, cur) => {
+    const ruleArray = rules[cur]
+    const localizedRules = ruleArray.map(({ message, ...rule }) => ({
+      ...rule,
+      message: intl.formatMessage({ id: message }),
+    }))
+
+    return {
+      ...acc,
+      [cur]: localizedRules,
+    }
+  }, {} as Record<string, Rule[]>)
 }
