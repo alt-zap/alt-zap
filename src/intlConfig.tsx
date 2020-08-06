@@ -18,6 +18,8 @@ export const intlConfig = {
     'tenant.categories': 'Categorias',
     'tenant.categories.name': 'Nome da Categoria',
     'tenant.slug': 'Slug',
+    'tenant.data.success': 'Dados salvos com sucesso',
+    'tenant.data.error': 'Houve um erro ao salvar os dados :(',
     'tenant.categories.add': 'Adicionar Categoria',
     'tenant.categories.live': 'Ativa',
     'tenant.categories.edit': 'Editar Categoria',

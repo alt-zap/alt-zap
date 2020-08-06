@@ -365,3 +365,31 @@ export const setPaymentMethods = async (
       dispatch({ type: 'SET_TENANT_FIELD', args: { paymentMethods } })
     })
 }
+
+export const setTenantData = async (
+  dispatch: Dispatch,
+  {
+    tenantData,
+    tenantId,
+  }: {
+    tenantData: Partial<TenantConfig>
+    tenantId?: string
+  }
+) => {
+  if (!tenantId) {
+    return Promise.reject('Tenant ID missing')
+  }
+
+  const db = firebase.firestore()
+  const ref = tenantRef(db, tenantId)
+
+  const metadata = sanitizeForFirebase(tenantData)
+
+  return ref
+    .update({
+      ...metadata,
+    })
+    .then(() => {
+      dispatch({ type: 'SET_TENANT_FIELD', args: { ...metadata } })
+    })
+}
