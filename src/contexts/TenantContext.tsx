@@ -10,6 +10,7 @@ import {
   Product,
   Category,
   ShippingStrategies,
+  OpeningHours,
 } from '../typings'
 import { tenantStateReducer } from './tenantReducer'
 
@@ -309,5 +310,31 @@ export const setShippingStrategies = async (
     })
     .then(() => {
       dispatch({ type: 'SET_SHIPPING', args: shippingStrategies })
+    })
+}
+
+export const setOpeningHours = async (
+  dispatch: Dispatch,
+  {
+    openingHours,
+    tenantId,
+  }: {
+    openingHours: OpeningHours
+    tenantId?: string
+  }
+) => {
+  if (!tenantId) {
+    return Promise.reject('Tenant ID missing')
+  }
+
+  const db = firebase.firestore()
+  const ref = tenantRef(db, tenantId)
+
+  return ref
+    .update({
+      openingHours: sanitizeForFirebase(openingHours),
+    })
+    .then(() => {
+      dispatch({ type: 'SET_TENANT_FIELD', args: { openingHours } })
     })
 }

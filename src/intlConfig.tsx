@@ -76,6 +76,10 @@ export const intlConfig = {
     'imageupload.extensionError': 'Envie um arquivo .png ou .jpg válido',
     'imageupload.success': 'Imagem enviada com sucesso!',
     'imageupload.error': 'Ocorreu um erro ao enviar sua imagem',
+    'imageupload.sending': 'Enviando...',
+    'imageupload.upload': 'Upload',
+    'imageupload.newImage': 'Nova Imagem',
+    'imageupload.editImage': 'Edite a imagem',
     'tenant.shipping.success': 'Informações alteradas com sucesso',
     'tenant.shipping.deliveryFixed': 'Entrega com preço fixo',
     'tenant.shipping.deliveryFixedDesc':
@@ -121,6 +125,16 @@ export const intlConfig = {
     'tenant.category.pizzaria': 'Pizzaria',
     'tenant.category.loja': 'Loja',
     'tenant.category.restaurante': 'Restaurante',
+    'tenant.days.all': 'Todos os dias',
+    'tenant.days.weekdays': 'De Seg a Sex',
+    'tenant.days.weekend': 'Sábado e Domingo',
+    'tenant.days.monday': 'Segunda-Feira',
+    'tenant.days.tuesday': 'Segunda-Feira',
+    'tenant.days.wednesday': 'Quarta-Feira',
+    'tenant.days.thursday': 'Quinta-Feira',
+    'tenant.days.friday': 'Sexta-Feira',
+    'tenant.days.saturday': 'Sábado',
+    'tenant.days.sunday': 'Domingo',
   },
 }
 

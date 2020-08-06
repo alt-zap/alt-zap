@@ -4,11 +4,12 @@ import ImgCrop from 'antd-img-crop'
 import { UploadOutlined, LoadingOutlined } from '@ant-design/icons'
 import firebase from 'firebase'
 import { v4 as uuidv4 } from 'uuid'
+import * as Sentry from '@sentry/react'
 
 import { log, eSet } from '../../utils'
 import { ImageTools } from '../../tools/ImageTools'
 import ProductImage from './ProductImage'
-import { useAltIntl } from '../../intlConfig'
+import { useAltIntl, Message } from '../../intlConfig'
 
 const VALID_EXTENSIONS = ['png', 'jpg', 'jpeg']
 const MAX_WIDTH = 500
@@ -55,13 +56,12 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange, large }) => {
           return storage.ref().child(fileName).getDownloadURL()
         })
         .then((fireBaseUrl) => {
-          message.success('Arquivo enviado com sucesso')
+          message.success(intl.formatMessage({ id: 'imageupload.success' }))
           onChange?.(fireBaseUrl)
         })
         .catch((e) => {
-          log(e)
-          // LOG ERROR
-          message.error('Ocorreu um erro ao enviar sua imagem')
+          Sentry.captureException(e)
+          message.error(intl.formatMessage({ id: 'imageupload.error' }))
         })
         .finally(() => {
           setLoading(false)
@@ -84,7 +84,10 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange, large }) => {
           onChange={onChange && eSet(onChange)}
         />
         <div className="flex justify-end mt2">
-          <ImgCrop modalTitle="Edite a imagem" modalCancel="Cancelar">
+          <ImgCrop
+            modalTitle={intl.formatMessage({ id: 'imageupload.editImage' })}
+            modalCancel="Cancelar"
+          >
             <Upload
               beforeUpload={(file) => {
                 handleUpload(file)
@@ -94,7 +97,11 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange, large }) => {
             >
               <Button disabled={loading}>
                 {loading ? <LoadingOutlined /> : <UploadOutlined />}
-                {loading ? 'Enviando' : 'Upload'}
+                {loading ? (
+                  <Message id="imageupload.sending" />
+                ) : (
+                  <Message id="imageupload.upload" />
+                )}
               </Button>
             </Upload>
           </ImgCrop>
@@ -104,7 +111,7 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange, large }) => {
         <ProductImage src={value} title="" onClick={() => setModal(true)} />
       </div>
       <Modal
-        title="Nova Imagem"
+        title={<Message id="imageupload.newImage" />}
         footer={null}
         onCancel={() => setModal(false)}
         visible={modal}

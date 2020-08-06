@@ -33,6 +33,29 @@ export interface TenantConfig {
   selectedMenu: number
   address?: Address
   shippingStrategies?: ShippingStrategies
+  openingHours?: OpeningHours
+}
+
+export type OpeningHours = {
+  intervals: TimeFrame[]
+}
+
+export type Days =
+  | 'ALL'
+  | 'WEEKDAYS'
+  | 'WEEKEND'
+  | 'MONDAY'
+  | 'TUESDAY'
+  | 'WEDNESDAY'
+  | 'THURSDAY'
+  | 'FRIDAY'
+  | 'SATURDAY'
+  | 'SUNDAY'
+
+export type TimeFrame = {
+  days: Days
+  from: string
+  to: string
 }
 
 export type ShippingStrategies = {
@@ -140,3 +163,4 @@ export type TenantContextActions =
   | Action<'SET_PRODUCTS', { args: Product[] }>
   | Action<'SET_ADDRESS', { args: Address }>
   | Action<'SET_SHIPPING', { args: ShippingStrategies }>
+  | Action<'SET_TENANT_FIELD', { args: Partial<TenantConfig> }>

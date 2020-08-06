@@ -153,6 +153,18 @@ export const tenantStateReducer = (
       }
     }
 
+    case 'SET_TENANT_FIELD': {
+      const update = action.args
+
+      return {
+        ...state,
+        tenant: {
+          ...(state.tenant as TenantConfig),
+          ...update,
+        },
+      }
+    }
+
     default: {
       return state
     }
