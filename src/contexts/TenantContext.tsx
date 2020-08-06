@@ -11,6 +11,7 @@ import {
   Category,
   ShippingStrategies,
   OpeningHours,
+  PaymentMethod,
 } from '../typings'
 import { tenantStateReducer } from './tenantReducer'
 
@@ -336,5 +337,31 @@ export const setOpeningHours = async (
     })
     .then(() => {
       dispatch({ type: 'SET_TENANT_FIELD', args: { openingHours } })
+    })
+}
+
+export const setPaymentMethods = async (
+  dispatch: Dispatch,
+  {
+    paymentMethods,
+    tenantId,
+  }: {
+    paymentMethods: PaymentMethod[]
+    tenantId?: string
+  }
+) => {
+  if (!tenantId) {
+    return Promise.reject('Tenant ID missing')
+  }
+
+  const db = firebase.firestore()
+  const ref = tenantRef(db, tenantId)
+
+  return ref
+    .update({
+      paymentMethods: sanitizeForFirebase(paymentMethods),
+    })
+    .then(() => {
+      dispatch({ type: 'SET_TENANT_FIELD', args: { paymentMethods } })
     })
 }

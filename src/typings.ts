@@ -10,12 +10,7 @@ export interface TenantConfig {
   color?: string
   live: boolean
   deliveryFee: number
-  paymentMethods: Array<{
-    name: string
-    checksForChange?: boolean
-    imgSrc?: string
-    description?: string
-  }>
+  paymentMethods: PaymentMethod[]
   items: Array<{
     headline?: string
     imgSrc?: string
@@ -34,6 +29,13 @@ export interface TenantConfig {
   address?: Address
   shippingStrategies?: ShippingStrategies
   openingHours?: OpeningHours
+}
+
+export type PaymentMethod = {
+  name: string
+  checksForChange?: boolean
+  imgSrc?: string
+  description?: string
 }
 
 export type OpeningHours = {
