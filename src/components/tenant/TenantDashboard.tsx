@@ -65,7 +65,7 @@ const TenantDashboard: FC = () => {
           style={{
             backgroundColor: 'white',
           }}
-          onBack={() => navigate(-1)}
+          onBack={() => navigate('/tenants')}
           title={tenant.name}
           tags={
             <Tag color={tenant?.live ? 'blue' : 'red'}>

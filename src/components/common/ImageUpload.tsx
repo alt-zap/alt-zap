@@ -96,7 +96,11 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange, large }) => {
               }}
             >
               <Button disabled={loading}>
-                {loading ? <LoadingOutlined /> : <UploadOutlined />}
+                {loading ? (
+                  <LoadingOutlined className="pr2" />
+                ) : (
+                  <UploadOutlined className="pr2" />
+                )}
                 {loading ? (
                   <Message id="imageupload.sending" />
                 ) : (
