@@ -72,6 +72,11 @@ const Categories: FC = () => {
             <Skeleton loading active />
           </List.Item>
         )}
+        {!tenant?.categories?.length && (
+          <div className="tc flex justify-center pt4 pb3">
+            <Message id="tenant.noCategories" />
+          </div>
+        )}
         <div className="pt1 pb3 flex justify-center">
           <Button icon={<PlusOutlined />} onClick={() => setAddModal(true)}>
             <Message id="add" />

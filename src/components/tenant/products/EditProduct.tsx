@@ -29,7 +29,7 @@ const EditProduct: FC<Props> = ({ product, onFinish }) => {
         tenantId,
       })
 
-      editPromise.then(() => {
+      return editPromise.then(() => {
         onFinish()
       })
     },

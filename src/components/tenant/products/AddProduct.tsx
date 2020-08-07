@@ -23,7 +23,7 @@ const AddProduct: FC<Props> = ({ onFinish }) => {
         tenantId,
       })
 
-      addPromise.then(() => {
+      return addPromise.then(() => {
         onFinish()
       })
     },

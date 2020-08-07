@@ -36,6 +36,7 @@ export const intlConfig = {
     'tenant.sections.logistics': 'Logística',
     'tenant.sections.payments': 'Meios de Pagamento',
     'tenant.noProducts': 'Não há produtos cadastrados.',
+    'tenant.noCategories': 'Não há categorias cadastradas',
     'tenant.filterByName': 'Filtrar por Nome',
     'tenant.productNamePlaceholder': 'ex: Burguer',
     'tenant.filterByCategory': 'ou por Categoria',

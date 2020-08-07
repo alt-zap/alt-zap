@@ -22,7 +22,7 @@ const EditTenant: FC<Props> = ({ onSuccess }) => {
 
   const handleSaveTenantData = useCallback(
     (data: Partial<TenantConfig>) => {
-      setTenantData(dispatch, {
+      return setTenantData(dispatch, {
         tenantData: data,
         tenantId,
       })

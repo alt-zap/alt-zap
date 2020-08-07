@@ -60,7 +60,10 @@ export const classic = () => (
       loading: false,
     }}
   >
-    <ProductForm categories={[]} onValidSubmit={(a) => console.log(a)} />
+    <ProductForm
+      categories={[]}
+      onValidSubmit={(a) => Promise.resolve(console.log(a))}
+    />
   </TenantStateProvider>
 )
 
@@ -71,7 +74,10 @@ export const withData = () => (
       categories: exampleCategories,
     }}
   >
-    <ProductForm onValidSubmit={(a) => console.log(a)} categories={[]} />
+    <ProductForm
+      onValidSubmit={(a) => Promise.resolve(console.log(a))}
+      categories={[]}
+    />
   </TenantStateProvider>
 )
 // export const WithData = () => (

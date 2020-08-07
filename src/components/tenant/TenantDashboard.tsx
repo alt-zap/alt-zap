@@ -157,7 +157,7 @@ const TenantDashboard: FC = () => {
         visible={editingMetadata}
         onCancel={() => setEditMetadata(false)}
       >
-        <EditTenant />
+        <EditTenant onSuccess={() => setEditMetadata(false)} />
       </Modal>
     </div>
   )

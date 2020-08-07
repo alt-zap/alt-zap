@@ -51,7 +51,7 @@ const Products: FC = () => {
   return (
     <Fragment>
       <div className="flex flex-column">
-        {products?.length && tenant?.categories && (
+        {!!products?.length && tenant?.categories && (
           <ProductsFilters
             onChangeFilters={(data) => setFilters(data)}
             categories={tenant?.categories}
@@ -112,7 +112,7 @@ const Products: FC = () => {
             <Skeleton loading active />
           </List.Item>
         )}
-        {!productsLoading && !products && (
+        {!productsLoading && !products?.length && (
           <div className="tc flex justify-center pt4 pb3">
             <Message id="tenant.noProducts" />
           </div>

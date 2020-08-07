@@ -67,12 +67,10 @@ const NumberInput = forwardRef<
 
 const labelFor = (label: string) => label
 
-type ProductData = Pick<Product, 'id' | 'name' | 'live'>
-
 type Props = {
   initialData?: Partial<Product>
   categories: Category[]
-  onValidSubmit?: (data: Product) => void
+  onValidSubmit?: (data: Product) => Promise<void>
   loading?: boolean
   editMode?: boolean
 }
@@ -144,7 +142,11 @@ const ProductForm: FC<Props> = ({
     <Form
       form={form}
       layout="vertical"
-      onFinish={(store) => onValidSubmit?.(store as Product)}
+      onFinish={(store) => {
+        onValidSubmit?.(store as Product).then(() => {
+          form.resetFields()
+        })
+      }}
       initialValues={initialData}
       autoComplete="off"
     >

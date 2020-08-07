@@ -27,7 +27,7 @@ type TenantMetadata = Pick<
 type Props = {
   loading?: boolean
   initialData?: TenantMetadata
-  onSubmit?: (data: TenantMetadata) => void
+  onSubmit?: (data: TenantMetadata) => Promise<void>
 }
 
 const intlRules: IntlRules = {
@@ -89,7 +89,7 @@ const intlCategories: IntlSelect = [
   },
 ]
 
-const TenantDataForm: FC<Props> = ({ initialData }) => {
+const TenantDataForm: FC<Props> = ({ initialData, onSubmit, loading }) => {
   const intl = useAltIntl()
   const rules = useMemo(() => prepareRules(intlRules, intl), [intl])
   const categories = useMemo(() => prepareSelect(intlCategories, intl), [intl])
@@ -97,12 +97,14 @@ const TenantDataForm: FC<Props> = ({ initialData }) => {
   const [form] = Form.useForm()
 
   return (
-    // eslint-disable-next-line no-console
     <Form
       form={form}
       layout="vertical"
-      // eslint-disable-next-line no-console
-      onFinish={console.log}
+      onFinish={(data) => {
+        onSubmit?.(data as TenantConfig).then(() => {
+          form.resetFields()
+        })
+      }}
       initialValues={initialData}
     >
       <Item label={<Message id="tenant.name" />} name="name" rules={rules.name}>
@@ -110,6 +112,7 @@ const TenantDataForm: FC<Props> = ({ initialData }) => {
       </Item>
       <Item label={<Message id="tenant.url" />} name="slug" rules={rules.slug}>
         <TextInput
+          disabled={loading}
           addonBefore="https://"
           addonAfter=".alt.app.br"
           onFocus={() => {
@@ -127,6 +130,7 @@ const TenantDataForm: FC<Props> = ({ initialData }) => {
         rules={rules.required}
       >
         <Select
+          disabled={loading}
           size="large"
           placeholder={<Message id="tenant.categoryPlaceholder" />}
         >
@@ -144,7 +148,7 @@ const TenantDataForm: FC<Props> = ({ initialData }) => {
             name="whatsapp"
             rules={rules.whatsapp}
           >
-            <InputMask mask="+55 (99) 99999-9999">
+            <InputMask disabled={loading} mask="+55 (99) 99999-9999">
               <TextInput
                 placeholder={intl.formatMessage({
                   id: 'tenant.whatsappPlaceholder',
@@ -159,7 +163,7 @@ const TenantDataForm: FC<Props> = ({ initialData }) => {
             name="instagram"
             rules={rules.instagram}
           >
-            <TextInput addonBefore="@" />
+            <TextInput disabled={loading} addonBefore="@" />
           </Item>
         </div>
       </div>
@@ -168,7 +172,7 @@ const TenantDataForm: FC<Props> = ({ initialData }) => {
         name="logoSrc"
         rules={rules.logoSrc}
       >
-        <ImageUpload large />
+        <ImageUpload disabled={loading} large />
       </Item>
       <Item
         label={<Message id="tenant.color" />}
@@ -177,7 +181,13 @@ const TenantDataForm: FC<Props> = ({ initialData }) => {
       >
         <ColorPicker />
       </Item>
-      <Button size="large" type="primary" block htmlType="submit">
+      <Button
+        loading={loading}
+        size="large"
+        type="primary"
+        block
+        htmlType="submit"
+      >
         <Message id="save" />
       </Button>
     </Form>
