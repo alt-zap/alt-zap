@@ -1,4 +1,4 @@
-import { Element } from './utils'
+export type Element<ArrayType extends readonly unknown[]> = ArrayType[number]
 
 export interface TenantConfig {
   name: string

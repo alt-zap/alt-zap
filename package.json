@@ -44,6 +44,7 @@
   "description": "Compartilhe seu cardápio e receba pedidos pelo Whatsapp",
   "version": "0.0.180",
   "devDependencies": {
+    "@bit/bit.envs.compilers.typescript": "^3.1.49",
     "@sambego/storybook-state": "^2.0.1",
     "@storybook/addon-knobs": "^5.3.19",
     "@storybook/addon-viewport": "^5.3.19",
@@ -74,7 +75,10 @@
     "lint": "eslint --ext js,jsx,ts,tsx .",
     "format": "prettier --write \"**/*.{ts,js,json}\"",
     "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "bit-export": "bit export lucis.alt",
+    "bit-tag-minor": "bit tag --all --minor",
+    "bit-tag-patch": "bit tag --all --patch"
   },
   "browserslist": {
     "production": [
