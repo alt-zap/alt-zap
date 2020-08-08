@@ -68,9 +68,7 @@ export const TenantContextProvider: FC<Props> = ({
   }, [tenantId])
 
   useEffect(() => {
-    if (!tenantId) return
-
-    if (slug) {
+    if (slug || !tenantId) {
       return log(
         `We no longer support slug querying for the TenantContext. Please, move away from the old Order Page!`
       )

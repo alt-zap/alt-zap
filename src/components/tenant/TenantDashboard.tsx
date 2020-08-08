@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback } from 'react'
+import React, { FC, useState, useCallback, useMemo } from 'react'
 import {
   PageHeader,
   Tag,
@@ -15,6 +15,7 @@ import {
   MenuOutlined,
   ScheduleOutlined,
   DollarOutlined,
+  WarningOutlined,
 } from '@ant-design/icons'
 import { useNavigate } from '@reach/router'
 import { useQueryParam, StringParam } from 'use-query-params'
@@ -26,6 +27,7 @@ import LogisticsDashboard from './logistics/LogisticsDashboard'
 import PaymentsDashboard from './payments/PaymentsDashboard'
 import EditTenant from './EditTenant'
 import { Message } from '../../intlConfig'
+import Pendencies, { pendenciesTest } from './Pendencies'
 
 const { TabPane } = Tabs
 
@@ -42,7 +44,11 @@ const TenantDashboard: FC = () => {
   const [tabId, setTabId] = useQueryParam('tabId', StringParam)
 
   const [editingMetadata, setEditMetadata] = useState(false)
-  const { tenant, loading, productsLoading, products } = useTenantConfig()
+  const [pendenciesModal, setPendenciesModal] = useState(false)
+
+  const tenantContext = useTenantConfig()
+  const { tenant, loading, productsLoading, products } = tenantContext
+
   const navigate = useNavigate()
 
   const handleTabChange = useCallback(
@@ -52,7 +58,11 @@ const TenantDashboard: FC = () => {
     [setTabId]
   )
 
-  // TODO: Deal with loading state here
+  const tenantPendencies = useMemo(
+    () => pendenciesTest.filter(({ test }) => test(tenantContext)),
+    [tenantContext]
+  )
+
   return (
     <div className="flex flex-column">
       {loading && !tenant && (
@@ -73,6 +83,16 @@ const TenantDashboard: FC = () => {
             </Tag>
           }
           extra={[
+            !!tenantPendencies?.length && (
+              <Button
+                key="0"
+                danger
+                icon={<WarningOutlined />}
+                onClick={() => setPendenciesModal(true)}
+              >
+                Pendências
+              </Button>
+            ),
             <Button
               key="1"
               type="primary"
@@ -158,6 +178,13 @@ const TenantDashboard: FC = () => {
         onCancel={() => setEditMetadata(false)}
       >
         <EditTenant onSuccess={() => setEditMetadata(false)} />
+      </Modal>
+      <Modal
+        footer={null}
+        visible={pendenciesModal}
+        onCancel={() => setPendenciesModal(false)}
+      >
+        <Pendencies pendencies={tenantPendencies} />
       </Modal>
     </div>
   )

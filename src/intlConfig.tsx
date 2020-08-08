@@ -140,6 +140,20 @@ export const intlConfig = {
     'tenant.days.friday': 'Sexta-Feira',
     'tenant.days.saturday': 'Sábado',
     'tenant.days.sunday': 'Domingo',
+    'tenant.pendencies.metadata':
+      'Você precisa preencher dados como Categoria, cor do tema e outros dados do seu negócio. Clique no botão Editar para preencher!',
+    'tenant.pendencies.categories':
+      'Você precisa cadastrar as Categorias de Produto para seu negócio. Faça isso no primeiro painel Menu de Produtos',
+    'tenant.pendencies.products':
+      'Você não tem produtos cadastrados :( Cadastre-os no painel Menu de Produtos',
+    'tenant.pendencies.openingHours':
+      'No painel Horário de Funcionamento, preencha os intervalos nos quais você estará recebendo pedidos!',
+    'tenant.pendencies.logistics':
+      'No painel Logística, preencha as suas modalidade de entrega (ou retirada)',
+    'tenant.pendencies.payment':
+      'Preencha as formas de pagamento que você aceita no painel Meios de Pagamento',
+    'tenant.pendencies.address':
+      'Você precisa preencher o Endereço de seu negócio no painel de Logística',
   },
 }
 
@@ -168,7 +182,7 @@ export const useAltIntl = () => {
   }
 }
 
-type AltMessage = keyof typeof intlConfig['messages']
+export type AltMessage = keyof typeof intlConfig['messages']
 
 type IntlRule = {
   message?: AltMessage

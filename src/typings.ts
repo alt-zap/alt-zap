@@ -3,6 +3,7 @@ export type Element<ArrayType extends readonly unknown[]> = ArrayType[number]
 export interface TenantConfig {
   name: string
   slug: string
+  category?: string
   userId: string
   whatsapp: string
   instagram?: string
