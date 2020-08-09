@@ -14,6 +14,7 @@ export const intlConfig = {
     'all.f': 'Todas',
     save: 'Salvar',
     'tenant.live': 'Ativo',
+    'tenant.openTitle': 'Com base em seu horário de funcionamento',
     'tenant.products': 'Produtos',
     'tenant.categories': 'Categorias',
     'tenant.categories.name': 'Nome da Categoria',
@@ -154,6 +155,7 @@ export const intlConfig = {
       'Preencha as formas de pagamento que você aceita no painel Meios de Pagamento',
     'tenant.pendencies.address':
       'Você precisa preencher o Endereço de seu negócio no painel de Logística',
+    'tenant.pendencies.title': 'Pendência que você precisa ajustar',
   },
 }
 

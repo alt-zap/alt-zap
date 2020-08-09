@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
-import { Address, OrderProducts } from './typings'
+import { Address, OrderProducts, OpeningHours, Days } from './typings'
 
 type Elements = HTMLInputElement | HTMLTextAreaElement
 
@@ -98,4 +98,62 @@ export const sanitizeForFirebase = (obj: any) => {
   })
 
   return obj
+}
+
+export const isTenantOpen = (hours: OpeningHours) => {
+  const today = new Date()
+
+  /**
+   * It maps our Days constant values (defined by the tenant) to
+   * Javascript's getDay()
+   */
+  const daysMap: Record<number, Days[]> = {
+    0: ['ALL', 'WEEKEND', 'SUNDAY'],
+    1: ['ALL', 'WEEKDAYS', 'MONDAY'],
+    2: ['ALL', 'WEEKDAYS', 'TUESDAY'],
+    3: ['ALL', 'WEEKDAYS', 'WEDNESDAY'],
+    4: ['ALL', 'WEEKDAYS', 'THURSDAY'],
+    5: ['ALL', 'WEEKDAYS', 'FRIDAY'],
+    6: ['ALL', 'WEEKEND', 'SATURDAY'],
+  }
+
+  const validTimeFrames = daysMap[today.getDay()]
+
+  return hours.intervals
+    .filter(({ days }) => validTimeFrames.includes(days))
+    .some(({ from: fromRaw, to: toRaw }) => {
+      // Time is stored in ISO format
+      const [from, to] = [fromRaw, toRaw].map((str) => new Date(str))
+      const afterFrom =
+        today.getHours() >= from.getHours() &&
+        today.getMinutes() >= from.getMinutes()
+
+      const beforeTo =
+        today.getHours() <= to.getHours() &&
+        today.getMinutes() <= to.getMinutes()
+
+      return afterFrom && beforeTo
+    })
+}
+
+// Thanks, Dan
+// https://overreacted.io/making-setinterval-declarative-with-react-hooks/
+export const useInterval = (callback: () => void, delay: number) => {
+  const savedCallback = useRef<() => void>()
+
+  useEffect(() => {
+    savedCallback.current = callback
+  }, [callback])
+
+  useEffect(() => {
+    function tick() {
+      savedCallback.current?.()
+    }
+
+    if (delay !== null) {
+      const id = setInterval(tick, delay)
+
+      return () => clearInterval(id)
+    }
+  }, [delay])
 }

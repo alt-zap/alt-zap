@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback, useMemo } from 'react'
+import React, { FC, useState, useCallback, useMemo, useEffect } from 'react'
 import {
   PageHeader,
   Tag,
@@ -8,6 +8,7 @@ import {
   Tabs,
   Modal,
   Skeleton,
+  Tooltip,
 } from 'antd'
 import {
   CarOutlined,
@@ -26,8 +27,9 @@ import MenuDashboard from './menus/MenuDashboard'
 import LogisticsDashboard from './logistics/LogisticsDashboard'
 import PaymentsDashboard from './payments/PaymentsDashboard'
 import EditTenant from './EditTenant'
-import { Message } from '../../intlConfig'
+import { Message, useAltIntl } from '../../intlConfig'
 import Pendencies, { pendenciesTest } from './Pendencies'
+import { isTenantOpen, useInterval, log } from '../../utils'
 
 const { TabPane } = Tabs
 
@@ -41,8 +43,10 @@ const renderTabBar = (props: any, DefaultTabBar: any) => (
 )
 
 const TenantDashboard: FC = () => {
+  const intl = useAltIntl()
   const [tabId, setTabId] = useQueryParam('tabId', StringParam)
 
+  const [isOpen, setOpen] = useState(false)
   const [editingMetadata, setEditMetadata] = useState(false)
   const [pendenciesModal, setPendenciesModal] = useState(false)
 
@@ -63,6 +67,15 @@ const TenantDashboard: FC = () => {
     [tenantContext]
   )
 
+  useEffect(() => {
+    setOpen(tenant?.openingHours ? isTenantOpen(tenant?.openingHours) : false)
+  }, [tenant])
+
+  useInterval(() => {
+    log('Verificando se o estabelecimento está aberto')
+    setOpen(tenant?.openingHours ? isTenantOpen(tenant?.openingHours) : false)
+  }, 60000)
+
   return (
     <div className="flex flex-column">
       {loading && !tenant && (
@@ -78,9 +91,15 @@ const TenantDashboard: FC = () => {
           onBack={() => navigate('/tenants')}
           title={tenant.name}
           tags={
-            <Tag color={tenant?.live ? 'blue' : 'red'}>
-              {tenant.live ? 'Aberto' : 'Fechado'}
-            </Tag>
+            <Tooltip title={intl.formatMessage({ id: 'tenant.openTitle' })}>
+              <Tag
+                className="pointer dim"
+                onClick={() => setTabId('2')}
+                color={isOpen ? 'blue' : 'red'}
+              >
+                {isOpen ? 'Aberto' : 'Fechado'}
+              </Tag>
+            </Tooltip>
           }
           extra={[
             !!tenantPendencies?.length && (
