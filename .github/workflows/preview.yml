@@ -37,7 +37,8 @@ jobs:
           REACT_APP_FIREBASE_SENDER_ID: ${{ secrets.FIREBASE_SENDER_ID }}
           REACT_APP_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           REACT_APP_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
-      - uses: ./
+      - name: Deploying to Vercel
+        uses: amondnet/vercel-action@v19
         id: vercel-action-staging
         if: github.event_name == 'pull_request'
         with:
