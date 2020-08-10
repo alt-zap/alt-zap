@@ -139,10 +139,10 @@ const assemblyOptionsTypesIntl: IntlSelect<AssemblyType> = [
     name: 'tenant.productform.assemblySimple',
     value: 'SINGLE',
   },
-  {
-    name: 'tenant.productform.assemblyText',
-    value: 'TEXT',
-  },
+  // {
+  //   name: 'tenant.productform.assemblyText',
+  //   value: 'TEXT',
+  // },
 ]
 
 const ProductForm: FC<Props> = ({
