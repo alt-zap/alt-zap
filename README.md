@@ -1,6 +1,11 @@
 # AltZap
 
-Compartilhe seu cardápio facilmente e receba pedidos pelo Whatsapp.
+Compartilhe seu cardápio facilmente e:
+
+- Receba pedidos pelo Whatsapp.
+- Aproveite o catálogo para loja física.
+- Ofereça opções de entraga.
+- Tudo **de graça.** Pra sempre.
 
 <img src="https://user-images.githubusercontent.com/18706156/87861502-3776f980-c91d-11ea-9d48-c33c941d2636.png" width="420" />
 
