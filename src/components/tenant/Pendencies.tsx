@@ -54,7 +54,9 @@ const Pendencies: FC<Props> = ({ pendencies }) => {
 
   return (
     <div className="pa2">
-      <h2 className="tc">Pendência que você precisa ajustar</h2>
+      <h2 className="tc">
+        <Message id="tenant.pendencies.title" />
+      </h2>
       <ul>
         {pendencies.map(({ message }, i) => (
           <li key={i}>
