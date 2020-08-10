@@ -115,7 +115,7 @@ export interface Address {
 }
 
 // May change that later
-export type AssemblyType = 'UNISELECT' | 'MULTISELECT' | 'TEXT'
+export type AssemblyType = 'REPEAT' | 'SINGLE' | 'TEXT'
 
 export interface AssemblyOption {
   name: string

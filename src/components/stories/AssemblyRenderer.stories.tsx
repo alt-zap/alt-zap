@@ -3,6 +3,7 @@
 import React from 'react'
 
 import AssemblyRenderer from '../order/AssemblyRenderer'
+import { AssemblyType } from '../../typings'
 
 export default {
   title: 'order|AssemblyRenderer',
@@ -17,11 +18,11 @@ const products = [
     assemblyOptions: [
       {
         max: 1,
-        type: 'UNISELECT',
+        type: 'SINGLE' as AssemblyType,
         min: 1,
         name: 'Tamanho',
         options: [
-          { initialQuantity: 1, price: null, name: 'Pequeno', live: true },
+          { initialQuantity: 1, name: 'Pequeno', live: true },
           { price: 200, name: 'Médio', live: true },
           { price: 400, name: 'Grande', live: true },
         ],
@@ -29,8 +30,8 @@ const products = [
       },
       {
         max: 3,
-        type: 'MULTISELECT',
-        min: 0,
+        type: 'REPEAT' as AssemblyType,
+        min: 1,
         name: 'Adicionais',
         options: [
           { price: 200, name: 'Bacon', live: true },

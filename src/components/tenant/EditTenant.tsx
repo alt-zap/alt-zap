@@ -8,6 +8,7 @@ import {
   useTenantDispatch,
 } from '../../contexts/TenantContext'
 import { useAltIntl } from '../../intlConfig'
+import { TenantConfig } from '../../typings'
 
 type Props = {
   onSuccess?: () => void

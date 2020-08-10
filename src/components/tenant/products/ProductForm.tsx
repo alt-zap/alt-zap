@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 import {
   Button,
   Form,
@@ -16,8 +16,13 @@ import TextInputOriginal from '../../common/TextInput'
 import ImageUploadOriginal from '../../common/ImageUpload'
 import TextareaInputOriginal from '../../common/TextareaInput'
 import CurrencyInput from '../../common/CurrencyInput'
-import { Category, Product } from '../../../typings'
-import { Message, useAltIntl } from '../../../intlConfig'
+import { Category, Product, AssemblyType } from '../../../typings'
+import {
+  Message,
+  useAltIntl,
+  IntlSelect,
+  prepareSelect,
+} from '../../../intlConfig'
 
 const { Item } = Form
 const { Option } = Select
@@ -111,20 +116,32 @@ const rules: Record<string, Rule[]> = {
   assemblyName: [
     { required: true, message: 'Você deve informar o nome do item' },
   ],
+  assemblyMax: [
+    {
+      required: true,
+      message: 'Obrigatório',
+    },
+  ],
+  assemblyMin: [
+    {
+      required: true,
+      message: 'Obrigatório',
+    },
+  ],
 }
 
-const assemblyOptionsTypes = [
+const assemblyOptionsTypesIntl: IntlSelect<AssemblyType> = [
   {
-    label: 'Seleção Única',
-    name: 'UNISELECT',
+    name: 'tenant.productform.assemblyRepeat',
+    value: 'REPEAT',
   },
   {
-    label: 'Múltipla Escolha',
-    name: 'MULTISELECT',
+    name: 'tenant.productform.assemblySimple',
+    value: 'SINGLE',
   },
   {
-    label: 'Texto Livre',
-    name: 'TEXT',
+    name: 'tenant.productform.assemblyText',
+    value: 'TEXT',
   },
 ]
 
@@ -137,6 +154,11 @@ const ProductForm: FC<Props> = ({
 }) => {
   const intl = useAltIntl()
   const [form] = Form.useForm()
+
+  const assemblyOptionsTypes = useMemo(
+    () => prepareSelect(assemblyOptionsTypesIntl, intl),
+    [intl]
+  )
 
   return (
     <Form
@@ -277,7 +299,34 @@ const ProductForm: FC<Props> = ({
                         {...field}
                         name={[field.name, 'name']}
                         fieldKey={[field.fieldKey, 'name']}
-                        rules={rules.assemblyName}
+                        rules={[
+                          ...rules.assemblyName,
+                          ({ getFieldValue }) => ({
+                            validator(_, value) {
+                              const allItems: AssemblyOption[] = getFieldValue(
+                                'assemblyOptions'
+                              )
+
+                              const allNames = allItems
+                                .map(({ name }) => name)
+                                .filter(Boolean)
+
+                              const ocurrences = allNames.reduce(
+                                (acc: number, current: string) =>
+                                  acc + (current === value ? 1 : 0),
+                                0
+                              )
+
+                              if (ocurrences >= 2) {
+                                return Promise.reject(
+                                  'Você não pode ter dois items com o mesmo nome.'
+                                )
+                              }
+
+                              return Promise.resolve()
+                            },
+                          }),
+                        ]}
                         label={labelFor('Nome do Campo')}
                       >
                         <TextInput placeholder="ex: Sabor" />
@@ -325,9 +374,9 @@ const ProductForm: FC<Props> = ({
                             <Message id="tenant.product.placeholderType" />
                           }
                         >
-                          {assemblyOptionsTypes?.map(({ name, label }) => (
-                            <Option value={name} key={name}>
-                              {label}
+                          {assemblyOptionsTypes?.map(({ name, value }) => (
+                            <Option value={value} key={value}>
+                              {name}
                             </Option>
                           ))}
                         </Select>
@@ -339,7 +388,7 @@ const ProductForm: FC<Props> = ({
                       label={<Message id="tenant.product.min" />}
                       name={[field.name, 'min']}
                       fieldKey={[field.fieldKey, 'min']}
-                      rules={rules.required}
+                      rules={rules.assemblyMin}
                     >
                       <NumberInput disabled={loading} />
                     </Item>
@@ -347,7 +396,7 @@ const ProductForm: FC<Props> = ({
                       label={<Message id="tenant.product.max" />}
                       name={[field.name, 'max']}
                       fieldKey={[field.fieldKey, 'max']}
-                      rules={rules.max}
+                      rules={rules.assemblyMax}
                     >
                       <NumberInput disabled={loading} />
                     </Item>

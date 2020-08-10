@@ -156,6 +156,10 @@ export const intlConfig = {
     'tenant.pendencies.address':
       'Você precisa preencher o Endereço de seu negócio no painel de Logística',
     'tenant.pendencies.title': 'Pendência que você precisa ajustar',
+    'tenant.productform.assemblyRepeat': 'Selecão Com Repetição',
+    'tenant.productform.assemblyText': 'Texto Personalizado',
+    'tenant.productform.assemblySimple': 'Seleção Simples',
+    'order.assembly.required': 'Esta opção é obrigatória.',
   },
 }
 
@@ -196,7 +200,7 @@ type IntlRule = {
 
 export type IntlRules = Record<string, IntlRule[]>
 
-export type IntlSelect = Array<{ name: AltMessage; value: string }>
+export type IntlSelect<T = string> = Array<{ name: AltMessage; value: T }>
 
 export const prepareSelect = (select: IntlSelect, intl: IntlShape) => {
   return select.map(({ name, value }) => ({
