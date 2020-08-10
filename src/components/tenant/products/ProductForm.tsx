@@ -171,6 +171,7 @@ const ProductForm: FC<Props> = ({
       }}
       initialValues={initialData}
       autoComplete="off"
+      scrollToFirstError
     >
       <div className="flex justify-between">
         <div className="w-80">
@@ -303,7 +304,7 @@ const ProductForm: FC<Props> = ({
                           ...rules.assemblyName,
                           ({ getFieldValue }) => ({
                             validator(_, value) {
-                              const allItems: AssemblyOption[] = getFieldValue(
+                              const allItems: Assembly[] = getFieldValue(
                                 'assemblyOptions'
                               )
 
@@ -319,7 +320,9 @@ const ProductForm: FC<Props> = ({
 
                               if (ocurrences >= 2) {
                                 return Promise.reject(
-                                  'Você não pode ter dois items com o mesmo nome.'
+                                  intl.formatMessage({
+                                    id: 'tenant.productform.itemSameName',
+                                  })
                                 )
                               }
 
@@ -388,7 +391,7 @@ const ProductForm: FC<Props> = ({
                       label={<Message id="tenant.product.min" />}
                       name={[field.name, 'min']}
                       fieldKey={[field.fieldKey, 'min']}
-                      rules={rules.assemblyMin}
+                      rules={[...rules.assemblyMin]}
                     >
                       <NumberInput disabled={loading} />
                     </Item>
@@ -396,7 +399,31 @@ const ProductForm: FC<Props> = ({
                       label={<Message id="tenant.product.max" />}
                       name={[field.name, 'max']}
                       fieldKey={[field.fieldKey, 'max']}
-                      rules={rules.assemblyMax}
+                      rules={[
+                        ...rules.assemblyMax,
+                        ({ getFieldValue }) => ({
+                          validator: (_, value) => {
+                            const otherMin = getFieldValue([
+                              'assemblyOptions',
+                              field.name,
+                              'min',
+                            ])
+
+                            if (
+                              typeof otherMin === 'number' &&
+                              otherMin > value
+                            ) {
+                              return Promise.reject(
+                                intl.formatMessage({
+                                  id: 'tenant.productform.lessThenMin',
+                                })
+                              )
+                            }
+
+                            return Promise.resolve()
+                          },
+                        }),
+                      ]}
                     >
                       <NumberInput disabled={loading} />
                     </Item>
@@ -423,7 +450,42 @@ const ProductForm: FC<Props> = ({
                                       {...optionField}
                                       name={[optionField.name, 'name']}
                                       fieldKey={[optionField.fieldKey, 'name']}
-                                      rules={rules.required}
+                                      rules={[
+                                        ...rules.required,
+                                        ({ getFieldValue }) => ({
+                                          validator(_, value) {
+                                            const allItems: AssemblyOption[] = getFieldValue(
+                                              [
+                                                'assemblyOptions',
+                                                field.name,
+                                                'options',
+                                              ]
+                                            )
+
+                                            const allNames = allItems
+                                              .map(({ name }) => name)
+                                              .filter(Boolean)
+
+                                            const ocurrences = allNames.reduce(
+                                              (acc: number, current: string) =>
+                                                acc +
+                                                (current === value ? 1 : 0),
+                                              0
+                                            )
+
+                                            if (ocurrences >= 2) {
+                                              return Promise.reject(
+                                                intl.formatMessage({
+                                                  id:
+                                                    'tenant.productform.optionSameName',
+                                                })
+                                              )
+                                            }
+
+                                            return Promise.resolve()
+                                          },
+                                        }),
+                                      ]}
                                       label={
                                         <Message id="tenant.product.optionName" />
                                       }
