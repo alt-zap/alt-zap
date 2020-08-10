@@ -47,5 +47,3 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           working-directory: build
-          alias-domains: |
-            pr-{{PR_NUMBER}}.alt-zap.vercel.app
