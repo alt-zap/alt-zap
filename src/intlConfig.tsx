@@ -135,7 +135,7 @@ export const intlConfig = {
     'tenant.days.weekdays': 'De Seg a Sex',
     'tenant.days.weekend': 'Sábado e Domingo',
     'tenant.days.monday': 'Segunda-Feira',
-    'tenant.days.tuesday': 'Segunda-Feira',
+    'tenant.days.tuesday': 'Terça-Feira',
     'tenant.days.wednesday': 'Quarta-Feira',
     'tenant.days.thursday': 'Quinta-Feira',
     'tenant.days.friday': 'Sexta-Feira',
