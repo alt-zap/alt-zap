@@ -269,14 +269,30 @@ const ProductForm: FC<Props> = ({
             name="min"
             rules={rules.min}
           >
-            <NumberInput disabled={loading} />
+            <NumberInput min={0} disabled={loading} />
           </Item>
           <Item
             label={<Message id="tenant.product.max" />}
             name="max"
-            rules={rules.max}
+            rules={[
+              ({ getFieldValue }) => ({
+                validator: (_, value) => {
+                  const otherMin = getFieldValue(['min'])
+
+                  if (typeof otherMin === 'number' && otherMin > value) {
+                    return Promise.reject(
+                      intl.formatMessage({
+                        id: 'tenant.productform.lessThenMin',
+                      })
+                    )
+                  }
+
+                  return Promise.resolve()
+                },
+              }),
+            ]}
           >
-            <NumberInput disabled={loading} />
+            <NumberInput min={0} disabled={loading} />
           </Item>
         </div>
       </div>
