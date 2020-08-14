@@ -7,19 +7,21 @@ import {
   useTenantDispatch,
   addProduct,
 } from '../../../contexts/TenantContext'
+import { useAuth } from '../../../contexts/AuthContext'
 import { Product } from '../../../typings'
 import { Message } from '../../../intlConfig'
 
 type Props = { onFinish: () => void }
 
 const AddProduct: FC<Props> = ({ onFinish }) => {
+  const { user } = useAuth()
   const { productsLoading, tenantId, tenant } = useTenantConfig()
   const dispatch = useTenantDispatch()
 
   const createProduct = useCallback(
     (product: Product) => {
       const addPromise = addProduct(dispatch, {
-        product,
+        product: { ...product, userId: user!.uid },
         tenantId,
       })
 
@@ -27,7 +29,7 @@ const AddProduct: FC<Props> = ({ onFinish }) => {
         onFinish()
       })
     },
-    [onFinish, dispatch, tenantId]
+    [onFinish, dispatch, tenantId, user]
   )
 
   if (!tenant?.categories) {

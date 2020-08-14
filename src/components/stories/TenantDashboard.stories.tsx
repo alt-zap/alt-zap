@@ -42,6 +42,7 @@ const exampleTenant = {
 const exampleProducts: Product[] = [
   {
     name: 'Double Cheese Burguer',
+    userId: '',
     imgSrc: 'https://i.imgur.com/numiAKw.png',
     live: true,
     price: 2000,
@@ -50,6 +51,7 @@ const exampleProducts: Product[] = [
   },
   {
     name: 'Triplo Smash Bacon',
+    userId: '',
     imgSrc: 'https://i.imgur.com/jExYkIW.png',
     live: true,
     price: 1600,
@@ -58,6 +60,7 @@ const exampleProducts: Product[] = [
   },
   {
     name: 'CHUT Burger',
+    userId: '',
     imgSrc:
       'https://firebasestorage.googleapis.com/v0/b/alt-zap.appspot.com/o/4e8aba7a-31e3-4ba9-8cbd-5d213b4bd228.jpg?alt=media&token=54d0ffd2-faa0-4c92-a47c-202dbf543739',
     live: false,

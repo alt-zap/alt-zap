@@ -88,6 +88,7 @@ export interface Category {
 
 export interface Product {
   id?: string
+  userId: string
   category: number
   name: string
   description?: string
