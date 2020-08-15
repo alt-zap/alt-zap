@@ -164,6 +164,15 @@ export const intlConfig = {
       'Não é permitido repetir nome de opções',
     'tenant.productform.itemSameName': 'Não é permitido repetir nome de itens',
     'order.assembly.required': 'Esta opção é obrigatória.',
+    'onboard.personalData': 'Dados pessoais',
+    'onboard.yourBusiness': 'Seu negócio',
+    'onboard.fillYourData':
+      'Preencha aqui seus dados pessoais. Eles serão usados apenas para controle interno.',
+    'onboard.user.name': 'Nome Completo',
+    'onboard.user.nameRule': 'Você deve preencher seu nome completo',
+    'onboard.user.document': 'CPF',
+    'onboard.user.documentRule': 'Por favor, preencha seu CPF',
+    'onboard.user.documentMask': '999.999.999-99',
   },
 }
 
