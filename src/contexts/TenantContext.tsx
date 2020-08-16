@@ -14,6 +14,7 @@ import {
   PaymentMethod,
 } from '../typings'
 import { tenantStateReducer } from './tenantReducer'
+import { AltMessage, altMessage } from '../intlConfig'
 
 type Props = {
   slug?: string
@@ -27,8 +28,13 @@ export const [useTenantConfig, TenantStateProvider] = createCtx<
 >()
 export const [useTenantDispatch, TenantDispatchProvider] = createCtx<Dispatch>()
 
+export const useTenant = () =>
+  [useTenantConfig(), useTenantDispatch()] as [TenantContextState, Dispatch]
+
+const tenantsRef = (db: firestore.Firestore) => db.collection('tenants')
+
 const tenantRef = (db: firestore.Firestore, tenantId: string) =>
-  db.collection('tenants').doc(tenantId)
+  tenantsRef(db).doc(tenantId)
 
 const productsRef = (db: firestore.Firestore, tenantId: string) =>
   tenantRef(db, tenantId).collection('products')
@@ -390,4 +396,48 @@ export const setTenantData = async (
     .then(() => {
       dispatch({ type: 'SET_TENANT_FIELD', args: { ...metadata } })
     })
+}
+
+export const addTenant = (
+  dispatch: Dispatch,
+  { tenant, userId }: { tenant: Partial<TenantConfig>; userId: string }
+): Promise<AltMessage> => {
+  const { slug } = tenant
+
+  if (!slug || !userId) {
+    return Promise.reject(altMessage('onboard.tenant.error'))
+  }
+
+  const db = firebase.firestore()
+  const ref = tenantsRef(db)
+
+  return ref
+    .where('slug', '==', slug)
+    .limit(1)
+    .get()
+    .then(
+      (res): Promise<AltMessage> => {
+        if (res.empty) {
+          return ref
+            .add({
+              userId,
+              createdAt: new Date().toISOString(),
+              ...tenant,
+            })
+            .then((createdDoc) => {
+              dispatch({ type: 'SET_TENANT', args: tenant as TenantConfig })
+              dispatch({ type: 'SET_TENANT_ID', args: createdDoc.id })
+
+              return altMessage('onboard.tenantSuccess')
+            })
+            .catch((err) => {
+              log(err)
+
+              return Promise.reject(altMessage('onboard.tenant.error'))
+            })
+        }
+
+        return Promise.reject(altMessage('onboard.tenant.slugError'))
+      }
+    )
 }

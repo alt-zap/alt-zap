@@ -2,9 +2,30 @@ import {
   Product,
   Category,
   TenantContextState,
-  TenantContextActions as Actions,
+  Action,
   TenantConfig,
+  ShippingStrategies,
 } from '../typings'
+
+type Actions =
+  | Action<'ADD_CATEGORY', { args: Category }>
+  | Action<'EDIT_CATEGORY', { args: { categoryData: Category; index: number } }>
+  | Action<'CATEGORY_START_LOADING'>
+  | Action<'CATEGORY_STOP_LOADING'>
+  | Action<'START_LOADING'>
+  | Action<'STOP_LOADING'>
+  | Action<'SET_TENANT', { args: TenantConfig }>
+  | Action<'PRODUCT_START_LOADING'>
+  | Action<'PRODUCT_STOP_LOADING'>
+  | Action<'ADD_PRODUCT', { args: Product }>
+  | Action<'EDIT_PRODUCT', { args: Product }>
+  | Action<'SET_PRODUCTS', { args: Product[] }>
+  | Action<'SET_ADDRESS', { args: Address }>
+  | Action<'SET_SHIPPING', { args: ShippingStrategies }>
+  | Action<'SET_TENANT_FIELD', { args: Partial<TenantConfig> }>
+  | Action<'SET_TENANT_ID', { args: string }>
+
+export type TenantContextActions = Actions
 
 export const tenantStateReducer = (
   state: TenantContextState,
@@ -162,6 +183,15 @@ export const tenantStateReducer = (
           ...(state.tenant as TenantConfig),
           ...update,
         },
+      }
+    }
+
+    case 'SET_TENANT_ID': {
+      const tenantId = action.args
+
+      return {
+        ...state,
+        tenantId,
       }
     }
 

@@ -153,20 +153,3 @@ export type TenantContextState = {
 }
 
 export type Action<K, V = void> = V extends void ? { type: K } : { type: K } & V
-
-export type TenantContextActions =
-  | Action<'ADD_CATEGORY', { args: Category }>
-  | Action<'EDIT_CATEGORY', { args: { categoryData: Category; index: number } }>
-  | Action<'CATEGORY_START_LOADING'>
-  | Action<'CATEGORY_STOP_LOADING'>
-  | Action<'START_LOADING'>
-  | Action<'STOP_LOADING'>
-  | Action<'SET_TENANT', { args: TenantConfig }>
-  | Action<'PRODUCT_START_LOADING'>
-  | Action<'PRODUCT_STOP_LOADING'>
-  | Action<'ADD_PRODUCT', { args: Product }>
-  | Action<'EDIT_PRODUCT', { args: Product }>
-  | Action<'SET_PRODUCTS', { args: Product[] }>
-  | Action<'SET_ADDRESS', { args: Address }>
-  | Action<'SET_SHIPPING', { args: ShippingStrategies }>
-  | Action<'SET_TENANT_FIELD', { args: Partial<TenantConfig> }>

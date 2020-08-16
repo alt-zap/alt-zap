@@ -179,8 +179,15 @@ export const intlConfig = {
     'onboard.label.sub3': ' antes de configurar a página do seu negócio.',
     'onboard.error':
       'Ocorreu um erro ao cadastrar o usuário. Já estamos investigando!',
+    'onboard.tenantSuccess': 'Negócio cadastrado com sucesso',
+    'onboard.tenant.slugError':
+      'Já existe um negócio com essa URL. Por favor, escolha outra',
+    'onboard.tenant.error':
+      'Ocorreu um erro ao cadastrar o tenant. Estamos investigando...',
   },
 }
+
+export const altMessage = (id: AltMessage) => id
 
 interface MessageProps
   extends React.ComponentPropsWithoutRef<typeof FormattedMessage> {

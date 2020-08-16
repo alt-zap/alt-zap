@@ -7,13 +7,16 @@ import TenantDataForm from '../TenantDataForm'
 import { TenantConfig } from '../../../typings'
 import personalInfo from '../../../assets/personal.svg'
 import { useAuth, upsertUser } from '../../../contexts/auth/AuthContext'
+import { useTenant } from '../../../contexts/TenantContext'
 
 const { Step } = Steps
 
 const OnboardStepper: FC = () => {
   const intl = useAltIntl()
-  const [loading, setLoading] = useState(false)
   const [{ user, userDb, userDbId }, dispatch] = useAuth()
+  const [, tenantDispatch] = useTenant()
+
+  const [loading, setLoading] = useState(false)
   const [step, setStep] = useState(0)
 
   useEffect(() => {
@@ -44,14 +47,20 @@ const OnboardStepper: FC = () => {
         .catch(() => {
           message.error(intl.formatMessage({ id: 'onboard.error' }))
         })
+        .finally(() => {
+          setLoading(false)
+        })
     },
     [intl, userDb, userDbId, user, dispatch]
   )
 
   const handleTenantSubmit = useCallback((data: Partial<TenantConfig>) => {
+    setLoading(true)
+
     // Use Tenant Context
     // Create actions for creating the tenant
     // Initialize Tenant
+    // set hasTenant to true on userDb
     return Promise.resolve()
   }, [])
 

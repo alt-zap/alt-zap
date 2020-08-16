@@ -13,7 +13,7 @@ const { Header, Content, Footer, Sider } = Layout
 
 const AdminPage: FC<RouteComponentProps> = ({ children }) => {
   const navigate = useNavigate()
-  const [{ user }] = useAuth()
+  const [{ user, userDb }] = useAuth()
 
   const logout = useCallback(() => {
     firebase
@@ -76,7 +76,7 @@ const AdminPage: FC<RouteComponentProps> = ({ children }) => {
                 onClick={(e) => e.preventDefault()}
                 onKeyPress={(e) => e.preventDefault()}
               >
-                <span className="mr2">{user.displayName}</span>
+                <span className="mr2">{userDb?.name ?? user.displayName}</span>
                 <DownOutlined />
               </a>
             </Dropdown>
