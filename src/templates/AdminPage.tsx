@@ -7,13 +7,13 @@ import * as firebase from 'firebase/app'
 import 'firebase/auth'
 
 import logo from '../assets/logo.png'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../contexts/auth/AuthContext'
 
 const { Header, Content, Footer, Sider } = Layout
 
 const AdminPage: FC<RouteComponentProps> = ({ children }) => {
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const [{ user }] = useAuth()
 
   const logout = useCallback(() => {
     firebase

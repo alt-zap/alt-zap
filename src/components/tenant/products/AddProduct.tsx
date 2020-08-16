@@ -7,14 +7,14 @@ import {
   useTenantDispatch,
   addProduct,
 } from '../../../contexts/TenantContext'
-import { useAuth } from '../../../contexts/AuthContext'
+import { useAuth } from '../../../contexts/auth/AuthContext'
 import { Product } from '../../../typings'
 import { Message } from '../../../intlConfig'
 
 type Props = { onFinish: () => void }
 
 const AddProduct: FC<Props> = ({ onFinish }) => {
-  const { user } = useAuth()
+  const [{ user }] = useAuth()
   const { productsLoading, tenantId, tenant } = useTenantConfig()
   const dispatch = useTenantDispatch()
 

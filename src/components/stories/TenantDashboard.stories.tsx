@@ -1,16 +1,25 @@
 import React from 'react'
 import { Layout } from 'antd'
-import { Router, RouteComponentProps } from '@reach/router'
+import { RouteComponentProps, LocationProvider } from '@reach/router'
 
 import TenantDashboard from '../tenant/TenantDashboard'
 import { TenantStateProvider } from '../../contexts/TenantContext'
 import { Product, TenantConfig } from '../../typings'
+import withIntl from './withIntl'
 
 const { Content, Footer, Sider } = Layout
 
 export default {
   title: 'tenant|TenantDashboard',
   component: TenantDashboard,
+  decorators: [
+    withIntl,
+    (Comp: React.FC) => (
+      <LocationProvider>
+        <Comp />
+      </LocationProvider>
+    ),
+  ],
 }
 
 const exampleCategories = [
@@ -95,9 +104,7 @@ export const Loading = () => (
       loading: true,
     }}
   >
-    <Router>
-      <Dashboard default />
-    </Router>
+    <Dashboard />
   </TenantStateProvider>
 )
 

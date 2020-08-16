@@ -1,12 +1,12 @@
 import React from 'react'
 
 import TenantDataForm from '../tenant/TenantDataForm'
+import withIntl from './withIntl'
 
 export default {
   title: 'tenant|TenantDataForm',
   component: TenantDataForm,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  decorators: [(story: any) => <div className="pa2">{story()}</div>],
+  decorators: [withIntl],
 }
 
 export const classic = () => <TenantDataForm />

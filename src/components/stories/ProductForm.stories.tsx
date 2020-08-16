@@ -3,12 +3,13 @@ import React from 'react'
 
 import ProductForm from '../tenant/products/ProductForm'
 import { TenantStateProvider } from '../../contexts/TenantContext'
+import withIntl from './withIntl'
 
 export default {
   title: 'tenant|ProductForm',
   component: ProductForm,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  decorators: [(story: any) => <div className="pa2">{story()}</div>],
+  decorators: [(story: any) => <div className="pa2">{story()}</div>, withIntl],
 }
 const exampleCategories = [
   {

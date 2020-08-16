@@ -3,7 +3,7 @@ import { useNavigate } from '@reach/router'
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
 
-import { useAuth } from '../../contexts/AuthContext'
+import { useAuth } from '../../contexts/auth/AuthContext'
 import TenantList from './TenantList'
 
 interface TenantForList extends TenantConfig {
@@ -13,7 +13,7 @@ interface TenantForList extends TenantConfig {
 const ListTenants: FC = () => {
   const [loading, setLoading] = useState(true)
   const [tenants, setTenants] = useState<TenantForList[]>([])
-  const { user } = useAuth()
+  const [{ user }] = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {

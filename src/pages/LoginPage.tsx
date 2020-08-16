@@ -3,7 +3,7 @@ import { useNavigate, RouteComponentProps } from '@reach/router'
 import { GoogleLoginButton } from 'react-social-login-buttons'
 import { Layout, Button, Divider, Alert, Spin } from 'antd'
 
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth, loginWithGoogle } from '../contexts/auth/AuthContext'
 import logo from '../assets/logo.png'
 import intro from '../assets/intro.png'
 
@@ -11,7 +11,7 @@ const { Header, Content, Footer } = Layout
 
 const LoginPage: FC<RouteComponentProps> = () => {
   const [waiting, setWaiting] = useState(false)
-  const { loginWithGoogle, user, userDb, loading } = useAuth()
+  const [{ user, userDb, loading }] = useAuth()
 
   const navigate = useNavigate()
 

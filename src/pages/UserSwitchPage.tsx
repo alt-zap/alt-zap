@@ -2,14 +2,18 @@ import React, { FC } from 'react'
 import { Spin } from 'antd'
 import { useNavigate, RouteComponentProps } from '@reach/router'
 
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../contexts/auth/AuthContext'
 
 const UserSwitch: FC<RouteComponentProps> = () => {
-  const { user, userDb, loading } = useAuth()
+  const [{ user, userDb, loading }] = useAuth()
   const navigate = useNavigate()
 
   if (loading) {
-    return <Spin />
+    return (
+      <div className="flex justify-center pt2">
+        <Spin />
+      </div>
+    )
   }
 
   if (!user) {

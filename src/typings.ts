@@ -1,3 +1,5 @@
+import { User } from 'firebase/app'
+
 export type Element<ArrayType extends readonly unknown[]> = ArrayType[number]
 
 export interface TenantConfig {
@@ -150,7 +152,7 @@ export type TenantContextState = {
   productsLoading?: boolean
 }
 
-type Action<K, V = void> = V extends void ? { type: K } : { type: K } & V
+export type Action<K, V = void> = V extends void ? { type: K } : { type: K } & V
 
 export type TenantContextActions =
   | Action<'ADD_CATEGORY', { args: Category }>
