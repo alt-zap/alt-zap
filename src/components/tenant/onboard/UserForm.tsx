@@ -8,6 +8,7 @@ import {
   IntlRules,
   prepareRules,
 } from '../../../intlConfig'
+import { UserDB } from '../../../contexts/auth/authReducar'
 
 const { Item, useForm } = Form
 
@@ -30,9 +31,11 @@ const intlRules: IntlRules = {
   ],
 }
 
+type UserDataForm = Pick<UserDB, 'name' | 'document'>
+
 type Props = {
   initialValues?: object
-  onSubmit: () => void
+  onSubmit: (data: UserDataForm) => void
   loading?: boolean
 }
 
@@ -45,7 +48,7 @@ const UserForm: FC<Props> = ({ initialValues, onSubmit, loading }) => {
     <Form
       form={form}
       layout="vertical"
-      onFinish={onSubmit}
+      onFinish={(data) => onSubmit(data as UserDataForm)}
       initialValues={initialValues}
     >
       <Item

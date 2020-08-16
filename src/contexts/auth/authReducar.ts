@@ -6,6 +6,7 @@ export type AuthContextActions =
   | Action<'SET_LOADING', { args: boolean }>
   | Action<'SET_AUTH_USER', { args: User | undefined }>
   | Action<'SET_DB_USER', { args: UserDB | undefined }>
+  | Action<'SET_DB_USER_ID', { args: string | undefined }>
 
 export type UserDB = {
   uid: string
@@ -18,6 +19,7 @@ export type AuthContextState = {
   loading?: boolean
   user?: User
   userDb?: UserDB
+  userDbId?: string
 }
 
 export const authReducer = (
@@ -33,6 +35,9 @@ export const authReducer = (
 
     case 'SET_DB_USER':
       return { ...state, userDb: action.args }
+
+    case 'SET_DB_USER_ID':
+      return { ...state, userDbId: action.args }
 
     default:
       throw new Error('Auth Reducer: Unsupported action type')

@@ -173,6 +173,12 @@ export const intlConfig = {
     'onboard.user.document': 'CPF',
     'onboard.user.documentRule': 'Por favor, preencha seu CPF',
     'onboard.user.documentMask': '999.999.999-99',
+    'onboard.label.main': 'Falta pouco!',
+    'onboard.label.sub1': 'Precisamos que você preenche alguns ',
+    'onboard.label.sub2': 'dados pessoais',
+    'onboard.label.sub3': ' antes de configurar a página do seu negócio.',
+    'onboard.error':
+      'Ocorreu um erro ao cadastrar o usuário. Já estamos investigando!',
   },
 }
 

@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useReducer } from 'react'
-import firebase from 'firebase/app'
+import firebase, { firestore } from 'firebase/app'
+import * as Sentry from '@sentry/react'
 
 import 'firebase/auth'
 import 'firebase/firestore'
@@ -20,6 +21,8 @@ export const [useAuthDispatch, AuthDispatchProvider] = createCtx<Dispatch>()
 export const useAuth = () =>
   [useAuthState(), useAuthDispatch()] as [AuthContextState, Dispatch]
 
+const usersRef = (db: firestore.Firestore) => db.collection('users')
+
 export const AuthContextProvider: FC = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, {
     loading: true,
@@ -32,7 +35,7 @@ export const AuthContextProvider: FC = ({ children }) => {
       log('Auth State Changed')
       log({ user })
       if (user) {
-        db.collection('users')
+        usersRef(db)
           .where('uid', '==', user.uid)
           .limit(1)
           .get()
@@ -41,6 +44,7 @@ export const AuthContextProvider: FC = ({ children }) => {
               const [doc] = res.docs
 
               dispatch({ type: 'SET_DB_USER', args: doc.data() as UserDB })
+              dispatch({ type: 'SET_DB_USER_ID', args: doc.id })
             }
 
             dispatch({ type: 'SET_AUTH_USER', args: user })
@@ -67,4 +71,29 @@ export const loginWithGoogle = () => {
   const googleProvider = new firebase.auth.GoogleAuthProvider()
 
   firebase.auth().signInWithRedirect(googleProvider)
+}
+
+export const upsertUser = (
+  dispatch: Dispatch,
+  { userData, userDbId }: { userData: UserDB; userDbId?: string }
+) => {
+  const db = firebase.firestore()
+  const ref = usersRef(db)
+
+  const op = userDbId
+    ? ref.doc(userDbId).update(userData)
+    : ref.add({ userData }).then((doc) => doc.id)
+
+  return (op as Promise<string | undefined>)
+    .then((id) => {
+      if (id) {
+        dispatch({ type: 'SET_DB_USER_ID', args: id })
+      }
+
+      dispatch({ type: 'SET_DB_USER', args: userData })
+    })
+    .catch((e) => {
+      Sentry.captureException(e)
+      throw e
+    })
 }
