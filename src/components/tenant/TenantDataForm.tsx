@@ -4,9 +4,9 @@ import { Form, Button, Select } from 'antd'
 import slugify from 'slugify'
 import InputMask from 'react-input-mask'
 
-import ImageUpload from '../common/ImageUpload'
+import ImageUploadOriginal from '../common/ImageUpload'
 import ColorPicker from '../common/ColorPicker'
-import TextInput from '../common/TextInput'
+import TextInputOriginal from '../common/TextInput'
 import {
   Message,
   useAltIntl,
@@ -15,6 +15,7 @@ import {
   prepareRules,
   prepareSelect,
 } from '../../intlConfig'
+import { forwardRef } from './products/ProductForm'
 
 const { Item } = Form
 const { Option } = Select
@@ -29,6 +30,14 @@ type Props = {
   initialData?: TenantMetadata
   onSubmit?: (data: TenantMetadata) => Promise<void>
 }
+
+const ImageUpload = forwardRef<
+  React.ComponentPropsWithoutRef<typeof ImageUploadOriginal>
+>(ImageUploadOriginal)
+
+const TextInput = forwardRef<
+  React.ComponentPropsWithoutRef<typeof TextInputOriginal>
+>(TextInputOriginal)
 
 const intlRules: IntlRules = {
   name: [
@@ -110,39 +119,49 @@ const TenantDataForm: FC<Props> = ({ initialData, onSubmit, loading }) => {
       <Item label={<Message id="tenant.name" />} name="name" rules={rules.name}>
         <TextInput />
       </Item>
-      <Item label={<Message id="tenant.url" />} name="slug" rules={rules.slug}>
-        <TextInput
-          disabled={loading}
-          addonBefore="https://"
-          addonAfter=".alt.app.br"
-          onFocus={() => {
-            const { name, slug } = form.getFieldsValue()
+      <div className="flex flex-column flex-row-l">
+        <div className="w-100 w-50-l mr1">
+          <Item
+            label={<Message id="tenant.url" />}
+            name="slug"
+            rules={rules.slug}
+          >
+            <TextInput
+              disabled={loading}
+              addonBefore="https://"
+              addonAfter=".alt.app.br"
+              onFocus={() => {
+                const { name, slug } = form.getFieldsValue()
 
-            if (name && !slug) {
-              form.setFieldsValue({ slug: slugify(name, { lower: true }) })
-            }
-          }}
-        />
-      </Item>
-      <Item
-        label={<Message id="tenant.category" />}
-        name="category"
-        rules={rules.required}
-      >
-        <Select
-          disabled={loading}
-          size="large"
-          placeholder={<Message id="tenant.categoryPlaceholder" />}
-        >
-          {categories?.map(({ name, value }) => (
-            <Option value={value} key={value}>
-              {name}
-            </Option>
-          ))}
-        </Select>
-      </Item>
-      <div className="flex">
-        <div className="w-50 mr1">
+                if (name && !slug) {
+                  form.setFieldsValue({ slug: slugify(name, { lower: true }) })
+                }
+              }}
+            />
+          </Item>
+        </div>
+        <div className="w-100 w-50-l">
+          <Item
+            label={<Message id="tenant.category" />}
+            name="category"
+            rules={rules.required}
+          >
+            <Select
+              disabled={loading}
+              size="large"
+              placeholder={<Message id="tenant.categoryPlaceholder" />}
+            >
+              {categories?.map(({ name, value }) => (
+                <Option value={value} key={value}>
+                  {name}
+                </Option>
+              ))}
+            </Select>
+          </Item>
+        </div>
+      </div>
+      <div className="flex flex-column flex-row-l">
+        <div className="w-100 w-50-l mr0 mr1-l">
           <Item
             label={<Message id="tenant.whatsapp" />}
             name="whatsapp"
@@ -157,7 +176,7 @@ const TenantDataForm: FC<Props> = ({ initialData, onSubmit, loading }) => {
             </InputMask>
           </Item>
         </div>
-        <div className="w-50 mr1">
+        <div className="w-100 w-50-l mr0 mr1-l">
           <Item
             label={<Message id="tenant.instagram" />}
             name="instagram"
@@ -167,20 +186,26 @@ const TenantDataForm: FC<Props> = ({ initialData, onSubmit, loading }) => {
           </Item>
         </div>
       </div>
-      <Item
-        label={<Message id="tenant.logoSrc" />}
-        name="logoSrc"
-        rules={rules.logoSrc}
-      >
-        <ImageUpload disabled={loading} large />
-      </Item>
-      <Item
-        label={<Message id="tenant.color" />}
-        name="color"
-        rules={rules.color}
-      >
-        <ColorPicker />
-      </Item>
+      <div className="flex flex-column flex-row-l">
+        <div className="w-100 w-50-l">
+          <Item
+            label={<Message id="tenant.logoSrc" />}
+            name="logoSrc"
+            rules={rules.logoSrc}
+          >
+            <ImageUpload disabled={loading} large />
+          </Item>
+        </div>
+        <div className="w-100 w-50-l pl0 pl4-l">
+          <Item
+            label={<Message id="tenant.color" />}
+            name="color"
+            rules={rules.color}
+          >
+            <ColorPicker />
+          </Item>
+        </div>
+      </div>
       <Button
         loading={loading}
         size="large"

@@ -28,7 +28,7 @@ const { Item } = Form
 const { Option } = Select
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function forwardRef<Props>(Component: FC<Props>, extraProps?: any) {
+export function forwardRef<Props>(Component: FC<Props>, extraProps?: any) {
   return React.forwardRef<HTMLDivElement, Props>(function WrappedComp(
     props,
     ref

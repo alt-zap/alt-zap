@@ -13,6 +13,7 @@ export type UserDB = {
   name: string
   document: string
   email?: string
+  hasTenant?: boolean
 }
 
 export type AuthContextState = {

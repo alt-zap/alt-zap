@@ -29,8 +29,9 @@ const OnboardStepper: FC = () => {
       const userData = {
         ...userDb,
         ...data,
-        email: user?.emailVerified ?? user?.email,
+        email: user?.email,
         uid: user?.uid,
+        hasTenant: false,
       }
 
       upsertUser(dispatch, {
@@ -55,7 +56,7 @@ const OnboardStepper: FC = () => {
   }, [])
 
   return (
-    <div className="pa4">
+    <div className="pa1 pa4-l">
       <Steps current={step}>
         <Step title={<Message id="onboard.personalData" />} />
         <Step title={<Message id="onboard.yourBusiness" />} />
@@ -87,7 +88,9 @@ const OnboardStepper: FC = () => {
         </div>
       )}
       {step === 1 && (
-        <TenantDataForm onSubmit={handleTenantSubmit} loading={loading} />
+        <div className="pt3 mt3">
+          <TenantDataForm onSubmit={handleTenantSubmit} loading={loading} />
+        </div>
       )}
     </div>
   )

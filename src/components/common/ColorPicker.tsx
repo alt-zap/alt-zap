@@ -6,66 +6,68 @@ type Props = {
   onChange?: (data: string) => void
 }
 
-const ColorPicker: FC<Props> = ({ value, onChange }) => {
-  const [opened, setOpen] = useState(false)
+const ColorPicker: FC<Props> = React.forwardRef<HTMLDivElement, Props>(
+  function WrappedColorPicker({ value, onChange }, ref) {
+    const [opened, setOpen] = useState(false)
 
-  return (
-    <div>
-      <div
-        style={{
-          padding: '5px',
-          background: '#fff',
-          borderRadius: '1px',
-          boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-          display: 'inline-block',
-          cursor: 'pointer',
-        }}
-        onClick={() => setOpen(true)}
-        onKeyUp={() => setOpen(true)}
-        role="button"
-        tabIndex={0}
-      >
+    return (
+      <div ref={ref}>
         <div
           style={{
-            width: '36px',
-            height: '14px',
-            borderRadius: '2px',
-            background: value ?? '#006699',
+            padding: '5px',
+            background: '#fff',
+            borderRadius: '1px',
+            boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+            display: 'inline-block',
+            cursor: 'pointer',
           }}
-        />
-      </div>
-      {opened && (
-        <div
-          style={{
-            position: 'absolute',
-            zIndex: 2,
-          }}
+          onClick={() => setOpen(true)}
+          onKeyUp={() => setOpen(true)}
+          role="button"
+          tabIndex={0}
         >
           <div
             style={{
-              position: 'fixed',
-              top: '0px',
-              right: '0px',
-              bottom: '0px',
-              left: '0px',
-            }}
-            onClick={() => {
-              setOpen(false)
-            }}
-            onKeyUp={() => setOpen(false)}
-            role="button"
-            tabIndex={0}
-          />
-          <SketchPicker
-            color={value}
-            onChange={(color) => {
-              onChange?.(color.hex)
+              width: '36px',
+              height: '14px',
+              borderRadius: '2px',
+              background: value ?? '#006699',
             }}
           />
         </div>
-      )}
-    </div>
-  )
-}
+        {opened && (
+          <div
+            style={{
+              position: 'absolute',
+              zIndex: 2,
+            }}
+          >
+            <div
+              style={{
+                position: 'fixed',
+                top: '0px',
+                right: '0px',
+                bottom: '0px',
+                left: '0px',
+              }}
+              onClick={() => {
+                setOpen(false)
+              }}
+              onKeyUp={() => setOpen(false)}
+              role="button"
+              tabIndex={0}
+            />
+            <SketchPicker
+              color={value}
+              onChange={(color) => {
+                onChange?.(color.hex)
+              }}
+            />
+          </div>
+        )}
+      </div>
+    )
+  }
+)
 
 export default ColorPicker

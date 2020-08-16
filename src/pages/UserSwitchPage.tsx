@@ -18,14 +18,20 @@ const UserSwitch: FC<RouteComponentProps> = () => {
 
   if (!user) {
     navigate('/login')
+
+    return null
   }
 
-  if (user && !userDb) {
+  if ((user && !userDb) || !userDb?.hasTenant) {
     navigate(`/onboard`)
+
+    return null
   }
 
   if (user && userDb) {
     navigate(`/tenants`)
+
+    return null
   }
 
   return <span>Wow, you definitely on trouble</span>
