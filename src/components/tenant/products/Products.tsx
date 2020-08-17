@@ -1,15 +1,28 @@
-import React, { FC, Fragment, useState, useMemo, useCallback } from 'react'
+import React, {
+  FC,
+  Fragment,
+  useState,
+  useMemo,
+  useCallback,
+  useEffect,
+} from 'react'
 import { Button, List, Modal, Skeleton, Divider, Tag } from 'antd'
 import { PlusOutlined, EditOutlined } from '@ant-design/icons'
 import { Img } from 'react-image'
 
-import { useTenantConfig } from '../../../contexts/TenantContext'
+import {
+  useTenantConfig,
+  useTenantDispatch,
+  addProduct,
+  addCategory,
+} from '../../../contexts/TenantContext'
 import AddProduct from './AddProduct'
 import EditProduct from './EditProduct'
 import Real from '../../Real'
 import ProductsFilters from './ProductsFilters'
 import { Product } from '../../../typings'
 import { Message } from '../../../intlConfig'
+import { useAuth } from '../../../contexts/auth/AuthContext'
 
 const Products: FC = () => {
   const [filters, setFilters] = useState<Record<string, string>>({})
@@ -17,7 +30,9 @@ const Products: FC = () => {
   const [addModal, setAddModal] = useState(false)
   const [selectedProduct, setProduct] = useState<Product>()
 
-  const { products, productsLoading, tenant } = useTenantConfig()
+  const { products, productsLoading, tenant, tenantId } = useTenantConfig()
+  const dispatch = useTenantDispatch()
+  const [{ user }] = useAuth()
 
   const getColorForCategory = useCallback((index: number) => {
     return ['#2db7f5', '#87d068', '#108ee9'][index]
@@ -47,6 +62,52 @@ const Products: FC = () => {
       return matchName && matchCategory
     })
   }, [products, filters])
+
+  const [lock, setLock] = useState(false)
+
+  /**
+   *  DATA MIGRATION ALERT
+   *
+   *  This piece of code lazily migrate tenant' products from the older way
+   *  (inside the tenant) to the new one (with a separate collection).
+   */
+  useEffect(() => {
+    const runMigration = async () => {
+      // eslint-disable-next-line vtex/prefer-early-return
+      if (
+        !lock &&
+        tenant?.items?.length &&
+        !products?.length &&
+        !productsLoading
+      ) {
+        await addCategory(dispatch, {
+          category: {
+            name: 'Principal',
+            live: true,
+            slug: 'principal',
+          },
+          firstCategory: true,
+        })
+
+        await Promise.all(
+          tenant.items.map((oldProduct) =>
+            addProduct(dispatch, {
+              tenantId,
+              product: {
+                ...oldProduct,
+                highlight: false,
+                category: 0,
+                userId: user?.uid as string,
+              },
+            })
+          )
+        )
+        setLock(true)
+      }
+    }
+
+    runMigration()
+  }, [tenant, products, tenantId, user, dispatch, productsLoading, lock])
 
   return (
     <Fragment>
