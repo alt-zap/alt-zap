@@ -73,37 +73,38 @@ const Products: FC = () => {
    */
   useEffect(() => {
     const runMigration = async () => {
-      // eslint-disable-next-line vtex/prefer-early-return
       if (
-        !lock &&
-        tenant?.items?.length &&
-        !products?.length &&
-        !productsLoading
+        lock ||
+        !tenant?.items?.length ||
+        products?.length ||
+        productsLoading
       ) {
-        await addCategory(dispatch, {
-          category: {
-            name: 'Principal',
-            live: true,
-            slug: 'principal',
-          },
-          firstCategory: true,
-        })
-
-        await Promise.all(
-          tenant.items.map((oldProduct) =>
-            addProduct(dispatch, {
-              tenantId,
-              product: {
-                ...oldProduct,
-                highlight: false,
-                category: 0,
-                userId: user?.uid as string,
-              },
-            })
-          )
-        )
-        setLock(true)
+        return
       }
+
+      await addCategory(dispatch, {
+        category: {
+          name: 'Principal',
+          live: true,
+          slug: 'principal',
+        },
+        firstCategory: true,
+      })
+
+      await Promise.all(
+        tenant.items.map((oldProduct) =>
+          addProduct(dispatch, {
+            tenantId,
+            product: {
+              ...oldProduct,
+              highlight: false,
+              category: 0,
+              userId: user?.uid as string,
+            },
+          })
+        )
+      )
+      setLock(true)
     }
 
     runMigration()
