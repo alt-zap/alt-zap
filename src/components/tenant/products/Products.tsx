@@ -88,6 +88,7 @@ const Products: FC = () => {
           live: true,
           slug: 'principal',
         },
+        tenantId,
         firstCategory: true,
       })
 
