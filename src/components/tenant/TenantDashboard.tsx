@@ -108,7 +108,7 @@ const TenantDashboard: FC = () => {
               <Button
                 key="0"
                 danger
-                icon={<WarningOutlined />}
+                icon={<WarningOutlined style={{ marginRight: '6px' }} />}
                 onClick={() => setPendenciesModal(true)}
               >
                 <Message id="tenant.pendencies" />
@@ -127,7 +127,12 @@ const TenantDashboard: FC = () => {
           <Row>
             {!productsLoading ? (
               <Statistic
-                title={<Message id="tenant.products" />}
+                title={
+                  <Message
+                    id="tenant.products"
+                    values={{ n: products?.length ?? 0 }}
+                  />
+                }
                 value={products?.length}
                 style={{ margin: '0 32px 0 0' }}
               />
@@ -135,7 +140,12 @@ const TenantDashboard: FC = () => {
               <Skeleton.Button active size="large" shape="square" />
             )}
             <Statistic
-              title={<Message id="tenant.categories" />}
+              title={
+                <Message
+                  id="tenant.categories"
+                  values={{ n: tenant?.categories?.length ?? 0 }}
+                />
+              }
               value={tenant?.categories?.length}
             />
           </Row>

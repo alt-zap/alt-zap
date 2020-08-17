@@ -15,8 +15,10 @@ export const intlConfig = {
     save: 'Salvar',
     'tenant.live': 'Ativo',
     'tenant.openTitle': 'Com base em seu horário de funcionamento',
-    'tenant.products': 'Produtos',
-    'tenant.categories': 'Categorias',
+    'tenant.products':
+      '{n, plural, =0 {Produto} one {Produto} other {Produtos}}',
+    'tenant.categories':
+      '{n, plural, =0 {Categoria} one {Categoria} other {Categorias}}',
     'tenant.categories.name': 'Nome da Categoria',
     'tenant.slug': 'Slug',
     'tenant.data.success': 'Dados salvos com sucesso',
