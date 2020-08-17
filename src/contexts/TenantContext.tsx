@@ -6,14 +6,13 @@ import { createCtx, log, sanitizeForFirebase } from '../utils'
 import {
   TenantConfig,
   TenantContextState,
-  TenantContextActions,
   Product,
   Category,
   ShippingStrategies,
   OpeningHours,
   PaymentMethod,
 } from '../typings'
-import { tenantStateReducer } from './tenantReducer'
+import { tenantStateReducer, TenantContextActions } from './tenantReducer'
 import { AltMessage, altMessage } from '../intlConfig'
 
 type Props = {
@@ -398,10 +397,13 @@ export const setTenantData = async (
     })
 }
 
-export const addTenant = (
-  dispatch: Dispatch,
-  { tenant, userId }: { tenant: Partial<TenantConfig>; userId: string }
-): Promise<AltMessage> => {
+export const addTenant = ({
+  tenant,
+  userId,
+}: {
+  tenant: Partial<TenantConfig>
+  userId: string
+}): Promise<AltMessage> => {
   const { slug } = tenant
 
   if (!slug || !userId) {
@@ -411,6 +413,12 @@ export const addTenant = (
   const db = firebase.firestore()
   const ref = tenantsRef(db)
 
+  const data = sanitizeForFirebase({
+    userId,
+    createdAt: new Date().toISOString(),
+    ...tenant,
+  })
+
   return ref
     .where('slug', '==', slug)
     .limit(1)
@@ -419,15 +427,8 @@ export const addTenant = (
       (res): Promise<AltMessage> => {
         if (res.empty) {
           return ref
-            .add({
-              userId,
-              createdAt: new Date().toISOString(),
-              ...tenant,
-            })
-            .then((createdDoc) => {
-              dispatch({ type: 'SET_TENANT', args: tenant as TenantConfig })
-              dispatch({ type: 'SET_TENANT_ID', args: createdDoc.id })
-
+            .add(data)
+            .then(() => {
               return altMessage('onboard.tenantSuccess')
             })
             .catch((err) => {

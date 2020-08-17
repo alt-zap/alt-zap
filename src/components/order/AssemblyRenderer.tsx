@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback } from 'react'
+import React, { FC, useState, useCallback, useMemo } from 'react'
 import { Form, Divider, Radio, Button } from 'antd'
 import { RadioChangeEvent } from 'antd/lib/radio'
 
@@ -6,6 +6,8 @@ import { Assembly } from '../../typings'
 import { generateHash } from '../../utils'
 import BooleanQuantitySelector from '../common/BooleanQuantitySelector'
 import LeanQuantitySelector from '../common/LeanQuantitySelector'
+import { Message } from '../../intlConfig'
+import Real from '../Real'
 
 type OptionState = {
   [option: string]: string
@@ -31,7 +33,20 @@ const AssemblyRenderer: FC<Props> = ({ assemblyOptions }) => {
                 <div className="flex flex-column">
                   <span className="f5 b pb0 mb0">{assembly.name}</span>
                   <span className="black-40" style={{ marginTop: '-5px' }}>
-                    Selecione 3 opções
+                    <Message
+                      id="order.assembly.select"
+                      values={{
+                        max: assembly.max,
+                        min: assembly.min,
+                        strict: assembly.max === assembly.min ? 'yes' : 'no',
+                        range:
+                          assembly.min &&
+                          assembly.min > 0 &&
+                          assembly.max !== assembly.min
+                            ? 'yes'
+                            : 'no',
+                      }}
+                    />
                   </span>
                 </div>
               </div>
@@ -65,6 +80,7 @@ const AssemblyRenderer: FC<Props> = ({ assemblyOptions }) => {
                   <UniSelectInput options={assembly.options} />
                 ) : (
                   <MultiSelectInput
+                    max={assembly.max as number}
                     options={assembly.options}
                     single={assembly.type === 'SINGLE'}
                   />
@@ -120,6 +136,7 @@ const UniSelectInput: FC<UniProps> = ({ value, onChange, options }) => {
 
 interface MultiProps extends UniProps {
   single?: boolean
+  max: number
 }
 
 const MultiSelectInput: FC<MultiProps> = ({
@@ -127,6 +144,7 @@ const MultiSelectInput: FC<MultiProps> = ({
   onChange,
   options,
   single,
+  max,
 }) => {
   const [hash] = useState(generateHash(5))
 
@@ -140,14 +158,35 @@ const MultiSelectInput: FC<MultiProps> = ({
     [onChange, value]
   )
 
+  const totalSelected = useMemo(() => {
+    return value
+      ? Object.values(value)
+          .map((stringQuantity) => parseInt(stringQuantity, 10))
+          .reduce((a, b) => a + b, 0)
+      : 0
+  }, [value])
+
   return (
     <div className="flex flex-column">
       {options.map((option, i) => (
         <label htmlFor={`${hash}-${i}`} key={i}>
           <div className="pa2 w-100 flex justify-between">
-            <span className="dim">{option.name}</span>
+            <div className="flex flex-column">
+              <b className="dim">{option.name}</b>
+              {option.price && (
+                <span
+                  className="gray"
+                  style={{
+                    marginTop: '-5px',
+                  }}
+                >
+                  + <Real cents={option.price} />{' '}
+                </span>
+              )}
+            </div>
             {single ? (
               <BooleanQuantitySelector
+                disabled={totalSelected === max}
                 id={`${hash}-${i}`}
                 quantity={value?.[option.name]}
                 onQuantity={(quantity) =>
@@ -156,6 +195,7 @@ const MultiSelectInput: FC<MultiProps> = ({
               />
             ) : (
               <LeanQuantitySelector
+                disabled={totalSelected === max}
                 quantity={value?.[option.name]}
                 onQuantity={(quantity) =>
                   handleQuantityChange(option.name, quantity ?? '0')

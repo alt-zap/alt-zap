@@ -7,6 +7,8 @@ export type AuthContextActions =
   | Action<'SET_AUTH_USER', { args: User | undefined }>
   | Action<'SET_DB_USER', { args: UserDB | undefined }>
   | Action<'SET_DB_USER_ID', { args: string | undefined }>
+  | Action<'SET_DB_USER_ID', { args: string | undefined }>
+  | Action<'SET_DB_USER_FIELDS', { args: Partial<UserDB> }>
 
 export type UserDB = {
   uid: string
@@ -36,6 +38,15 @@ export const authReducer = (
 
     case 'SET_DB_USER':
       return { ...state, userDb: action.args }
+
+    case 'SET_DB_USER_FIELDS':
+      return {
+        ...state,
+        userDb: {
+          ...(state.userDb as UserDB),
+          ...action.args,
+        },
+      }
 
     case 'SET_DB_USER_ID':
       return { ...state, userDbId: action.args }

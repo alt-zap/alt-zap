@@ -5,6 +5,7 @@ type Props = {
   max?: number
   quantity?: string
   onQuantity?: (data?: string) => void
+  disabled?: boolean
 }
 
 const dimension = '28px'
@@ -14,6 +15,7 @@ const LeanQuantitySelector: FC<Props> = ({
   max = 20,
   quantity,
   onQuantity,
+  disabled,
 }) => {
   const inc = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -88,6 +90,7 @@ const LeanQuantitySelector: FC<Props> = ({
           value={quantity}
           style={{
             width: dimension,
+            height: dimension,
           }}
         />
       )}
@@ -101,7 +104,7 @@ const LeanQuantitySelector: FC<Props> = ({
           borderRadius: initialState ? '8px' : '0 8px 8px 0',
           borderColor: 'transparent',
           backgroundColor:
-            parseInt(quantity || '0', 10) !== max
+            !disabled ?? parseInt(quantity || '0', 10) !== max
               ? '#041527'
               : 'rgba(105, 114, 123,1)',
           color: 'white',
@@ -109,7 +112,7 @@ const LeanQuantitySelector: FC<Props> = ({
           padding: 0,
           fontWeight: 'bolder',
         }}
-        disabled={parseInt(quantity ?? '0', 10) === max}
+        disabled={disabled ?? parseInt(quantity ?? '0', 10) === max}
         onClick={inc}
       >
         <svg

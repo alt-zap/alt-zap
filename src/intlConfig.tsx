@@ -164,6 +164,8 @@ export const intlConfig = {
       'Não é permitido repetir nome de opções',
     'tenant.productform.itemSameName': 'Não é permitido repetir nome de itens',
     'order.assembly.required': 'Esta opção é obrigatória.',
+    'order.assembly.select':
+      'Selecione {range, select, yes {de {min}} other {}} {strict, select, no {até} other {}} {max} {max, plural, one {opção} other {opções} }',
     'onboard.personalData': 'Dados pessoais',
     'onboard.yourBusiness': 'Seu negócio',
     'onboard.fillYourData':

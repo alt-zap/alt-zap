@@ -1,20 +1,25 @@
 import React, { FC, useState, useCallback, useEffect } from 'react'
 import { Steps, message } from 'antd'
+import { useNavigate } from '@reach/router'
 
 import { Message, useAltIntl } from '../../../intlConfig'
 import UserForm from './UserForm'
 import TenantDataForm from '../TenantDataForm'
 import { TenantConfig } from '../../../typings'
 import personalInfo from '../../../assets/personal.svg'
-import { useAuth, upsertUser } from '../../../contexts/auth/AuthContext'
-import { useTenant } from '../../../contexts/TenantContext'
+import {
+  useAuth,
+  upsertUser,
+  setHasTenant,
+} from '../../../contexts/auth/AuthContext'
+import { addTenant } from '../../../contexts/TenantContext'
 
 const { Step } = Steps
 
 const OnboardStepper: FC = () => {
   const intl = useAltIntl()
   const [{ user, userDb, userDbId }, dispatch] = useAuth()
-  const [, tenantDispatch] = useTenant()
+  const navigate = useNavigate()
 
   const [loading, setLoading] = useState(false)
   const [step, setStep] = useState(0)
@@ -37,7 +42,7 @@ const OnboardStepper: FC = () => {
         hasTenant: false,
       }
 
-      upsertUser(dispatch, {
+      return upsertUser(dispatch, {
         userData,
         userDbId,
       })
@@ -54,15 +59,29 @@ const OnboardStepper: FC = () => {
     [intl, userDb, userDbId, user, dispatch]
   )
 
-  const handleTenantSubmit = useCallback((data: Partial<TenantConfig>) => {
-    setLoading(true)
+  const handleTenantSubmit = useCallback(
+    (tenant: Partial<TenantConfig>) => {
+      setLoading(true)
 
-    // Use Tenant Context
-    // Create actions for creating the tenant
-    // Initialize Tenant
-    // set hasTenant to true on userDb
-    return Promise.resolve()
-  }, [])
+      if (!user?.uid || !userDbId) {
+        return Promise.resolve()
+      }
+
+      return addTenant({
+        tenant,
+        userId: user.uid,
+      })
+        .then((success) => {
+          setHasTenant(dispatch, { hasTenant: true, userDbId })
+          message.success(intl.formatMessage({ id: success }))
+          navigate('/tenants')
+        })
+        .catch((error) => {
+          message.error(intl.formatMessage({ id: error }))
+        })
+    },
+    [dispatch, user, intl, userDbId, navigate]
+  )
 
   return (
     <div className="pa1 pa4-l">

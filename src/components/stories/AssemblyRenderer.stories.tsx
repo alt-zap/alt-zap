@@ -4,10 +4,12 @@ import React from 'react'
 
 import AssemblyRenderer from '../order/AssemblyRenderer'
 import { AssemblyType } from '../../typings'
+import withIntl from './withIntl'
 
 export default {
   title: 'order|AssemblyRenderer',
   component: AssemblyRenderer,
+  decorators: [withIntl],
 }
 
 const products = [

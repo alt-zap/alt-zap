@@ -97,3 +97,20 @@ export const upsertUser = (
       throw e
     })
 }
+
+export const setHasTenant = (
+  dispatch: Dispatch,
+  { hasTenant, userDbId }: { hasTenant: boolean; userDbId: string }
+) => {
+  const db = firebase.firestore()
+  const ref = usersRef(db)
+
+  return ref
+    .doc(userDbId)
+    .update({
+      hasTenant,
+    })
+    .then(() => {
+      dispatch({ type: 'SET_DB_USER_FIELDS', args: { hasTenant } })
+    })
+}

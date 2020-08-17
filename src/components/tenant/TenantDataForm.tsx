@@ -16,6 +16,7 @@ import {
   prepareSelect,
 } from '../../intlConfig'
 import { forwardRef } from './products/ProductForm'
+import { TenantConfig } from '../../typings'
 
 const { Item } = Form
 const { Option } = Select

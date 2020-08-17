@@ -6,9 +6,15 @@ type Props = {
   quantity?: string
   onQuantity?: (quantity: string) => void
   id?: string
+  disabled?: boolean
 }
 
-const BooleanQuantitySelector: FC<Props> = ({ quantity, onQuantity, id }) => {
+const BooleanQuantitySelector: FC<Props> = ({
+  quantity,
+  onQuantity,
+  id,
+  disabled,
+}) => {
   const checked = useMemo(() => quantity === '1', [quantity])
 
   const handleClick = useCallback(
@@ -20,6 +26,7 @@ const BooleanQuantitySelector: FC<Props> = ({ quantity, onQuantity, id }) => {
 
   return (
     <Checkbox
+      disabled={disabled}
       id={id}
       style={{
         width: '25px',
