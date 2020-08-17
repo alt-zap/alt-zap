@@ -22,7 +22,7 @@ const UserSwitch: FC<RouteComponentProps> = () => {
     return null
   }
 
-  if ((user && !userDb) || !userDb?.hasTenant) {
+  if ((user && !userDb) || !userDb?.hasTenant || !userDb.document) {
     navigate(`/onboard`)
 
     return null

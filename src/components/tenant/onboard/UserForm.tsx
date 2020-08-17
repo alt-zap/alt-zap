@@ -8,7 +8,7 @@ import {
   IntlRules,
   prepareRules,
 } from '../../../intlConfig'
-import { UserDB } from '../../../contexts/auth/authReducar'
+import { UserDB } from '../../../contexts/auth/authReducer'
 
 const { Item, useForm } = Form
 

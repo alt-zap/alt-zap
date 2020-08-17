@@ -25,10 +25,16 @@ const OnboardStepper: FC = () => {
   const [step, setStep] = useState(0)
 
   useEffect(() => {
+    if (userDb?.hasTenant) {
+      navigate('/tenants')
+
+      return
+    }
+
     if (userDb?.name) {
       setStep(1)
     }
-  }, [userDb])
+  }, [userDb, navigate])
 
   const handleUserSubmit = useCallback(
     (data) => {
@@ -47,6 +53,10 @@ const OnboardStepper: FC = () => {
         userDbId,
       })
         .then(() => {
+          if (userDb?.hasTenant) {
+            return navigate('/tenants')
+          }
+
           setStep(1)
         })
         .catch(() => {
@@ -56,7 +66,7 @@ const OnboardStepper: FC = () => {
           setLoading(false)
         })
     },
-    [intl, userDb, userDbId, user, dispatch]
+    [intl, userDb, userDbId, user, dispatch, navigate]
   )
 
   const handleTenantSubmit = useCallback(

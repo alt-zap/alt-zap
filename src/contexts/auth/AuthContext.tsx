@@ -11,7 +11,8 @@ import {
   AuthContextActions,
   AuthContextState,
   UserDB,
-} from './authReducar'
+} from './authReducer'
+import { tenantsRef } from '../TenantContext'
 
 type Dispatch = (action: AuthContextActions) => void
 
@@ -22,50 +23,6 @@ export const useAuth = () =>
   [useAuthState(), useAuthDispatch()] as [AuthContextState, Dispatch]
 
 const usersRef = (db: firestore.Firestore) => db.collection('users')
-
-export const AuthContextProvider: FC = ({ children }) => {
-  const [state, dispatch] = useReducer(authReducer, {
-    loading: true,
-  })
-
-  useEffect(() => {
-    const db = firebase.firestore()
-
-    const unsub = firebase.auth().onAuthStateChanged((user) => {
-      log('Auth State Changed')
-      log({ user })
-      if (user) {
-        usersRef(db)
-          .where('uid', '==', user.uid)
-          .limit(1)
-          .get()
-          .then((res) => {
-            if (!res.empty) {
-              const [doc] = res.docs
-
-              dispatch({ type: 'SET_DB_USER', args: doc.data() as UserDB })
-              dispatch({ type: 'SET_DB_USER_ID', args: doc.id })
-            }
-
-            dispatch({ type: 'SET_AUTH_USER', args: user })
-          })
-      } else {
-        dispatch({ type: 'SET_AUTH_USER', args: undefined })
-        dispatch({ type: 'SET_DB_USER', args: undefined })
-      }
-
-      dispatch({ type: 'SET_LOADING', args: false })
-    })
-
-    return unsub
-  }, [])
-
-  return (
-    <AuthStateProvider value={state}>
-      <AuthDispatchProvider value={dispatch}>{children}</AuthDispatchProvider>
-    </AuthStateProvider>
-  )
-}
 
 export const loginWithGoogle = () => {
   const googleProvider = new firebase.auth.GoogleAuthProvider()
@@ -113,4 +70,70 @@ export const setHasTenant = (
     .then(() => {
       dispatch({ type: 'SET_DB_USER_FIELDS', args: { hasTenant } })
     })
+}
+
+export const AuthContextProvider: FC = ({ children }) => {
+  const [state, dispatch] = useReducer(authReducer, {
+    loading: true,
+  })
+
+  useEffect(() => {
+    const db = firebase.firestore()
+
+    // TODO: Refact
+    const unsub = firebase.auth().onAuthStateChanged((user) => {
+      log('Auth State Changed')
+      log({ user })
+      if (user) {
+        usersRef(db)
+          .where('uid', '==', user.uid)
+          .limit(1)
+          .get()
+          .then((res) => {
+            if (!res.empty) {
+              const [doc] = res.docs
+              const userDb = doc.data() as UserDB
+
+              dispatch({ type: 'SET_DB_USER', args: userDb })
+              dispatch({ type: 'SET_DB_USER_ID', args: doc.id })
+
+              // DATA MIGRATION WARNING
+              // Some users who were onboarded before the new Admin may have tenants
+              // but not have this flag set
+              if (!userDb.hasTenant) {
+                const query = tenantsRef(db)
+                  .where('userId', '==', user.uid)
+                  .limit(1)
+                  .get()
+
+                query.then((docs) => {
+                  if (!docs.empty) {
+                    setHasTenant(dispatch, {
+                      hasTenant: true,
+                      userDbId: doc.id,
+                    })
+                    dispatch({ type: 'SET_LOADING', args: false })
+                  }
+                })
+              }
+            }
+
+            dispatch({ type: 'SET_AUTH_USER', args: user })
+            dispatch({ type: 'SET_LOADING', args: false })
+          })
+      } else {
+        dispatch({ type: 'SET_AUTH_USER', args: undefined })
+        dispatch({ type: 'SET_DB_USER', args: undefined })
+        dispatch({ type: 'SET_LOADING', args: false })
+      }
+    })
+
+    return unsub
+  }, [])
+
+  return (
+    <AuthStateProvider value={state}>
+      <AuthDispatchProvider value={dispatch}>{children}</AuthDispatchProvider>
+    </AuthStateProvider>
+  )
 }

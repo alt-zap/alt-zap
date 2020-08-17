@@ -30,12 +30,12 @@ export const [useTenantDispatch, TenantDispatchProvider] = createCtx<Dispatch>()
 export const useTenant = () =>
   [useTenantConfig(), useTenantDispatch()] as [TenantContextState, Dispatch]
 
-const tenantsRef = (db: firestore.Firestore) => db.collection('tenants')
+export const tenantsRef = (db: firestore.Firestore) => db.collection('tenants')
 
-const tenantRef = (db: firestore.Firestore, tenantId: string) =>
+export const tenantRef = (db: firestore.Firestore, tenantId: string) =>
   tenantsRef(db).doc(tenantId)
 
-const productsRef = (db: firestore.Firestore, tenantId: string) =>
+export const productsRef = (db: firestore.Firestore, tenantId: string) =>
   tenantRef(db, tenantId).collection('products')
 
 export const TenantContextProvider: FC<Props> = ({
