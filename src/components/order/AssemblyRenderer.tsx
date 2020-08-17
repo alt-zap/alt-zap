@@ -6,7 +6,7 @@ import { Assembly } from '../../typings'
 import { generateHash } from '../../utils'
 import BooleanQuantitySelector from '../common/BooleanQuantitySelector'
 import LeanQuantitySelector from '../common/LeanQuantitySelector'
-import { Message } from '../../intlConfig'
+import { Message, useAltIntl } from '../../intlConfig'
 import Real from '../Real'
 
 type OptionState = {
@@ -16,6 +16,8 @@ type OptionState = {
 type Props = { assemblyOptions: Assembly[] }
 
 const AssemblyRenderer: FC<Props> = ({ assemblyOptions }) => {
+  const intl = useAltIntl()
+
   return (
     <div className="flex flex-column items-center">
       <h2 className="tc pa2">Opções</h2>
@@ -65,9 +67,13 @@ const AssemblyRenderer: FC<Props> = ({ assemblyOptions }) => {
                       )
 
                       if (totalQuantity < (assembly.min || Math.max())) {
-                        // TODO: Intl
                         return Promise.reject(
-                          `Você deve selecionar pelo menos ${assembly.min} opções. `
+                          intl.formatMessage(
+                            {
+                              id: 'order.assembly.lessThanMin',
+                            },
+                            { min: assembly.min as number }
+                          )
                         )
                       }
 

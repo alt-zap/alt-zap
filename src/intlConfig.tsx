@@ -166,6 +166,8 @@ export const intlConfig = {
     'order.assembly.required': 'Esta opção é obrigatória.',
     'order.assembly.select':
       'Selecione {range, select, yes {de {min}} other {}} {strict, select, no {até} other {}} {max} {max, plural, one {opção} other {opções} }',
+    'order.assembly.lessThanMin':
+      'Você deve selecionar pelo menos {min} {min, plural, one {opção} other {opções}}.',
     'onboard.personalData': 'Dados pessoais',
     'onboard.yourBusiness': 'Seu negócio',
     'onboard.fillYourData':
@@ -211,7 +213,7 @@ export const useAltIntl = () => {
     ...intl,
     formatMessage: (
       descriptor: MyMessageDescriptor,
-      values?: Record<string, string>
+      values?: Record<string, string | number>
     ) => intl.formatMessage(descriptor, values),
   }
 }
