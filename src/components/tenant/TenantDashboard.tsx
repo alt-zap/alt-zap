@@ -97,7 +97,9 @@ const TenantDashboard: FC = () => {
                 onClick={() => setTabId('2')}
                 color={isOpen ? 'blue' : 'red'}
               >
-                {isOpen ? 'Aberto' : 'Fechado'}
+                {intl.formatMessage({
+                  id: isOpen ? 'tenant.open' : 'tenant.closed',
+                })}
               </Tag>
             </Tooltip>
           }
@@ -109,7 +111,7 @@ const TenantDashboard: FC = () => {
                 icon={<WarningOutlined />}
                 onClick={() => setPendenciesModal(true)}
               >
-                Pendências
+                <Message id="tenant.pendencies" />
               </Button>
             ),
             <Button

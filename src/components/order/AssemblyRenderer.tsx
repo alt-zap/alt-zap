@@ -26,6 +26,8 @@ const AssemblyRenderer: FC<Props> = ({ assemblyOptions }) => {
         className="w-100"
         // eslint-disable-next-line no-console
         onFinish={(data) => console.log(data)}
+        // eslint-disable-next-line no-console
+        onValuesChange={(_, a) => console.log(a)}
       >
         {assemblyOptions
           .filter(({ live }) => live)
