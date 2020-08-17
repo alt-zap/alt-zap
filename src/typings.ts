@@ -1,5 +1,3 @@
-import { User } from 'firebase/app'
-
 export type Element<ArrayType extends readonly unknown[]> = ArrayType[number]
 
 export interface TenantConfig {

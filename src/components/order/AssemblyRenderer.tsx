@@ -1,5 +1,5 @@
 import React, { FC, useState, useCallback, useMemo } from 'react'
-import { Form, Divider, Radio, Button } from 'antd'
+import { Form, Divider, Radio } from 'antd'
 import { RadioChangeEvent } from 'antd/lib/radio'
 
 import { Assembly } from '../../typings'
@@ -21,83 +21,73 @@ const AssemblyRenderer: FC<Props> = ({ assemblyOptions }) => {
   return (
     <div className="flex flex-column items-center">
       <h2 className="tc pa2">Opções</h2>
-      <Form
-        layout="vertical"
-        className="w-100"
-        // eslint-disable-next-line no-console
-        onFinish={(data) => console.log(data)}
-        // eslint-disable-next-line no-console
-        onValuesChange={(_, a) => console.log(a)}
-      >
-        {assemblyOptions
-          .filter(({ live }) => live)
-          .map((assembly, i) => (
-            <div key={i} className="w-100">
-              <div className="bg-light-gray flex ph3 pv1 w-100">
-                <div className="flex flex-column">
-                  <span className="f5 b pb0 mb0">{assembly.name}</span>
-                  <span className="black-40" style={{ marginTop: '-5px' }}>
-                    <Message
-                      id="order.assembly.select"
-                      values={{
-                        max: assembly.max,
-                        min: assembly.min,
-                        strict: assembly.max === assembly.min ? 'yes' : 'no',
-                        range:
-                          assembly.min &&
-                          assembly.min > 0 &&
-                          assembly.max !== assembly.min
-                            ? 'yes'
-                            : 'no',
-                      }}
-                    />
-                  </span>
-                </div>
-              </div>
-              <Form.Item
-                className="w-100"
-                name={['assembly', assembly.name]}
-                rules={[
-                  () => ({
-                    validator(_, value) {
-                      const totalQuantity = Object.values(
-                        (value || {}) as OptionState
-                      ).reduce(
-                        (acc: number, current: string) =>
-                          acc + parseInt(current, 10),
-                        0
-                      )
-
-                      if (totalQuantity < (assembly.min || Math.max())) {
-                        return Promise.reject(
-                          intl.formatMessage(
-                            {
-                              id: 'order.assembly.lessThanMin',
-                            },
-                            { min: assembly.min as number }
-                          )
-                        )
-                      }
-
-                      return Promise.resolve()
-                    },
-                  }),
-                ]}
-              >
-                {assembly.max === 1 ? (
-                  <UniSelectInput options={assembly.options} />
-                ) : (
-                  <MultiSelectInput
-                    max={assembly.max as number}
-                    options={assembly.options}
-                    single={assembly.type === 'SINGLE'}
+      {assemblyOptions
+        .filter(({ live }) => live)
+        .map((assembly, i) => (
+          <div key={i} className="w-100">
+            <div className="bg-light-gray flex ph3 pv1 w-100">
+              <div className="flex flex-column">
+                <span className="f5 b pb0 mb0">{assembly.name}</span>
+                <span className="black-40" style={{ marginTop: '-5px' }}>
+                  <Message
+                    id="order.assembly.select"
+                    values={{
+                      max: assembly.max,
+                      min: assembly.min,
+                      strict: assembly.max === assembly.min ? 'yes' : 'no',
+                      range:
+                        assembly.min &&
+                        assembly.min > 0 &&
+                        assembly.max !== assembly.min
+                          ? 'yes'
+                          : 'no',
+                    }}
                   />
-                )}
-              </Form.Item>
+                </span>
+              </div>
             </div>
-          ))}
-        <Button htmlType="submit">Hit it</Button>
-      </Form>
+            <Form.Item
+              className="w-100"
+              name={['assembly', assembly.name]}
+              rules={[
+                () => ({
+                  validator(_, value) {
+                    const totalQuantity = Object.values(
+                      (value || {}) as OptionState
+                    ).reduce(
+                      (acc: number, current: string) =>
+                        acc + parseInt(current, 10),
+                      0
+                    )
+
+                    if (totalQuantity < (assembly.min || Math.max())) {
+                      return Promise.reject(
+                        intl.formatMessage(
+                          {
+                            id: 'order.assembly.lessThanMin',
+                          },
+                          { min: assembly.min as number }
+                        )
+                      )
+                    }
+
+                    return Promise.resolve()
+                  },
+                }),
+              ]}
+            >
+              {assembly.max === 1 ? (
+                <UniSelectInput options={assembly.options} />
+              ) : (
+                <MultiSelectInput
+                  max={assembly.max as number}
+                  options={assembly.options}
+                  single={assembly.type === 'SINGLE'}
+                />
+              )}
+            </Form.Item>
+          </div>
+        ))}
     </div>
   )
 }

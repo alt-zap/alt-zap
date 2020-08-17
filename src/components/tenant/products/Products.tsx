@@ -92,11 +92,12 @@ const Products: FC = () => {
       })
 
       await Promise.all(
-        tenant.items.map((oldProduct) =>
+        tenant.items.map(({ items, headline, ...oldProduct }) =>
           addProduct(dispatch, {
             tenantId,
             product: {
               ...oldProduct,
+              description: items ? items.join('\n\n') : '',
               highlight: false,
               category: 0,
               userId: user?.uid as string,
