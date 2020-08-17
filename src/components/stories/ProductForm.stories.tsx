@@ -26,34 +26,6 @@ const exampleCategories = [
   },
 ]
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const initialData = {
-  name: 'Bia de Calcinha',
-  select: '2',
-  logoSrc: 'htpss',
-  price: 1000,
-  assemblyOptions: [
-    {
-      name: 'Sabor',
-      live: true,
-      price: 100,
-      min: 0,
-      max: 20,
-      options: [
-        {
-          first: 'Lucis',
-          last: 'Boy',
-        },
-        {
-          first: 'Bia',
-          last: 'Cunha',
-        },
-      ],
-      type: 'UNISELECT',
-    },
-  ],
-}
-
 export const classic = () => (
   <TenantStateProvider
     value={{
@@ -81,14 +53,3 @@ export const withData = () => (
     />
   </TenantStateProvider>
 )
-// export const WithData = () => (
-//   <ProductForm
-//     initialData={{
-//       name: 'Bar do Lucis',
-//       slug: 'bardolucis',
-//       whatsapp: '+55 (83) 99432-2457',
-//       instagram: 'bardolucis',
-//       color: '#ff0000',
-//     }}
-//   />
-// )
