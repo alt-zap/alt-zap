@@ -121,6 +121,7 @@ export type AssemblyType = 'REPEAT' | 'SINGLE' | 'TEXT'
 export interface AssemblyOption {
   name: string
   description?: string
+  initialQuantity?: number
   price?: number
   live?: boolean
 }

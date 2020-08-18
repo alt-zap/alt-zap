@@ -10,13 +10,13 @@ const MenuDashboard: FC = () => {
     <div className="flex flex-column flex-row-l items-center items-start-l">
       <div className="w-90 w-50-l bg-white mv2 ml0 ml4-l pb3 ph3 br1">
         <Divider>
-          <FormattedMessage id="tenant.products" />
+          <FormattedMessage id="tenant.productsLabel" />
         </Divider>
         <Products />
       </div>
       <div className="w-90 w-50-l bg-white mv2 ml0 mh4-l pb3 ph3 br1">
         <Divider>
-          <FormattedMessage id="tenant.categories" />
+          <FormattedMessage id="tenant.categoriesLabel" />
         </Divider>
         <Categories />
       </div>

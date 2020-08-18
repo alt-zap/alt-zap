@@ -49,6 +49,13 @@ const AssemblyRenderer: FC<Props> = ({ assemblyOptions }) => {
             <Form.Item
               className="w-100"
               name={['assembly', assembly.name]}
+              initialValue={assembly.options.reduce(
+                (acc, cur) => ({
+                  ...acc,
+                  [cur.name]: `${cur.initialQuantity ?? 0}`,
+                }),
+                {}
+              )}
               rules={[
                 () => ({
                   validator(_, value) {

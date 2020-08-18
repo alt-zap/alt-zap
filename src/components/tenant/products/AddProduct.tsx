@@ -21,7 +21,7 @@ const AddProduct: FC<Props> = ({ onFinish }) => {
   const createProduct = useCallback(
     (product: Product) => {
       const addPromise = addProduct(dispatch, {
-        product: { ...product, userId: user!.uid },
+        product: { ...product, userId: user?.uid as string },
         tenantId,
       })
 

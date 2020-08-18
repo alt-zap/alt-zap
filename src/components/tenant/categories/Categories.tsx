@@ -72,7 +72,7 @@ const Categories: FC = () => {
             <Skeleton loading active />
           </List.Item>
         )}
-        {!tenant?.categories?.length && (
+        {!tenant?.categories?.length && !loading && (
           <div className="tc flex justify-center pt4 pb3">
             <Message id="tenant.noCategories" />
           </div>

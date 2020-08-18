@@ -46,7 +46,7 @@ const products = [
         min: 1,
         name: 'Adicionais',
         options: [
-          { price: 200, name: 'Bacon', live: true },
+          { price: 200, name: 'Bacon', live: true, initialQuantity: 2 },
           { price: 50, name: 'Pimenta Calabresa', live: true },
           { price: 100, name: 'Nata', live: true },
         ],
