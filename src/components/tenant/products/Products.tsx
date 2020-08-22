@@ -82,6 +82,8 @@ const Products: FC = () => {
         return
       }
 
+      setLock(true)
+
       await addCategory(dispatch, {
         category: {
           name: 'Principal',
@@ -106,7 +108,6 @@ const Products: FC = () => {
           })
         )
       )
-      setLock(true)
     }
 
     runMigration()

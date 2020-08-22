@@ -25,7 +25,7 @@ const OnboardStepper: FC = () => {
   const [step, setStep] = useState(0)
 
   useEffect(() => {
-    if (userDb?.hasTenant) {
+    if (userDb?.document && userDb?.hasTenant) {
       navigate('/tenants')
 
       return
