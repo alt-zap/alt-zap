@@ -61,6 +61,8 @@ export type TimeFrame = {
   to: string
 }
 
+export type ShippingStrategy = 'DELIVERY' | 'TAKEAWAY'
+
 export type ShippingStrategies = {
   deliveryFixed: {
     price?: number
@@ -152,3 +154,48 @@ export type TenantContextState = {
 }
 
 export type Action<K, V = void> = V extends void ? { type: K } : { type: K } & V
+
+export type AssemblyForm = {
+  [itemName: string]: {
+    [optionName: string]: string
+  }
+}
+
+export type OrderItem = {
+  product: Product
+  quantity: number
+  itemPrice: number
+  info?: string
+  selectedItems: Array<{
+    name: string
+    options: Array<{
+      name: string
+      quantity: number
+    }>
+  }>
+}
+
+export type OrderContextState = {
+  order: {
+    date: string
+    items: OrderItem[]
+    info?: string
+    customer?: {
+      name: string
+    }
+    shipping?: {
+      type: ShippingStrategy
+      address?: Address
+      price?: number
+    }
+    payment?: {
+      type: PaymentMethod
+      changeFor?: string
+    }
+    totalizers?: {
+      shippingPrice?: number
+      totalPrice?: number
+      finalPrice?: number
+    }
+  }
+}
