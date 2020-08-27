@@ -4,7 +4,8 @@
     "antd": ">=4.4.3",
     "imask": "6.0.5",
     "react": ">=16.13.1",
-    "react-dom": ">=16.13.1"
+    "react-dom": ">=16.13.1",
+    "react-intl": "^5.4.5"
   },
   "dependencies": {
     "@ant-design/icons": "4.2.1",
@@ -13,7 +14,7 @@
     "@rjsf/core": "2.2.0",
     "@sentry/react": "^5.20.1",
     "@types/jest": "^26.0.3",
-    "@types/node": "^14.0.26",
+    "@types/node": "^14.6.1",
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
     "antd": "latest",
@@ -111,58 +112,14 @@
       "compiler": {
         "bit.envs/compilers/react-typescript@3.1.56": {
           "rawConfig": {
-            "compilerPath": "typescript/bin/tsc",
-            "compilerArguments": [
-              "--declaration"
-            ],
-            "compiledFileTypes": [
-              ".ts",
-              ".tsx"
-            ],
-            "configFileName": "tsconfig.json",
             "tsconfig": {
               "compilerOptions": {
-                "outDir": "dist",
-                "target": "ES2015",
-                "sourceMap": false,
-                "moduleResolution": "Node",
-                "esModuleInterop": true,
-                "module": "ES6",
-                "allowSyntheticDefaultImports": true,
-                "resolveJsonModule": true,
-                "declaration": true,
-                "experimentalDecorators": true,
-                "inlineSourceMap": false,
-                "inlineSources": false,
                 "lib": [
                   "dom",
                   "es2015",
                   "es7"
-                ],
-                "jsx": "react",
-                "rootDir": "./",
-                "removeComments": true,
-                "typeRoots": [
-                  "./node_modules/@types"
-                ],
-                "importHelpers": false
-              },
-              "include": [
-                "./**/*"
-              ],
-              "exclude": [
-                "node_modules",
-                ".dependencies",
-                "dist"
-              ]
-            },
-            "development": false,
-            "copyPolicy": {
-              "ignorePatterns": [
-                "package.json",
-                "package-lock.json"
-              ],
-              "disable": false
+                ]
+              }
             }
           }
         }
