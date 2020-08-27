@@ -117,6 +117,17 @@ export interface Address {
   complemento?: string
 }
 
+export type WorldAddress = {
+  postalCode?: string
+  street: string
+  number: string
+  district: string
+  complement?: string
+  city: string
+  state: string
+  country?: string
+}
+
 // May change that later
 export type AssemblyType = 'REPEAT' | 'SINGLE' | 'TEXT'
 
@@ -175,27 +186,25 @@ export type OrderItem = {
   }>
 }
 
-export type OrderContextState = {
-  order: {
-    date: string
-    items: OrderItem[]
-    info?: string
-    customer?: {
-      name: string
-    }
-    shipping?: {
-      type: ShippingStrategy
-      address?: Address
-      price?: number
-    }
-    payment?: {
-      type: PaymentMethod
-      changeFor?: string
-    }
-    totalizers?: {
-      shippingPrice?: number
-      totalPrice?: number
-      finalPrice?: number
-    }
+export type Order = {
+  date: string
+  items: OrderItem[]
+  info?: string
+  customer?: {
+    name: string
+  }
+  shipping?: {
+    type: ShippingStrategy
+    address?: Address
+    price?: number
+  }
+  payment?: {
+    type: PaymentMethod
+    changeFor?: string
+  }
+  totalizers?: {
+    shippingPrice?: number
+    totalPrice?: number
+    finalPrice?: number
   }
 }

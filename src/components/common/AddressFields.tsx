@@ -1,51 +1,88 @@
 import React, { FC, Fragment } from 'react'
 import { Form, Select, Input } from 'antd'
-import { Rule } from 'antd/lib/form'
 
+import { WorldAddress } from '../../typings'
+// TODO: Think how to i18n that
 import { estados } from '../../constants'
+import { useAltIntl, TypedIntlRules } from '../../intlConfig'
 
 const { Item } = Form
 const { Option } = Select
 
 type Props = {
-  rules: Record<string, Rule[]>
+  rules: TypedIntlRules<WorldAddress>
 }
 
 const AddressFields: FC<Props> = ({ rules }) => {
+  const intl = useAltIntl()
+
   return (
     <Fragment>
       <div className="flex w-100 justify-center">
         <div className="w-80 mr2">
-          <Item name="logradouro" rules={rules.logradouro} label="Logradouro">
-            <Input size="large" placeholder="ex: Rua Margarida Maria Alves" />
+          <Item
+            name="street"
+            rules={rules.street}
+            label={intl.formatMessage({ id: 'address.street' })}
+          >
+            <Input
+              size="large"
+              placeholder={intl.formatMessage({
+                id: 'address.streetPlaceholder',
+              })}
+            />
           </Item>
         </div>
         <div className="w-20">
-          <Item label="Número" name="numero" rules={rules.numero}>
+          <Item
+            label={intl.formatMessage({ id: 'address.number' })}
+            name="number"
+            rules={rules.number}
+          >
             <Input size="large" />
           </Item>
         </div>
       </div>
       <div className="flex w-100 justify-center">
         <div className="w-50 mr2">
-          <Item label="Complemento" name="complemento">
-            <Input size="large" placeholder="ex: Apto 205" />
+          <Item
+            label={intl.formatMessage({ id: 'address.complement' })}
+            name="complement"
+          >
+            <Input
+              size="large"
+              placeholder={intl.formatMessage({
+                id: 'address.complementPlaceholder',
+              })}
+            />
           </Item>
         </div>
         <div className="w-50">
-          <Item label="Bairro" name="bairro" rules={rules.bairro}>
+          <Item
+            label={intl.formatMessage({ id: 'address.district' })}
+            name="district"
+            rules={rules.district}
+          >
             <Input size="large" />
           </Item>
         </div>
       </div>
       <div className="flex w-100 justify-center">
         <div className="w-60 mr2">
-          <Item name="cidade" label="Cidade" rules={rules.cidade}>
+          <Item
+            name="city"
+            label={intl.formatMessage({ id: 'address.city' })}
+            rules={rules.city}
+          >
             <Input size="large" />
           </Item>
         </div>
         <div className="w-40">
-          <Item name="estado" label="Estado" rules={rules.estado}>
+          <Item
+            name="state"
+            label={intl.formatMessage({ id: 'address.state' })}
+            rules={rules.state}
+          >
             <Select size="large">
               {estados.map(({ uf, value }) => (
                 <Option key={uf} value={uf}>

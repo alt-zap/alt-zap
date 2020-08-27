@@ -197,6 +197,25 @@ export const intlConfig = {
       'Já existe um negócio com essa URL. Por favor, escolha outra',
     'onboard.tenant.error':
       'Ocorreu um erro ao cadastrar o tenant. Estamos investigando...',
+    address: 'Endereço',
+    'address.postalCode': 'CEP',
+    'address.loading': 'Carregando...',
+    'address.search': 'Buscar',
+    'address.useLocation': 'use a sua localização',
+    'address.street': 'Logradouro',
+    'address.streetPlaceholder': 'ex: Rua Margarida Maria Alves',
+    'address.number': 'Número',
+    'address.complement': 'Complemento',
+    'address.complementPlaceholder': 'ex: Apto 205',
+    'address.district': 'Bairro',
+    'address.city': 'Cidade',
+    'address.state': 'Estado',
+    'address.streetRule': 'Preencha com o nome de sua rua',
+    'address.numberRule': 'Obrigatório',
+    'address.districtRule': 'Preencha seu bairro',
+    'address.cityRule': 'Preencha sua cidade',
+    'address.stateRule': 'Selecione seu estado',
+    'address.form.save': 'Salvar Endereço',
   },
 }
 
@@ -238,6 +257,8 @@ type IntlRule = {
 }
 
 export type IntlRules = Record<string, IntlRule[]>
+
+export type TypedIntlRules<T> = Partial<Record<keyof T, IntlRule[]>>
 
 export type IntlSelect<T = string> = Array<{ name: AltMessage; value: T }>
 

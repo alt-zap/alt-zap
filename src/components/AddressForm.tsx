@@ -1,10 +1,11 @@
 /* eslint-disable no-console */
 import React, { FC, useCallback, Fragment } from 'react'
 import { Button, Form } from 'antd'
-import { Rule } from 'antd/lib/form'
 
 import AutoFill from './AutoFill'
 import AddressFields from './common/AddressFields'
+import { WorldAddress } from '../typings'
+import { TypedIntlRules, Message } from '../intlConfig'
 
 type Props = {
   initialAddress?: Partial<Address>
@@ -13,19 +14,14 @@ type Props = {
   loading?: boolean
 }
 
-const rules: Record<string, Rule[]> = {
-  logradouro: [{ required: true, message: 'Preencha com o nome de sua rua' }],
-  numero: [{ required: true, message: 'Obrigatório' }],
-  bairro: [{ required: true, message: 'Preencha seu bairro' }],
-  cidade: [{ required: true, message: 'Preencha sua cidade' }],
-  estado: [{ required: true, message: 'Selecione seu estado' }],
+const rules: TypedIntlRules<WorldAddress> = {
+  street: [{ required: true, message: 'address.streetRule' }],
+  number: [{ required: true, message: 'address.numberRule' }],
+  district: [{ required: true, message: 'address.districtRule' }],
+  city: [{ required: true, message: 'address.cityRule' }],
+  state: [{ required: true, message: 'address.stateRule' }],
 }
 
-/**
- *  Este componente tem licença poética para usar nomes em português
- *
- * TODO: onAddress precisa receber notificações de cada mudança de endereço
- */
 const AddressForm: FC<Props> = ({
   onAddress,
   onValidSubmit,
@@ -35,11 +31,8 @@ const AddressForm: FC<Props> = ({
   const [form] = Form.useForm()
 
   const handleAutoFill = useCallback(
-    (data) => {
-      const estado = data.uf
-      const cidade = data.localidade
-
-      form.setFieldsValue({ ...data, estado, cidade })
+    (data: Partial<WorldAddress>) => {
+      form.setFieldsValue({ ...data })
     },
     [form]
   )
@@ -76,7 +69,7 @@ const AddressForm: FC<Props> = ({
             block
             htmlType="submit"
           >
-            Salvar Endereço
+            <Message id="address.form.save" />
           </Button>
         </div>
       </Form>

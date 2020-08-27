@@ -85,7 +85,7 @@
         "origin": "AUTHORED",
         "exported": true
     },
-    "lucis.alt/typings@1.2.0": {
+    "lucis.alt/typings@1.3.0": {
         "files": [
             {
                 "relativePath": "src/typings.ts",
@@ -97,7 +97,7 @@
         "origin": "AUTHORED",
         "exported": true
     },
-    "lucis.alt/utils@1.2.0": {
+    "lucis.alt/utils@1.2.1": {
         "files": [
             {
                 "relativePath": "src/utils.ts",
