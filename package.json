@@ -110,10 +110,18 @@
   "bit": {
     "env": {
       "compiler": {
-        "bit.envs/compilers/react-typescript@3.1.56": {
+        "bit.envs/compilers/test@0.0.1": {
+          "options": {
+            "file": "../react-typescript-compiler/components/compilers/react-typescript"
+          },
+          "compilerArguments": [
+            "--declaration",
+            "--skipLibCheck"
+          ],
           "rawConfig": {
             "tsconfig": {
               "compilerOptions": {
+                "skipLibCheck": true,
                 "lib": [
                   "dom",
                   "es2015",
