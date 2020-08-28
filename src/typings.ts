@@ -27,7 +27,7 @@ export interface TenantConfig {
   categories?: Category[]
   templateAssembly: Assembly[]
   selectedMenu: number
-  address?: Address
+  address?: WorldAddress
   shippingStrategies?: ShippingStrategies
   openingHours?: OpeningHours
 }
