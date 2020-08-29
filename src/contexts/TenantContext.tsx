@@ -49,6 +49,17 @@ export const TenantContextProvider: FC<Props> = ({
     tenantId,
   })
 
+  /**
+   *  UGLY CODE ALERT
+   *
+   *  This piece of code lazily migrate tenant' products from the older way
+   *  (inside the tenant) to the new one (with a separate collection).
+   *
+   *  As soon as we release the new Order page (and, eventually, all tenans migrate)
+   *  we should simplify this effect since there will be no need to:
+   *    - Use the slug as a way to load a tenant
+   *    - Migrate the data
+   */
   useEffect(() => {
     if (!slug && !tenantId) {
       return log(`You didn't provide valid data for us to fetch the Tenant`)
@@ -79,13 +90,15 @@ export const TenantContextProvider: FC<Props> = ({
         dispatch({ type: 'SET_TENANT_ID', args: docId })
         const productsQuery = productsRef(db, docId).get()
 
-        productsQuery
+        return productsQuery
           .then((querySnapshot) => {
             const { docs } = querySnapshot
             const products = docs.map(
               (doc) => ({ ...doc.data(), id: doc.id } as Product)
             )
 
+            // Test some stuff and call migrate
+            // But what about the userId? :grr
             dispatch({ type: 'SET_PRODUCTS', args: products })
           })
           .catch((error: unknown) => {
@@ -422,6 +435,7 @@ export const addTenant = ({
   const data = sanitizeForFirebase({
     userId,
     createdAt: new Date().toISOString(),
+    migrated: true,
     ...tenant,
   })
 
@@ -447,4 +461,55 @@ export const addTenant = ({
         return Promise.reject(altMessage('onboard.tenant.slugError'))
       }
     )
+}
+
+export const __MIGRATE_TENANT = async (
+  dispatch: Dispatch,
+  {
+    tenantId,
+    tenant,
+    userId,
+  }: {
+    tenantId: string
+    tenant: TenantConfig
+    userId: string
+  }
+) => {
+  const db = firebase.firestore()
+
+  const ref = tenantRef(db, tenantId)
+
+  ref.get().then(async (doc) => {
+    const tenantDb = doc.data()
+
+    if (tenantDb?.migrated) {
+      return
+    }
+
+    ref.update({ migrated: true })
+    await addCategory(dispatch, {
+      category: {
+        name: 'Principal',
+        live: true,
+        slug: 'principal',
+      },
+      tenantId,
+      firstCategory: true,
+    })
+
+    await Promise.all(
+      tenant.items.map(({ items, headline, ...oldProduct }) =>
+        addProduct(dispatch, {
+          tenantId,
+          product: {
+            ...oldProduct,
+            description: items ? items.join('\n\n') : '',
+            highlight: false,
+            category: 0,
+            userId,
+          },
+        })
+      )
+    )
+  })
 }

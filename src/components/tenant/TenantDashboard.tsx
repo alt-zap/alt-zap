@@ -30,6 +30,7 @@ import EditTenant from './EditTenant'
 import { Message, useAltIntl } from '../../intlConfig'
 import Pendencies, { pendenciesTest } from './Pendencies'
 import { isTenantOpen, useInterval, log } from '../../utils'
+import { useAuth } from '../../contexts/auth/AuthContext'
 
 const { TabPane } = Tabs
 
@@ -45,6 +46,7 @@ const renderTabBar = (props: any, DefaultTabBar: any) => (
 const TenantDashboard: FC = () => {
   const intl = useAltIntl()
   const [tabId, setTabId] = useQueryParam('tabId', StringParam)
+  const [{ userDb }] = useAuth()
 
   const [isOpen, setOpen] = useState(false)
   const [editingMetadata, setEditMetadata] = useState(false)
@@ -66,6 +68,12 @@ const TenantDashboard: FC = () => {
     () => pendenciesTest.filter(({ test }) => test(tenantContext)),
     [tenantContext]
   )
+
+  useEffect(() => {
+    if (!userDb?.document) {
+      navigate('/onboard')
+    }
+  }, [userDb, navigate])
 
   useEffect(() => {
     setOpen(tenant?.openingHours ? isTenantOpen(tenant?.openingHours) : false)

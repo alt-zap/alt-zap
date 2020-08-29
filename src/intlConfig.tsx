@@ -216,6 +216,7 @@ export const intlConfig = {
     'address.cityRule': 'Preencha sua cidade',
     'address.stateRule': 'Selecione seu estado',
     'address.form.save': 'Salvar Endereço',
+    'tenant.migrate': 'Mostrar Produtos',
   },
 }
 

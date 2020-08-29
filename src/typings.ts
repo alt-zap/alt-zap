@@ -1,6 +1,7 @@
 export type Element<ArrayType extends readonly unknown[]> = ArrayType[number]
 
 export interface TenantConfig {
+  migrated?: boolean
   name: string
   slug: string
   category?: string
