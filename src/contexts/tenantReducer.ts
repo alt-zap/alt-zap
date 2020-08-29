@@ -5,6 +5,7 @@ import {
   Action,
   TenantConfig,
   ShippingStrategies,
+  WorldAddress,
 } from '../typings'
 
 type Actions =
@@ -20,7 +21,7 @@ type Actions =
   | Action<'ADD_PRODUCT', { args: Product }>
   | Action<'EDIT_PRODUCT', { args: Product }>
   | Action<'SET_PRODUCTS', { args: Product[] }>
-  | Action<'SET_ADDRESS', { args: Address }>
+  | Action<'SET_ADDRESS', { args: WorldAddress }>
   | Action<'SET_SHIPPING', { args: ShippingStrategies }>
   | Action<'SET_TENANT_FIELD', { args: Partial<TenantConfig> }>
   | Action<'SET_TENANT_ID', { args: string }>

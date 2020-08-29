@@ -129,7 +129,6 @@ const TenantDataForm: FC<Props> = ({ initialData, onSubmit, loading }) => {
           >
             <TextInput
               disabled={loading}
-              addonBefore="https://"
               addonAfter=".alt.app.br"
               onFocus={() => {
                 const { name, slug } = form.getFieldsValue()

@@ -8,9 +8,8 @@ import { WorldAddress } from '../typings'
 import { TypedIntlRules, Message } from '../intlConfig'
 
 type Props = {
-  initialAddress?: Partial<Address>
-  onAddress?: (data: Address) => void
-  onValidSubmit?: (data: Address) => void
+  initialAddress?: Partial<WorldAddress>
+  onValidSubmit?: (data: WorldAddress) => void
   loading?: boolean
 }
 
@@ -23,7 +22,6 @@ const rules: TypedIntlRules<WorldAddress> = {
 }
 
 const AddressForm: FC<Props> = ({
-  onAddress,
   onValidSubmit,
   loading,
   initialAddress = {},
@@ -43,24 +41,10 @@ const AddressForm: FC<Props> = ({
       <Form
         form={form}
         layout="vertical"
-        onFinish={(data) => onValidSubmit?.(data)}
+        onFinish={(data) => onValidSubmit?.(data as WorldAddress)}
         initialValues={initialAddress}
-        onFieldsChange={(_, all) => {
-          if (!onAddress) return
-
-          const address = all.reduce(
-            (acc, { name, value }) => ({
-              ...acc,
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              [(name as any)[0]]: value,
-            }),
-            {}
-          )
-
-          onAddress(address)
-        }}
       >
-        <div id="endereco" className="flex flex-column items-center mt2">
+        <div id="address" className="flex flex-column items-center mt2">
           <AddressFields rules={rules} />
           <Button
             loading={loading}

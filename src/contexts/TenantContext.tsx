@@ -11,6 +11,7 @@ import {
   ShippingStrategies,
   OpeningHours,
   PaymentMethod,
+  WorldAddress,
 } from '../typings'
 import { tenantStateReducer, TenantContextActions } from './tenantReducer'
 import { AltMessage, altMessage } from '../intlConfig'
@@ -49,45 +50,50 @@ export const TenantContextProvider: FC<Props> = ({
   })
 
   useEffect(() => {
-    if (!tenantId) return
-
-    dispatch({ type: 'PRODUCT_START_LOADING' })
-    const db = firebase.firestore()
-    const query = productsRef(db, tenantId).get()
-
-    query
-      .then((querySnapshot) => {
-        const { docs } = querySnapshot
-        const products = docs.map(
-          (doc) => ({ ...doc.data(), id: doc.id } as Product)
-        )
-
-        dispatch({ type: 'SET_PRODUCTS', args: products })
-      })
-      .catch((error: unknown) => {
-        log('Error fetching products: ', error)
-      })
-      .finally(() => {
-        dispatch({ type: 'PRODUCT_STOP_LOADING' })
-      })
-  }, [tenantId])
-
-  useEffect(() => {
-    if (slug || !tenantId) {
-      return log(
-        `We no longer support slug querying for the TenantContext. Please, move away from the old Order Page!`
-      )
+    if (!slug && !tenantId) {
+      return log(`You didn't provide valid data for us to fetch the Tenant`)
     }
 
     dispatch({ type: 'START_LOADING' })
+    dispatch({ type: 'PRODUCT_START_LOADING' })
     const db = firebase.firestore()
-    const query = tenantRef(db, tenantId).get()
+    const tenantQuery = tenantId
+      ? tenantRef(db, tenantId)
+          .get()
+          .then((doc) => ({
+            tenant: doc.data() as TenantConfig,
+            docId: doc.id,
+          }))
+      : tenantsRef(db)
+          .where('slug', '==', slug)
+          .get()
+          .then((snap) => {
+            const [doc] = snap.docs
 
-    query
-      .then((querySnapshot) => {
-        const data = querySnapshot.data() as TenantConfig
+            return { tenant: doc?.data() as TenantConfig, docId: doc.id }
+          })
 
-        dispatch({ type: 'SET_TENANT', args: data })
+    tenantQuery
+      .then(({ tenant, docId }) => {
+        dispatch({ type: 'SET_TENANT', args: tenant })
+        dispatch({ type: 'SET_TENANT_ID', args: docId })
+        const productsQuery = productsRef(db, docId).get()
+
+        productsQuery
+          .then((querySnapshot) => {
+            const { docs } = querySnapshot
+            const products = docs.map(
+              (doc) => ({ ...doc.data(), id: doc.id } as Product)
+            )
+
+            dispatch({ type: 'SET_PRODUCTS', args: products })
+          })
+          .catch((error: unknown) => {
+            log('Error fetching products: ', error)
+          })
+          .finally(() => {
+            dispatch({ type: 'PRODUCT_STOP_LOADING' })
+          })
       })
       .catch((error: unknown) => {
         log('Error fetching Tenant data: ', error)
@@ -271,7 +277,7 @@ export const setAddress = async (
     address,
     tenantId,
   }: {
-    address: Address
+    address: WorldAddress
     tenantId?: string
   }
 ) => {

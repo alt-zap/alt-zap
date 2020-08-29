@@ -1,74 +1,115 @@
 import React, { FC, useCallback, useState, useMemo } from 'react'
-import { Affix, Alert, Button, Divider, Input, Spin, Layout } from 'antd'
+import { Affix, Alert, Button, Form, Divider, Input, Spin, Layout } from 'antd'
 import { SendOutlined } from '@ant-design/icons'
 import * as firebase from 'firebase/app'
 import 'firebase/analytics'
 
-import Address from './AddressForm'
+import { WorldAddress } from '../typings'
+import { TypedIntlRules } from '../intlConfig'
 import ProductList from './ProductList'
 import Totalizer from './Totalizer'
 import OrderSummary from './OrderSummary'
 import PaymentSelector from './customer/PaymentSelector'
 import { useTenantConfig } from '../contexts/TenantContext'
-import { generateLink, eSet, log } from '../utils'
+import { generateLink, log } from '../utils'
 import instagram from '../assets/instagram.svg'
 import whatsapp from '../assets/whatsapp.svg'
+import AddressFields from './common/AddressFields'
+import AutoFill from './AutoFill'
 
 const { Header, Footer } = Layout
+const { TextArea } = Input
+const { Item } = Form
 
+interface TempFormData extends WorldAddress {
+  name: string
+  info?: string
+}
+
+const rules: TypedIntlRules<WorldAddress> = {
+  street: [{ required: true, message: 'address.streetRule' }],
+  number: [{ required: true, message: 'address.numberRule' }],
+  district: [{ required: true, message: 'address.districtRule' }],
+  city: [{ required: true, message: 'address.cityRule' }],
+  state: [{ required: true, message: 'address.stateRule' }],
+}
+
+/**
+ * Keypoints here:
+ *
+ * - I'd hope to deliver the new Admin without this page/form, with all rendered by Gatsby.
+ * - As it happens, it was not so trivial to implement all of the new features on the new project + setup build.
+ * -  We really need to delivery an easier way for people to develop (Firebase Emulator) and lots of other stuff
+ * to Andromedev folks.
+ * - Now, we're TEMPORARILY supporting this page, adapting the data to use the new model.
+ * - I've updated this as fast as I could... The new Order page should be localized and using Form
+ *
+ *  WE WON'T MAINTAIN THIS PAGE FOR LONG
+ */
 const Order: FC = () => {
-  const { tenant, loading } = useTenantConfig()
-  const [address, setAddress] = useState<Address>()
+  const [orderForm] = Form.useForm()
+  const { tenant, loading, products } = useTenantConfig()
   const [order, setOrder] = useState([])
   const [total, setTotal] = useState(0)
-  const [name, setName] = useState('')
-  const [info, setInfo] = useState('')
   const [paymentInfo, setPayment] = useState<PaymentInfo>()
 
-  const enviarPedido = useCallback(() => {
-    const { name: label, change } = paymentInfo!
-    const whatsappLink = generateLink({
-      whatsapp: tenant!.whatsapp,
-      address: address!,
-      order,
-      payment: {
-        label,
-        change,
-      },
-      name,
-      total,
-      info,
-    })
+  const enviarPedido = useCallback(
+    (formData: TempFormData) => {
+      const { name: label, change } = paymentInfo as PaymentInfo
+      const { name, info, ...address } = formData
 
-    try {
-      const analytics = firebase.analytics()
-
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      analytics.logEvent('purchase', {
-        tenant: tenant?.name,
-        value: total / 100,
-        currency: 'BRA',
+      const whatsappLink = generateLink({
+        whatsapp: tenant?.whatsapp as string,
+        address,
+        order,
+        payment: {
+          label,
+          change,
+        },
+        name,
+        total,
+        info,
       })
-    } catch (e) {
-      log(e)
-      log('Erro ao enviar evento ao Analytics')
-    }
 
-    const win = window.open(whatsappLink, '_blank')
+      try {
+        const analytics = firebase.analytics()
 
-    win!.focus()
-  }, [address, order, info, paymentInfo, name, total, tenant])
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        analytics.logEvent('purchase', {
+          tenant: tenant?.name,
+          value: total / 100,
+          currency: 'BRA',
+        })
+      } catch (e) {
+        log(e)
+        log('Erro ao enviar evento ao Analytics')
+      }
+
+      const win = window.open(whatsappLink, '_blank')
+
+      win?.focus()
+    },
+    [order, paymentInfo, total, tenant]
+  )
+
+  const handleAutoFill = useCallback(
+    (data: Partial<WorldAddress>) => {
+      orderForm.setFieldsValue({ ...data })
+    },
+    [orderForm]
+  )
 
   const hasOrder = useMemo(() => {
     return order.some(([, quantity]) => parseInt(quantity, 10))
   }, [order])
 
-  const pedidoValido = useMemo(() => {
-    return total > 0 && name && address && address.logradouro
-  }, [total, name, address])
+  const pedidoValido = total > 0 && paymentInfo
 
-  const { deliveryFee, items, paymentMethods } = tenant ?? {}
+  const deliveryFee =
+    tenant?.shippingStrategies?.deliveryFixed?.price ?? tenant?.deliveryFee
+
+  const { paymentMethods } = tenant ?? {}
 
   return (
     <div>
@@ -128,54 +169,61 @@ const Order: FC = () => {
                 message="No final, vamos te redirecionar pra o Whatsapp para finalizar seu pedido ;)"
                 type="info"
               />
-              <ProductList items={items!} onOrder={setOrder} />
+              <ProductList products={products} onOrder={setOrder} />
               <Divider />
-              <Address onAddress={setAddress} />
-              <Divider />
-              <span>Outras Informações?</span>
-              <Input.TextArea
-                value={info}
-                onChange={eSet(setInfo)}
-                placeholder="Ex: Tira o sal da batata frita"
-                className="mv2"
-              />
-              <span className="mt2">Seu nome</span>
-              <Input
-                value={name}
-                onChange={eSet(setName)}
-                className="mt2"
-                size="large"
-              />
-              <Affix offsetBottom={-5} className="mt4">
+              <AutoFill onAddress={handleAutoFill} />
+              <Form
+                scrollToFirstError
+                onFinish={(data) => {
+                  enviarPedido(data as TempFormData)
+                }}
+                form={orderForm}
+                layout="vertical"
+              >
+                <div id="address" className="flex flex-column items-center mt2">
+                  <AddressFields rules={rules} />
+                </div>
+                <Divider />
+                <Item name="info" label="Outras informações?">
+                  <TextArea
+                    className="mv2"
+                    placeholder="Ex: Tira o sal da batata frita"
+                  />
+                </Item>
+                <Item name="name" label="Seu nome" rules={[{ required: true }]}>
+                  <Input size="large" className="mv2" />
+                </Item>
+                <Affix offsetBottom={-5} className="mt4">
+                  {hasOrder && (
+                    <Totalizer
+                      order={order}
+                      deliveryFee={deliveryFee ?? 0}
+                      onTotal={setTotal}
+                    />
+                  )}
+                </Affix>
+                {hasOrder && <OrderSummary order={order} />}
+                <Divider />
                 {hasOrder && (
-                  <Totalizer
-                    order={order}
-                    deliveryFee={deliveryFee!}
-                    onTotal={setTotal}
+                  <PaymentSelector
+                    methods={paymentMethods ?? []}
+                    onPayment={setPayment}
                   />
                 )}
-              </Affix>
-              {hasOrder && <OrderSummary order={order} />}
-              <Divider />
-              {hasOrder && (
-                <PaymentSelector
-                  methods={paymentMethods!}
-                  onPayment={setPayment}
-                />
-              )}
-              <div className="flex justify-center">
-                <Button
-                  icon={<SendOutlined />}
-                  type="primary"
-                  className="mt4"
-                  size="large"
-                  shape="round"
-                  disabled={!pedidoValido}
-                  onClick={enviarPedido}
-                >
-                  Enviar Pedido
-                </Button>
-              </div>
+                <div className="flex justify-center">
+                  <Button
+                    icon={<SendOutlined />}
+                    htmlType="submit"
+                    type="primary"
+                    className="mt4"
+                    size="large"
+                    shape="round"
+                    disabled={!pedidoValido}
+                  >
+                    Enviar Pedido
+                  </Button>
+                </div>
+              </Form>
             </div>
           </div>
           <Footer className="tc mt2">

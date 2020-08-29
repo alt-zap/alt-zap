@@ -7,7 +7,7 @@ import {
   useTenantDispatch,
   setAddress,
 } from '../../../contexts/TenantContext'
-import { Address } from '../../../typings'
+import { WorldAddress } from '../../../typings'
 import { useAltIntl, Message } from '../../../intlConfig'
 
 const TenantAddress: FC = () => {
@@ -18,7 +18,7 @@ const TenantAddress: FC = () => {
   const dispatch = useTenantDispatch()
 
   const handleAddressChange = useCallback(
-    (address: Address) => {
+    (address: WorldAddress) => {
       setLoading(true)
       setAddress(dispatch, {
         address,

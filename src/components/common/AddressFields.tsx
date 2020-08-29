@@ -4,7 +4,12 @@ import { Form, Select, Input } from 'antd'
 import { WorldAddress } from '../../typings'
 // TODO: Think how to i18n that
 import { estados } from '../../constants'
-import { useAltIntl, TypedIntlRules } from '../../intlConfig'
+import {
+  useAltIntl,
+  TypedIntlRules,
+  prepareRules,
+  IntlRules,
+} from '../../intlConfig'
 
 const { Item } = Form
 const { Option } = Select
@@ -13,8 +18,10 @@ type Props = {
   rules: TypedIntlRules<WorldAddress>
 }
 
-const AddressFields: FC<Props> = ({ rules }) => {
+const AddressFields: FC<Props> = ({ rules: intlRules }) => {
   const intl = useAltIntl()
+
+  const rules = prepareRules(intlRules as IntlRules, intl)
 
   return (
     <Fragment>

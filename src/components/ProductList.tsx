@@ -1,14 +1,15 @@
 import React, { FC, useState, useCallback, useEffect } from 'react'
 import { List } from 'antd'
 
+import { Product } from '../typings'
 import ProductSummary from './common/ProductSummary'
 
 type Props = {
-  items: TenantConfig['items']
+  products?: Product[]
   onOrder: (a: any) => void
 }
 
-const ProductList: FC<Props> = ({ items, onOrder }) => {
+const ProductList: FC<Props> = ({ products, onOrder }) => {
   const [quantities, setQuantities] = useState<Record<number, string>>({})
   const setForIndex = useCallback(
     (i) => (value: string) => setQuantities({ ...quantities, [i]: value }),
@@ -16,16 +17,16 @@ const ProductList: FC<Props> = ({ items, onOrder }) => {
   )
 
   useEffect(() => {
-    const order = ((Object.keys(
+    const orderItems = ((Object.keys(
       quantities
     ) as unknown) as number[]).map((i) => [
-      items[i].name,
+      products?.[i].name,
       parseInt(quantities[i], 10),
-      items[i].price,
+      products?.[i].price,
     ])
 
-    onOrder(order)
-  }, [items, onOrder, quantities])
+    onOrder(orderItems)
+  }, [products, onOrder, quantities])
 
   return (
     <div className="mt3">
@@ -34,7 +35,7 @@ const ProductList: FC<Props> = ({ items, onOrder }) => {
         <List
           style={{ maxWidth: '500px' }}
           itemLayout="horizontal"
-          dataSource={items ? items.filter(({ live }) => live) : []}
+          dataSource={products ? products.filter(({ live }) => live) : []}
           renderItem={(product, i) => (
             <div className="pv2">
               <ProductSummary

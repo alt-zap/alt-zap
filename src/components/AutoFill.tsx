@@ -78,12 +78,14 @@ const AutoFill: FC<Props> = ({ onAddress }) => {
           try {
             const address = data.Response.View[0].Result[0].Location.Address
 
-            const { Street, District, HouseNumber } = address
+            const { Street, District, HouseNumber, City, State } = address
 
             onAddress({
               street: Street,
               district: District,
               number: HouseNumber,
+              city: City,
+              state: State,
             })
           } catch (e) {
             setError('Não foi possível buscar sua localização')

@@ -32,7 +32,7 @@ export const pendenciesTest: Array<{
     message: 'tenant.pendencies.logistics',
   },
   {
-    test: ({ tenant }) => !tenant?.address?.logradouro,
+    test: ({ tenant }) => !tenant?.address?.street,
     message: 'tenant.pendencies.address',
   },
   {

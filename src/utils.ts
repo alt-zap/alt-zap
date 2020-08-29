@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-import { Address, OrderProducts, OpeningHours, Days } from './typings'
+import { WorldAddress, OrderProducts, OpeningHours, Days } from './typings'
 
 type Elements = HTMLInputElement | HTMLTextAreaElement
 
@@ -23,7 +23,7 @@ const toString = (number: number) => {
 
 type GenerateLinkParams = {
   name: string
-  address: Address
+  address: WorldAddress
   order: OrderProducts[]
   payment: {
     label: string
@@ -43,7 +43,7 @@ export const generateLink = ({
   info,
   whatsapp,
 }: GenerateLinkParams) => {
-  const { logradouro, numero, complemento, bairro } = address
+  const { street, number, complement, district } = address
   const { label, change } = payment
   const items = order
     // eslint-disable-next-line no-shadow
@@ -58,11 +58,11 @@ ${items}
 *Total do Pedido:* R$ ${toString(total)}
 
 *Endereço:* 
-${logradouro} - ${numero}
-${complemento ?? '(s/c)'} - ${bairro}
+${street} - ${number}
+${complement ?? '(s/c)'} - ${district}
 
-*Outras Informações:*
-${info} 
+${info ? '*Outras Informações:*' : ''}
+${info ?? ''} 
 
   
 *Meio de Pagamento:* ${label}
