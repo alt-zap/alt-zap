@@ -1,10 +1,13 @@
 name: vercel - preview
 on:
+  push:
+    branches:
+      - master
   pull_request:
     branches:
       - master
 jobs:
-  preview:
+  vercel:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -16,7 +19,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Deploying to Vercel
-        uses: EvanLovely/vercel-action@506f39d
+        uses: amondnet/vercel-action@v19
         id: vercel-action-staging
         if: github.event_name == 'pull_request'
         with:
@@ -25,3 +28,14 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           working-directory: ./
+      - name: Production Deploy
+        uses: amondnet/vercel-action@v19
+        id: vercel-production
+        if: github.event_name == 'push'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: .
+          vercel-args: "--prod "
