@@ -23,15 +23,15 @@ Pequenos empreendedores podem usar o **Alt** para cadastrar seus produtos e:
 
 ## Exemplo
 
-Veja a página do [Alt Burguer CG](https://alt-zap.vercel.app/altburguer-cg), hamburgueria para qual o Alt foi desenvolvido inicialmente, e veja uma demonstração do serviço.
+Acesse a página do [Alt Burguer CG](https://alt-zap.vercel.app/altburguer-cg), hamburgueria para qual o Alt foi desenvolvido inicialmente, e veja uma demonstração do serviço.
 
 <p align="center"><img src="https://user-images.githubusercontent.com/18706156/87861502-3776f980-c91d-11ea-9d48-c33c941d2636.png" width="420" /></p>
 
 ## Preço
 
-Os serviços do Alt são **todos gratuitos** e prentendemos manter esta política para sempre, desde que consigamos continuar oferecendo nossa plataform **sem custos**.
+Os serviços do Alt são **todos gratuitos** e prentendemos manter esta política para sempre. Atualmente, utilizamos serviços como Firebase e Vercel para disponibilizar as funcionalidades gratuitamente.
 
-Futuramente, planejamos **lançar uma versão self-hosted** que os usuário possam rodar (gratuitamente) nas suas próprias contas (Firebase e Vercel/Netlify).
+Futuramente, planejamos **lançar uma versão self-hosted**, onds os usuários possam rodar (gratuitamente) nas suas próprias contas (Firebase e Vercel/Netlify).
 
 A principal motivação desse projeto é **ajudar as comunidades locais** e contamos com a nobre contribuição de designers e programadores.
 
@@ -41,12 +41,11 @@ Ainda estamos [melhorando nossa documentação](https://github.com/alt-zap/alt-z
 
 ![Arquitetura do Alt](https://user-images.githubusercontent.com/18706156/91663167-93f13b00-eabd-11ea-87c4-6999a9350c90.jpg)
 
-**Disclaimer:** Por enquanto, este projeto **também está renderizando o Menu**. Isso é uma ação temporária para facilitar a integração de novos desenvolvedores.
+**Disclaimer:** Por enquanto, este projeto _(alt-zap/alt-zap)_ **também está renderizando o Menu**. Isso é uma ação temporária para facilitar a integração de novos desenvolvedores.
 
 ## Desenvolvendo
 
-Este projeto renderiza o **Alt Admin**, _dashboard_ de administração que oferece aos nosso clientes a configuração das funcionalidades.
-
+Este projeto renderiza o **Alt Admin**, _dashboard_ de administração que disponibiliza aos nossos clientes a configuração das funcionalidades oferecidas.
 
 Para desenvolver localmente, você precisará [configurar o Firebase Emulator](https://firebase.google.com/docs/rules/emulator-setup).
 
@@ -60,12 +59,11 @@ Para iniciar o desenvolvimento:
 7. Para visualizar o menu, basta acessar http://localhost:3000/bardolucis.
 
 ### Disclaimers
-- Já adicionamos alguns **dados iniciais** para que você não precise configurar nada para desenvolver. Você pode verificá-los na UI do Firebase Emulator (geralmente em http://localhost:4000).
+- Já adicionamos alguns **dados iniciais** para que você não precise configurar nada. Você pode verificá-los na UI do Firebase Emulator (geralmente em http://localhost:4000).
 - Atualmente, o serviço de localização utiliza o [Here SDK](https://developer.here.com/), que necessita de **chaves de acesso**. Caso queira, você pode criar uma conta e configurar seu ambiente, mas isso não é necessário.
 - Para que o desenvolvimento local seja mais fácil, há **condições no código** para carregar os dados mockados. Por exemplo, geralmente carregaríamos os `tenants` para o `userId` do usuário que está logado, mas fazemos resolver sempre para o mesmo id (o meu) caso estejamos em `localhost`.
 
-Sinta-se livre para reportar erros, tirar dúvidas e dar sugestões pra gente nas issues.
-
+Sinta-se livre para reportar erros, tirar dúvidas e dar sugestões nas issues do repositório.
 
 
 ## Contribuidores
