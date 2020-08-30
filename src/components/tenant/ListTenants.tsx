@@ -19,7 +19,17 @@ const ListTenants: FC = () => {
   useEffect(() => {
     if (!user) return
     const db = firebase.firestore()
-    const query = db.collection('tenants').where('userId', '==', user.uid).get()
+
+    // Refer to README.md
+    const userIdToFetch =
+      window?.location.hostname === 'localhost'
+        ? 'fKwGvMbdxiPsyuhsCuIHguByX5s1'
+        : user.uid
+
+    const query = db
+      .collection('tenants')
+      .where('userId', '==', userIdToFetch)
+      .get()
 
     query.then(({ docs }) => {
       setTenants(
