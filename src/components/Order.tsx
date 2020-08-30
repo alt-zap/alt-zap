@@ -4,7 +4,7 @@ import { SendOutlined } from '@ant-design/icons'
 import * as firebase from 'firebase/app'
 import 'firebase/analytics'
 
-import { WorldAddress } from '../typings'
+import { WorldAddress, Product } from '../typings'
 import { TypedIntlRules } from '../intlConfig'
 import ProductList from './ProductList'
 import Totalizer from './Totalizer'
@@ -111,6 +111,18 @@ const Order: FC = () => {
 
   const { paymentMethods } = tenant ?? {}
 
+  const fallbackProducts: Product[] = useMemo(
+    () =>
+      tenant?.items?.map((item) => ({
+        ...item,
+        userId: ',',
+        description: item.items?.join('\n\n'),
+        category: 0,
+        highlight: false,
+      })) ?? [],
+    [tenant]
+  )
+
   return (
     <div>
       {loading && (
@@ -169,7 +181,10 @@ const Order: FC = () => {
                 message="No final, vamos te redirecionar pra o Whatsapp para finalizar seu pedido ;)"
                 type="info"
               />
-              <ProductList products={products} onOrder={setOrder} />
+              <ProductList
+                products={!tenant?.migrated ? fallbackProducts : products}
+                onOrder={setOrder}
+              />
               <Divider />
               <AutoFill onAddress={handleAutoFill} />
               <Form
