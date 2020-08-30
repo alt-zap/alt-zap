@@ -416,6 +416,33 @@ export const setTenantData = async (
     })
 }
 
+export const validateSlug = (slug: string, current: string) => {
+  const FORBIDDEN = ['admin', 'tenants', 'login', 'index', 'onboard']
+
+  if (FORBIDDEN.includes(slug)) {
+    return Promise.reject()
+  }
+
+  if (slug === current) {
+    return Promise.resolve()
+  }
+
+  const db = firebase.firestore()
+  const ref = tenantsRef(db)
+
+  return ref
+    .where('slug', '==', slug)
+    .limit(1)
+    .get()
+    .then((res) => {
+      if (res.empty) {
+        return Promise.resolve()
+      }
+
+      throw new Error('Username already exists')
+    })
+}
+
 export const addTenant = ({
   tenant,
   userId,
@@ -439,28 +466,22 @@ export const addTenant = ({
     ...tenant,
   })
 
-  return ref
-    .where('slug', '==', slug)
-    .limit(1)
-    .get()
-    .then(
-      (res): Promise<AltMessage> => {
-        if (res.empty) {
-          return ref
-            .add(data)
-            .then(() => {
-              return altMessage('onboard.tenantSuccess')
-            })
-            .catch((err) => {
-              log(err)
+  return validateSlug(slug, '')
+    .then(() => {
+      return ref
+        .add(data)
+        .then(() => {
+          return altMessage('onboard.tenantSuccess')
+        })
+        .catch((err) => {
+          log(err)
 
-              return Promise.reject(altMessage('onboard.tenant.error'))
-            })
-        }
-
-        return Promise.reject(altMessage('onboard.tenant.slugError'))
-      }
-    )
+          return Promise.reject(altMessage('onboard.tenant.error'))
+        })
+    })
+    .catch(() => {
+      return Promise.reject(altMessage('onboard.tenant.slugError'))
+    })
 }
 
 export const __MIGRATE_TENANT = async (

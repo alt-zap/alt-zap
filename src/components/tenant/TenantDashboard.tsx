@@ -9,6 +9,7 @@ import {
   Modal,
   Skeleton,
   Tooltip,
+  Alert,
 } from 'antd'
 import {
   CarOutlined,
@@ -96,6 +97,7 @@ const TenantDashboard: FC = () => {
           style={{
             backgroundColor: 'white',
           }}
+          className="pt5 pt0-l"
           onBack={() => navigate('/tenants')}
           title={tenant.name}
           tags={
@@ -123,7 +125,7 @@ const TenantDashboard: FC = () => {
               </Button>
             ),
             <Button
-              key="1"
+              key="edit"
               type="primary"
               onClick={() => setEditMetadata(true)}
             >
@@ -157,6 +159,11 @@ const TenantDashboard: FC = () => {
               value={tenant?.categories?.length}
             />
           </Row>
+          <Alert
+            className="mt3"
+            type="info"
+            message={intl.formatMessage({ id: 'tenant.postMigrate' })}
+          />
         </PageHeader>
       )}
       <Tabs
@@ -212,6 +219,7 @@ const TenantDashboard: FC = () => {
         </TabPane>
       </Tabs>
       <Modal
+        destroyOnClose
         footer={null}
         visible={editingMetadata}
         onCancel={() => setEditMetadata(false)}

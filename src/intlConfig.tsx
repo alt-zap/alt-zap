@@ -217,6 +217,9 @@ export const intlConfig = {
     'address.stateRule': 'Selecione seu estado',
     'address.form.save': 'Salvar Endereço',
     'tenant.migrate': 'Mostrar Produtos',
+    'tenant.postMigrate':
+      'Você está testando uma versão beta! Algumas configurações não refletirão no seu Menu.',
+    'tenant.invalidSlug': 'Slug inválido ou já existente. Escolha outro',
   },
 }
 

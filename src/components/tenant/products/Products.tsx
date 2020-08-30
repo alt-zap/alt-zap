@@ -129,6 +129,7 @@ const Products: FC = () => {
         </div>
       </List>
       <Modal
+        destroyOnClose
         title={<Message id="tenant.product.edit" />}
         visible={!!selectedProduct}
         onCancel={() => setProduct(undefined)}
@@ -142,6 +143,7 @@ const Products: FC = () => {
         )}
       </Modal>
       <Modal
+        destroyOnClose
         title={<Message id="tenant.product.add" />}
         visible={addModal}
         onCancel={() => setAddModal(false)}

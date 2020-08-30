@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-handler-names */
 import React, { FC, useMemo } from 'react'
 import { Form, Button, Select } from 'antd'
-import slugify from 'slugify'
 import InputMask from 'react-input-mask'
 
 import ImageUploadOriginal from '../common/ImageUpload'
@@ -17,6 +16,7 @@ import {
 } from '../../intlConfig'
 import { forwardRef } from './products/ProductForm'
 import { TenantConfig } from '../../typings'
+import SlugFormItem from './SlugFormItem'
 
 const { Item } = Form
 const { Option } = Select
@@ -122,23 +122,7 @@ const TenantDataForm: FC<Props> = ({ initialData, onSubmit, loading }) => {
       </Item>
       <div className="flex flex-column flex-row-l">
         <div className="w-100 w-50-l mr1">
-          <Item
-            label={<Message id="tenant.url" />}
-            name="slug"
-            rules={rules.slug}
-          >
-            <TextInput
-              disabled={loading}
-              addonAfter=".alt.app.br"
-              onFocus={() => {
-                const { name, slug } = form.getFieldsValue()
-
-                if (name && !slug) {
-                  form.setFieldsValue({ slug: slugify(name, { lower: true }) })
-                }
-              }}
-            />
-          </Item>
+          <SlugFormItem disabled={!!loading} form={form} />
         </div>
         <div className="w-100 w-50-l">
           <Item

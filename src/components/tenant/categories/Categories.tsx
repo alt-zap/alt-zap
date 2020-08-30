@@ -84,6 +84,7 @@ const Categories: FC = () => {
         </div>
       </List>
       <Modal
+        destroyOnClose
         title={<Message id="tenant.categories.edit" />}
         visible={!!selectedCategory}
         onCancel={() => setCategory(undefined)}
@@ -98,6 +99,7 @@ const Categories: FC = () => {
         )}
       </Modal>
       <Modal
+        destroyOnClose
         title={<Message id="tenant.categories.add" />}
         visible={addModal}
         onCancel={() => setAddModal(false)}

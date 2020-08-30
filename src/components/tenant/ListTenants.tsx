@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { useNavigate } from '@reach/router'
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
@@ -30,18 +30,16 @@ const ListTenants: FC = () => {
   }, [user])
 
   return (
-    <Fragment>
-      <div className="flex flex-column items-center">
-        <div className="flex br2 mt2 flex-column items-center pa3 w-90">
-          <TenantList
-            loading={loading}
-            tenants={tenants}
-            onSelectTenant={(id) => navigate(`/tenants/${id}`)}
-            onAddTenant={() => navigate('/onboard')}
-          />
-        </div>
+    <div className="flex flex-column items-center mt4 mt0-l">
+      <div className="flex br2 mt2 flex-column items-center pa3 w-90">
+        <TenantList
+          loading={loading}
+          tenants={tenants}
+          onSelectTenant={(id) => navigate(`/tenants/${id}`)}
+          onAddTenant={() => navigate('/onboard')}
+        />
       </div>
-    </Fragment>
+    </div>
   )
 }
 
