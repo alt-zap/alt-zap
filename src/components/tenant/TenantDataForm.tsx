@@ -122,7 +122,11 @@ const TenantDataForm: FC<Props> = ({ initialData, onSubmit, loading }) => {
       </Item>
       <div className="flex flex-column flex-row-l">
         <div className="w-100 w-50-l mr1">
-          <SlugFormItem disabled={!!loading} form={form} />
+          <SlugFormItem
+            disabled={!!loading}
+            form={form}
+            currentSlug={initialData?.slug ?? ''}
+          />
         </div>
         <div className="w-100 w-50-l">
           <Item

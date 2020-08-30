@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState, useMemo } from 'react'
 import { Button, Form, Divider, Input, Switch, Skeleton, message } from 'antd'
-import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons'
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 
 import ImageUpload from '../../common/ImageUpload'
 import { Message, useAltIntl } from '../../../intlConfig'
@@ -81,7 +81,7 @@ const PaymentMethods: FC = () => {
                     style={{ borderWidth: '1px' }}
                   >
                     <div className="flex">
-                      <div className="w-70">
+                      <div className="w-50 w-70-l">
                         <Item
                           {...field}
                           className="w-100"
@@ -91,6 +91,7 @@ const PaymentMethods: FC = () => {
                           rules={[{ required: true }]}
                         >
                           <Input
+                            size="large"
                             disabled={loading}
                             placeholder={intl.formatMessage({
                               id: 'tenant.paymentForm.namePlaceholder',
@@ -98,7 +99,7 @@ const PaymentMethods: FC = () => {
                           />
                         </Item>
                       </div>
-                      <div className="w-30 pl3">
+                      <div className="w-50 w-30-l pl3">
                         <Item
                           {...field}
                           name={[field.name, 'checksForChange']}
@@ -131,11 +132,11 @@ const PaymentMethods: FC = () => {
                         fieldKey={[field.fieldKey, 'imgSrc']}
                         label={<Message id="tenant.paymentForm.imgSrc" />}
                       >
-                        <ImageUpload disabled={loading} />
+                        <ImageUpload large disabled={loading} />
                       </Item>
                     </div>
-                    <MinusCircleOutlined
-                      className="pa3"
+                    <DeleteOutlined
+                      className="pa3 red"
                       alt="Remover"
                       onClick={() => {
                         remove(field.name)

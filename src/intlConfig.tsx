@@ -220,6 +220,8 @@ export const intlConfig = {
     'tenant.postMigrate':
       'Você está testando uma versão beta! Algumas configurações não refletirão no seu Menu.',
     'tenant.invalidSlug': 'Slug inválido ou já existente. Escolha outro',
+    'tenant.pendenciesInfo':
+      'Ei! Algumas dessas funcionalidades ainda estão sendo testadas e poderão não refletir no seu Cardápio Online. Aguarde!',
   },
 }
 

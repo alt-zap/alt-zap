@@ -6,12 +6,13 @@ import { FormInstance } from 'antd/lib/form'
 import { Message, IntlRules, prepareRules, useAltIntl } from '../../intlConfig'
 import TextInputOriginal from '../common/TextInput'
 import { forwardRef } from './products/ProductForm'
-import { validateSlug, useTenantConfig } from '../../contexts/TenantContext'
+import { validateSlug } from '../../contexts/TenantContext'
 
 const { Item } = Form
 
 type Props = {
   disabled: boolean
+  currentSlug: string
   form: FormInstance
 }
 
@@ -32,9 +33,8 @@ const intlRules: IntlRules = {
   ],
 }
 
-const SlugFormItem: FC<Props> = ({ disabled, form }) => {
+const SlugFormItem: FC<Props> = ({ disabled, form, currentSlug }) => {
   const intl = useAltIntl()
-  const { tenant } = useTenantConfig()
   const rules = useMemo(() => prepareRules(intlRules, intl), [intl])
 
   return (
@@ -46,7 +46,7 @@ const SlugFormItem: FC<Props> = ({ disabled, form }) => {
         () => ({
           async validator(_, value) {
             try {
-              await validateSlug(value, tenant?.slug ?? '')
+              await validateSlug(value, currentSlug ?? '')
             } catch {
               return Promise.reject(
                 intl.formatMessage({ id: 'tenant.invalidSlug' })

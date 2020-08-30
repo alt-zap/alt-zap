@@ -17,7 +17,7 @@ const UserSwitch: FC<RouteComponentProps> = () => {
   }
 
   if (!user) {
-    navigate('/login')
+    navigate(`/login`)
 
     return null
   }

@@ -4,7 +4,7 @@ import PaymentMethods from './PaymentMethods'
 
 const PaymentsDashboard: FC = () => {
   return (
-    <div className="flex">
+    <div className="flex flex-column flex-row-l items-center items-start-l">
       <PaymentMethods />
     </div>
   )

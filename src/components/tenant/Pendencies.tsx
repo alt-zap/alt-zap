@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
-import { Skeleton } from 'antd'
+import { Skeleton, Alert } from 'antd'
 
 import { useTenantConfig } from '../../contexts/TenantContext'
-import { AltMessage, Message } from '../../intlConfig'
+import { AltMessage, Message, useAltIntl } from '../../intlConfig'
 import { TenantContextState } from '../../typings'
 
 export const pendenciesTest: Array<{
@@ -47,6 +47,7 @@ type Props = {
 
 const Pendencies: FC<Props> = ({ pendencies }) => {
   const tenantContext = useTenantConfig()
+  const intl = useAltIntl()
 
   if (tenantContext.loading) {
     return <Skeleton active />
@@ -64,6 +65,10 @@ const Pendencies: FC<Props> = ({ pendencies }) => {
           </li>
         ))}
       </ul>
+      <Alert
+        type="info"
+        message={intl.formatMessage({ id: 'tenant.pendenciesInfo' })}
+      />
     </div>
   )
 }

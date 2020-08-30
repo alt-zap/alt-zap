@@ -47,7 +47,7 @@ const renderTabBar = (props: any, DefaultTabBar: any) => (
 const TenantDashboard: FC = () => {
   const intl = useAltIntl()
   const [tabId, setTabId] = useQueryParam('tabId', StringParam)
-  const [{ userDb }] = useAuth()
+  const [{ userDb, loading: userLoading }] = useAuth()
 
   const [isOpen, setOpen] = useState(false)
   const [editingMetadata, setEditMetadata] = useState(false)
@@ -71,10 +71,10 @@ const TenantDashboard: FC = () => {
   )
 
   useEffect(() => {
-    if (!userDb?.document) {
+    if (!userLoading && !userDb?.document) {
       navigate('/onboard')
     }
-  }, [userDb, navigate])
+  }, [userDb, navigate, userLoading])
 
   useEffect(() => {
     setOpen(tenant?.openingHours ? isTenantOpen(tenant?.openingHours) : false)
@@ -227,6 +227,7 @@ const TenantDashboard: FC = () => {
         <EditTenant onSuccess={() => setEditMetadata(false)} />
       </Modal>
       <Modal
+        destroyOnClose
         footer={null}
         visible={pendenciesModal}
         onCancel={() => setPendenciesModal(false)}
