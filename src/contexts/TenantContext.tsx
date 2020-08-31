@@ -534,3 +534,34 @@ export const __MIGRATE_TENANT = async (
     )
   })
 }
+
+/**
+ * Completely deletes a product from the Database.
+ *
+ * Beware that, later, we'll be referencing products outside (menus or collections),
+ * and need to be sure that this won't crash anything
+ */
+export const deleteProduct = (
+  dispatch: Dispatch,
+  { productId, tenantId }: { productId?: string; tenantId?: string }
+) => {
+  dispatch({ type: 'PRODUCT_START_LOADING' })
+
+  if (!tenantId || !productId) {
+    dispatch({ type: 'PRODUCT_START_LOADING' })
+
+    return Promise.reject()
+  }
+
+  const db = firebase.firestore()
+  const ref = productsRef(db, tenantId).doc(productId)
+
+  return ref
+    .delete()
+    .then(() => {
+      dispatch({ type: 'DELETE_PRODUCT', args: productId })
+    })
+    .finally(() => {
+      dispatch({ type: 'PRODUCT_STOP_LOADING' })
+    })
+}

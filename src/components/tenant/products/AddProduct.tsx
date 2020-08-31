@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { Alert } from 'antd'
 
 import ProductForm from './ProductForm'
@@ -14,20 +14,26 @@ import { Message } from '../../../intlConfig'
 type Props = { onFinish: () => void }
 
 const AddProduct: FC<Props> = ({ onFinish }) => {
+  const [loading, setLoading] = useState(false)
   const [{ user }] = useAuth()
-  const { productsLoading, tenantId, tenant } = useTenantConfig()
+  const { tenantId, tenant } = useTenantConfig()
   const dispatch = useTenantDispatch()
 
   const createProduct = useCallback(
     (product: Product) => {
+      setLoading(true)
       const addPromise = addProduct(dispatch, {
         product: { ...product, userId: user?.uid as string },
         tenantId,
       })
 
-      return addPromise.then(() => {
-        onFinish()
-      })
+      return addPromise
+        .then(() => {
+          onFinish()
+        })
+        .finally(() => {
+          setLoading(false)
+        })
     },
     [onFinish, dispatch, tenantId, user]
   )
@@ -48,7 +54,7 @@ const AddProduct: FC<Props> = ({ onFinish }) => {
       }}
       categories={tenant?.categories}
       onValidSubmit={createProduct}
-      loading={productsLoading}
+      loading={loading}
     />
   )
 }

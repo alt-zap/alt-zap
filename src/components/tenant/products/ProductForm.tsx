@@ -684,15 +684,17 @@ const ProductForm: FC<Props> = ({
         </Form.List>
       )}
 
-      <Button
-        loading={loading}
-        size="large"
-        type="primary"
-        block
-        htmlType="submit"
-      >
-        {intl.formatMessage({ id: editMode ? 'save' : 'tenant.product.add' })}
-      </Button>
+      <div className="flex justify-between">
+        <Button
+          loading={loading}
+          size="large"
+          type="primary"
+          block
+          htmlType="submit"
+        >
+          {intl.formatMessage({ id: editMode ? 'save' : 'tenant.product.add' })}
+        </Button>
+      </div>
     </Form>
   )
 }

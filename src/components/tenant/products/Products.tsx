@@ -1,24 +1,36 @@
 import React, { FC, Fragment, useState, useMemo, useCallback } from 'react'
-import { Button, List, Modal, Skeleton, Divider, Tag } from 'antd'
-import { PlusOutlined, EditOutlined } from '@ant-design/icons'
+import { Button, List, Modal, Skeleton, Divider, Tag, message } from 'antd'
+import {
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  ExclamationCircleOutlined,
+} from '@ant-design/icons'
 import { Img } from 'react-image'
+import * as Sentry from '@sentry/react'
 
-import { useTenantConfig } from '../../../contexts/TenantContext'
+import { useTenant, deleteProduct } from '../../../contexts/TenantContext'
 import AddProduct from './AddProduct'
 import EditProduct from './EditProduct'
 import Real from '../../Real'
 import ProductsFilters from './ProductsFilters'
 import { Product } from '../../../typings'
-import { Message } from '../../../intlConfig'
+import { Message, useAltIntl } from '../../../intlConfig'
 import MigrateItems from './MigrateItems'
 
+const { confirm } = Modal
+
 const Products: FC = () => {
+  const intl = useAltIntl()
   const [filters, setFilters] = useState<Record<string, string>>({})
 
   const [addModal, setAddModal] = useState(false)
   const [selectedProduct, setProduct] = useState<Product>()
 
-  const { products, productsLoading, tenant } = useTenantConfig()
+  const [
+    { products, productsLoading, tenant, tenantId },
+    dispatch,
+  ] = useTenant()
 
   const getColorForCategory = useCallback((index: number) => {
     return ['#2db7f5', '#87d068', '#108ee9'][index]
@@ -31,6 +43,34 @@ const Products: FC = () => {
       return category?.name ?? ''
     },
     [tenant]
+  )
+
+  const maybeDeleteProduct = useCallback(
+    (product: Product) => {
+      confirm({
+        title: intl.formatMessage({ id: 'tenant.product.sureToDelete' }),
+        icon: <ExclamationCircleOutlined />,
+        content: product.name,
+        onOk() {
+          deleteProduct(dispatch, {
+            tenantId,
+            productId: product.id,
+          })
+            .then(() => {
+              message.success(
+                intl.formatMessage({ id: 'tenant.product.deleted' })
+              )
+            })
+            .catch((e) => {
+              message.error(
+                intl.formatMessage({ id: 'tenant.product.deletedError' })
+              )
+              Sentry.captureException(e)
+            })
+        },
+      })
+    },
+    [intl, tenantId, dispatch]
   )
 
   const filteredProducts = useMemo(() => {
@@ -64,7 +104,7 @@ const Products: FC = () => {
         size="small"
         bordered
         itemLayout="horizontal"
-        dataSource={filteredProducts ?? undefined}
+        dataSource={productsLoading ? [] : filteredProducts ?? undefined}
         renderItem={(product) => (
           <List.Item>
             <List.Item.Meta
@@ -72,7 +112,10 @@ const Products: FC = () => {
                 <Img
                   width="44"
                   className="br2 mt1"
-                  src={product.imgSrc as string}
+                  src={
+                    (product.imgSrc as string) ??
+                    'https://www.bauducco.com.br/wp-content/uploads/2017/09/default-placeholder-1-2.png'
+                  }
                   loader={
                     <Skeleton.Image style={{ width: '44px', height: '44px' }} />
                   }
@@ -92,7 +135,14 @@ const Products: FC = () => {
               }
               title={<span className="f5 fw4">{product.name}</span>}
             />
-            <div>
+            <div className="flex">
+              <Button
+                className="red mr2"
+                danger
+                onClick={() => maybeDeleteProduct(product)}
+                shape="circle"
+                icon={<DeleteOutlined />}
+              />
               <Button
                 onClick={() => setProduct(product)}
                 shape="circle"

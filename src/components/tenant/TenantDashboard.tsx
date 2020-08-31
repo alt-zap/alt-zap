@@ -97,7 +97,7 @@ const TenantDashboard: FC = () => {
           style={{
             backgroundColor: 'white',
           }}
-          className="pt5 pt0-l"
+          className="pt5 pt2-l"
           onBack={() => navigate('/tenants')}
           title={tenant.name}
           tags={
@@ -159,11 +159,13 @@ const TenantDashboard: FC = () => {
               value={tenant?.categories?.length}
             />
           </Row>
-          <Alert
-            className="mt3"
-            type="info"
-            message={intl.formatMessage({ id: 'tenant.postMigrate' })}
-          />
+          <div className="flex justify-center">
+            <Alert
+              className="mt3 w-100 w-30-l"
+              type="info"
+              message={intl.formatMessage({ id: 'tenant.postMigrate' })}
+            />
+          </div>
         </PageHeader>
       )}
       <Tabs

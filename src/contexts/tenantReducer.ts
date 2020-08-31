@@ -20,6 +20,7 @@ type Actions =
   | Action<'PRODUCT_STOP_LOADING'>
   | Action<'ADD_PRODUCT', { args: Product }>
   | Action<'EDIT_PRODUCT', { args: Product }>
+  | Action<'DELETE_PRODUCT', { args: string }>
   | Action<'SET_PRODUCTS', { args: Product[] }>
   | Action<'SET_ADDRESS', { args: WorldAddress }>
   | Action<'SET_SHIPPING', { args: ShippingStrategies }>
@@ -84,6 +85,17 @@ export const tenantStateReducer = (
       const newProducts = [...(state.products as Product[])]
 
       newProducts[index] = product
+
+      return {
+        ...state,
+        products: newProducts,
+      }
+    }
+
+    case 'DELETE_PRODUCT': {
+      const productId = action.args || {}
+
+      const newProducts = state.products?.filter(({ id }) => id !== productId)
 
       return {
         ...state,

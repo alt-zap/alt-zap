@@ -175,7 +175,7 @@ const TenantDataForm: FC<Props> = ({ initialData, onSubmit, loading }) => {
         </div>
       </div>
       <div className="flex flex-column flex-row-l">
-        <div className="w-100 w-50-l">
+        <div className="w-100 w-70-l">
           <Item
             label={<Message id="tenant.logoSrc" />}
             name="logoSrc"
@@ -184,7 +184,7 @@ const TenantDataForm: FC<Props> = ({ initialData, onSubmit, loading }) => {
             <ImageUpload disabled={loading} large />
           </Item>
         </div>
-        <div className="w-100 w-50-l pl0 pl4-l">
+        <div className="w-100 w-30-l pl0 pl4-l">
           <Item
             label={<Message id="tenant.color" />}
             name="color"
