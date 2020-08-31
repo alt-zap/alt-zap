@@ -39,7 +39,7 @@ export const intlConfig = {
     'tenant.pendencies': 'Pendências',
     'tenant.open': 'Aberto',
     'tenant.closed': 'Fechado',
-    'tenant.sections.menu': 'Menu de Produtos',
+    'tenant.sections.menu': 'Catálogo',
     'tenant.sections.schedule': 'Horário de Funcionamento',
     'tenant.sections.logistics': 'Logística',
     'tenant.sections.payments': 'Meios de Pagamento',
@@ -158,9 +158,9 @@ export const intlConfig = {
     'tenant.pendencies.metadata':
       'Você precisa preencher dados como Categoria, cor do tema e outros dados do seu negócio. Clique no botão Editar para preencher!',
     'tenant.pendencies.categories':
-      'Você precisa cadastrar as Categorias de Produto para seu negócio. Faça isso no primeiro painel Menu de Produtos',
+      'Você precisa cadastrar as Categorias de Produto para seu negócio. Faça isso no primeiro painel Catálogo',
     'tenant.pendencies.products':
-      'Você não tem produtos cadastrados :( Cadastre-os no painel Menu de Produtos',
+      'Você não tem produtos cadastrados :( Cadastre-os no painel Catálogo',
     'tenant.pendencies.openingHours':
       'No painel Horário de Funcionamento, preencha os intervalos nos quais você estará recebendo pedidos!',
     'tenant.pendencies.logistics':
