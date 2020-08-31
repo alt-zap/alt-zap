@@ -45,7 +45,10 @@ export const generateLink = ({
 }: GenerateLinkParams) => {
   const { street, number, complement, district } = address
   const { label, change } = payment
+
+  // eslint-disable-next-line no-shadow
   const items = order
+    .filter(([, quantity]) => parseInt(`${quantity}`, 10) > 0)
     // eslint-disable-next-line no-shadow
     .map(([name, quantity]) => `*${quantity}* - ${name}`)
     .join('\r\n')
