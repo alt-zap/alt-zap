@@ -135,13 +135,17 @@ const PaymentMethods: FC = () => {
                         <ImageUpload large disabled={loading} />
                       </Item>
                     </div>
-                    <DeleteOutlined
-                      className="pa3 red"
-                      alt="Remover"
-                      onClick={() => {
-                        remove(field.name)
-                      }}
-                    />
+                    <div className="flex justify-center">
+                      <Button
+                        shape="circle"
+                        aria-label="Remove"
+                        danger
+                        icon={<DeleteOutlined />}
+                        onClick={() => {
+                          remove(field.name)
+                        }}
+                      />
+                    </div>
                   </div>
                 ))}
                 <div className="mt3">
