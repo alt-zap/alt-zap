@@ -1,6 +1,6 @@
 import React from 'react'
 
-import OpeningHours from '../tenant/OpeningHours'
+import OpeningHours from '../tenant/operation/OpeningHours'
 
 export default {
   title: 'tenant|OpeningHours',

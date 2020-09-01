@@ -23,7 +23,6 @@ import { useNavigate } from '@reach/router'
 import { useQueryParam, StringParam } from 'use-query-params'
 
 import { useTenantConfig } from '../../contexts/TenantContext'
-import OpeningHours from './OpeningHours'
 import MenuDashboard from './menus/MenuDashboard'
 import LogisticsDashboard from './logistics/LogisticsDashboard'
 import PaymentsDashboard from './payments/PaymentsDashboard'
@@ -32,6 +31,7 @@ import { Message, useAltIntl } from '../../intlConfig'
 import Pendencies, { pendenciesTest } from './Pendencies'
 import { isTenantOpen, useInterval, log } from '../../utils'
 import { useAuth } from '../../contexts/auth/AuthContext'
+import OperationDashboard from './operation/OperationDashboard'
 
 const { TabPane } = Tabs
 
@@ -193,9 +193,7 @@ const TenantDashboard: FC = () => {
           }
           key="2"
         >
-          <div className="flex justify-center justify-start-l">
-            <OpeningHours />
-          </div>
+          <OperationDashboard />
         </TabPane>
         <TabPane
           tab={

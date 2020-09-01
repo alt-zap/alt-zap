@@ -16,13 +16,13 @@ import {
   Message,
   IntlSelect,
   prepareSelect,
-} from '../../intlConfig'
+} from '../../../intlConfig'
 import {
   useTenantConfig,
   useTenantDispatch,
   setOpeningHours,
-} from '../../contexts/TenantContext'
-import { Days } from '../../typings'
+} from '../../../contexts/TenantContext'
+import { Days } from '../../../typings'
 
 const { Item } = Form
 const { Option } = Select
@@ -139,13 +139,13 @@ const OpeningHours: FC = () => {
 
       setOpeningHours(dispatch, { openingHours, tenantId })
         .then(() => {
-          message.success('Dados atualizados com sucesso')
+          message.success(intl.formatMessage({ id: 'successful' }))
         })
         .finally(() => {
           setLoading(false)
         })
     },
-    [dispatch, tenantId]
+    [dispatch, tenantId, intl]
   )
 
   return (
@@ -214,7 +214,9 @@ const OpeningHours: FC = () => {
                       </Item>
                       <MinusCircleOutlined
                         className="pa3"
-                        alt={intl.formatMessage({ id: 'tenant.hours.remove' })}
+                        alt={intl.formatMessage({
+                          id: 'tenant.hours.remove',
+                        })}
                         onClick={() => {
                           remove(field.name)
                         }}

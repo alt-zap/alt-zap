@@ -10,6 +10,8 @@ import { Rule } from 'antd/lib/form'
 export const intlConfig = {
   locale: 'pt',
   messages: {
+    successful: 'Dados atualizados com sucesso',
+    errorful: 'Ocorreu um erro ao atualizar os dados',
     add: 'Adicionar',
     'all.f': 'Todas',
     save: 'Salvar',
@@ -41,6 +43,13 @@ export const intlConfig = {
     'tenant.closed': 'Fechado',
     'tenant.sections.menu': 'Catálogo',
     'tenant.sections.schedule': 'Horário de Funcionamento',
+    'tenant.sections.operation': 'Operação',
+    'tenant.sections.scheduleLive': 'Em funcionamento',
+    'tenant.sections.scheduleLiveDesc':
+      'Desmarcando essa opção, mesmo que você esteja em horário de funcionamento, seu cardápio não será exibido e você não poderá receber pedidos pelo Alt.',
+    'tenant.sections.showOnClose': 'Exibir catálogo fora do horário',
+    'tenant.sections.showOnCloseDesc':
+      'Com essa opção marcada, seus clients poderão visualizar seu catálogo no Alt Menu fora do horário de atendimento. Eles não conseguirão realizar pedidos',
     'tenant.sections.logistics': 'Logística',
     'tenant.sections.payments': 'Meios de Pagamento',
     'tenant.noProducts': 'Não há produtos cadastrados.',

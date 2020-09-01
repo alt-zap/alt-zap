@@ -336,6 +336,27 @@ export const setShippingStrategies = async (
     })
 }
 
+export const setOperationOptions = async (
+  dispatch: Dispatch,
+  data: Pick<TenantConfig, 'showOnClose' | 'live'>,
+  tenantId?: string
+) => {
+  if (!tenantId) {
+    return Promise.reject('Tenant ID missing')
+  }
+
+  const db = firebase.firestore()
+  const ref = tenantRef(db, tenantId)
+
+  return ref
+    .update({
+      ...data,
+    })
+    .then(() => {
+      dispatch({ type: 'SET_TENANT_FIELD', args: { ...data } })
+    })
+}
+
 export const setOpeningHours = async (
   dispatch: Dispatch,
   {
