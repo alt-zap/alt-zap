@@ -47,7 +47,7 @@ const OnboardStepper: FC = () => {
         userDbId,
       })
         .then(() => {
-          if (userDb?.hasTenant) {
+          if (userDb?.hasTenant || window?.location?.hostname === 'localhost') {
             return navigate('/tenants')
           }
 
