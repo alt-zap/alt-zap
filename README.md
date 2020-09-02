@@ -23,10 +23,10 @@ Pequenos empreendedores podem usar o **Alt** para cadastrar seus produtos e:
 
 ## Sumário
 - [Exemplo](#exemplo)
-- [Preço](#pre-o)
-- [Arquitetura](#arquitetura)
+- [Preço](#preço)
 - [Desenvolvendo](#desenvolvendo)
   * [Disclaimers](#disclaimers)
+- [Arquitetura](#arquitetura)
 - [Contribuidores](#contribuidores)
 
 ## Exemplo
@@ -43,14 +43,6 @@ Futuramente, planejamos **lançar uma versão self-hosted**, onds os usuários p
 
 A principal motivação desse projeto é **ajudar as comunidades locais** e contamos com a nobre contribuição de designers e programadores.
 
-## Arquitetura
-
-Ainda estamos [melhorando nossa documentação](https://github.com/alt-zap/alt-zap/issues/53), mas esta imagem pode te ajudar a entender como funciona o Alt, atualmente:
-
-![Arquitetura do Alt](https://user-images.githubusercontent.com/18706156/91663167-93f13b00-eabd-11ea-87c4-6999a9350c90.jpg)
-
-**Disclaimer:** Por enquanto, este projeto _(alt-zap/alt-zap)_ **também está renderizando o Menu**. Isso é uma ação temporária para facilitar a integração de novos desenvolvedores.
-
 ## Desenvolvendo
 
 Este projeto renderiza o **Alt Admin**, _dashboard_ de administração que disponibiliza aos nossos clientes a configuração das funcionalidades oferecidas.
@@ -63,7 +55,7 @@ Para iniciar o desenvolvimento:
 3. Rode `yarn emulators` para **iniciar o emulador do Firebase**. 
 4. Em outra aba do seu terminal, rode `yarn start`.
 5. Na página inicial, faça **login com sua conta Google**. Complete seu cadastro no Alt.
-6. Após isso, você **não precisa criar um novo negócio**. Após cadastrar seus documentos, vá para URL `/tenants`. (Explico mais abaixo. Ainda estou melhorando essa parte). 
+6. Após isso, você **não precisa criar um novo negócio** seguindo o fluxo do Onboarding. Logo após o preenchimento dos dados, caso você esteja em `localhost` ,  
 7. Para visualizar o menu, basta acessar http://localhost:3000/bardolucis.
 
 ### Disclaimers
@@ -72,6 +64,14 @@ Para iniciar o desenvolvimento:
 - Para que o desenvolvimento local seja mais fácil, há **condições no código** para carregar os dados mockados. Por exemplo, geralmente carregaríamos os `tenants` para o `userId` do usuário que está logado, mas fazemos resolver sempre para o mesmo id (o meu) caso estejamos em `localhost`.
 
 Sinta-se livre para reportar erros, tirar dúvidas e dar sugestões nas issues do repositório.
+
+## Arquitetura
+
+Ainda estamos [melhorando nossa documentação](https://github.com/alt-zap/alt-zap/issues/53), mas esta imagem pode te ajudar a entender como funciona o Alt, atualmente:
+
+![Arquitetura do Alt](https://user-images.githubusercontent.com/18706156/91663167-93f13b00-eabd-11ea-87c4-6999a9350c90.jpg)
+
+**Disclaimer:** Por enquanto, este projeto _(alt-zap/alt-zap)_ **também está renderizando o Menu**. Isso é uma ação temporária para facilitar a integração de novos desenvolvedores.
 
 
 ## Contribuidores
