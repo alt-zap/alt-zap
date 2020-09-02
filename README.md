@@ -21,6 +21,14 @@ Pequenos empreendedores podem usar o **Alt** para cadastrar seus produtos e:
 - [Taxa de Entrega Dinâmica](https://github.com/alt-zap/alt-zap/issues/52) para um cálculo justo da taxa de entrega.
 - **Comunidades**: para grupos locais compartilharem seus produtos.
 
+## Sumário
+- [Exemplo](#exemplo)
+- [Preço](#pre-o)
+- [Arquitetura](#arquitetura)
+- [Desenvolvendo](#desenvolvendo)
+  * [Disclaimers](#disclaimers)
+- [Contribuidores](#contribuidores)
+
 ## Exemplo
 
 Acesse a página do [Alt Burguer CG](https://alt-zap.vercel.app/altburguer-cg), hamburgueria para qual o Alt foi desenvolvido inicialmente, e veja uma demonstração do serviço.
@@ -47,7 +55,7 @@ Ainda estamos [melhorando nossa documentação](https://github.com/alt-zap/alt-z
 
 Este projeto renderiza o **Alt Admin**, _dashboard_ de administração que disponibiliza aos nossos clientes a configuração das funcionalidades oferecidas.
 
-Para desenvolver localmente, você precisará [configurar o Firebase Emulator](https://firebase.google.com/docs/rules/emulator-setup).
+Para desenvolver localmente, você precisará [configurar o Firebase Emulator](https://firebase.google.com/docs/rules/emulator-setup). **Esta etapa pode demorar um bom tempo, mas você só precisa realizá-la uma vez**. As ferramentas de desenvolvedor do Firebase irão baixa os emuladores (que são em Java) e, eventualmente, a JDK.
 
 Para iniciar o desenvolvimento:
 1. Clone o projeto com `git clone git@github.com:alt-zap/alt-zap.git`.
@@ -55,7 +63,7 @@ Para iniciar o desenvolvimento:
 3. Rode `yarn emulators` para **iniciar o emulador do Firebase**. 
 4. Em outra aba do seu terminal, rode `yarn start`.
 5. Na página inicial, faça **login com sua conta Google**. Complete seu cadastro no Alt.
-6. Após isso, você **não precisa criar um novo negócio**. Após cadastrar seus documentos, vá para URL `/tenants`. (explicação abaixo).
+6. Após isso, você **não precisa criar um novo negócio**. Após cadastrar seus documentos, vá para URL `/tenants`. (Explico mais abaixo. Ainda estou melhorando essa parte). 
 7. Para visualizar o menu, basta acessar http://localhost:3000/bardolucis.
 
 ### Disclaimers
