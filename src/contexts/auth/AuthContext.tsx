@@ -39,7 +39,7 @@ export const upsertUser = (
 
   const op = userDbId
     ? ref.doc(userDbId).update(userData)
-    : ref.add({ userData }).then((doc) => doc.id)
+    : ref.add({ ...userData }).then((doc) => doc.id)
 
   return (op as Promise<string | undefined>)
     .then((id) => {

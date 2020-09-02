@@ -71,8 +71,8 @@
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "emulators": "firebase emulators:start --import=dev",
-    "firestore-export": "firebase emulators:export dev",
+    "emulators": "firebase emulators:start --import=dev --project=alt-zap-dev",
+    "firestore-export": "firebase emulators:export dev --project=alt-zap-dev",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
