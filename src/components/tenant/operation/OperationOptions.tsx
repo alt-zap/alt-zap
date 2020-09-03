@@ -44,7 +44,7 @@ const OperationOption: FC = () => {
   )
 
   return (
-    <div className="w-90 w-50-l bg-white ph3 pt1 pb2 ml0 ml4-l mt2 br1">
+    <div className="w-90 w-50-l bg-white ph3 pt1 pb2 ml0 ml4-l mv2 br1">
       <Divider>
         <Message id="tenant.sections.operation" />
       </Divider>
@@ -70,7 +70,7 @@ const OperationOption: FC = () => {
                 <Message id="tenant.sections.scheduleLiveDesc" />
               </span>
             </div>
-            <div className="w-30 w-20-l flex justify-end ml3-l">
+            <div className="w-30 w-20-l flex flex-column items-end ml3-l">
               <Item
                 label="Ativo"
                 name={['live']}
@@ -97,7 +97,7 @@ const OperationOption: FC = () => {
                 <Message id="tenant.sections.showOnCloseDesc" />
               </span>
             </div>
-            <div className="w-30 w-20-l flex justify-end ml3-l">
+            <div className="w-30 w-20-l flex flex-column items-end ml3-l">
               <Item
                 label="Ativo"
                 name={['showOnClose']}

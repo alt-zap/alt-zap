@@ -244,6 +244,10 @@ export const intlConfig = {
     'order.alert':
       'No final, vamos te redirecionar pra o Whatsapp para finalizar seu pedido ;)',
     'order.loading': 'Carregando o catálogo...',
+    'admin.onDevMode': 'MODO DE DESENVOLVIMENTO',
+    'admin.tenants': 'Meus negócios',
+    'adming.githubLink': 'Estamos no GitHub',
+    'adming.logout': 'Sair',
   },
 }
 

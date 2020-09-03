@@ -149,7 +149,7 @@ const OpeningHours: FC = () => {
   )
 
   return (
-    <div className="w-90 w-50-l bg-white ph3 pt1 pb2 ml0 ml4-l mt2 br1">
+    <div className="w-90 w-50-l bg-white ph3 pt1 pb2 ml0 ml4-l mv2 br1">
       <Divider>
         <Message id="tenant.hours.weekTitle" />
       </Divider>

@@ -5,7 +5,7 @@ import OperationOptions from './OperationOptions'
 
 const OperationDashboard: FC = () => {
   return (
-    <div className="flex justify-center justify-start-l">
+    <div className="flex flex-column flex-row-l items-center items-start-l">
       <OpeningHours />
       <OperationOptions />
     </div>
