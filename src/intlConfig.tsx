@@ -238,6 +238,12 @@ export const intlConfig = {
     'tenant.invalidSlug': 'Slug inválido ou já existente. Escolha outro',
     'tenant.pendenciesInfo':
       'Ei! Algumas dessas funcionalidades ainda estão sendo testadas e poderão não refletir no seu Cardápio Online. Aguarde!',
+    'order.closedForBuzz': 'Este estabelecimento não está atendendo agora',
+    'order.semiClosed':
+      'Este estabelecimento não está atendendo agora. Você poderá ver seu catálogo mas não poderá fazer pedidos.',
+    'order.alert':
+      'No final, vamos te redirecionar pra o Whatsapp para finalizar seu pedido ;)',
+    'order.loading': 'Carregando o catálogo...',
   },
 }
 

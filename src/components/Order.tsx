@@ -1,17 +1,17 @@
-import React, { FC, useCallback, useState, useMemo } from 'react'
+import React, { FC, useCallback, useState, useMemo, Fragment } from 'react'
 import { Affix, Alert, Button, Form, Divider, Input, Spin, Layout } from 'antd'
 import { SendOutlined } from '@ant-design/icons'
 import * as firebase from 'firebase/app'
 import 'firebase/analytics'
 
 import { WorldAddress, Product } from '../typings'
-import { TypedIntlRules } from '../intlConfig'
+import { TypedIntlRules, useAltIntl, Message } from '../intlConfig'
 import ProductList from './ProductList'
 import Totalizer from './Totalizer'
 import OrderSummary from './OrderSummary'
 import PaymentSelector from './customer/PaymentSelector'
 import { useTenantConfig } from '../contexts/TenantContext'
-import { generateLink, log } from '../utils'
+import { generateLink, log, isTenantOpen } from '../utils'
 import instagram from '../assets/instagram.svg'
 import whatsapp from '../assets/whatsapp.svg'
 import AddressFields from './common/AddressFields'
@@ -47,6 +47,7 @@ const rules: TypedIntlRules<WorldAddress> = {
  *  WE WON'T MAINTAIN THIS PAGE FOR LONG
  */
 const Order: FC = () => {
+  const intl = useAltIntl()
   const [orderForm] = Form.useForm()
   const { tenant, loading, products } = useTenantConfig()
   const [order, setOrder] = useState([])
@@ -123,129 +124,156 @@ const Order: FC = () => {
     [tenant]
   )
 
+  const tenantOpen =
+    tenant?.live && isTenantOpen(tenant?.openingHours ?? { intervals: [] })
+
   return (
     <div>
       {loading && (
         <div className="flex flex-column items-center pt3">
           <Spin />
-          <span> Carregando dados...</span>
+          <span>
+            <Message id="order.loading" />
+          </span>
         </div>
       )}
-      {!loading && tenant && !tenant.live && (
-        <Alert
-          type="warning"
-          message="Este estabelecimento não está atendendo agora"
-        />
-      )}
-      {!loading && tenant && tenant.live && (
-        <Layout className="pb3">
-          <Header
-            style={{
-              position: 'fixed',
-              zIndex: 1,
-              width: '100%',
-              padding: '0 10px',
-            }}
-            className="flex justify-between tc mb3"
-          >
-            {tenant?.instagram ? (
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={`https://instagram.com/${tenant?.instagram}`}
-                title="Ir para o Instagram"
-              >
-                <img src={instagram} alt="Ir para o Instagram" width="30" />
-              </a>
-            ) : (
-              <div />
-            )}
-            <span className="fw2 f3 white">{tenant.name}</span>
-            <a
-              href={`https://wa.me/${tenant?.whatsapp}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Ir para o WhatsApp"
-            >
-              <img
-                src={whatsapp}
-                alt="Ir para o WhatsApp"
-                width="30"
-                style={{ fill: 'white' }}
-              />
-            </a>
-          </Header>
-          <div className="flex justify-center" style={{ marginTop: '80px' }}>
-            <div className="w-100 ph2 ph0-l w-50-l">
-              <Alert
-                message="No final, vamos te redirecionar pra o Whatsapp para finalizar seu pedido ;)"
-                type="info"
-              />
-              <ProductList
-                products={!tenant?.migrated ? fallbackProducts : products}
-                onOrder={setOrder}
-              />
-              <Divider />
-              <AutoFill onAddress={handleAutoFill} />
-              <Form
-                scrollToFirstError
-                onFinish={(data) => {
-                  enviarPedido(data as TempFormData)
+      {!loading && (
+        <Fragment>
+          {!tenantOpen && !tenant?.showOnClose && (
+            <Alert
+              type="warning"
+              className="ma3"
+              message={intl.formatMessage({ id: 'order.closedForBuzz' })}
+            />
+          )}
+          {(tenantOpen || tenant?.showOnClose) && (
+            <Layout className="pb3">
+              <Header
+                style={{
+                  position: 'fixed',
+                  zIndex: 1,
+                  width: '100%',
+                  padding: '0 10px',
                 }}
-                form={orderForm}
-                layout="vertical"
+                className="flex justify-between tc mb3"
               >
-                <div id="address" className="flex flex-column items-center mt2">
-                  <AddressFields rules={rules} />
-                </div>
-                <Divider />
-                <Item name="info" label="Outras informações?">
-                  <TextArea
-                    className="mv2"
-                    placeholder="Ex: Tira o sal da batata frita"
+                {tenant?.instagram ? (
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`https://instagram.com/${tenant?.instagram}`}
+                    title="Ir para o Instagram"
+                  >
+                    <img src={instagram} alt="Ir para o Instagram" width="30" />
+                  </a>
+                ) : (
+                  <div />
+                )}
+                <span className="fw2 f3 white">{tenant?.name}</span>
+                <a
+                  href={`https://wa.me/${tenant?.whatsapp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Ir para o WhatsApp"
+                >
+                  <img
+                    src={whatsapp}
+                    alt="Ir para o WhatsApp"
+                    width="30"
+                    style={{ fill: 'white' }}
                   />
-                </Item>
-                <Item name="name" label="Seu nome" rules={[{ required: true }]}>
-                  <Input size="large" className="mv2" />
-                </Item>
-                <Affix offsetBottom={-5} className="mt4">
-                  {hasOrder && (
-                    <Totalizer
-                      order={order}
-                      deliveryFee={deliveryFee ?? 0}
-                      onTotal={setTotal}
+                </a>
+              </Header>
+              <div
+                className="flex justify-center"
+                style={{ marginTop: '80px' }}
+              >
+                <div className="w-100 ph2 ph0-l w-50-l">
+                  {tenantOpen ? (
+                    <Alert
+                      message={intl.formatMessage({ id: 'order.alert' })}
+                      type="info"
+                    />
+                  ) : (
+                    <Alert
+                      type="warning"
+                      message={intl.formatMessage({ id: 'order.semiClosed' })}
                     />
                   )}
-                </Affix>
-                {hasOrder && <OrderSummary order={order} />}
-                <Divider />
-                {hasOrder && (
-                  <PaymentSelector
-                    methods={paymentMethods ?? []}
-                    onPayment={setPayment}
+                  <ProductList
+                    products={!tenant?.migrated ? fallbackProducts : products}
+                    onOrder={setOrder}
                   />
-                )}
-                <div className="flex justify-center">
-                  <Button
-                    icon={<SendOutlined />}
-                    htmlType="submit"
-                    type="primary"
-                    className="mt4"
-                    size="large"
-                    shape="round"
-                    disabled={!pedidoValido}
+                  <Divider />
+                  <AutoFill onAddress={handleAutoFill} />
+                  <Form
+                    scrollToFirstError
+                    onFinish={(data) => {
+                      enviarPedido(data as TempFormData)
+                    }}
+                    form={orderForm}
+                    layout="vertical"
                   >
-                    Enviar Pedido
-                  </Button>
+                    <div
+                      id="address"
+                      className="flex flex-column items-center mt2"
+                    >
+                      <AddressFields rules={rules} />
+                    </div>
+                    <Divider />
+                    <Item name="info" label="Outras informações?">
+                      <TextArea
+                        className="mv2"
+                        placeholder="Ex: Tira o sal da batata frita"
+                      />
+                    </Item>
+                    <Item
+                      name="name"
+                      label="Seu nome"
+                      rules={[{ required: true }]}
+                    >
+                      <Input size="large" className="mv2" />
+                    </Item>
+                    <Affix offsetBottom={-5} className="mt4">
+                      {hasOrder && (
+                        <Totalizer
+                          order={order}
+                          deliveryFee={deliveryFee ?? 0}
+                          onTotal={setTotal}
+                        />
+                      )}
+                    </Affix>
+                    {hasOrder && <OrderSummary order={order} />}
+                    <Divider />
+                    {hasOrder && (
+                      <PaymentSelector
+                        methods={paymentMethods ?? []}
+                        onPayment={setPayment}
+                      />
+                    )}
+                    <div className="flex justify-center">
+                      <Button
+                        icon={<SendOutlined />}
+                        htmlType="submit"
+                        type="primary"
+                        className="mt4"
+                        size="large"
+                        shape="round"
+                        disabled={!pedidoValido && !tenantOpen}
+                      >
+                        Enviar Pedido
+                      </Button>
+                    </div>
+                  </Form>
                 </div>
-              </Form>
-            </div>
-          </div>
-          <Footer className="tc mt2">
-            <b>Alt Zap ©2020 </b> - Gostou?{' '}
-            <a href="https://alt-zap.vercel.app">Crie o seu!</a>
-          </Footer>
-        </Layout>
+              </div>
+              <Footer className="tc mt2">
+                <b>Alt Zap ©2020 </b> - Gostou?{' '}
+                <a href="https://alt-zap.vercel.app">Crie o seu!</a>
+              </Footer>
+            </Layout>
+          )}
+        </Fragment>
       )}
     </div>
   )
