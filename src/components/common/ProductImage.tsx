@@ -1,4 +1,6 @@
 import React, { FC } from 'react'
+import { Img } from 'react-image'
+import { Skeleton } from 'antd'
 
 type Props = {
   src?: string
@@ -15,7 +17,8 @@ const ProductImage: FC<Props> = ({ src, onClick, title }) => {
       role="button"
       tabIndex={0}
     >
-      <img
+      <Img
+        loader={<Skeleton.Image />}
         src={
           src ??
           'https://www.bauducco.com.br/wp-content/uploads/2017/09/default-placeholder-1-2.png'

@@ -1,24 +1,25 @@
 /* eslint-disable react/jsx-handler-names */
-import React, { FC } from 'react'
-import { Form, Button, Input } from 'antd'
-import slugify from 'slugify'
-import { Rule } from 'antd/lib/form'
+import React, { FC, useMemo } from 'react'
+import { Form, Button, Select } from 'antd'
 import InputMask from 'react-input-mask'
 
-import ImageUpload from '../common/ImageUpload'
+import ImageUploadOriginal from '../common/ImageUpload'
 import ColorPicker from '../common/ColorPicker'
+import TextInputOriginal from '../common/TextInput'
+import {
+  Message,
+  useAltIntl,
+  IntlRules,
+  IntlSelect,
+  prepareRules,
+  prepareSelect,
+} from '../../intlConfig'
+import { forwardRef } from './products/ProductForm'
+import { TenantConfig } from '../../typings'
+import SlugFormItem from './SlugFormItem'
 
 const { Item } = Form
-
-const TextInput: FC<React.ComponentPropsWithoutRef<typeof Input>> = (props) => (
-  <Input
-    size="large"
-    className="fw1"
-    spellCheck="false"
-    autoComplete="off"
-    {...props}
-  />
-)
+const { Option } = Select
 
 type TenantMetadata = Pick<
   TenantConfig,
@@ -28,110 +29,179 @@ type TenantMetadata = Pick<
 type Props = {
   loading?: boolean
   initialData?: TenantMetadata
-  onSubmit?: (data: TenantMetadata) => void
+  onSubmit?: (data: TenantMetadata) => Promise<void>
 }
 
-const rules: Record<string, Rule[]> = {
+const ImageUpload = forwardRef<
+  React.ComponentPropsWithoutRef<typeof ImageUploadOriginal>
+>(ImageUploadOriginal)
+
+const TextInput = forwardRef<
+  React.ComponentPropsWithoutRef<typeof TextInputOriginal>
+>(TextInputOriginal)
+
+const intlRules: IntlRules = {
   name: [
     {
       required: true,
-      message: 'Você deve preencher o nome do negócio',
+      message: 'tenant.data.nameRequired',
     },
     {
       min: 4,
-      message: 'O nome deve ter pelo menos 4 caracteres',
+      message: 'tenant.data.nameMin',
     },
     {
       max: 30,
-      message: 'O nome deve ter no máximo 30 caracteres',
+      message: 'tenant.data.nameMax',
     },
   ],
   slug: [
     {
       required: true,
-      message: 'Você deve preencher a URL',
+      message: 'tenant.data.slugRequired',
     },
     {
       pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/g,
-      message: 'A URL não pode ter caracteres especiais',
+      message: 'tenant.data.slugPattern',
     },
   ],
-  whatsapp: [{ required: true, message: 'Você deve preencher o Whatsapp' }],
+  whatsapp: [{ required: true, message: 'tenant.data.whatsappRequired' }],
   instagram: [
     {
       pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/g,
-      message: 'Forneça um usuário válido',
+      message: 'tenant.data.instagramPattern',
+    },
+  ],
+  required: [
+    {
+      required: true,
+      message: 'mandatoryField',
     },
   ],
 }
 
-const labelFor = (label: string) => <span className="f4 fw1">{label}</span>
+const intlCategories: IntlSelect = [
+  {
+    name: 'tenant.category.hamburgueria',
+    value: 'hamburgueria',
+  },
+  {
+    name: 'tenant.category.pizzaria',
+    value: 'pizzaria',
+  },
+  {
+    name: 'tenant.category.loja',
+    value: 'loja',
+  },
+  {
+    name: 'tenant.category.restaurante',
+    value: 'restaurante',
+  },
+]
 
-const TenantDataForm: FC<Props> = ({ initialData }) => {
+const TenantDataForm: FC<Props> = ({ initialData, onSubmit, loading }) => {
+  const intl = useAltIntl()
+  const rules = useMemo(() => prepareRules(intlRules, intl), [intl])
+  const categories = useMemo(() => prepareSelect(intlCategories, intl), [intl])
+
   const [form] = Form.useForm()
 
   return (
-    // eslint-disable-next-line no-console
     <Form
       form={form}
       layout="vertical"
-      // eslint-disable-next-line no-console
-      onFinish={console.log}
+      onFinish={(data) => {
+        onSubmit?.(data as TenantConfig).then(() => {
+          form.resetFields()
+        })
+      }}
       initialValues={initialData}
     >
-      <Item
-        label={labelFor('Nome do seu negócio')}
-        name="name"
-        rules={rules.name}
-      >
+      <Item label={<Message id="tenant.name" />} name="name" rules={rules.name}>
         <TextInput />
       </Item>
-      <Item
-        label={labelFor('URL da sua página')}
-        name="slug"
-        rules={rules.slug}
-      >
-        <TextInput
-          addonBefore="https://alt-zap.vercel.app/"
-          onFocus={() => {
-            const { name, slug } = form.getFieldsValue()
-
-            if (name && !slug) {
-              form.setFieldsValue({ slug: slugify(name, { lower: true }) })
-            }
-          }}
-        />
-      </Item>
-      <div className="flex">
-        <div className="w-50 mr1">
-          <Item
-            label={labelFor('Whatsapp')}
-            name="whatsapp"
-            rules={rules.whatsapp}
-          >
-            <InputMask mask="+55 (99) 99999-9999">
-              <TextInput placeholder="ex: (83) 99934-2545" />
-            </InputMask>
-          </Item>
+      <div className="flex flex-column flex-row-l">
+        <div className="w-100 w-50-l mr1">
+          <SlugFormItem
+            disabled={!!loading}
+            form={form}
+            currentSlug={initialData?.slug ?? ''}
+          />
         </div>
-        <div className="w-50 mr1">
+        <div className="w-100 w-50-l">
           <Item
-            label={labelFor('Instagram')}
-            name="instagram"
-            rules={rules.instagram}
+            label={<Message id="tenant.category" />}
+            name="category"
+            rules={rules.required}
           >
-            <TextInput addonBefore="@" />
+            <Select
+              disabled={loading}
+              size="large"
+              placeholder={<Message id="tenant.categoryPlaceholder" />}
+            >
+              {categories?.map(({ name, value }) => (
+                <Option value={value} key={value}>
+                  {name}
+                </Option>
+              ))}
+            </Select>
           </Item>
         </div>
       </div>
-      <Item label={labelFor('Logomarca')} name="logoSrc" rules={rules.logoSrc}>
-        <ImageUpload large />
-      </Item>
-      <Item label={labelFor('Cor do Tema')} name="color" rules={rules.color}>
-        <ColorPicker />
-      </Item>
-      <Button size="large" type="primary" block htmlType="submit">
-        Enviar
+      <div className="flex flex-column flex-row-l">
+        <div className="w-100 w-50-l mr0 mr1-l">
+          <Item
+            label={<Message id="tenant.whatsapp" />}
+            name="whatsapp"
+            rules={rules.whatsapp}
+          >
+            <InputMask disabled={loading} mask="+55 (99) 99999-9999">
+              <TextInput
+                placeholder={intl.formatMessage({
+                  id: 'tenant.whatsappPlaceholder',
+                })}
+              />
+            </InputMask>
+          </Item>
+        </div>
+        <div className="w-100 w-50-l mr0 mr1-l">
+          <Item
+            label={<Message id="tenant.instagram" />}
+            name="instagram"
+            rules={rules.instagram}
+          >
+            <TextInput disabled={loading} addonBefore="@" />
+          </Item>
+        </div>
+      </div>
+      <div className="flex flex-column flex-row-l">
+        <div className="w-100 w-70-l">
+          <Item
+            label={<Message id="tenant.logoSrc" />}
+            name="logoSrc"
+            rules={rules.logoSrc}
+          >
+            <ImageUpload disabled={loading} large />
+          </Item>
+        </div>
+        <div className="w-100 w-30-l pl0 pl4-l">
+          <Item
+            label={<Message id="tenant.color" />}
+            name="color"
+            rules={rules.color}
+          >
+            <ColorPicker />
+          </Item>
+        </div>
+      </div>
+      <Button
+        loading={loading}
+        size="large"
+        type="primary"
+        block
+        htmlType="submit"
+      >
+        <Message id="save" />
       </Button>
     </Form>
   )

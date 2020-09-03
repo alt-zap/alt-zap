@@ -3,25 +3,44 @@ import { Button, Typography } from 'antd'
 
 import { eSet, log } from '../utils'
 import CepInput from './CEPInput'
+import { WorldAddress } from '../typings'
+import { useAltIntl, Message } from '../intlConfig'
 
 type Props = {
-  onAddress: (data: Address) => void
+  onAddress: (data: Partial<WorldAddress>) => void
+}
+
+type ViaCepResponse = {
+  bairro: string
+  cep: string
+  complemento: string
+  ddd: string
+  ibge: string
+  localidade: string
+  logradouro: string
+  uf: string
 }
 
 const AutoFill: FC<Props> = ({ onAddress }) => {
-  const [cep, setCep] = useState('')
+  const intl = useAltIntl()
+  const [postalCode, setPostalCode] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
   const buscaCep = useCallback(() => {
     setLoading(true)
     setError('')
-    const soNumeros = cep.replace('-', '').trim()
+    const soNumeros = postalCode.replace('-', '').trim()
 
     fetch(`https://viacep.com.br/ws/${soNumeros}/json/`)
       .then((response) => response.json())
-      .then((data) => {
-        onAddress(data)
+      .then(({ bairro, logradouro, uf, localidade }: ViaCepResponse) => {
+        onAddress({
+          street: logradouro,
+          district: bairro,
+          city: localidade,
+          state: uf,
+        })
       })
       .catch(() => {
         setError('Não foi possível recuperar seu endereço')
@@ -29,9 +48,9 @@ const AutoFill: FC<Props> = ({ onAddress }) => {
       .finally(() => {
         setLoading(false)
       })
-  }, [cep, onAddress])
+  }, [postalCode, onAddress])
 
-  const pegaCoordenadas = useCallback(() => {
+  const getCoordinates = useCallback(() => {
     if (!navigator.geolocation) {
       return
     }
@@ -59,13 +78,15 @@ const AutoFill: FC<Props> = ({ onAddress }) => {
           try {
             const address = data.Response.View[0].Result[0].Location.Address
 
-            const {
-              Street: logradouro,
-              District: bairro,
-              HouseNumber: numero,
-            } = address
+            const { Street, District, HouseNumber, City, State } = address
 
-            onAddress({ logradouro, bairro, numero })
+            onAddress({
+              street: Street,
+              district: District,
+              number: HouseNumber,
+              city: City,
+              state: State,
+            })
           } catch (e) {
             setError('Não foi possível buscar sua localização')
           }
@@ -83,11 +104,11 @@ const AutoFill: FC<Props> = ({ onAddress }) => {
       <div className="flex flex-col">
         <div className="flex w-100 justify-center">
           <CepInput
-            onChange={eSet(setCep)}
-            value={cep}
+            onChange={eSet(setPostalCode)}
+            value={postalCode}
             disabled={loading}
             size="large"
-            placeholder="CEP"
+            placeholder={intl.formatMessage({ id: 'address.postalCode' })}
             className="w-30 mr2"
           />
           <Button
@@ -96,7 +117,9 @@ const AutoFill: FC<Props> = ({ onAddress }) => {
             loading={loading}
             onClick={buscaCep}
           >
-            {loading ? 'Carregando...' : 'Buscar'}
+            {intl.formatMessage({
+              id: loading ? 'address.loading' : 'address.search',
+            })}
           </Button>
         </div>
       </div>
@@ -112,9 +135,9 @@ const AutoFill: FC<Props> = ({ onAddress }) => {
           Ou
           <button
             className="bg-white bn underline pointer"
-            onClick={() => !loading && pegaCoordenadas()}
+            onClick={() => !loading && getCoordinates()}
           >
-            use a sua localização
+            <Message id="address.useLocation" />
           </button>
         </span>
       </div>

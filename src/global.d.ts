@@ -31,19 +31,27 @@ declare interface TenantConfig {
 }
 
 declare interface Menu {
+  id?: string
   name: string
   slug: string
   categories: Category[]
 }
 
-declare interface Category {
+declare interface OldCategory {
+  id?: string
   name: string
   slug: string
   live: boolean
-  products: Product[]
+  products?: Product[]
 }
 
 declare interface Product {
+  id?: string
+  // Loosely coupled
+  category: {
+    id: string
+    name: string
+  }
   name: string
   description?: string
   live: boolean

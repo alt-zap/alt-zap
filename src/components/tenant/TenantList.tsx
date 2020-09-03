@@ -50,13 +50,7 @@ const TenantList: FC<Props> = ({
               onClick={() => onSelectTenant(item.id)}
               onKeyPress={() => onSelectTenant(item.id)}
               actions={[<InfoCircleOutlined key="info" />]}
-            >
-              <div className="flex flex-column">
-                <span>{`${
-                  item.items?.length || '0'
-                } produtos cadastrados`}</span>
-              </div>
-            </Card>
+            />
           </List.Item>
         )}
       >

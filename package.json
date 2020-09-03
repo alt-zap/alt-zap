@@ -1,11 +1,24 @@
 {
+  "peerDependencies": {
+    "@storybook/react": ">=5.3.9",
+    "antd": ">=4.4.3",
+    "imask": "6.0.5",
+    "react": ">=16.13.1",
+    "react-dom": ">=16.13.1",
+    "react-intl": "^5.4.5"
+  },
+  "resolutions": {
+    "**/**/prismjs": "^1.21.0",
+    "**/**/lodash": "^4.17.19"
+  },
   "dependencies": {
     "@ant-design/icons": "4.2.1",
     "@reach/router": "1.3.4",
     "@rjsf/antd": "2.2.0",
     "@rjsf/core": "2.2.0",
+    "@sentry/react": "^5.20.1",
     "@types/jest": "^26.0.3",
-    "@types/node": "^14.0.14",
+    "@types/node": "^14.6.1",
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
     "antd": "latest",
@@ -14,15 +27,21 @@
     "firebase": "7.15.5",
     "imask": "6.0.5",
     "moment": "latest",
+    "query-string": "^6.13.1",
     "react": "latest",
     "react-color": "^2.18.1",
+    "react-currency-masked-input": "^2.5.0",
     "react-device-detect": "^1.13.1",
     "react-dom": "latest",
+    "react-image": "^4.0.3",
     "react-input-mask": "^3.0.0-alpha.2",
+    "react-intl": "^5.4.5",
     "react-markdown": "4.3.1",
     "react-social-login-buttons": "3.1.0",
     "slugify": "^1.4.4",
+    "tachyons": "^4.12.0",
     "typescript": "^3.9.6",
+    "use-query-params": "^1.1.6",
     "uuid": "^8.2.0"
   },
   "keywords": [],
@@ -30,6 +49,8 @@
   "description": "Compartilhe seu cardápio e receba pedidos pelo Whatsapp",
   "version": "0.0.180",
   "devDependencies": {
+    "@bit/bit.envs.compilers.typescript": "^3.1.49",
+    "@sambego/storybook-state": "^2.0.1",
     "@storybook/addon-knobs": "^5.3.19",
     "@storybook/addon-viewport": "^5.3.19",
     "@storybook/react": "^5.3.19",
@@ -50,6 +71,8 @@
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "emulators": "firebase emulators:start --import=dev --project=alt-zap-dev",
+    "firestore-export": "firebase emulators:export dev --project=alt-zap-dev",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
@@ -57,7 +80,10 @@
     "lint": "eslint --ext js,jsx,ts,tsx .",
     "format": "prettier --write \"**/*.{ts,js,json}\"",
     "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "bit-export": "bit export lucis.alt",
+    "bit-tag-minor": "bit tag --all --minor",
+    "bit-tag-patch": "bit tag --all --patch"
   },
   "browserslist": {
     "production": [
@@ -84,5 +110,41 @@
     "*.json": [
       "prettier --write"
     ]
+  },
+  "bit": {
+    "env": {
+      "compiler": {
+        "bit.envs/compilers/test@0.0.1": {
+          "options": {
+            "file": "../react-typescript-compiler/components/compilers/react-typescript"
+          },
+          "compilerArguments": [
+            "--declaration",
+            "--skipLibCheck"
+          ],
+          "rawConfig": {
+            "tsconfig": {
+              "compilerOptions": {
+                "skipLibCheck": true,
+                "lib": [
+                  "dom",
+                  "es2015",
+                  "es7"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "componentsDefaultDirectory": "components/{name}",
+    "packageManager": "yarn"
+  },
+  "overrides": {
+    "*": {
+      "devDependencies": {
+        "@types/node": "+"
+      }
+    }
   }
 }
