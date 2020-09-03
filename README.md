@@ -55,7 +55,7 @@ Para iniciar o desenvolvimento:
 3. Rode `yarn emulators` para **iniciar o emulador do Firebase**. 
 4. Em outra aba do seu terminal, rode `yarn start`.
 5. Na página inicial, faça **login com sua conta Google**. Complete seu cadastro no Alt.
-6. Após isso, você **não precisa criar um novo negócio** seguindo o fluxo do Onboarding. Logo após o preenchimento dos dados, caso você esteja em `localhost`, será redirecionado para o painel do "Bar do Lucis".  
+6. Após isso, você **não precisa criar um novo negócio** seguindo o fluxo do Onboarding. Logo após o preenchimento dos dados, caso você esteja em `localhost`, será redirecionado para o painel do "Bar do Lucis". Em próximos logins, talvez você precise clicar no link **Meus Negócios** no Menu para ir até o painel de Administração.
 7. Para visualizar o menu desse Tenant, basta acessar http://localhost:3000/bardolucis.
 
 ### Disclaimers
