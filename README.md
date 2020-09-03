@@ -47,7 +47,7 @@ A principal motivação desse projeto é **ajudar as comunidades locais** e cont
 
 Este projeto renderiza o **Alt Admin**, _dashboard_ de administração que disponibiliza aos nossos clientes a configuração das funcionalidades oferecidas.
 
-Para desenvolver localmente, você precisará [configurar o Firebase Emulator](https://firebase.google.com/docs/rules/emulator-setup). **Esta etapa pode demorar um bom tempo, mas você só precisa realizá-la uma vez**. As ferramentas de desenvolvedor do Firebase irão baixa os emuladores (que são em Java) e, eventualmente, a JDK.
+Para desenvolver localmente, você precisará [configurar o Firebase Emulator](https://firebase.google.com/docs/rules/emulator-setup). **Esta etapa pode demorar um bom tempo, mas você só precisa realizá-la uma vez**. As CLI do Firebase baixará os emuladores (que são em Java) e, eventualmente, a JDK. Isso possibilita que você rode uma versão local do banco de dados Firestore, do Firebase.
 
 Para iniciar o desenvolvimento:
 1. Clone o projeto com `git clone git@github.com:alt-zap/alt-zap.git`.
