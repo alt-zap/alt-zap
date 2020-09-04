@@ -37,7 +37,7 @@ const TenantList: FC<Props> = ({
         bordered
         dataSource={tenants}
         renderItem={(item, i) => (
-          <List.Item className={`${i ? '' : 'mt3'}`}>
+          <List.Item className="mt3" key={i}>
             <Card
               title={
                 <div className="flex flex-column">
