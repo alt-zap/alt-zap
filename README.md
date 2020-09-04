@@ -1,7 +1,7 @@
 <!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
 <p align="center">
   <a href="https://www.gatsbyjs.com">
-    <img alt="Gatsby" src="https://avatars1.githubusercontent.com/u/68825062?s=200&v=4" width="60" />
+    <img alt="Alt" src="https://avatars1.githubusercontent.com/u/68825062?s=200&v=4" width="60" />
   </a>
 </p>
 <h1 align="center">
@@ -25,6 +25,8 @@ Pequenos empreendedores podem usar o **Alt** para cadastrar seus produtos e:
 - [Exemplo](#exemplo)
 - [Preço](#preço)
 - [Desenvolvendo](#desenvolvendo)
+  * [Requerimentos](#requerimentos)
+  * [Iniciando](#iniciando)
   * [Disclaimers](#disclaimers)
 - [Arquitetura](#arquitetura)
 - [Contribuidores](#contribuidores)
@@ -39,7 +41,7 @@ Acesse a página do [Alt Burguer CG](https://alt-zap.vercel.app/altburguer-cg), 
 
 Os serviços do Alt são **todos gratuitos** e prentendemos manter esta política para sempre. Atualmente, utilizamos serviços como Firebase e Vercel para disponibilizar as funcionalidades gratuitamente.
 
-Futuramente, planejamos **lançar uma versão self-hosted**, onds os usuários possam rodar (gratuitamente) nas suas próprias contas (Firebase e Vercel/Netlify).
+Futuramente, planejamos **lançar uma versão _self-hosted_**, onde os usuários possam rodar (gratuitamente) nas suas próprias contas (Firebase e Vercel/Netlify).
 
 A principal motivação desse projeto é **ajudar as comunidades locais** e contamos com a nobre contribuição de designers e programadores.
 
@@ -47,9 +49,12 @@ A principal motivação desse projeto é **ajudar as comunidades locais** e cont
 
 Este projeto renderiza o **Alt Admin**, _dashboard_ de administração que disponibiliza aos nossos clientes a configuração das funcionalidades oferecidas.
 
-Para desenvolver localmente, você precisará [configurar o Firebase Emulator](https://firebase.google.com/docs/rules/emulator-setup). **Esta etapa pode demorar um bom tempo, mas você só precisa realizá-la uma vez**. As CLI do Firebase baixará os emuladores (que são em Java) e, eventualmente, a JDK. Isso possibilita que você rode uma versão local do banco de dados Firestore, do Firebase.
+### Requerimentos
+- Utilizamos o [Firebase](https://firebase.google.com) como provedor de autenticação e de banco de dados para a aplicação. Para facilitar o desenvolvimento local, você pode usar o **Emulador do Firebase**, distribuído pelo próprio serviço. Caso queira criar um projeto Firebase próprio, também é possível utilizá-lo configurando as varíaveis de ambiente como no arquivo `.env.exemplo`.
 
-Para iniciar o desenvolvimento:
+- Para configurar o Emulador do Firebase, siga [estes passos](https://firebase.google.com/docs/rules/emulator-setup). **Esta etapa pode demorar um bom tempo, mas você só precisa realizá-la uma vez**. A CLI do Firebase baixará os emuladores (em Java) e, eventualmente, a JDK. Isso possibilita que você rode uma versão local do banco de dados Firestore, do Firebase.
+
+### Iniciando
 1. Clone o projeto com `git clone git@github.com:alt-zap/alt-zap.git`.
 2. Rode `yarn` na pasta raiz para **instalar as dependências**.
 3. Rode `yarn emulators` para **iniciar o emulador do Firebase**. 
@@ -57,6 +62,8 @@ Para iniciar o desenvolvimento:
 5. Na página inicial, faça **login com sua conta Google**. Complete seu cadastro no Alt.
 6. Após isso, você **não precisa criar um novo negócio** seguindo o fluxo do Onboarding. Logo após o preenchimento dos dados, caso você esteja em `localhost`, será redirecionado para o painel do "Bar do Lucis". Em próximos logins, talvez você precise clicar no link **Meus Negócios** no Menu para ir até o painel de Administração.
 7. Para visualizar o menu desse Tenant, basta acessar http://localhost:3000/bardolucis.
+
+> É importante que você acesse o serviço utilizando o _host_ **localhost**. Acessando o Alt Admin local por algum IP (ex: 127.0.0.1) fará o sistema não utilizar o Firebase Emulator.
 
 ### Disclaimers
 - Já adicionamos alguns **dados iniciais** para que você não precise configurar nada. Você pode verificá-los na UI do Firebase Emulator (geralmente em http://localhost:4000).
@@ -67,11 +74,11 @@ Sinta-se livre para reportar erros, tirar dúvidas e dar sugestões nas issues d
 
 ## Arquitetura
 
-Ainda estamos [melhorando nossa documentação](https://github.com/alt-zap/alt-zap/issues/53), mas esta imagem pode te ajudar a entender como funciona o Alt, atualmente:
+Ainda estamos [melhorando nossa documentação](https://github.com/alt-zap/alt-zap/issues/53), mas esta imagem pode te ajudar a entender como funciona o Alt ~~atualmente~~:
 
 ![Arquitetura do Alt](https://user-images.githubusercontent.com/18706156/91663167-93f13b00-eabd-11ea-87c4-6999a9350c90.jpg)
 
-**Disclaimer:** Por enquanto, este projeto _(alt-zap/alt-zap)_ **também está renderizando o Menu**. Isso é uma ação temporária para facilitar a integração de novos desenvolvedores.
+**Disclaimer:** Por enquanto, este projeto _(alt-zap/alt-zap)_ **também está renderizando o Menu**. Isso é uma ação temporária para facilitar a integração de novos desenvolvedores. Num futuro próximo, esta funcionalidade será responsabilidade do repositório `alt-menu`.
 
 
 ## Contribuidores
