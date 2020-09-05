@@ -18,6 +18,7 @@ import {
   ScheduleOutlined,
   DollarOutlined,
   WarningOutlined,
+  CloudOutlined,
 } from '@ant-design/icons'
 import { useNavigate } from '@reach/router'
 import { useQueryParam, StringParam } from 'use-query-params'
@@ -32,6 +33,7 @@ import Pendencies, { pendenciesTest } from './Pendencies'
 import { isTenantOpen, useInterval, log } from '../../utils'
 import { useAuth } from '../../contexts/auth/AuthContext'
 import OperationDashboard from './operation/OperationDashboard'
+import SitesDashboard from './sites/SitesDashboard'
 
 const { TabPane } = Tabs
 
@@ -134,14 +136,17 @@ const TenantDashboard: FC = () => {
             </Button>,
           ]}
         >
-          <Row>
+          <Row className="justify-center justify-start-l">
             {!productsLoading ? (
               <Statistic
                 title={
-                  <Message
-                    id="tenant.products"
-                    values={{ n: products?.length ?? 0 }}
-                  />
+                  // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                  <a href="#" onClick={() => setTabId('1')}>
+                    <Message
+                      id="tenant.products"
+                      values={{ n: products?.length ?? 0 }}
+                    />
+                  </a>
                 }
                 value={products?.length}
                 style={{ margin: '0 32px 0 0' }}
@@ -150,22 +155,33 @@ const TenantDashboard: FC = () => {
               <Skeleton.Button active size="large" shape="square" />
             )}
             <Statistic
+              style={{ margin: '0 30px 0 0' }}
               title={
-                <Message
-                  id="tenant.categories"
-                  values={{ n: tenant?.categories?.length ?? 0 }}
-                />
+                // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                <a href="#" onClick={() => setTabId('1')}>
+                  <Message
+                    id="tenant.categories"
+                    values={{ n: tenant?.categories?.length ?? 0 }}
+                  />
+                </a>
               }
               value={tenant?.categories?.length}
             />
-          </Row>
-          <div className="flex justify-center">
+            <Statistic
+              title={
+                // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                <a href="#" onClick={() => setTabId('5')}>
+                  <Message id="tenant.sitesOnline" />
+                </a>
+              }
+              value={1}
+            />
             <Alert
-              className="mt3 w-100 w-30-l"
+              className="mt3 mt0-l ml0 ml4-l mb1 mb3-l w-90 w-40-l"
               type="info"
               message={intl.formatMessage({ id: 'tenant.postMigrate' })}
             />
-          </div>
+          </Row>
         </PageHeader>
       )}
       <Tabs
@@ -216,6 +232,17 @@ const TenantDashboard: FC = () => {
           key="4"
         >
           <PaymentsDashboard />
+        </TabPane>
+        <TabPane
+          tab={
+            <span>
+              <CloudOutlined />
+              <Message id="tenant.sites" />
+            </span>
+          }
+          key="5"
+        >
+          <SitesDashboard />
         </TabPane>
       </Tabs>
       <Modal

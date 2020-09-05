@@ -248,6 +248,15 @@ export const intlConfig = {
     'admin.tenants': 'Meus negócios',
     'adming.githubLink': 'Estamos no GitHub',
     'adming.logout': 'Sair',
+    'tenant.sites': 'Sites',
+    'tenant.sitesOnline': 'Sites Online',
+    'tenant.sites.status': 'Status',
+    'tenant.sites.active': 'Ativo',
+    'tenant.sites.inactive': 'Inativo',
+    'tenant.sites.address': 'Endereço',
+    'tenant.sites.type': 'Tipo',
+    'tenant.sites.info':
+      'Estamos configurando o endereço .alt.app.br para você usar. Logo estará disponível!',
   },
 }
 
