@@ -1,12 +1,19 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { Form, Radio, Divider } from 'antd'
 
-import { useAltIntl, Message, TypedIntlRules } from '../../intlConfig'
+import {
+  useAltIntl,
+  Message,
+  TypedIntlRules,
+  IntlRules,
+  prepareRules,
+} from '../../intlConfig'
 import AddressFields from '../common/AddressFields'
 import { WorldAddress } from '../../typings'
 import AutoFill from '../AutoFill'
 import { useTenantConfig } from '../../contexts/TenantContext'
 import addressIcon from '../../assets/address.svg'
+import { generateGoogleMapsLink } from '../../utils'
 
 const { Group } = Radio
 const { Item } = Form
@@ -25,10 +32,31 @@ type Props = {
   onAutoFill: (data: Partial<WorldAddress>) => void
 }
 
+const intlRules: IntlRules = {
+  shippingMethod: [{ required: true, message: 'order.shipping.rule' }],
+}
+
 const SelectShipping: FC<Props> = ({ onAutoFill }) => {
   const { tenant } = useTenantConfig()
+  const acceptsTakeaway = tenant?.shippingStrategies?.takeaway?.active
+  const acceptsDelivery = tenant?.shippingStrategies?.deliveryFixed?.active
+  const initialValue =
+    acceptsDelivery && acceptsTakeaway
+      ? null
+      : acceptsDelivery
+      ? 'delivery'
+      : 'takeaway'
+
   const [current, setCurrent] = useState<ShippingMethod | null>(null)
+
+  useEffect(() => {
+    if (!current && initialValue) {
+      setCurrent(initialValue)
+    }
+  }, [setCurrent, initialValue, current])
   const intl = useAltIntl()
+
+  const rules = prepareRules(intlRules, intl)
 
   return (
     <div className="flex flex-column">
@@ -38,7 +66,11 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
         </h2>
       </Divider>
       <div className="flex justify-center">
-        <Item name="shippingMethod">
+        <Item
+          rules={rules.shippingMethod}
+          name="shippingMethod"
+          initialValue={initialValue}
+        >
           <Group
             onChange={(e) => {
               setCurrent(e.target.value)
@@ -46,12 +78,16 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
             buttonStyle="solid"
             size="large"
           >
-            <Radio.Button value="delivery">
-              <Message id="order.shipping.delivery" />
-            </Radio.Button>
-            <Radio.Button value="takeaway">
-              <Message id="order.shipping.takeaway" />
-            </Radio.Button>
+            {acceptsDelivery && (
+              <Radio.Button value="delivery">
+                <Message id="order.shipping.delivery" />
+              </Radio.Button>
+            )}
+            {acceptsTakeaway && (
+              <Radio.Button value="takeaway">
+                <Message id="order.shipping.takeaway" />
+              </Radio.Button>
+            )}
           </Group>
         </Item>
       </div>
@@ -71,7 +107,7 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
                 <Message id="order.shipping.addressTake" />
               </span>
               <span className="f5">
-                {tenant?.address?.street} - {tenant?.address?.number ?? 's/n'}
+                {tenant?.address?.street}, {tenant?.address?.number ?? 's/n'}
               </span>
               <span className="f5">
                 {tenant?.address?.complement
@@ -82,6 +118,14 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
               <span className="f5">
                 {tenant?.address?.city} - {tenant?.address?.state}
               </span>
+              <a
+                href={generateGoogleMapsLink(tenant?.address)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="f5 mt2"
+              >
+                <Message id="order.shipping.openOnMaps" />
+              </a>
             </div>
             <div className="w-30">
               <img src={addressIcon} alt="Address" />
@@ -89,7 +133,6 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
           </div>
         </div>
       )}
-      <Divider />
     </div>
   )
 }

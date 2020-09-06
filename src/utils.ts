@@ -76,6 +76,16 @@ ${change ? `Precisa de troco para R$ *${change}*` : ''}`
   )}`
 }
 
+export const generateGoogleMapsLink = (address?: WorldAddress) => {
+  if (!address) return '#'
+
+  const query = window.encodeURIComponent(
+    `${address.street} ${address.number} ${address.district} ${address.city} ${address.state}`
+  )
+
+  return `https://www.google.com/maps/search/?api=1&query=${query}`
+}
+
 export function createCtx<A extends {} | null>() {
   const ctx = React.createContext<A | undefined>(undefined)
 
