@@ -1,11 +1,21 @@
 import React, { FC, useCallback, useState, useMemo, Fragment } from 'react'
-import { Affix, Alert, Button, Form, Divider, Input, Spin, Layout } from 'antd'
+import {
+  Affix,
+  Alert,
+  Button,
+  Form,
+  Divider,
+  Input,
+  Spin,
+  Layout,
+  Radio,
+} from 'antd'
 import { SendOutlined } from '@ant-design/icons'
 import * as firebase from 'firebase/app'
 import 'firebase/analytics'
 
 import { WorldAddress, Product } from '../typings'
-import { TypedIntlRules, useAltIntl, Message } from '../intlConfig'
+import { useAltIntl, Message } from '../intlConfig'
 import ProductList from './ProductList'
 import Totalizer from './Totalizer'
 import OrderSummary from './OrderSummary'
@@ -14,24 +24,17 @@ import { useTenantConfig } from '../contexts/TenantContext'
 import { generateLink, log, isTenantOpen } from '../utils'
 import instagram from '../assets/instagram.svg'
 import whatsapp from '../assets/whatsapp.svg'
-import AddressFields from './common/AddressFields'
 import AutoFill from './AutoFill'
+import SelectShipping from './order/SelectShipping'
 
 const { Header, Footer } = Layout
 const { TextArea } = Input
 const { Item } = Form
+const { Group } = Radio
 
 interface TempFormData extends WorldAddress {
   name: string
   info?: string
-}
-
-const rules: TypedIntlRules<WorldAddress> = {
-  street: [{ required: true, message: 'address.streetRule' }],
-  number: [{ required: true, message: 'address.numberRule' }],
-  district: [{ required: true, message: 'address.districtRule' }],
-  city: [{ required: true, message: 'address.cityRule' }],
-  state: [{ required: true, message: 'address.stateRule' }],
 }
 
 /**
@@ -205,7 +208,6 @@ const Order: FC = () => {
                     onOrder={setOrder}
                   />
                   <Divider />
-                  <AutoFill onAddress={handleAutoFill} />
                   <Form
                     scrollToFirstError
                     onFinish={(data) => {
@@ -214,12 +216,7 @@ const Order: FC = () => {
                     form={orderForm}
                     layout="vertical"
                   >
-                    <div
-                      id="address"
-                      className="flex flex-column items-center mt2"
-                    >
-                      <AddressFields rules={rules} />
-                    </div>
+                    <SelectShipping onAutoFill={handleAutoFill} />
                     <Divider />
                     <Item name="info" label="Outras informações?">
                       <TextArea

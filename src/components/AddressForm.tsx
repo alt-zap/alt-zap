@@ -37,7 +37,9 @@ const AddressForm: FC<Props> = ({
 
   return (
     <Fragment>
-      <AutoFill onAddress={handleAutoFill} />
+      <div className="flex flex-column items-center">
+        <AutoFill onAddress={handleAutoFill} />
+      </div>
       <Form
         form={form}
         layout="vertical"
