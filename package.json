@@ -17,7 +17,7 @@
     "@rjsf/antd": "2.2.0",
     "@rjsf/core": "2.2.0",
     "@sentry/react": "^5.20.1",
-    "@types/jest": "^26.0.3",
+    "@types/jest": "^26.0.13",
     "@types/node": "^14.6.1",
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
@@ -64,7 +64,8 @@
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
     "react-scripts": "^3.4.1",
-    "source-map-explorer": "^2.4.2"
+    "source-map-explorer": "^2.4.2",
+    "ts-jest": "^26.3.0"
   },
   "optionalDependencies": {
     "cypress": "^4.9.0"

@@ -103,9 +103,7 @@ export const sanitizeForFirebase = (obj: any) => {
   return obj
 }
 
-export const isTenantOpen = (hours: OpeningHours) => {
-  const today = new Date()
-
+export const isTenantOpen = (hours: OpeningHours, today: Date = new Date()) => {
   /**
    * It maps our Days constant values (defined by the tenant) to
    * Javascript's getDay()
@@ -126,14 +124,19 @@ export const isTenantOpen = (hours: OpeningHours) => {
     .filter(({ days }) => validTimeFrames.includes(days))
     .some(({ from: fromRaw, to: toRaw }) => {
       // Time is stored in ISO format
-      const [from, to] = [fromRaw, toRaw].map((str) => new Date(str))
-      const afterFrom =
-        today.getHours() >= from.getHours() &&
-        today.getMinutes() >= from.getMinutes()
+      const [from, to] = [fromRaw, toRaw].map((str) => {
+        const onToday = new Date()
+        const settedDate = new Date(str)
 
-      const beforeTo =
-        today.getHours() <= to.getHours() &&
-        today.getMinutes() <= to.getMinutes()
+        onToday.setHours(settedDate.getHours())
+        onToday.setMinutes(settedDate.getMinutes())
+
+        return onToday
+      })
+
+      const afterFrom = today >= from
+
+      const beforeTo = today <= to
 
       return afterFrom && beforeTo
     })

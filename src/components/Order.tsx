@@ -124,10 +124,8 @@ const Order: FC = () => {
     [tenant]
   )
 
-  // const tenantOpen =
-  //   tenant?.live && isTenantOpen(tenant?.openingHours ?? { intervals: [] })
-
-  const tenantOpen = tenant?.live
+  const tenantOpen =
+    tenant?.live && isTenantOpen(tenant?.openingHours ?? { intervals: [] })
 
   return (
     <div>
