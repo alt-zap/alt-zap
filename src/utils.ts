@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 
 import { WorldAddress, OrderProducts, OpeningHours, Days } from './typings'
+import { ShippingMethod } from './components/order/SelectShipping'
 
 type Elements = HTMLInputElement | HTMLTextAreaElement
 
@@ -24,6 +25,8 @@ const toString = (number: number) => {
 type GenerateLinkParams = {
   name: string
   address: WorldAddress
+  tenantAddress: WorldAddress
+  shippingMethod: ShippingMethod
   order: OrderProducts[]
   payment: {
     label: string
@@ -34,8 +37,36 @@ type GenerateLinkParams = {
   whatsapp: string
 }
 
+const messageForAddress = (address: WorldAddress) => {
+  const { street, number, complement, district, city, state } = address
+
+  return `${street} - ${number}
+${complement ?? '(s/c)'} - ${district}
+${city} - ${state}`
+}
+
+const messageForShipping = (
+  orderAddress: WorldAddress,
+  shippingMethod: ShippingMethod,
+  tenantAddress: WorldAddress
+) => {
+  const isDelivery = shippingMethod === 'delivery'
+  const method = isDelivery ? 'Entrega' : 'Retirada'
+
+  const methodLine = `*Forma de Envio*: ${method}`
+  const addressLabel = isDelivery
+    ? '*Endereço do Cliente*'
+    : '*Endereço para Retirada*'
+
+  return `${methodLine}
+${addressLabel}
+${messageForAddress(isDelivery ? orderAddress : tenantAddress)}`
+}
+
 export const generateLink = ({
   name,
+  shippingMethod,
+  tenantAddress,
   address,
   order,
   payment,
@@ -43,7 +74,6 @@ export const generateLink = ({
   info,
   whatsapp,
 }: GenerateLinkParams) => {
-  const { street, number, complement, district } = address
   const { label, change } = payment
 
   // eslint-disable-next-line no-shadow
@@ -60,14 +90,14 @@ export const generateLink = ({
 ${items}
 *Total do Pedido:* R$ ${toString(total)}
 
-*Endereço:* 
-${street} - ${number}
-${complement ?? '(s/c)'} - ${district}
-
-${info ? '*Outras Informações:*' : ''}
+${messageForShipping(address, shippingMethod, tenantAddress)}
+${
+  info
+    ? `
+*Outras Informações:*`
+    : ''
+}
 ${info ?? ''} 
-
-  
 *Meio de Pagamento:* ${label}
 ${change ? `Precisa de troco para R$ *${change}*` : ''}`
 

@@ -1,15 +1,5 @@
 import React, { FC, useCallback, useState, useMemo, Fragment } from 'react'
-import {
-  Affix,
-  Alert,
-  Button,
-  Form,
-  Divider,
-  Input,
-  Spin,
-  Layout,
-  Radio,
-} from 'antd'
+import { Affix, Alert, Button, Form, Divider, Input, Spin, Layout } from 'antd'
 import { SendOutlined } from '@ant-design/icons'
 import * as firebase from 'firebase/app'
 import 'firebase/analytics'
@@ -24,17 +14,16 @@ import { useTenantConfig } from '../contexts/TenantContext'
 import { generateLink, log, isTenantOpen } from '../utils'
 import instagram from '../assets/instagram.svg'
 import whatsapp from '../assets/whatsapp.svg'
-import AutoFill from './AutoFill'
-import SelectShipping from './order/SelectShipping'
+import SelectShipping, { ShippingMethod } from './order/SelectShipping'
 
 const { Header, Footer } = Layout
 const { TextArea } = Input
 const { Item } = Form
-const { Group } = Radio
 
 interface TempFormData extends WorldAddress {
   name: string
   info?: string
+  shippingMethod?: ShippingMethod
 }
 
 /**
@@ -55,15 +44,18 @@ const Order: FC = () => {
   const { tenant, loading, products } = useTenantConfig()
   const [order, setOrder] = useState([])
   const [total, setTotal] = useState(0)
+  const [shipping, setShipping] = useState<ShippingMethod | null>(null)
   const [paymentInfo, setPayment] = useState<PaymentInfo>()
 
   const enviarPedido = useCallback(
     (formData: TempFormData) => {
       const { name: label, change } = paymentInfo as PaymentInfo
-      const { name, info, ...address } = formData
+      const { name, info, shippingMethod, ...address } = formData
 
       const whatsappLink = generateLink({
         whatsapp: tenant?.whatsapp as string,
+        shippingMethod: shippingMethod as ShippingMethod,
+        tenantAddress: tenant?.address as WorldAddress,
         address,
         order,
         payment: {
@@ -214,6 +206,9 @@ const Order: FC = () => {
                       enviarPedido(data as TempFormData)
                     }}
                     form={orderForm}
+                    onValuesChange={(_, data) => {
+                      setShipping((data as TempFormData).shippingMethod ?? null)
+                    }}
                     layout="vertical"
                   >
                     <SelectShipping onAutoFill={handleAutoFill} />
@@ -235,6 +230,8 @@ const Order: FC = () => {
                       {hasOrder && (
                         <Totalizer
                           order={order}
+                          methods={tenant?.shippingStrategies}
+                          selectedMethod={shipping}
                           deliveryFee={deliveryFee ?? 0}
                           onTotal={setTotal}
                         />

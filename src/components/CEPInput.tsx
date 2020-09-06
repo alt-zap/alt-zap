@@ -10,7 +10,7 @@ const CepInput: FC<Props> = ({ ...props }) => {
     <MaskedInput
       {...props}
       inputMode="numeric"
-      pattern="[0-9]*"
+      pattern="[0-9\-]*"
       mask={masks.CEP}
     />
   )

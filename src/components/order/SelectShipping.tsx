@@ -18,7 +18,7 @@ import { generateGoogleMapsLink } from '../../utils'
 const { Group } = Radio
 const { Item } = Form
 
-type ShippingMethod = 'takeaway' | 'delivery'
+export type ShippingMethod = 'takeaway' | 'delivery'
 
 const addressRules: TypedIntlRules<WorldAddress> = {
   street: [{ required: true, message: 'address.streetRule' }],
