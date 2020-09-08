@@ -5,7 +5,7 @@ import * as firebase from 'firebase/app'
 import 'firebase/analytics'
 
 import { WorldAddress, Product } from '../typings'
-import { TypedIntlRules, useAltIntl, Message } from '../intlConfig'
+import { useAltIntl, Message } from '../intlConfig'
 import ProductList from './ProductList'
 import Totalizer from './Totalizer'
 import OrderSummary from './OrderSummary'
@@ -14,8 +14,7 @@ import { useTenantConfig } from '../contexts/TenantContext'
 import { generateLink, log, isTenantOpen } from '../utils'
 import instagram from '../assets/instagram.svg'
 import whatsapp from '../assets/whatsapp.svg'
-import AddressFields from './common/AddressFields'
-import AutoFill from './AutoFill'
+import SelectShipping, { ShippingMethod } from './order/SelectShipping'
 
 const { Header, Footer } = Layout
 const { TextArea } = Input
@@ -24,14 +23,7 @@ const { Item } = Form
 interface TempFormData extends WorldAddress {
   name: string
   info?: string
-}
-
-const rules: TypedIntlRules<WorldAddress> = {
-  street: [{ required: true, message: 'address.streetRule' }],
-  number: [{ required: true, message: 'address.numberRule' }],
-  district: [{ required: true, message: 'address.districtRule' }],
-  city: [{ required: true, message: 'address.cityRule' }],
-  state: [{ required: true, message: 'address.stateRule' }],
+  shippingMethod?: ShippingMethod
 }
 
 /**
@@ -52,15 +44,18 @@ const Order: FC = () => {
   const { tenant, loading, products } = useTenantConfig()
   const [order, setOrder] = useState([])
   const [total, setTotal] = useState(0)
+  const [shipping, setShipping] = useState<ShippingMethod | null>(null)
   const [paymentInfo, setPayment] = useState<PaymentInfo>()
 
   const enviarPedido = useCallback(
     (formData: TempFormData) => {
       const { name: label, change } = paymentInfo as PaymentInfo
-      const { name, info, ...address } = formData
+      const { name, info, shippingMethod, ...address } = formData
 
       const whatsappLink = generateLink({
         whatsapp: tenant?.whatsapp as string,
+        shippingMethod: shippingMethod as ShippingMethod,
+        tenantAddress: tenant?.address as WorldAddress,
         address,
         order,
         payment: {
@@ -151,7 +146,7 @@ const Order: FC = () => {
               <Header
                 style={{
                   position: 'fixed',
-                  zIndex: 1,
+                  zIndex: 10,
                   width: '100%',
                   padding: '0 10px',
                 }}
@@ -205,21 +200,18 @@ const Order: FC = () => {
                     onOrder={setOrder}
                   />
                   <Divider />
-                  <AutoFill onAddress={handleAutoFill} />
                   <Form
                     scrollToFirstError
                     onFinish={(data) => {
                       enviarPedido(data as TempFormData)
                     }}
                     form={orderForm}
+                    onValuesChange={(_, data) => {
+                      setShipping((data as TempFormData).shippingMethod ?? null)
+                    }}
                     layout="vertical"
                   >
-                    <div
-                      id="address"
-                      className="flex flex-column items-center mt2"
-                    >
-                      <AddressFields rules={rules} />
-                    </div>
+                    <SelectShipping onAutoFill={handleAutoFill} />
                     <Divider />
                     <Item name="info" label="Outras informações?">
                       <TextArea
@@ -238,6 +230,8 @@ const Order: FC = () => {
                       {hasOrder && (
                         <Totalizer
                           order={order}
+                          methods={tenant?.shippingStrategies}
+                          selectedMethod={shipping}
                           deliveryFee={deliveryFee ?? 0}
                           onTotal={setTotal}
                         />

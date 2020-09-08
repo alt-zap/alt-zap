@@ -113,31 +113,29 @@ const ShippingStrategies: FC = () => {
               </div>
             </div>
           </div>
-          {false && (
-            <div
-              className="b--solid b--black-20 br1 mt2 pa3 flex justify-between"
-              style={{ borderWidth: '1px' }}
-            >
-              <div className="flex flex-column">
-                <span className="fw6 f5">
-                  <Message id="tenant.shipping.takeAway" />
-                </span>
-                <span className="light-silver">
-                  <Message id="tenant.shipping.takeAwayDesc" />
-                </span>
-              </div>
-              <div className="w-30 pl3 w-20-l">
-                <Item
-                  initialValue={false}
-                  valuePropName="checked"
-                  label="Ativo"
-                  name={['takeaway', 'active']}
-                >
-                  <Switch />
-                </Item>
-              </div>
+          <div
+            className="b--solid b--black-20 br1 mt2 pa3 flex justify-between"
+            style={{ borderWidth: '1px' }}
+          >
+            <div className="flex flex-column">
+              <span className="fw6 f5">
+                <Message id="tenant.shipping.takeAway" />
+              </span>
+              <span className="light-silver">
+                <Message id="tenant.shipping.takeAwayDesc" />
+              </span>
             </div>
-          )}
+            <div className="w-30 pl3 w-20-l">
+              <Item
+                initialValue={false}
+                valuePropName="checked"
+                label="Ativo"
+                name={['takeaway', 'active']}
+              >
+                <Switch />
+              </Item>
+            </div>
+          </div>
           <Button
             loading={loading}
             size="large"

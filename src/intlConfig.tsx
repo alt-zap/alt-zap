@@ -244,6 +244,12 @@ export const intlConfig = {
     'order.alert':
       'No final, vamos te redirecionar pra o Whatsapp para finalizar seu pedido ;)',
     'order.loading': 'Carregando o catálogo...',
+    'order.shippingMethod': 'Forma de Envio',
+    'order.shipping.rule': 'Você deve preencher uma forma de entrega',
+    'order.shipping.delivery': 'Entrega',
+    'order.shipping.takeaway': 'Retire no Local',
+    'order.shipping.addressTake': 'Endereço para Retirada',
+    'order.shipping.openOnMaps': 'Abra no Google Maps',
     'admin.onDevMode': 'MODO DE DESENVOLVIMENTO',
     'admin.tenants': 'Meus negócios',
     'adming.githubLink': 'Estamos no GitHub',

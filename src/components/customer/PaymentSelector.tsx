@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect, useCallback, useMemo } from 'react'
 import { Radio, Alert } from 'antd'
 import ReactMarkdown from 'react-markdown'
 
-import RealInput from '../common/RealInput'
+import CurrencyInput from '../common/CurrencyInput'
 
 const radioStyle = {
   height: '30px',
@@ -52,7 +52,8 @@ const PaymentSelector: FC<Props> = ({ methods, onPayment }) => {
             <Radio style={radioStyle} value={i} key={i} className="w-100">
               {methodName}
               {checksForChange && selectedIndex === i && (
-                <RealInput
+                <CurrencyInput
+                  valueAsString
                   placeholder="Troco para?"
                   className="ml2 w-50"
                   value={change}

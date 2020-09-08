@@ -109,7 +109,7 @@ const AutoFill: FC<Props> = ({ onAddress }) => {
             disabled={loading}
             size="large"
             placeholder={intl.formatMessage({ id: 'address.postalCode' })}
-            className="w-30 mr2"
+            className="mr2"
           />
           <Button
             type="primary"
