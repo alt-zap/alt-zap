@@ -1,8 +1,9 @@
 import React, { FC, useState, useCallback, useEffect } from 'react'
-import { List, Divider } from 'antd'
+import { List, Divider, Affix } from 'antd'
 
-import { Product } from '../../typings'
+import { Product, Category } from '../../typings'
 import ProductSummary from '../common/ProductSummary'
+import MenuSearch from './MenuSearch'
 
 type NestedProducts = {
   categories: Array<{
@@ -39,8 +40,15 @@ const ProductList: FC<Props> = ({ nestedProducts, onOrder }) => {
     <div className="mt3">
       <h2 className="tc">Qual seu pedido?</h2>
       <div className="flex flex-column">
+        <div>
+          <Affix>
+            <MenuSearch
+              availableCatogories={nestedProducts.categories as Category[]}
+            />
+          </Affix>
+        </div>
         {nestedProducts.categories.map(({ name, products }) => (
-          <div key={name}>
+          <div id="name" key={name}>
             <Divider>{name}</Divider>
             <List
               style={{ maxWidth: '500px' }}

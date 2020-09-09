@@ -10,7 +10,7 @@ export default {
   component: ProductList,
   decorators: [
     (story: any) => (
-      <div className="pa2" style={{ backgroundColor: '#fff' }}>
+      <div className="pa2" style={{ backgroundColor: '#f0f2f5' }}>
         {story()}
       </div>
     ),
