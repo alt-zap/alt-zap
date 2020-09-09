@@ -8,7 +8,14 @@ import ProductList from '../order/ProductList'
 export default {
   title: 'common|ProductList',
   component: ProductList,
-  decorators: [(story: any) => <div className="pa2">{story()}</div>, withKnobs],
+  decorators: [
+    (story: any) => (
+      <div className="pa2" style={{ backgroundColor: '#fff' }}>
+        {story()}
+      </div>
+    ),
+    withKnobs,
+  ],
 }
 
 // export const none = () => <ProductList products={[]} onOrder={() => {}} />
