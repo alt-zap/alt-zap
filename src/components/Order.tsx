@@ -6,7 +6,7 @@ import 'firebase/analytics'
 
 import { WorldAddress, Product } from '../typings'
 import { useAltIntl, Message } from '../intlConfig'
-import ProductList from './ProductList'
+import ProductList from './order/ProductList'
 import Totalizer from './Totalizer'
 import OrderSummary from './OrderSummary'
 import PaymentSelector from './customer/PaymentSelector'
