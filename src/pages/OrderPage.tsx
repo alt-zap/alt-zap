@@ -3,6 +3,7 @@ import { RouteComponentProps } from '@reach/router'
 
 import { TenantContextProvider } from '../contexts/TenantContext'
 import Order from '../components/Order'
+import { OrderContextProvider } from '../contexts/order/OrderContext'
 
 type Props = {
   slug: string
@@ -11,7 +12,9 @@ type Props = {
 const OrderPage: FC<RouteComponentProps<Props>> = ({ slug }) => {
   return (
     <TenantContextProvider slug={slug}>
-      <Order />
+      <OrderContextProvider>
+        <Order />
+      </OrderContextProvider>
     </TenantContextProvider>
   )
 }
