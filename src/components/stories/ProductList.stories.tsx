@@ -96,19 +96,17 @@ const fakeProducts = [
   },
 ]
 
-const nested = {
-  categories: [
-    {
-      name: 'Principal',
-      products: fakeProducts,
-    },
-    {
-      name: 'Secundárias',
-      products: fakeProducts,
-    },
-  ],
-}
+const nested = [
+  {
+    name: 'Principal',
+    products: fakeProducts,
+  },
+  {
+    name: 'Secundárias',
+    products: fakeProducts,
+  },
+]
 
 export const LotsOfProducts = () => (
-  <ProductList nestedProducts={nested} onOrder={() => {}} />
+  <ProductList sections={nested} onOrder={() => {}} />
 )

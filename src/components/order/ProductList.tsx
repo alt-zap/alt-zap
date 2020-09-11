@@ -4,25 +4,26 @@ import { List, Divider, Affix } from 'antd'
 import { Product, Category } from '../../typings'
 import ProductSummary from '../common/ProductSummary'
 import MenuSearch from './MenuSearch'
+import { useSearch } from './useSearch'
 
-type NestedProducts = {
-  categories: Array<{
-    name: string
-    products: Product[]
-  }>
+type Section = {
+  name: string
+  products: Product[]
 }
 
 type Props = {
-  nestedProducts: NestedProducts
+  sections: Section[]
   onOrder: (a: any) => void
 }
 
-const ProductList: FC<Props> = ({ nestedProducts, onOrder }) => {
+const ProductList: FC<Props> = ({ sections, onOrder }) => {
   const [quantities, setQuantities] = useState<Record<number, string>>({})
   const setForIndex = useCallback(
     (i) => (value: string) => setQuantities({ ...quantities, [i]: value }),
     [quantities]
   )
+
+  const { setQuery, filteredSections } = useSearch(sections)
 
   // useEffect(() => {
   //   const orderItems = ((Object.keys(
@@ -43,11 +44,12 @@ const ProductList: FC<Props> = ({ nestedProducts, onOrder }) => {
         <div>
           <Affix>
             <MenuSearch
-              availableCatogories={nestedProducts.categories as Category[]}
+              setQuery={setQuery}
+              availableSections={sections as Category[]}
             />
           </Affix>
         </div>
-        {nestedProducts.categories.map(({ name, products }) => (
+        {filteredSections.map(({ name, products }) => (
           <div id="name" key={name}>
             <Divider>{name}</Divider>
             <List

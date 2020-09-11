@@ -96,3 +96,7 @@ declare interface Assembly {
 }
 
 declare module '@rjsf/antd'
+
+declare module 'fuzzysearch' {
+  export default (a: string, b: string) => boolean
+}
