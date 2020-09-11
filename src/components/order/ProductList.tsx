@@ -25,6 +25,10 @@ const ProductList: FC<Props> = ({ sections, onOrder }) => {
 
   const { setQuery, filteredSections } = useSearch(sections)
 
+  const shouldDisplayName = sections?.length > 1
+
+  // Por que essa função existia?
+  // Não vai existir mais depois desse PR
   // useEffect(() => {
   //   const orderItems = ((Object.keys(
   //     quantities
@@ -51,7 +55,7 @@ const ProductList: FC<Props> = ({ sections, onOrder }) => {
         </div>
         {filteredSections.map(({ name, products }) => (
           <div id="name" key={name}>
-            <Divider>{name}</Divider>
+            {shouldDisplayName && <Divider>{name}</Divider>}
             <List
               style={{ maxWidth: '500px' }}
               itemLayout="horizontal"
