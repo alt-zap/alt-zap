@@ -3,23 +3,20 @@ import { Modal } from 'antd'
 import { isMobile } from 'react-device-detect'
 
 import ProductImage from './ProductImage'
-import QuantitySelector from './QuantitySelector'
 import Real from '../Real'
 import ProductDetails from './ProductDetails'
-
-type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType[number]
+import ProductQuantity from '../order/ProductQuantity'
+import { Product } from '../../typings'
 
 type Props = {
-  product: Omit<ArrayElement<TenantConfig['items']>, 'live'>
+  product: Product
   selectedQuantity: string
   setQuantity: (qt: string) => void
 }
 
 const ProductSummary: FC<Props> = ({
-  product: { name, headline, price, imgSrc },
+  product: { name, price, imgSrc, description },
   product,
-  selectedQuantity,
-  setQuantity,
 }) => {
   const [detailsModalOpened, setDetailsModal] = useState(false)
 
@@ -52,7 +49,7 @@ const ProductSummary: FC<Props> = ({
               {name}
             </span>
             <span className="f5 fw2 silver" style={{ lineHeight: '20px' }}>
-              {headline}
+              {description}
             </span>
           </div>
           <span className="b black f3" style={{ marginBottom: '-6px' }}>
@@ -60,10 +57,7 @@ const ProductSummary: FC<Props> = ({
           </span>
         </div>
         <div className="flex justify-end" style={{ flex: 1 }}>
-          <QuantitySelector
-            quantity={selectedQuantity}
-            onQuantity={setQuantity}
-          />
+          <ProductQuantity product={product} />
         </div>
       </div>
       <Modal

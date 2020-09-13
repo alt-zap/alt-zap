@@ -2,6 +2,7 @@ import { Action, Order, OrderItem } from '../../typings'
 
 type Actions =
   | Action<'ADD_ITEM', { args: OrderItem }>
+  | Action<'UPSERT_ITEM', { args: OrderItem }>
   | Action<'SET_ORDER', { args: Order }>
   | Action<'SET_TOTAL_PRICE', { args: number }>
 
@@ -35,6 +36,32 @@ export const orderStateReducer = (
         order: {
           ...(state.order as Order),
           items: currentItems ? [...currentItems, item] : [item],
+        },
+      }
+    }
+
+    case 'UPSERT_ITEM': {
+      const item = action.args || {}
+
+      const currentItems = state?.order?.items ?? []
+
+      const index = currentItems?.findIndex(
+        ({ product: { name } }) => name === item.product.name
+      ) as number
+
+      const newItems = [...currentItems]
+
+      if (index < 0) {
+        newItems.push(item)
+      } else {
+        newItems[index] = item
+      }
+
+      return {
+        ...state,
+        order: {
+          ...(state.order as Order),
+          items: newItems,
         },
       }
     }
