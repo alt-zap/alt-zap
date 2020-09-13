@@ -4,9 +4,9 @@ import { SendOutlined } from '@ant-design/icons'
 import * as firebase from 'firebase/app'
 import 'firebase/analytics'
 
-import { WorldAddress, Product } from '../typings'
+import { WorldAddress, Product, Category } from '../typings'
 import { useAltIntl, Message } from '../intlConfig'
-import ProductList from './order/ProductList'
+import ProductList, { Section } from './order/ProductList'
 import Totalizer from './Totalizer'
 import OrderSummary from './OrderSummary'
 import PaymentSelector from './customer/PaymentSelector'
@@ -119,6 +119,28 @@ const Order: FC = () => {
     [tenant]
   )
 
+  const sections = useMemo(() => {
+    const productItems = !tenant?.migrated ? fallbackProducts : products
+
+    const categoryItems = tenant?.migrated
+      ? tenant?.categories
+      : ([{ name: 'noop', slug: 'noop', live: true }] as Category[])
+
+    if (!productItems || !categoryItems) return []
+
+    // On a future category refact, change this.
+    // We call it sections because, eventually, there'll be the
+    // highlights sections that's not a category per se
+    return categoryItems
+      .filter(({ live }) => live)
+      .map(({ name }, i) => {
+        return {
+          name,
+          products: productItems.filter(({ category }) => category === i),
+        }
+      }) as Section[]
+  }, [products, tenant, fallbackProducts])
+
   const tenantOpen =
     tenant?.live && isTenantOpen(tenant?.openingHours ?? { intervals: [] })
 
@@ -195,10 +217,7 @@ const Order: FC = () => {
                       message={intl.formatMessage({ id: 'order.semiClosed' })}
                     />
                   )}
-                  <ProductList
-                    products={!tenant?.migrated ? fallbackProducts : products}
-                    onOrder={setOrder}
-                  />
+                  <ProductList sections={sections} />
                   <Divider />
                   <Form
                     scrollToFirstError

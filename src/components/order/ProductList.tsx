@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback, useEffect } from 'react'
+import React, { FC, useState, useCallback } from 'react'
 import { List, Divider, Affix } from 'antd'
 
 import { Product, Category } from '../../typings'
@@ -6,17 +6,16 @@ import ProductSummary from '../common/ProductSummary'
 import MenuSearch from './MenuSearch'
 import { useSearch } from './useSearch'
 
-type Section = {
+export type Section = {
   name: string
   products: Product[]
 }
 
 type Props = {
   sections: Section[]
-  onOrder: (a: any) => void
 }
 
-const ProductList: FC<Props> = ({ sections, onOrder }) => {
+const ProductList: FC<Props> = ({ sections }) => {
   const [quantities, setQuantities] = useState<Record<number, string>>({})
   const setForIndex = useCallback(
     (i) => (value: string) => setQuantities({ ...quantities, [i]: value }),
