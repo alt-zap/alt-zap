@@ -4,6 +4,7 @@ import React from 'react'
 import { withKnobs } from '@storybook/addon-knobs'
 
 import ProductList from '../order/ProductList'
+import withOrder from './withOrder'
 
 export default {
   title: 'common|ProductList',
@@ -15,6 +16,7 @@ export default {
       </div>
     ),
     withKnobs,
+    withOrder,
   ],
 }
 
@@ -107,6 +109,4 @@ const nested = [
   },
 ]
 
-export const LotsOfProducts = () => (
-  <ProductList sections={nested} onOrder={() => {}} />
-)
+export const LotsOfProducts = () => <ProductList sections={nested} />

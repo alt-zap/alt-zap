@@ -12,14 +12,15 @@ const ProductQuantity: FC<Props> = ({ product }) => {
 
   const handleQuantity = useCallback(
     (qt: string) => {
-      // Identify which it it refers to
-      // Add if doesn't exist
+      const itemQuantity = parseInt(qt, 10)
+      const itemPrice = product.price * itemQuantity
+
       dispatch({
         type: 'UPSERT_ITEM',
         args: {
           product,
-          quantity: parseInt(qt, 10),
-          itemPrice: product.price,
+          quantity: itemQuantity,
+          itemPrice,
           selectedItems: [],
         },
       })

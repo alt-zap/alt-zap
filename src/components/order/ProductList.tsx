@@ -26,20 +26,6 @@ const ProductList: FC<Props> = ({ sections }) => {
 
   const shouldDisplayName = sections?.length > 1
 
-  // Por que essa função existia?
-  // Não vai existir mais depois desse PR
-  // useEffect(() => {
-  //   const orderItems = ((Object.keys(
-  //     quantities
-  //   ) as unknown) as number[]).map((i) => [
-  //     products?.[i].name,
-  //     parseInt(quantities[i], 10),
-  //     products?.[i].price,
-  //   ])
-
-  //   onOrder(orderItems)
-  // }, [products, onOrder, quantities])
-
   return (
     <div className="mt3">
       <h2 className="tc">Qual seu pedido?</h2>
@@ -75,8 +61,5 @@ const ProductList: FC<Props> = ({ sections }) => {
     </div>
   )
 }
-
-// Filtering
-// Live products
 
 export default ProductList

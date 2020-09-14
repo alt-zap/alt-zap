@@ -136,7 +136,9 @@ const Order: FC = () => {
       .map(({ name }, i) => {
         return {
           name,
-          products: productItems.filter(({ category }) => category === i),
+          products: productItems.filter(
+            ({ category, live }) => category === i && !!live
+          ),
         }
       }) as Section[]
   }, [products, tenant, fallbackProducts])

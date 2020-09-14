@@ -46,7 +46,7 @@ export const orderStateReducer = (
       const currentItems = state?.order?.items ?? []
 
       const index = currentItems?.findIndex(
-        ({ product: { name } }) => name === item.product.name
+        ({ product: { id } }) => id === item.product.id
       ) as number
 
       const newItems = [...currentItems]
@@ -61,7 +61,7 @@ export const orderStateReducer = (
         ...state,
         order: {
           ...(state.order as Order),
-          items: newItems,
+          items: newItems.filter(({ quantity }) => quantity > 0),
         },
       }
     }
