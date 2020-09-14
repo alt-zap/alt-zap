@@ -101,10 +101,12 @@ const fakeProducts = [
 const nested = [
   {
     name: 'Principal',
+    slug: 'principal',
     products: fakeProducts,
   },
   {
     name: 'Secundárias',
+    slug: 'secundarias',
     products: fakeProducts,
   },
 ]

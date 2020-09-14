@@ -10,8 +10,6 @@ import { Product } from '../../typings'
 
 type Props = {
   product: Product
-  selectedQuantity: string
-  setQuantity: (qt: string) => void
 }
 
 const ProductSummary: FC<Props> = ({

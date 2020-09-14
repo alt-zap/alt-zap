@@ -2,11 +2,12 @@ import React, { FC, useCallback, useState, useMemo, Fragment } from 'react'
 import { Affix, Alert, Button, Form, Divider, Input, Spin, Layout } from 'antd'
 import { SendOutlined } from '@ant-design/icons'
 import * as firebase from 'firebase/app'
+import slugify from 'slugify'
 import 'firebase/analytics'
 
-import { WorldAddress, Product, Category } from '../typings'
+import { WorldAddress, Product, Category, Section } from '../typings'
 import { useAltIntl, Message } from '../intlConfig'
-import ProductList, { Section } from './order/ProductList'
+import ProductList from './order/ProductList'
 import Totalizer from './Totalizer'
 import OrderSummary from './OrderSummary'
 import PaymentSelector from './customer/PaymentSelector'
@@ -136,6 +137,7 @@ const Order: FC = () => {
       .map(({ name }, i) => {
         return {
           name,
+          slug: slugify(name, { lower: true }),
           products: productItems.filter(
             ({ category, live }) => category === i && !!live
           ),

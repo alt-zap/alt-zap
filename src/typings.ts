@@ -210,3 +210,9 @@ export type Order = {
     finalPrice?: number
   }
 }
+
+export type Section = {
+  name: string
+  slug: string
+  products: Product[]
+}

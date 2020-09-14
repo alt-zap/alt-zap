@@ -5,6 +5,7 @@ import { Product } from '../../typings'
 
 type Section = {
   name: string
+  slug: string
   products: Product[]
 }
 

@@ -3,15 +3,28 @@ import { Form, Select, Input } from 'antd'
 import { LoadingOutlined, SearchOutlined } from '@ant-design/icons'
 import { useDebouncedCallback } from 'use-debounce'
 
-import { Category } from '../../typings'
+import { Product } from '../../typings'
 
 const { Option } = Select
 
+export type Section = {
+  name: string
+  slug: string
+  products: Product[]
+}
+
 type Props = {
-  availableSections: Category[]
+  availableSections: Section[]
+  activeSection: string
+  onSection: (slug: string) => void
   setQuery: (data: string | null) => void
 }
-const MenuSearch: FC<Props> = ({ availableSections, setQuery }) => {
+const MenuSearch: FC<Props> = ({
+  availableSections,
+  activeSection,
+  setQuery,
+  onSection,
+}) => {
   const [loading, setLoading] = useState(false)
 
   const [debouncedOnChange] = useDebouncedCallback((value: string | null) => {
@@ -23,9 +36,9 @@ const MenuSearch: FC<Props> = ({ availableSections, setQuery }) => {
     <Form layout="vertical">
       <div className="flex justify-between bg-white pt3 ph3 br2">
         <Form.Item label="Categoria" className="w-40 mr2">
-          <Select size="large">
-            {availableSections.map(({ name }, i) => (
-              <Option key={i} value={i}>
+          <Select value={activeSection} size="large" onChange={onSection}>
+            {availableSections.map(({ name, slug }, i) => (
+              <Option key={i} value={slug}>
                 {name}
               </Option>
             ))}

@@ -1,28 +1,44 @@
-import React, { FC, useState, useCallback } from 'react'
+import React, { FC, useEffect, useMemo, useState, useCallback } from 'react'
 import { List, Divider, Affix } from 'antd'
+import slugify from 'slugify'
 
-import { Product, Category } from '../../typings'
+import { Section } from '../../typings'
 import ProductSummary from '../common/ProductSummary'
 import MenuSearch from './MenuSearch'
 import { useSearch } from './useSearch'
-
-export type Section = {
-  name: string
-  products: Product[]
-}
 
 type Props = {
   sections: Section[]
 }
 
 const ProductList: FC<Props> = ({ sections }) => {
-  const [quantities, setQuantities] = useState<Record<number, string>>({})
-  const setForIndex = useCallback(
-    (i) => (value: string) => setQuantities({ ...quantities, [i]: value }),
-    [quantities]
-  )
-
   const { setQuery, filteredSections } = useSearch(sections)
+
+  const [active, setActive] = useState(sections[0].slug)
+
+  const sectionsRef = useMemo(() => {
+    return sections.reduce((acc, cur) => {
+      acc[cur.slug] = React.createRef()
+
+      return acc
+    }, {} as Record<string, React.RefObject<HTMLDivElement>>)
+  }, [sections])
+
+  const onChangeSection = useCallback(
+    (slug) => {
+      const el = sectionsRef[slug].current
+
+      if (!el) {
+        return
+      }
+
+      const yOffset = -110
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset
+
+      window.scrollTo({ top: y, behavior: 'smooth' })
+    },
+    [sectionsRef]
+  )
 
   const shouldDisplayName = sections?.length > 1
 
@@ -33,29 +49,21 @@ const ProductList: FC<Props> = ({ sections }) => {
         <div>
           <Affix>
             <MenuSearch
+              activeSection={active}
+              onSection={onChangeSection}
               setQuery={setQuery}
-              availableSections={sections as Category[]}
+              availableSections={sections}
             />
           </Affix>
         </div>
-        {filteredSections.map(({ name, products }) => (
-          <div id="name" key={name}>
-            {shouldDisplayName && <Divider>{name}</Divider>}
-            <List
-              style={{ maxWidth: '500px' }}
-              itemLayout="horizontal"
-              dataSource={products}
-              renderItem={(product, i) => (
-                <div className="pv2">
-                  <ProductSummary
-                    product={product}
-                    selectedQuantity={quantities[i] || '0'}
-                    setQuantity={setForIndex(i)}
-                  />
-                </div>
-              )}
-            />
-          </div>
+        {filteredSections.map((section) => (
+          <ListSection
+            setActive={setActive}
+            refs={sectionsRef}
+            shouldDisplayName={shouldDisplayName}
+            key={section.slug}
+            {...section}
+          />
         ))}
       </div>
     </div>
@@ -63,3 +71,53 @@ const ProductList: FC<Props> = ({ sections }) => {
 }
 
 export default ProductList
+
+interface SectionProps extends Section {
+  shouldDisplayName: boolean
+  setActive: (slug: string) => void
+  refs: Record<string, React.RefObject<HTMLDivElement>>
+}
+
+const ListSection: FC<SectionProps> = ({
+  name,
+  slug,
+  products,
+  shouldDisplayName,
+  refs,
+  setActive,
+}) => {
+  const ref = refs[slug]
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActive(slug)
+          }
+        })
+      },
+      { rootMargin: '-50% 0px -50% 0px' }
+    )
+
+    ref?.current && observer.observe(ref.current)
+
+    return () => observer.disconnect()
+  }, [ref, slug, setActive])
+
+  return (
+    <div id={slug} key={slug} ref={refs[slug]}>
+      {shouldDisplayName && <Divider>{name}</Divider>}
+      <List
+        style={{ maxWidth: '500px' }}
+        itemLayout="horizontal"
+        dataSource={products}
+        renderItem={(product, i) => (
+          <div className="pv2" key={i}>
+            <ProductSummary product={product} />
+          </div>
+        )}
+      />
+    </div>
+  )
+}
