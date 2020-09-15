@@ -44,24 +44,9 @@ const Order: FC = () => {
   const [{ order }, dispatch] = useOrder()
 
   const enviarPedido = useCallback(() => {
-    const paymentLabel = order?.payment?.type.name
-    const change = order?.payment?.changeFor
+    if (!order || !tenant) return
 
-    const { name, info, shippingMethod, ...address } = formData
-
-    const whatsappLink = generateLink({
-      whatsapp: tenant?.whatsapp as string,
-      shippingMethod: shippingMethod as ShippingMethod,
-      tenantAddress: tenant?.address as WorldAddress,
-      address,
-      payment: {
-        label: paymentLabel,
-        change,
-      },
-      name,
-      total,
-      info,
-    })
+    const whatsappLink = generateLink(order, tenant)
 
     try {
       const analytics = firebase.analytics()
@@ -70,7 +55,7 @@ const Order: FC = () => {
       // @ts-ignore
       analytics.logEvent('purchase', {
         tenant: tenant?.name,
-        value: total / 100,
+        value: order.totalizers?.totalPrice ?? 0 / 100,
         currency: 'BRA',
       })
     } catch (e) {
