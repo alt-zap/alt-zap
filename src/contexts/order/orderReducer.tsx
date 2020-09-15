@@ -5,6 +5,7 @@ type Actions =
   | Action<'UPSERT_ITEM', { args: OrderItem }>
   | Action<'SET_ORDER', { args: Order }>
   | Action<'SET_TOTAL_PRICE', { args: number }>
+  | Action<'SET_PARTIAL_ORDER', { args: Partial<Order> }>
 
 export type OrderContextActions = Actions
 
@@ -17,6 +18,18 @@ export const orderStateReducer = (
   action: Actions
 ): OrderContextState => {
   switch (action.type) {
+    case 'SET_PARTIAL_ORDER': {
+      const data = action.args
+
+      return {
+        ...state,
+        order: {
+          ...(state.order as Order),
+          ...data,
+        },
+      }
+    }
+
     case 'SET_ORDER': {
       const order = action.args
 

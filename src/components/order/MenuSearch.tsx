@@ -33,10 +33,15 @@ const MenuSearch: FC<Props> = ({
   }, 1000)
 
   return (
-    <Form layout="vertical">
-      <div className="flex justify-between bg-white pt3 ph3 br2">
+    <Form layout="vertical" className="w-100">
+      <div className="flex justify-between bg-white pt3 ph3 shadow-2">
         <Form.Item label="Categoria" className="w-40 mr2">
-          <Select value={activeSection} size="large" onChange={onSection}>
+          <Select
+            getPopupContainer={(trigger) => trigger.parentElement}
+            value={activeSection}
+            size="large"
+            onChange={onSection}
+          >
             {availableSections.map(({ name, slug }, i) => (
               <Option key={i} value={slug}>
                 {name}

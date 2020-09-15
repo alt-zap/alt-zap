@@ -3,9 +3,16 @@ import { Affix, Alert, Button, Form, Divider, Input, Spin, Layout } from 'antd'
 import { SendOutlined } from '@ant-design/icons'
 import * as firebase from 'firebase/app'
 import slugify from 'slugify'
+import { useQueryParam, BooleanParam } from 'use-query-params'
 import 'firebase/analytics'
 
-import { WorldAddress, Product, Category, Section } from '../typings'
+import {
+  WorldAddress,
+  Product,
+  Category,
+  Section,
+  Order as OrderType,
+} from '../typings'
 import { useAltIntl, Message } from '../intlConfig'
 import ProductList from './order/ProductList'
 import Totalizer from './Totalizer'
@@ -16,6 +23,7 @@ import { generateLink, log, isTenantOpen } from '../utils'
 import instagram from '../assets/instagram.svg'
 import whatsapp from '../assets/whatsapp.svg'
 import SelectShipping, { ShippingMethod } from './order/SelectShipping'
+import { useOrder } from '../contexts/order/OrderContext'
 
 const { Header, Footer } = Layout
 const { TextArea } = Input
@@ -27,68 +35,53 @@ interface TempFormData extends WorldAddress {
   shippingMethod?: ShippingMethod
 }
 
-/**
- * Keypoints here:
- *
- * - I'd hope to deliver the new Admin without this page/form, with all rendered by Gatsby.
- * - As it happens, it was not so trivial to implement all of the new features on the new project + setup build.
- * -  We really need to delivery an easier way for people to develop (Firebase Emulator) and lots of other stuff
- * to Andromedev folks.
- * - Now, we're TEMPORARILY supporting this page, adapting the data to use the new model.
- * - I've updated this as fast as I could... The new Order page should be localized and using Form
- *
- *  WE WON'T MAINTAIN THIS PAGE FOR LONG
- */
 const Order: FC = () => {
   const intl = useAltIntl()
+  const [debug] = useQueryParam('debug', BooleanParam)
+
   const [orderForm] = Form.useForm()
   const { tenant, loading, products } = useTenantConfig()
-  const [order, setOrder] = useState([])
-  const [total, setTotal] = useState(0)
-  const [shipping, setShipping] = useState<ShippingMethod | null>(null)
-  const [paymentInfo, setPayment] = useState<PaymentInfo>()
+  const [{ order }, dispatch] = useOrder()
 
-  const enviarPedido = useCallback(
-    (formData: TempFormData) => {
-      const { name: label, change } = paymentInfo as PaymentInfo
-      const { name, info, shippingMethod, ...address } = formData
+  const enviarPedido = useCallback(() => {
+    const paymentLabel = order?.payment?.type.name
+    const change = order?.payment?.changeFor
 
-      const whatsappLink = generateLink({
-        whatsapp: tenant?.whatsapp as string,
-        shippingMethod: shippingMethod as ShippingMethod,
-        tenantAddress: tenant?.address as WorldAddress,
-        address,
-        order,
-        payment: {
-          label,
-          change,
-        },
-        name,
-        total,
-        info,
+    const { name, info, shippingMethod, ...address } = formData
+
+    const whatsappLink = generateLink({
+      whatsapp: tenant?.whatsapp as string,
+      shippingMethod: shippingMethod as ShippingMethod,
+      tenantAddress: tenant?.address as WorldAddress,
+      address,
+      payment: {
+        label: paymentLabel,
+        change,
+      },
+      name,
+      total,
+      info,
+    })
+
+    try {
+      const analytics = firebase.analytics()
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      analytics.logEvent('purchase', {
+        tenant: tenant?.name,
+        value: total / 100,
+        currency: 'BRA',
       })
+    } catch (e) {
+      log(e)
+      log('Erro ao enviar evento ao Analytics')
+    }
 
-      try {
-        const analytics = firebase.analytics()
+    const win = window.open(whatsappLink, '_blank')
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        analytics.logEvent('purchase', {
-          tenant: tenant?.name,
-          value: total / 100,
-          currency: 'BRA',
-        })
-      } catch (e) {
-        log(e)
-        log('Erro ao enviar evento ao Analytics')
-      }
-
-      const win = window.open(whatsappLink, '_blank')
-
-      win?.focus()
-    },
-    [order, paymentInfo, total, tenant]
-  )
+    win?.focus()
+  }, [order, tenant])
 
   const handleAutoFill = useCallback(
     (data: Partial<WorldAddress>) => {
@@ -97,11 +90,10 @@ const Order: FC = () => {
     [orderForm]
   )
 
-  const hasOrder = useMemo(() => {
-    return order.some(([, quantity]) => parseInt(quantity, 10))
-  }, [order])
+  const hasOrder = !!order?.items.length
 
-  const pedidoValido = total > 0 && paymentInfo
+  const hasValidOrder =
+    (order?.totalizers?.totalPrice ?? 0) > 0 && order?.payment
 
   const deliveryFee =
     tenant?.shippingStrategies?.deliveryFixed?.price ?? tenant?.deliveryFee
@@ -146,7 +138,8 @@ const Order: FC = () => {
   }, [products, tenant, fallbackProducts])
 
   const tenantOpen =
-    tenant?.live && isTenantOpen(tenant?.openingHours ?? { intervals: [] })
+    (tenant?.live && isTenantOpen(tenant?.openingHours ?? { intervals: [] })) ||
+    debug
 
   return (
     <div>
@@ -171,7 +164,6 @@ const Order: FC = () => {
             <Layout className="pb3">
               <Header
                 style={{
-                  position: 'fixed',
                   zIndex: 10,
                   width: '100%',
                   padding: '0 10px',
@@ -207,7 +199,7 @@ const Order: FC = () => {
               </Header>
               <div
                 className="flex justify-center"
-                style={{ marginTop: '80px' }}
+                style={{ marginTop: '10px' }}
               >
                 <div className="w-100 ph2 ph0-l w-50-l">
                   {tenantOpen ? (
@@ -276,7 +268,7 @@ const Order: FC = () => {
                         className="mt4"
                         size="large"
                         shape="round"
-                        disabled={!pedidoValido && !tenantOpen}
+                        disabled={!hasValidOrder && !tenantOpen}
                       >
                         Enviar Pedido
                       </Button>
