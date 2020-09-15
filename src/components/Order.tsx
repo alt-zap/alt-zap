@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState, useMemo, Fragment } from 'react'
+import React, { FC, useCallback, useMemo, Fragment, useEffect } from 'react'
 import { Affix, Alert, Button, Form, Divider, Input, Spin, Layout } from 'antd'
 import { SendOutlined } from '@ant-design/icons'
 import * as firebase from 'firebase/app'
@@ -43,6 +43,12 @@ const Order: FC = () => {
   const { tenant, loading, products } = useTenantConfig()
   const [{ order }, dispatch] = useOrder()
 
+  useEffect(() => {
+    // Support legacy deliveryFee
+    // Setup initial delivery method for tenant with only one shipping type
+    // Or maybe not.
+  }, [tenant])
+
   const enviarPedido = useCallback(() => {
     if (!order || !tenant) return
 
@@ -79,9 +85,6 @@ const Order: FC = () => {
 
   const hasValidOrder =
     (order?.totalizers?.totalPrice ?? 0) > 0 && order?.payment
-
-  const deliveryFee =
-    tenant?.shippingStrategies?.deliveryFixed?.price ?? tenant?.deliveryFee
 
   const { paymentMethods } = tenant ?? {}
 
@@ -238,15 +241,7 @@ const Order: FC = () => {
                       <Input size="large" className="mv2" />
                     </Item>
                     <Affix offsetBottom={-5} className="mt4">
-                      {hasOrder && (
-                        <Totalizer
-                          order={order}
-                          methods={tenant?.shippingStrategies}
-                          selectedMethod={shipping}
-                          deliveryFee={deliveryFee ?? 0}
-                          onTotal={setTotal}
-                        />
-                      )}
+                      {hasOrder && <Totalizer order={order} />}
                     </Affix>
                     {hasOrder && <OrderSummary order={order} />}
                     <Divider />
