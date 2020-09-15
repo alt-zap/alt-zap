@@ -3,6 +3,7 @@ import { Radio, Alert } from 'antd'
 import ReactMarkdown from 'react-markdown'
 
 import CurrencyInput from '../common/CurrencyInput'
+import { Order } from '../../typings'
 
 const radioStyle = {
   height: '30px',
@@ -11,7 +12,7 @@ const radioStyle = {
 
 type Props = {
   methods: TenantConfig['paymentMethods']
-  onPayment: (data: { name: string; change: string }) => void
+  onPayment: (data: Order['payment']) => void
 }
 
 const PaymentSelector: FC<Props> = ({ methods, onPayment }) => {
@@ -22,7 +23,7 @@ const PaymentSelector: FC<Props> = ({ methods, onPayment }) => {
     const method = typeof selectedIndex === 'number' && methods[selectedIndex]
 
     if (!method) return
-    onPayment({ name: method.name, change })
+    onPayment({ type: method, changeFor: change })
   }, [onPayment, selectedIndex, methods, change])
 
   const onChange = useCallback(

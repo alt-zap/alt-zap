@@ -1,54 +1,18 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC } from 'react'
 
+import { Order } from '../typings'
 import Real from './Real'
-import { ShippingStrategies } from '../typings'
-import { ShippingMethod } from './order/SelectShipping'
 
 type Props = {
-  order: Array<[string, number, number]>
-  methods?: ShippingStrategies
-  selectedMethod: ShippingMethod | null
-  deliveryFee: number
-  onTotal: (total: number) => void
+  order: Order | null
 }
 
-const Totalizer: FC<Props> = ({
-  order,
-  deliveryFee,
-  onTotal,
-  methods,
-  selectedMethod,
-}) => {
-  const [total, setTotal] = useState(0)
+const Totalizer: FC<Props> = ({ order }) => {
+  const selectedMethod = order?.shipping?.type
+  const isDelivery = selectedMethod === 'DELIVERY'
+  const isTakeaway = selectedMethod === 'TAKEAWAY'
 
-  const onlyHasDelivery =
-    methods?.deliveryFixed?.active && !methods?.takeaway?.active
-
-  const onlyHasTakeAway =
-    methods?.takeaway?.active && !methods?.deliveryFixed?.active
-
-  const isDelivery = selectedMethod === 'delivery' || onlyHasDelivery
-  const isTakeaway = selectedMethod === 'takeaway' || onlyHasTakeAway
-
-  const fee = isDelivery ? methods?.deliveryFixed?.price ?? 0 : 0
-
-  // We shouldn't be doing this. We'll compute the total price on a top
-  // level component (check OrderItems components).
-  //
-  // In fact, this piece of code makes me angry because we have to account for
-  // the cases where we set the shipping initial value, but the top-lever Order
-  // doesn't get an update (coming from the Form/)
-  useEffect(() => {
-    const totalOrder = order.reduce(
-      (acc, [, quantity, price]) => acc + quantity * price,
-      0
-    )
-
-    const sum = totalOrder + fee
-
-    setTotal(sum)
-    onTotal?.(sum)
-  }, [order, deliveryFee, onTotal, fee])
+  const fee = order?.shipping?.price ?? 0
 
   return (
     <div className="flex justify-center w-100">
@@ -60,14 +24,14 @@ const Totalizer: FC<Props> = ({
               {isTakeaway && `Retirada Grátis`}
               {isDelivery && fee > 0 && (
                 <span>
-                  Entrega: <Real cents={deliveryFee} />
+                  Entrega: <Real cents={fee} />
                 </span>
               )}
               {isDelivery && fee === 0 && 'Entrega Grátis'}
             </span>
           </div>
           <span className="f4 b">
-            <Real cents={total} />
+            <Real cents={order?.totalizers?.totalPrice ?? 0} />
           </span>
         </div>
       </div>

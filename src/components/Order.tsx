@@ -11,7 +11,7 @@ import {
   Product,
   Category,
   Section,
-  Order as OrderType,
+  ShippingStrategy,
 } from '../typings'
 import { useAltIntl, Message } from '../intlConfig'
 import ProductList from './order/ProductList'
@@ -22,7 +22,7 @@ import { useTenantConfig } from '../contexts/TenantContext'
 import { generateLink, log, isTenantOpen } from '../utils'
 import instagram from '../assets/instagram.svg'
 import whatsapp from '../assets/whatsapp.svg'
-import SelectShipping, { ShippingMethod } from './order/SelectShipping'
+import SelectShipping from './order/SelectShipping'
 import { useOrder } from '../contexts/order/OrderContext'
 
 const { Header, Footer } = Layout
@@ -32,7 +32,7 @@ const { Item } = Form
 interface TempFormData extends WorldAddress {
   name: string
   info?: string
-  shippingMethod?: ShippingMethod
+  shippingMethod?: ShippingStrategy
 }
 
 const Order: FC = () => {
@@ -202,12 +202,23 @@ const Order: FC = () => {
                   <Divider />
                   <Form
                     scrollToFirstError
-                    onFinish={(data) => {
-                      enviarPedido(data as TempFormData)
+                    onFinish={() => {
+                      enviarPedido()
                     }}
                     form={orderForm}
                     onValuesChange={(_, data) => {
-                      setShipping((data as TempFormData).shippingMethod ?? null)
+                      const formData = data as TempFormData
+                      const partialOrder = {
+                        customer: {
+                          name: formData.name,
+                        },
+                        info: formData.info,
+                      }
+
+                      dispatch({
+                        type: 'SET_PARTIAL_ORDER',
+                        args: partialOrder,
+                      })
                     }}
                     layout="vertical"
                   >
@@ -242,7 +253,14 @@ const Order: FC = () => {
                     {hasOrder && (
                       <PaymentSelector
                         methods={paymentMethods ?? []}
-                        onPayment={setPayment}
+                        onPayment={(payment) => {
+                          dispatch({
+                            type: 'SET_PARTIAL_ORDER',
+                            args: {
+                              payment,
+                            },
+                          })
+                        }}
                       />
                     )}
                     <div className="flex justify-center">

@@ -197,7 +197,7 @@ export type Order = {
   }
   shipping?: {
     type: ShippingStrategy
-    address?: Address
+    address?: WorldAddress
     price?: number
   }
   payment?: {
