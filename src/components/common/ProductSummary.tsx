@@ -34,15 +34,15 @@ const ProductSummary: FC<Props> = ({
         role="button"
         tabIndex={0}
       >
-        <div className="w-34" style={{ minWidth: '110px' }}>
-          {imgSrc ? (
+        {imgSrc && (
+          <div className="w-34" style={{ minWidth: '110px' }}>
             <ProductImage
               src={imgSrc}
               title={name}
               onClick={() => setDetailsModal(true)}
             />
-          ) : null}
-        </div>
+          </div>
+        )}
         <div className="flex flex-column ml3 justify-between">
           <div className="flex flex-column">
             <span
