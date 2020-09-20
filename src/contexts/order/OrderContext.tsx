@@ -8,7 +8,7 @@ import {
   orderStateReducer,
 } from './orderReducer'
 
-type Dispatch = (action: OrderContextActions) => void
+export type Dispatch = (action: OrderContextActions) => void
 
 export const [useOrderState, OrderStateProvider] = createCtx<
   OrderContextState
