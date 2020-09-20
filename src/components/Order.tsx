@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, Fragment, useEffect } from 'react'
+import React, { FC, useCallback, useMemo, Fragment } from 'react'
 import { Affix, Alert, Button, Form, Divider, Input, Spin, Layout } from 'antd'
 import { SendOutlined } from '@ant-design/icons'
 import * as firebase from 'firebase/app'
@@ -24,6 +24,7 @@ import instagram from '../assets/instagram.svg'
 import whatsapp from '../assets/whatsapp.svg'
 import SelectShipping from './order/SelectShipping'
 import { useOrder } from '../contexts/order/OrderContext'
+import { useInitialShipping } from './order/useInitialShipping'
 
 const { Header, Footer } = Layout
 const { TextArea } = Input
@@ -42,6 +43,9 @@ const Order: FC = () => {
   const [orderForm] = Form.useForm()
   const { tenant, loading, products } = useTenantConfig()
   const [{ order }, dispatch] = useOrder()
+
+  // Dirty hack to initially select a shipping method
+  useInitialShipping(tenant, order, dispatch)
 
   const enviarPedido = useCallback(() => {
     if (!order || !tenant) return
@@ -67,15 +71,6 @@ const Order: FC = () => {
 
     win?.focus()
   }, [order, tenant])
-
-  const handleAutoFill = useCallback(
-    (data: Partial<WorldAddress>) => {
-      orderForm.setFieldsValue({ ...data })
-    },
-    [orderForm]
-  )
-
-  const hasOrder = !!order?.items.length
 
   const hasValidOrder =
     (order?.totalizers?.totalPrice ?? 0) > 0 && order?.payment
@@ -219,7 +214,11 @@ const Order: FC = () => {
                     }}
                     layout="vertical"
                   >
-                    <SelectShipping onAutoFill={handleAutoFill} />
+                    <SelectShipping
+                      onAutoFill={(data: Partial<WorldAddress>) => {
+                        orderForm.setFieldsValue({ ...data })
+                      }}
+                    />
                     <Divider />
                     <Item name="info" label="Outras informações?">
                       <TextArea
@@ -234,23 +233,25 @@ const Order: FC = () => {
                     >
                       <Input size="large" className="mv2" />
                     </Item>
-                    <Affix offsetBottom={-5} className="mt4">
-                      {hasOrder && <Totalizer order={order} />}
-                    </Affix>
-                    {hasOrder && <OrderSummary order={order} />}
-                    <Divider />
-                    {hasOrder && (
-                      <PaymentSelector
-                        methods={paymentMethods ?? []}
-                        onPayment={(payment) => {
-                          dispatch({
-                            type: 'SET_PARTIAL_ORDER',
-                            args: {
-                              payment,
-                            },
-                          })
-                        }}
-                      />
+                    {!!order?.items.length && (
+                      <>
+                        <Affix offsetBottom={-5} className="mt4">
+                          <Totalizer order={order} />
+                        </Affix>
+                        <OrderSummary order={order} />
+                        <Divider />
+                        <PaymentSelector
+                          methods={paymentMethods ?? []}
+                          onPayment={(payment) => {
+                            dispatch({
+                              type: 'SET_PARTIAL_ORDER',
+                              args: {
+                                payment,
+                              },
+                            })
+                          }}
+                        />
+                      </>
                     )}
                     <div className="flex justify-center">
                       <Button

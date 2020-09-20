@@ -4,8 +4,8 @@ import { Order, TenantConfig } from '../../typings'
 import { Dispatch } from '../../contexts/order/OrderContext'
 
 export const useInitialShipping = (
-  tenant: TenantConfig,
-  order: Order,
+  tenant: TenantConfig | undefined,
+  order: Order | null,
   dispatch: Dispatch
 ) =>
   useEffect(() => {
