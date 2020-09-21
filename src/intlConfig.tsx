@@ -15,6 +15,7 @@ export const intlConfig = {
     add: 'Adicionar',
     'all.f': 'Todas',
     save: 'Salvar',
+    'currency.symbol': 'R$',
     'tenant.live': 'Ativo',
     'tenant.openTitle': 'Com base em seu horário de funcionamento',
     'tenant.productsLabel': 'Produtos',
@@ -254,6 +255,7 @@ export const intlConfig = {
     'order.payment.info': 'Informações',
     'order.payment.sendReceive':
       'Envie o comprovante de transferência pelo Whatsapp',
+    'order.payment.changeLabel': 'Precisa de troco para:',
     'admin.onDevMode': 'MODO DE DESENVOLVIMENTO',
     'admin.tenants': 'Meus negócios',
     'adming.githubLink': 'Estamos no GitHub',

@@ -57,11 +57,16 @@ const PaymentSelector: FC = () => {
             </Radio>
           ))}
         </Radio.Group>
-        {shouldDisplayChangeInput && (
+      </div>
+      {shouldDisplayChangeInput && (
+        <div className="tc flex flex-column items-center">
+          <h4>
+            <Message id="order.payment.changeLabel" />
+          </h4>
           <CurrencyInput
             valueAsString
-            placeholder="Troco para?"
-            className="ml2 w-50"
+            style={{ maxWidth: '120px' }}
+            addonBefore={intl.formatMessage({ id: 'currency.symbol' })}
             value={selectedPayment?.changeFor}
             onChange={(e) => {
               if (!selectedPayment) {
@@ -80,8 +85,8 @@ const PaymentSelector: FC = () => {
               })
             }}
           />
-        )}
-      </div>
+        </div>
+      )}
       {selectedPaymentHasInfo && (
         <div className="tc">
           <h4>
@@ -96,6 +101,7 @@ const PaymentSelector: FC = () => {
             )}
             {selectedPayment?.type?.imgSrc && (
               <img
+                width="250px"
                 src={selectedPayment.type.imgSrc}
                 alt={selectedPayment.type.name}
                 className="w-70"
