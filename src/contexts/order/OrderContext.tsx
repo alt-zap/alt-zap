@@ -41,6 +41,7 @@ export const OrderContextProvider: FC = ({ children }) => {
         // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
         .reduce((acc, { itemPrice }) => acc + itemPrice, 0) ?? 0
 
+    // We need to also compute the shipping price here.
     if (totalPrice !== state.order?.totalizers?.totalPrice) {
       dispatch({ type: 'SET_TOTAL_PRICE', args: totalPrice })
     }
