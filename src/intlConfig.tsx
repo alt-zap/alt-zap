@@ -250,6 +250,10 @@ export const intlConfig = {
     'order.shipping.takeaway': 'Retire no Local',
     'order.shipping.addressTake': 'Endereço para Retirada',
     'order.shipping.openOnMaps': 'Abra no Google Maps',
+    'order.payment.selectPayment': 'Selecione a forma de pagamento',
+    'order.payment.info': 'Informações',
+    'order.payment.sendReceive':
+      'Envie o comprovante de transferência pelo Whatsapp',
     'admin.onDevMode': 'MODO DE DESENVOLVIMENTO',
     'admin.tenants': 'Meus negócios',
     'adming.githubLink': 'Estamos no GitHub',

@@ -75,8 +75,6 @@ const Order: FC = () => {
   const hasValidOrder =
     (order?.totalizers?.totalPrice ?? 0) > 0 && order?.payment
 
-  const { paymentMethods } = tenant ?? {}
-
   const fallbackProducts: Product[] = useMemo(
     () =>
       tenant?.items?.map((item) => ({
@@ -240,17 +238,7 @@ const Order: FC = () => {
                         </Affix>
                         <OrderSummary order={order} />
                         <Divider />
-                        <PaymentSelector
-                          methods={paymentMethods ?? []}
-                          onPayment={(payment) => {
-                            dispatch({
-                              type: 'SET_PARTIAL_ORDER',
-                              args: {
-                                payment,
-                              },
-                            })
-                          }}
-                        />
+                        <PaymentSelector />
                       </>
                     )}
                     <div className="flex justify-center">
