@@ -149,8 +149,7 @@ export interface Assembly {
   options: AssemblyOption[]
 }
 
-export interface CategoriesCollection
-  extends Element<Element<TenantConfig['menus']>['categories']> {
+export interface CategoriesCollection extends Category {
   id: string
 }
 
