@@ -7,8 +7,8 @@ import {
   Days,
   Order,
   TenantConfig,
+  ShippingMethod,
 } from './typings'
-import { ShippingMethod } from './components/order/SelectShipping'
 
 type Elements = HTMLInputElement | HTMLTextAreaElement
 

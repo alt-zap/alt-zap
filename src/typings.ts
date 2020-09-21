@@ -61,7 +61,7 @@ export type TimeFrame = {
   to: string
 }
 
-export type ShippingStrategy = 'DELIVERY' | 'TAKEAWAY'
+export type ShippingMethod = 'DELIVERY' | 'TAKEAWAY'
 
 export type ShippingStrategies = {
   deliveryFixed: {
@@ -193,7 +193,7 @@ export type Order = {
     name: string
   }
   shipping?: {
-    type: ShippingStrategy
+    type: ShippingMethod
     address?: WorldAddress
     price?: number
   }

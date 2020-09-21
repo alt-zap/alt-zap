@@ -11,7 +11,8 @@ import {
   Product,
   Category,
   Section,
-  ShippingStrategy,
+  ShippingMethod,
+  Order as OrderType,
 } from '../typings'
 import { useAltIntl, Message } from '../intlConfig'
 import ProductList from './order/ProductList'
@@ -33,7 +34,7 @@ const { Item } = Form
 interface TempFormData extends WorldAddress {
   name: string
   info?: string
-  shippingMethod?: ShippingStrategy
+  shippingMethod?: ShippingMethod
 }
 
 const Order: FC = () => {
@@ -198,11 +199,30 @@ const Order: FC = () => {
                     form={orderForm}
                     onValuesChange={(_, data) => {
                       const formData = data as TempFormData
-                      const partialOrder = {
+
+                      const {
+                        name,
+                        info,
+                        shippingMethod,
+                        ...address
+                      } = formData
+
+                      const partialOrder: Partial<OrderType> = {
                         customer: {
-                          name: formData.name,
+                          name,
                         },
-                        info: formData.info,
+                        info,
+                        ...(shippingMethod && {
+                          shipping: {
+                            type: shippingMethod,
+                            address,
+                            price:
+                              shippingMethod === 'DELIVERY'
+                                ? tenant?.shippingStrategies?.deliveryFixed
+                                    ?.price ?? 0
+                                : 0,
+                          },
+                        }),
                       }
 
                       dispatch({
