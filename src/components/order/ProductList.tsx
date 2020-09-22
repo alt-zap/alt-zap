@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useMemo, useState, useCallback } from 'react'
 import { List, Divider, Affix } from 'antd'
+import slugify from 'slugify'
 
 import { Section } from '../../typings'
 import ProductSummary from '../common/ProductSummary'
@@ -112,7 +113,7 @@ const ListSection: FC<SectionProps> = ({
         itemLayout="horizontal"
         dataSource={products}
         renderItem={(product, i) => (
-          <div className="pv2" key={i}>
+          <div className="pv2" key={slugify(`${product.name}-${i}`)}>
             <ProductSummary product={product} />
           </div>
         )}
