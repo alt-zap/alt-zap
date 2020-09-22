@@ -109,8 +109,9 @@ const Order: FC = () => {
           products: productItems.filter(
             ({ category, live }) => category === i && !!live
           ),
-        }
-      }) as Section[]
+        } as Section
+      })
+      .filter(({ products: sectionProducts }) => !!sectionProducts?.length)
   }, [products, tenant, fallbackProducts])
 
   const tenantOpen =

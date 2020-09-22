@@ -33,15 +33,18 @@ export const OrderContextProvider: FC = ({ children }) => {
     order: initialOrder,
   })
 
-  // Calculates total order price
   useEffect(() => {
     const totalPrice =
       state.order?.items
         .filter(Boolean)
-        // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
         .reduce((acc, { itemPrice }) => acc + itemPrice, 0) ?? 0
 
-    // We need to also compute the shipping price here.
+    const shippingPrice = state.order?.shipping?.price ?? 0
+
+    if (shippingPrice !== state.order?.totalizers?.shippingPrice) {
+      dispatch({ type: 'SET_SHIPPING_PRICE', args: shippingPrice })
+    }
+
     if (totalPrice !== state.order?.totalizers?.totalPrice) {
       dispatch({ type: 'SET_TOTAL_PRICE', args: totalPrice })
     }

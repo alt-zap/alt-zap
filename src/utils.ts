@@ -61,7 +61,7 @@ const messageForShipping = (order: Order, tenant: TenantConfig) => {
   const methodLine = `*Forma de Envio*: ${method}`
   const addressLabel = isDelivery
     ? `*Custo do Envio*: ${toString(
-        order?.shipping?.price ?? 0
+        order?.totalizers?.shippingPrice ?? 0
       )} \r\n*Endereço do Cliente*`
     : '*Endereço para Retirada*'
 
@@ -82,7 +82,7 @@ export const generateLink = (order: Order, tenant: TenantConfig) => {
 
 *Itens do Pedido:*
 ${itemsSection}
-*Total do Pedido:* R$ ${toString(order.totalizers?.totalPrice ?? 0)}
+*Total do Pedido:* R$ ${toString(order.totalizers?.finalPrice ?? 0)}
 
 ${messageForShipping(order, tenant)}
 ${
