@@ -280,7 +280,13 @@ const Order: FC = () => {
               </div>
               <Footer className="tc mt2">
                 <b>Alt Zap ©2020 </b> - Gostou?{' '}
-                <a href="https://alt-zap.vercel.app">Crie o seu!</a>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://alt-zap.vercel.app"
+                >
+                  Crie o seu!
+                </a>
               </Footer>
             </Layout>
           )}
