@@ -30,7 +30,7 @@ const ProductSummary: FC<Props> = ({
         tabIndex={0}
       >
         {imgSrc && (
-          <div className="w-34" style={{ minWidth: '110px' }}>
+          <div className="w-34" style={{ width: '110px', minWidth: '110px' }}>
             <ProductImage
               src={imgSrc}
               title={name}
@@ -47,7 +47,9 @@ const ProductSummary: FC<Props> = ({
               {name}
             </span>
             <span className="f5 fw2 silver" style={{ lineHeight: '20px' }}>
-              {description}
+              {`${description?.substring(0, 50)}${
+                (description?.length ?? 0) > 50 ? '...' : ''
+              }`}
             </span>
           </div>
           <span className="b black f3" style={{ marginBottom: '-6px' }}>
