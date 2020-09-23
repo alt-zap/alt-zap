@@ -30,6 +30,12 @@ export interface TenantConfig {
   address?: WorldAddress
   shippingStrategies?: ShippingStrategies
   openingHours?: OpeningHours
+  sectionSorting: SiteSection[]
+}
+
+export type SiteSection = {
+  categoryIndex: number
+  productIds: string[]
 }
 
 export type PaymentMethod = {
