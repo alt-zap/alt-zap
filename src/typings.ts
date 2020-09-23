@@ -2,7 +2,7 @@ export type Element<ArrayType extends readonly unknown[]> = ArrayType[number]
 
 export interface TenantConfig {
   migrated?: boolean
-  showOnClose: boolean
+  showOnClose?: boolean
   name: string
   slug: string
   category?: string
@@ -24,11 +24,9 @@ export interface TenantConfig {
     price: number
     items?: string[]
   }>
-  // won't happen
-  menus: Menu[]
   categories?: Category[]
-  templateAssembly: Assembly[]
-  selectedMenu: number
+  templateAssembly?: Assembly[]
+  selectedMenu?: number
   address?: WorldAddress
   shippingStrategies?: ShippingStrategies
   openingHours?: OpeningHours
@@ -63,7 +61,7 @@ export type TimeFrame = {
   to: string
 }
 
-export type ShippingStrategy = 'DELIVERY' | 'TAKEAWAY'
+export type ShippingMethod = 'DELIVERY' | 'TAKEAWAY'
 
 export type ShippingStrategies = {
   deliveryFixed: {
@@ -151,8 +149,7 @@ export interface Assembly {
   options: AssemblyOption[]
 }
 
-export interface CategoriesCollection
-  extends Element<Element<TenantConfig['menus']>['categories']> {
+export interface CategoriesCollection extends Category {
   id: string
 }
 
@@ -196,8 +193,8 @@ export type Order = {
     name: string
   }
   shipping?: {
-    type: ShippingStrategy
-    address?: Address
+    type: ShippingMethod
+    address?: WorldAddress
     price?: number
   }
   payment?: {
@@ -209,4 +206,10 @@ export type Order = {
     totalPrice?: number
     finalPrice?: number
   }
+}
+
+export type Section = {
+  name: string
+  slug: string
+  products: Product[]
 }

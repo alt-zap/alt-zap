@@ -1,3 +1,5 @@
 body {
   font-family: 'Mukta', sans-serif;
+  scroll-behavior: smooth;
 }
+

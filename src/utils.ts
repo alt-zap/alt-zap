@@ -1,7 +1,14 @@
 import React, { useEffect, useRef } from 'react'
 
-import { WorldAddress, OrderProducts, OpeningHours, Days } from './typings'
-import { ShippingMethod } from './components/order/SelectShipping'
+import {
+  WorldAddress,
+  OrderProducts,
+  OpeningHours,
+  Days,
+  Order,
+  TenantConfig,
+  ShippingMethod,
+} from './typings'
 
 type Elements = HTMLInputElement | HTMLTextAreaElement
 
@@ -37,7 +44,9 @@ type GenerateLinkParams = {
   whatsapp: string
 }
 
-const messageForAddress = (address: WorldAddress) => {
+const messageForAddress = (address?: WorldAddress) => {
+  if (!address) return ''
+
   const { street, number, complement, district, city, state } = address
 
   return `${street} - ${number}
@@ -45,65 +54,54 @@ ${complement ?? '(s/c)'} - ${district}
 ${city} - ${state}`
 }
 
-const messageForShipping = (
-  orderAddress: WorldAddress,
-  shippingMethod: ShippingMethod,
-  tenantAddress: WorldAddress
-) => {
-  const isDelivery = shippingMethod === 'delivery'
+const messageForShipping = (order: Order, tenant: TenantConfig) => {
+  const isDelivery = order.shipping?.type === 'DELIVERY'
   const method = isDelivery ? 'Entrega' : 'Retirada'
 
   const methodLine = `*Forma de Envio*: ${method}`
   const addressLabel = isDelivery
-    ? '*Endereço do Cliente*'
+    ? `*Custo do Envio*: ${toString(
+        order?.totalizers?.shippingPrice ?? 0
+      )} \r\n*Endereço do Cliente*`
     : '*Endereço para Retirada*'
 
   return `${methodLine}
 ${addressLabel}
-${messageForAddress(isDelivery ? orderAddress : tenantAddress)}`
+${messageForAddress(isDelivery ? order?.shipping?.address : tenant.address)}`
 }
 
-export const generateLink = ({
-  name,
-  shippingMethod,
-  tenantAddress,
-  address,
-  order,
-  payment,
-  total,
-  info,
-  whatsapp,
-}: GenerateLinkParams) => {
-  const { label, change } = payment
-
+export const generateLink = (order: Order, tenant: TenantConfig) => {
   // eslint-disable-next-line no-shadow
-  const items = order
-    .filter(([, quantity]) => parseInt(`${quantity}`, 10) > 0)
-    // eslint-disable-next-line no-shadow
-    .map(([name, quantity]) => `*${quantity}* - ${name}`)
+  const itemsSection = order.items
+    .filter(({ quantity }) => parseInt(`${quantity}`, 10) > 0)
+    .map(({ product, quantity }) => `*${quantity}* - ${product.name}`)
     .join('\r\n')
 
   const text = `*Novo Pedido!*
-*Nome:* ${name}
+*Nome do Cliente:* ${order?.customer?.name}
 
-*Itens:*
-${items}
-*Total do Pedido:* R$ ${toString(total)}
+*Itens do Pedido:*
+${itemsSection}
+*Total do Pedido:* R$ ${toString(order.totalizers?.finalPrice ?? 0)}
 
-${messageForShipping(address, shippingMethod, tenantAddress)}
+${messageForShipping(order, tenant)}
 ${
-  info
+  order.info
     ? `
 *Outras Informações:*`
     : ''
 }
-${info ?? ''} 
-*Meio de Pagamento:* ${label}
-${change ? `Precisa de troco para R$ *${change}*` : ''}`
+${order.info ?? ''} 
+*Meio de Pagamento:* ${order.payment?.type.name}
+${
+  order.payment?.changeFor
+    ? `Precisa de troco para R$ *${order.payment?.changeFor}*`
+    : ''
+}`
 
-  return `https://api.whatsapp.com/send?phone=${whatsapp}&text=${window.encodeURIComponent(
-    text
-  )}`
+  return `https://api.whatsapp.com/send?phone=${
+    tenant?.whatsapp
+  }&text=${window.encodeURIComponent(text)}`
 }
 
 export const generateGoogleMapsLink = (address?: WorldAddress) => {

@@ -25,6 +25,7 @@
     "antd-img-crop": "^3.9.0",
     "dayjs": "1.8.28",
     "firebase": "7.15.5",
+    "fuzzysearch": "^1.0.3",
     "imask": "6.0.5",
     "moment": "latest",
     "query-string": "^6.13.1",
@@ -41,6 +42,7 @@
     "slugify": "^1.4.4",
     "tachyons": "^4.12.0",
     "typescript": "^3.9.6",
+    "use-debounce": "^4.0.0",
     "use-query-params": "^1.1.6",
     "uuid": "^8.2.0"
   },

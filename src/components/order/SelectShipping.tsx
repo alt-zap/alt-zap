@@ -9,7 +9,7 @@ import {
   prepareRules,
 } from '../../intlConfig'
 import AddressFields from '../common/AddressFields'
-import { WorldAddress } from '../../typings'
+import { WorldAddress, ShippingMethod } from '../../typings'
 import AutoFill from '../AutoFill'
 import { useTenantConfig } from '../../contexts/TenantContext'
 import addressIcon from '../../assets/address.svg'
@@ -17,8 +17,6 @@ import { generateGoogleMapsLink } from '../../utils'
 
 const { Group } = Radio
 const { Item } = Form
-
-export type ShippingMethod = 'takeaway' | 'delivery'
 
 const addressRules: TypedIntlRules<WorldAddress> = {
   street: [{ required: true, message: 'address.streetRule' }],
@@ -44,8 +42,8 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
     acceptsDelivery && acceptsTakeaway
       ? null
       : acceptsDelivery
-      ? 'delivery'
-      : 'takeaway'
+      ? 'DELIVERY'
+      : 'TAKEAWAY'
 
   const [current, setCurrent] = useState<ShippingMethod | null>(null)
 
@@ -79,19 +77,19 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
             size="large"
           >
             {acceptsDelivery && (
-              <Radio.Button value="delivery">
+              <Radio.Button value="DELIVERY">
                 <Message id="order.shipping.delivery" />
               </Radio.Button>
             )}
             {acceptsTakeaway && (
-              <Radio.Button value="takeaway">
+              <Radio.Button value="TAKEAWAY">
                 <Message id="order.shipping.takeaway" />
               </Radio.Button>
             )}
           </Group>
         </Item>
       </div>
-      {current === 'delivery' && (
+      {current === 'DELIVERY' && (
         <div id="address" className="flex flex-column items-center mt2">
           <div className="mb2">
             <AutoFill onAddress={onAutoFill} />
@@ -99,7 +97,7 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
           <AddressFields rules={addressRules} />
         </div>
       )}
-      {current === 'takeaway' && (
+      {current === 'TAKEAWAY' && (
         <div className="flex justify-center">
           <div className="flex justify-between items-center w-100 bg-white pa3 mt2 shadow-1">
             <div className="flex flex-column w-70">

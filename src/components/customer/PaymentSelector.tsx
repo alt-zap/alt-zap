@@ -1,87 +1,120 @@
-import React, { FC, useState, useEffect, useCallback, useMemo } from 'react'
+import React, { FC } from 'react'
 import { Radio, Alert } from 'antd'
 import ReactMarkdown from 'react-markdown'
+import { RadioChangeEvent } from 'antd/lib/radio'
 
 import CurrencyInput from '../common/CurrencyInput'
+import { useOrder } from '../../contexts/order/OrderContext'
+import { useTenant } from '../../contexts/TenantContext'
+import { Message, useAltIntl } from '../../intlConfig'
+import { PaymentMethod } from '../../typings'
 
 const radioStyle = {
   height: '30px',
   lineHeight: '30px',
 }
 
-type Props = {
-  methods: TenantConfig['paymentMethods']
-  onPayment: (data: { name: string; change: string }) => void
-}
+const PaymentSelector: FC = () => {
+  const [{ order }, dispatch] = useOrder()
+  const [{ tenant }] = useTenant()
+  const intl = useAltIntl()
 
-const PaymentSelector: FC<Props> = ({ methods, onPayment }) => {
-  const [selectedIndex, setSelected] = useState<number>()
-  const [change, setChange] = useState('')
+  const methods = tenant?.paymentMethods ?? []
 
-  useEffect(() => {
-    const method = typeof selectedIndex === 'number' && methods[selectedIndex]
+  const selectedPayment = order?.payment
 
-    if (!method) return
-    onPayment({ name: method.name, change })
-  }, [onPayment, selectedIndex, methods, change])
+  const selectedPaymentHasInfo =
+    !!selectedPayment?.type?.description || !!selectedPayment?.type?.imgSrc
 
-  const onChange = useCallback(
-    (e) => {
-      const methodIndex = e.target.value
-
-      setSelected(methodIndex)
-    },
-    [setSelected]
-  )
-
-  const { imgSrc, description, name } = useMemo(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return selectedIndex ? methods[selectedIndex] : ({} as any)
-  }, [selectedIndex, methods])
+  const shouldDisplayChangeInput = selectedPayment?.type?.checksForChange
 
   return (
     <div className="flex flex-column items-center w-100 mt2">
-      <h2>Selecione o pagamento</h2>
+      <h2>
+        <Message id="order.payment.selectPayment" />
+      </h2>
       <div>
         <Radio.Group
-          onChange={onChange}
-          value={selectedIndex}
+          onChange={(e: RadioChangeEvent) => {
+            const method = e.target.value as PaymentMethod
+
+            dispatch({
+              type: 'SET_PARTIAL_ORDER',
+              args: {
+                payment: {
+                  type: method,
+                  changeFor: selectedPayment?.changeFor,
+                },
+              },
+            })
+          }}
+          value={selectedPayment?.type}
           className="w-100"
         >
-          {methods.map(({ name: methodName, checksForChange }, i) => (
-            <Radio style={radioStyle} value={i} key={i} className="w-100">
-              {methodName}
-              {checksForChange && selectedIndex === i && (
-                <CurrencyInput
-                  valueAsString
-                  placeholder="Troco para?"
-                  className="ml2 w-50"
-                  value={change}
-                  onChange={(e) => {
-                    setChange(e.target.value)
-                  }}
-                />
-              )}
+          {methods.map((method, i) => (
+            <Radio style={radioStyle} value={method} key={i} className="w-100">
+              {method?.name}
             </Radio>
           ))}
         </Radio.Group>
       </div>
-      <div className="tc">
-        {(description || imgSrc) && <h4>Informações</h4>}
-        <div className="flex flex-column items-center">
-          {description && (
-            <ReactMarkdown source={description} className="pa1" />
-          )}
-          {imgSrc && <img src={imgSrc} alt={name} className="w-70" />}
+      {shouldDisplayChangeInput && (
+        <div className="tc flex flex-column items-center">
+          <h4>
+            <Message id="order.payment.changeLabel" />
+          </h4>
+          <CurrencyInput
+            valueAsString
+            style={{ maxWidth: '120px' }}
+            addonBefore={intl.formatMessage({ id: 'currency.symbol' })}
+            value={selectedPayment?.changeFor}
+            onChange={(e) => {
+              if (!selectedPayment) {
+                // This is never gonna happen. Just pleasing Typescript.
+                return
+              }
+
+              dispatch({
+                type: 'SET_PARTIAL_ORDER',
+                args: {
+                  payment: {
+                    type: selectedPayment.type,
+                    changeFor: e.target.value,
+                  },
+                },
+              })
+            }}
+          />
         </div>
-        {(description || imgSrc) && (
+      )}
+      {selectedPaymentHasInfo && (
+        <div className="tc">
+          <h4>
+            <Message id="order.payment.info" />
+          </h4>
+          <div className="flex flex-column items-center">
+            {selectedPayment?.type?.description && (
+              <ReactMarkdown
+                source={selectedPayment.type.description}
+                className="pa1"
+              />
+            )}
+            {selectedPayment?.type?.imgSrc && (
+              <img
+                width="250px"
+                src={selectedPayment.type.imgSrc}
+                alt={selectedPayment.type.name}
+                className="w-70"
+              />
+            )}
+          </div>
           <Alert
-            message="Envie o comprovante de transferência pelo Whatsapp."
+            message={intl.formatMessage({ id: 'order.payment.sendReceive' })}
             type="warning"
             className="mt4"
           />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }
