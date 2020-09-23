@@ -6,6 +6,7 @@ import AutoFill from './AutoFill'
 import AddressFields from './common/AddressFields'
 import { WorldAddress } from '../typings'
 import { TypedIntlRules, Message } from '../intlConfig'
+import SmartAddress from './tenant/logistics/SmartAddress'
 
 type Props = {
   initialAddress?: Partial<WorldAddress>
@@ -40,6 +41,7 @@ const AddressForm: FC<Props> = ({
       <div className="flex flex-column items-center">
         <AutoFill onAddress={handleAutoFill} />
       </div>
+      <SmartAddress onAddress={handleAutoFill} />
       <Form
         form={form}
         layout="vertical"

@@ -139,6 +139,9 @@ export type WorldAddress = {
   city: string
   state: string
   country?: string
+  houseNumber?: string
+  lat?: number
+  long?: number
 }
 
 // May change that later
