@@ -38,7 +38,11 @@ const MenuSearch: FC<Props> = ({
         className="flex justify-between br2 pt3 ph3 shadow-2 mb2"
         style={{ backgroundColor: '#f0f2f5' }}
       >
-        <Form.Item label="Categoria" className="w-40 mr2">
+        <Form.Item
+          label="Categoria"
+          className="w-40 mr2"
+          style={{ display: 'unset' }}
+        >
           <Select
             getPopupContainer={(trigger) => trigger.parentElement}
             value={activeSection}
@@ -52,7 +56,12 @@ const MenuSearch: FC<Props> = ({
             ))}
           </Select>
         </Form.Item>
-        <Form.Item label="Busca" name="searchTerm" className="w-60">
+        <Form.Item
+          label="Busca"
+          name="searchTerm"
+          className="w-60"
+          style={{ display: 'unset' }}
+        >
           <Input
             allowClear
             suffix={loading && <LoadingOutlined />}
