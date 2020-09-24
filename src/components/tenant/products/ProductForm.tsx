@@ -266,12 +266,14 @@ const ProductForm: FC<Props> = ({
         <div className="flex justify-around flex-auto w-100 w-auto-l">
           <Item
             label={<Message id="tenant.product.min" />}
+            style={{ display: 'unset' }}
             name="min"
             rules={rules.min}
           >
             <NumberInput min={0} disabled={loading} />
           </Item>
           <Item
+            style={{ display: 'unset' }}
             label={<Message id="tenant.product.max" />}
             name="max"
             rules={[
