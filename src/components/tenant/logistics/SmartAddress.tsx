@@ -42,11 +42,12 @@ const SmartAddress: React.FC<Props> = ({ onAddress }) => {
   })
 
   async function geo(term: string) {
+    if (!term) return
     await platform.getSearchService().discover(
       {
         at,
         limit: 10,
-        q: term === '' ? 'undefined' : term,
+        q: term,
         in: 'countryCode:BRA',
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
