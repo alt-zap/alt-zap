@@ -47,7 +47,7 @@ const ProductSummary: FC<Props> = ({
               {name}
             </span>
             <span className="f5 fw2 silver" style={{ lineHeight: '20px' }}>
-              {`${description?.substring(0, 50)}${
+              {`${description?.substring(0, 50) ?? ''}${
                 (description?.length ?? 0) > 50 ? '...' : ''
               }`}
             </span>
