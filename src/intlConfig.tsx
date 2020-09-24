@@ -233,6 +233,11 @@ export const intlConfig = {
     'address.districtRule': 'Preencha seu bairro',
     'address.cityRule': 'Preencha sua cidade',
     'address.stateRule': 'Selecione seu estado',
+    'address.smartAddress.button': 'Digite seu endereço',
+    'address.smartAddress.placeholder':
+      'ex: Rua João Julião Martins, 155, Universitário',
+    'address.smarAddress.error':
+      'Não foi possível realizar a requisição. Tente novamente.',
     'address.form.save': 'Salvar Endereço',
     'tenant.migrate': 'Mostrar Produtos',
     'tenant.postMigrate':

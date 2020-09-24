@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react'
-import { AutoComplete, Button } from 'antd'
+import { AutoComplete, Button, message } from 'antd'
+import * as Sentry from '@sentry/react'
 
+import { Message, useAltIntl } from '../../../intlConfig'
 import { WorldAddress } from '../../../typings'
 
 type Props = {
@@ -27,22 +29,24 @@ type HereDiscoverReturn = {
 }
 
 const SmartAddress: React.FC<Props> = ({ onAddress }) => {
+  const intl = useAltIntl()
+  const at = '-7.23072,-35.8817'
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [options, setOptions] = useState<any[]>([])
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { H } = window as any
   const platform = new H.service.Platform({
-    app_id: '3QJ2bSLt38M4CglGoiHp',
-    apikey: 'gHjA5cqevmhypFVTPn__kUvcvPNXPjpPnj57pG6iIno',
+    app_id: process.env.REACT_APP_HERE_APP_ID,
+    apikey: process.env.REACT_APP_HERE_KEY,
   })
 
   async function geo(term: string) {
     await platform.getSearchService().discover(
       {
-        at: '-7.23072,-35.8817',
+        at,
         limit: 10,
-        q: term,
+        q: term === '' ? 'undefined' : term,
         in: 'countryCode:BRA',
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -67,7 +71,11 @@ const SmartAddress: React.FC<Props> = ({ onAddress }) => {
   }
 
   const onSearch = (term: string) => {
-    geo(term)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    geo(term).catch((e: any) => {
+      message.error(intl.formatMessage({ id: 'address.smarAddress.error' }))
+      Sentry.captureException(e)
+    })
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -87,15 +95,15 @@ const SmartAddress: React.FC<Props> = ({ onAddress }) => {
 
   return (
     <>
-      <Button className="mb2 mr2 blue b--light-blue">
-        Digite seu endereço
+      <Button className="mb2 mt2 mr2 blue b--light-blue">
+        <Message id="address.smartAddress.button" />
       </Button>
       <AutoComplete
         options={options}
-        style={{ width: 526 }}
+        style={{ width: '100%' }}
         onSelect={onSelect}
         onSearch={onSearch}
-        placeholder="ex: Rua João Julião Martins, 155, Universitário"
+        placeholder={<Message id="address.smartAddress.placeholder" />}
       />
     </>
   )
