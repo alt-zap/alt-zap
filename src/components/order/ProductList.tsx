@@ -106,10 +106,15 @@ const ListSection: FC<SectionProps> = ({
   }, [ref, slug, setActive])
 
   return (
-    <div id={slug} key={slug} ref={refs[slug]}>
+    <div
+      id={slug}
+      key={slug}
+      ref={refs[slug]}
+      className="w-100 flex justify-center"
+    >
       {shouldDisplayName && <Divider>{name}</Divider>}
       <List
-        style={{ maxWidth: '500px' }}
+        style={{ maxWidth: '500px', width: '100%' }}
         itemLayout="horizontal"
         dataSource={products}
         renderItem={(product, i) => (
