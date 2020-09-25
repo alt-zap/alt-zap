@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import * as Sentry from '@sentry/react'
 
 import { WorldAddress } from '../../typings'
+import { useAltIntl } from '../../intlConfig'
 
 const CAMPINAGRANDE_GEOLOCATION = '-7.23072,-35.8817'
 
@@ -28,6 +29,7 @@ type HereDiscoverReturn = {
 
 export default () => {
   const hereClient = useRef()
+  const intl = useAltIntl()
 
   useEffect(() => {
     const { H } = window as Window
@@ -41,9 +43,9 @@ export default () => {
   const discoverAddress = useCallback(
     async ({
       q,
-      at = CAMPINAGRANDE_GEOLOCATION,
+      at,
       limit = 10,
-      inParam = 'countryCode:BRA',
+      inParam,
     }: {
       q: string
       limit?: number
@@ -57,10 +59,13 @@ export default () => {
       return new Promise<HereDiscoverReturn>((resolve, reject) => {
         client.getSearchService().discover(
           {
-            at,
+            at:
+              at ?? intl.formatMessage({ id: 'tenant.shipping.hereDefaultAt' }),
             limit,
             q,
-            in: inParam,
+            in:
+              inParam ??
+              intl.formatMessage({ id: 'tenant.shipping.hereDefaultIn' }),
           },
           (data: HereDiscoverReturn) => resolve(data),
           (error: any) => {
@@ -70,7 +75,7 @@ export default () => {
         )
       })
     },
-    []
+    [intl]
   )
 
   return {

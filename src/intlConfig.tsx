@@ -109,6 +109,8 @@ export const intlConfig = {
     'imageupload.upload': 'Upload',
     'imageupload.newImage': 'Nova Imagem',
     'imageupload.editImage': 'Edite a imagem',
+    'tenant.shipping.hereDefaultAt': '-7.23072,-35.8817',
+    'tenant.shipping.hereDefaultIn': 'countryCode:BRA',
     'tenant.shipping.success': 'Informações alteradas com sucesso',
     'tenant.shipping.deliveryFixed': 'Entrega com preço fixo',
     'tenant.shipping.deliveryFixedDesc':
