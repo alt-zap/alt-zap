@@ -1,97 +1,49 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react'
-import { AutoComplete, Button, message } from 'antd'
-import * as Sentry from '@sentry/react'
+import { AutoComplete, Button, Input, message } from 'antd'
+import { useDebouncedCallback } from 'use-debounce/lib'
+import { LoadingOutlined } from '@ant-design/icons'
 
 import { Message, useAltIntl } from '../../../intlConfig'
 import { WorldAddress } from '../../../typings'
+import useHere, { mapHereToWorldAddress } from '../../common/useHere'
 
 type Props = {
   onAddress: (data: Partial<WorldAddress>) => void
 }
 
-type HereDiscoverReturn = {
-  items: Array<{
-    address: {
-      label: string
-      state: string
-      houseNumber: string
-      city: string
-      district: string
-      street: string
-      postalCode: string
-    }
-    position: {
-      lat: number
-      lng: number
-    }
-  }>
-}
-
 const SmartAddress: React.FC<Props> = ({ onAddress }) => {
   const intl = useAltIntl()
-  const at = '-7.23072,-35.8817'
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [options, setOptions] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+  const [options, setOptions] = useState<Option[]>([])
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { H } = window as any
-  const platform = new H.service.Platform({
-    app_id: process.env.REACT_APP_HERE_APP_ID,
-    apikey: process.env.REACT_APP_HERE_KEY,
-  })
-
-  async function geo(term: string) {
-    if (!term) return
-    await platform.getSearchService().discover(
-      {
-        at,
-        limit: 10,
-        q: term,
-        in: 'countryCode:BRA',
-      },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (data: HereDiscoverReturn) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const newOptions = data.items.map(({ address, position }: any) => {
-          const { label } = address
-
-          return {
-            label,
-            value: JSON.stringify({
-              address,
-              position,
-            }),
-          }
-        })
-
-        setOptions(newOptions)
-      },
-      console.error
-    )
-  }
+  const { discoverAddress } = useHere()
 
   const onSearch = (term: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    geo(term).catch((e: any) => {
-      message.error(intl.formatMessage({ id: 'address.smarAddress.error' }))
-      Sentry.captureException(e)
-    })
+    if (!term?.length) return
+    discoverAddress({ q: term })
+      .then((data) => {
+        console.log({ data })
+        const newOptions = data.items.map((item) => ({
+          value: item.address.label,
+          label: item.address.label,
+          address: mapHereToWorldAddress(item),
+        }))
+
+        setOptions(newOptions)
+      })
+      .catch(() => {
+        message.error(intl.formatMessage({ id: 'address.smarAddress.error' }))
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSelect = (e: any) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const selected = JSON.parse(e) as any
+  const [debouncedSearch] = useDebouncedCallback(onSearch, 1000)
 
-    const { houseNumber, ...address } = selected.address
-    const { ...position } = selected.position
-
-    onAddress({
-      number: houseNumber,
-      ...address,
-      ...position,
-    })
+  const onSelect = (option: Option) => {
+    onAddress(option.address)
   }
 
   return (
@@ -102,12 +54,28 @@ const SmartAddress: React.FC<Props> = ({ onAddress }) => {
       <AutoComplete
         options={options}
         style={{ width: '100%' }}
-        onSelect={onSelect}
-        onSearch={onSearch}
-        placeholder={<Message id="address.smartAddress.placeholder" />}
-      />
+        onSelect={(_: string, option) => onSelect(option as Option)}
+        onSearch={(term: string) => {
+          setLoading(true)
+          debouncedSearch(term)
+        }}
+      >
+        <Input
+          suffix={loading ? <LoadingOutlined /> : <span />}
+          size="large"
+          placeholder={intl.formatMessage({
+            id: 'address.smartAddress.placeholder',
+          })}
+        />
+      </AutoComplete>
     </>
   )
 }
 
 export default SmartAddress
+
+type Option = {
+  value: string
+  label: string
+  address: WorldAddress
+}
