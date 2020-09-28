@@ -26,8 +26,6 @@
     "dayjs": "1.8.28",
     "firebase": "7.15.5",
     "fuzzysearch": "^1.0.3",
-    "gatsby": "^2.24.65",
-    "gatsby-plugin-antd": "^2.2.0",
     "imask": "6.0.5",
     "moment": "latest",
     "query-string": "^6.13.1",
@@ -63,16 +61,14 @@
     "@types/storybook__react": "^5.2.1",
     "@types/uuid": "^8.0.0",
     "@vtex/prettier-config": "^0.3.1",
+    "eslint-config-vtex": "^12.8.6",
     "eslint-config-vtex-react": "^6.7.0",
-    "gatsby-plugin-typescript": "^2.4.20",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
     "react-scripts": "^3.4.1",
     "source-map-explorer": "^2.4.2",
-    "source-map-support": "^0.5.19",
-    "ts-jest": "^26.3.0",
-    "ts-node": "^9.0.0"
+    "ts-jest": "^26.3.0"
   },
   "optionalDependencies": {
     "cypress": "^4.9.0"

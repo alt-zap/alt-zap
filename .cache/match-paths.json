@@ -4,11 +4,35 @@
         "matchPath": "/dev-404-page/"
     },
     {
-        "path": "/__tenant_slug__",
-        "matchPath": "/:*"
+        "path": "/EditTenantPage/",
+        "matchPath": "/EditTenantPage/"
     },
     {
-        "path": "/app/",
-        "matchPath": "/app/*"
+        "path": "/LoginPage/",
+        "matchPath": "/LoginPage/"
+    },
+    {
+        "path": "/OnboardPage/",
+        "matchPath": "/OnboardPage/"
+    },
+    {
+        "path": "/OrderPage/",
+        "matchPath": "/OrderPage/"
+    },
+    {
+        "path": "/TenantDashboardPage/",
+        "matchPath": "/TenantDashboardPage/"
+    },
+    {
+        "path": "/TenantsPage/",
+        "matchPath": "/TenantsPage/"
+    },
+    {
+        "path": "/UserSwitchPage/",
+        "matchPath": "/UserSwitchPage/"
+    },
+    {
+        "path": "/__tenant_slug__",
+        "matchPath": "/:*"
     }
 ]

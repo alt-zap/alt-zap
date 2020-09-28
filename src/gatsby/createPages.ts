@@ -1,4 +1,6 @@
+// eslint-disable-next-line import/no-nodejs-modules
 import { resolve } from 'path'
+
 import { GatsbyNode } from 'gatsby'
 
 export const createPages: GatsbyNode['createPages'] = ({ actions }) => {
