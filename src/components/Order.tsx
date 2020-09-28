@@ -1,4 +1,5 @@
 import React, { FC, useCallback, useMemo, Fragment } from 'react'
+import { RouteComponentProps } from '@reach/router'
 import { Affix, Alert, Button, Form, Divider, Input, Spin, Layout } from 'antd'
 import { SendOutlined } from '@ant-design/icons'
 import * as firebase from 'firebase/app'
@@ -37,7 +38,7 @@ interface TempFormData extends WorldAddress {
   shippingMethod?: ShippingMethod
 }
 
-const Order: FC = () => {
+const Order: FC<RouteComponentProps> = () => {
   const intl = useAltIntl()
   const [debug] = useQueryParam('debug', BooleanParam)
 

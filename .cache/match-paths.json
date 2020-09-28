@@ -1,0 +1,14 @@
+[
+    {
+        "path": "/dev-404-page/",
+        "matchPath": "/dev-404-page/"
+    },
+    {
+        "path": "/__tenant_slug__",
+        "matchPath": "/:*"
+    },
+    {
+        "path": "/app/",
+        "matchPath": "/app/*"
+    }
+]

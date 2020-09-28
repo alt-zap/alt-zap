@@ -27,3 +27,4 @@ firebase-debug.log
 ui-debug.log
 
 .lucisenv
+.cache
