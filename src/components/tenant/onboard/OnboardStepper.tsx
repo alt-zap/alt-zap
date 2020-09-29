@@ -48,7 +48,7 @@ const OnboardStepper: FC = () => {
       })
         .then(() => {
           if (userDb?.hasTenant || window?.location?.hostname === 'localhost') {
-            return navigate('/tenants')
+            return navigate('/app/tenants')
           }
 
           setStep(1)
@@ -78,7 +78,7 @@ const OnboardStepper: FC = () => {
         .then((success) => {
           setHasTenant(dispatch, { hasTenant: true, userDbId })
           message.success(intl.formatMessage({ id: success }))
-          navigate('/tenants')
+          navigate('/app/tenants')
         })
         .catch((error) => {
           message.error(intl.formatMessage({ id: error }))

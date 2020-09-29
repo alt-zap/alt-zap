@@ -52,7 +52,7 @@ const AdminPage: FC<RouteComponentProps> = ({ children }) => {
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
             <Menu.Item
               key="1"
-              onClick={() => navigate('/tenants')}
+              onClick={() => navigate('/app/tenants')}
               icon={<HomeOutlined />}
             >
               <Message id="admin.tenants" />

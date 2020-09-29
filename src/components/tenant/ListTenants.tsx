@@ -45,8 +45,8 @@ const ListTenants: FC = () => {
         <TenantList
           loading={loading}
           tenants={tenants}
-          onSelectTenant={(id) => navigate(`/tenants/${id}`)}
-          onAddTenant={() => navigate('/onboard')}
+          onSelectTenant={(id) => navigate(`/app/tenants/${id}`)}
+          onAddTenant={() => navigate('/app/onboard')}
         />
       </div>
     </div>

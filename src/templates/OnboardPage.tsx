@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { useNavigate, RouteComponentProps } from '@reach/router'
 
-import AdminPage from '../templates/AdminPage'
+import AdminPage from './AdminPage'
 import { useAuth } from '../contexts/auth/AuthContext'
 import OnboardStepper from '../components/tenant/onboard/OnboardStepper'
 

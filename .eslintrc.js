@@ -12,6 +12,7 @@ module.exports = {
       extends: ['vtex-react'],
       rules: {
         'react/jsx-pascal-case': 'off',
+        'react/jsx-handler-names': 'off',
       },
     },
     // General overrides

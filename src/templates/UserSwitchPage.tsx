@@ -17,19 +17,19 @@ const UserSwitch: FC<RouteComponentProps> = () => {
   }
 
   if (!user) {
-    navigate(`/login`)
+    navigate(`/app/login`)
 
     return null
   }
 
   if ((user && !userDb) || !userDb?.hasTenant || !userDb.document) {
-    navigate(`/onboard`)
+    navigate(`/app/onboard`)
 
     return null
   }
 
   if (user && userDb) {
-    navigate(`/tenants`)
+    navigate(`/app/tenants`)
 
     return null
   }

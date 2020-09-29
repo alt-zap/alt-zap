@@ -74,7 +74,7 @@ const TenantDashboard: FC = () => {
 
   useEffect(() => {
     if (!userLoading && !userDb?.document) {
-      navigate('/onboard')
+      navigate('/app/onboard')
     }
   }, [userDb, navigate, userLoading])
 
@@ -100,7 +100,7 @@ const TenantDashboard: FC = () => {
             backgroundColor: 'white',
           }}
           className="pt5 pt2-l"
-          onBack={() => navigate('/tenants')}
+          onBack={() => navigate('/app/tenants')}
           title={tenant.name}
           tags={
             <Tooltip title={intl.formatMessage({ id: 'tenant.openTitle' })}>

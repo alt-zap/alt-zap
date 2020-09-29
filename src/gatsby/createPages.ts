@@ -8,7 +8,7 @@ export const createPages: GatsbyNode['createPages'] = ({ actions }) => {
 
   createPage({
     path: '/__tenant_slug__',
-    matchPath: '/:*',
+    matchPath: '/*',
     component: resolve(__dirname, '../templates/OrderPage.tsx'),
     context: {},
   })

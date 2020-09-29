@@ -11,7 +11,7 @@ const LoginPage: FC<RouteComponentProps> = () => {
 
   useEffect(() => {
     if (user && !userDb) {
-      navigate('/onboard')
+      navigate('/app/onboard')
 
       return
     }
