@@ -28,6 +28,7 @@
     "fuzzysearch": "^1.0.3",
     "gatsby": "^2.24.66",
     "gatsby-plugin-antd": "^2.2.0",
+    "gatsby-plugin-use-query-params": "^1.0.1",
     "imask": "6.0.5",
     "moment": "latest",
     "query-string": "^6.13.1",
