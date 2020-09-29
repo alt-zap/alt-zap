@@ -7,8 +7,9 @@ export default {
   },
   plugins: [
     `gatsby-plugin-typescript`,
-    `gatsby-plugin-antd`,
     `gatsby-plugin-use-query-params`,
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-netlify`,
+    `gatsby-plugin-antd`,
   ],
 }

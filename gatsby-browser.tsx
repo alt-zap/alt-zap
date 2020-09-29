@@ -21,6 +21,8 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig)
 
   if (window?.location.hostname === 'localhost') {
+    // eslint-disable-next-line no-console
+    console.log('Using Firestore on emulator')
     firebase.firestore().settings({
       host: 'localhost:4004',
       ssl: false,
