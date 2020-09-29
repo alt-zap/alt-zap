@@ -1,12 +1,12 @@
 import React, { FC } from 'react'
 import { Spin } from 'antd'
-import { useNavigate, RouteComponentProps } from '@reach/router'
+import { navigate } from 'gatsby'
+import { RouteComponentProps } from '@reach/router'
 
 import { useAuth } from '../contexts/auth/AuthContext'
 
 const UserSwitch: FC<RouteComponentProps> = () => {
   const [{ user, userDb, loading }] = useAuth()
-  const navigate = useNavigate()
 
   if (loading) {
     return (

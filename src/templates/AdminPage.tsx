@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { FC, useCallback, Fragment } from 'react'
-import { RouteComponentProps, useNavigate } from '@reach/router'
+import { navigate } from 'gatsby'
+import { RouteComponentProps } from '@reach/router'
 import { Dropdown, Layout, Menu, Alert } from 'antd'
 import { HomeOutlined, DownOutlined, LogoutOutlined } from '@ant-design/icons'
 import * as firebase from 'firebase/app'
@@ -14,7 +15,6 @@ const { Header, Content, Footer, Sider } = Layout
 
 const AdminPage: FC<RouteComponentProps> = ({ children }) => {
   const intl = useAltIntl()
-  const navigate = useNavigate()
   const [{ user, userDb }] = useAuth()
 
   const logout = useCallback(() => {
@@ -24,7 +24,7 @@ const AdminPage: FC<RouteComponentProps> = ({ children }) => {
       .then(() => {
         navigate('/')
       })
-  }, [navigate])
+  }, [])
 
   const showDevAlert = window?.location.hostname === 'localhost'
 

@@ -20,7 +20,7 @@ import {
   WarningOutlined,
   CloudOutlined,
 } from '@ant-design/icons'
-import { useNavigate } from '@reach/router'
+import { navigate } from 'gatsby'
 import { useQueryParam, StringParam } from 'use-query-params'
 
 import { useTenantConfig } from '../../contexts/TenantContext'
@@ -58,8 +58,6 @@ const TenantDashboard: FC = () => {
   const tenantContext = useTenantConfig()
   const { tenant, loading, productsLoading, products } = tenantContext
 
-  const navigate = useNavigate()
-
   const handleTabChange = useCallback(
     (tab) => {
       setTabId(tab)
@@ -76,7 +74,7 @@ const TenantDashboard: FC = () => {
     if (!userLoading && !userDb?.document) {
       navigate('/app/onboard')
     }
-  }, [userDb, navigate, userLoading])
+  }, [userDb, userLoading])
 
   useEffect(() => {
     setOpen(tenant?.openingHours ? isTenantOpen(tenant?.openingHours) : false)

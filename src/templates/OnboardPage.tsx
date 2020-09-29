@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
-import { useNavigate, RouteComponentProps } from '@reach/router'
+import { navigate } from 'gatsby'
+import { RouteComponentProps } from '@reach/router'
 
 import AdminPage from './AdminPage'
 import { useAuth } from '../contexts/auth/AuthContext'
@@ -7,7 +8,6 @@ import OnboardStepper from '../components/tenant/onboard/OnboardStepper'
 
 const OnboardPage: FC<RouteComponentProps> = () => {
   const [{ user }] = useAuth()
-  const navigate = useNavigate()
 
   if (!user) {
     navigate(`/`)
