@@ -6,12 +6,14 @@ import { Layout, Button, Divider, Alert } from 'antd'
 
 import logo from '../assets/logo.png'
 import intro from '../assets/intro.png'
+import SEO from '../components/SEO'
 
 const { Header, Content, Footer } = Layout
 
 const LoginPage: FC<RouteComponentProps> = () => {
   return (
     <Fragment>
+      <SEO />
       <Layout>
         <Header
           style={{

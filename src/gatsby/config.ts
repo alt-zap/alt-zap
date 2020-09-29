@@ -9,5 +9,6 @@ export default {
     `gatsby-plugin-typescript`,
     `gatsby-plugin-antd`,
     `gatsby-plugin-use-query-params`,
+    `gatsby-plugin-react-helmet`,
   ],
 }

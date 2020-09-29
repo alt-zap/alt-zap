@@ -7,10 +7,12 @@ import AdminPage from '../templates/AdminPage'
 import TenantDashboardPage from '../templates/TenantDashboardPage'
 import LoginPage from '../templates/LoginPage'
 import OnboardPage from '../templates/OnboardPage'
+import SEO from '../components/SEO'
 
 const App: FC = () => {
   return (
     <NoSSR>
+      <SEO />
       <Router>
         <LoginPage path="/app/login" />
         <OnboardPage path="/app/onboard" />
