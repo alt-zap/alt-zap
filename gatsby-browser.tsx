@@ -1,7 +1,9 @@
 import firebase from 'firebase/app'
 import 'firebase/analytics'
 import 'firebase/firestore'
+import * as Sentry from '@sentry/react'
 
+import './src/font.css'
 import 'tachyons/css/tachyons.min.css'
 
 const firebaseConfig = {
@@ -27,5 +29,9 @@ if (!firebase.apps.length) {
 
   firebase.analytics()
 }
+
+Sentry.init({
+  dsn: process.env.GATSBY_SENTRY_DSN,
+})
 
 export { wrapRootElement } from './src/gatsby/wrapRoot'

@@ -1,13 +1,12 @@
 import React, { FC, useEffect } from 'react'
 import { Spin } from 'antd'
-import { RouteComponentProps, useNavigate } from '@reach/router'
+import { navigate } from 'gatsby'
+import { RouteComponentProps } from '@reach/router'
 
-import { useAuth } from '../contexts/auth/AuthContext'
+import { loginWithGoogle, useAuth } from '../contexts/auth/AuthContext'
 
 const LoginPage: FC<RouteComponentProps> = () => {
   const [{ user, userDb, loading }] = useAuth()
-
-  const navigate = useNavigate()
 
   useEffect(() => {
     if (user && !userDb) {
@@ -17,9 +16,14 @@ const LoginPage: FC<RouteComponentProps> = () => {
     }
 
     if (user) {
-      navigate('/')
+      navigate('/app/tenants')
     }
-  }, [user, navigate, userDb])
+
+    if (!user && !userDb && !loading) {
+      // Temporary
+      loginWithGoogle()
+    }
+  }, [user, userDb, loading])
 
   return loading ? (
     <div className="flex items-center flex-column mt3">

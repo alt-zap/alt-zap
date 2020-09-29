@@ -2,6 +2,9 @@ import React from 'react'
 import { globalHistory } from '@reach/router'
 import { IntlProvider } from 'react-intl'
 import { QueryParamProvider } from 'use-query-params'
+import { ConfigProvider } from 'antd'
+import ptBR from 'antd/es/locale/pt_BR'
+import * as Sentry from '@sentry/react'
 
 import { AuthContextProvider } from '../contexts/auth/AuthContext'
 import { intlConfig } from '../intlConfig'
@@ -22,7 +25,11 @@ export const wrapRootElement: React.FC<{ element: React.FC }> = ({
     >
       <AuthContextProvider>
         <QueryParamProvider {...{ path: '/' }} reachHistory={globalHistory}>
-          {element}
+          <ConfigProvider locale={ptBR}>
+            <Sentry.ErrorBoundary fallback={null} showDialog>
+              {element}
+            </Sentry.ErrorBoundary>
+          </ConfigProvider>
         </QueryParamProvider>
       </AuthContextProvider>
     </IntlProvider>

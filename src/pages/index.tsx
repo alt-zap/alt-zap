@@ -1,17 +1,15 @@
 import React, { FC, Fragment } from 'react'
-import { useNavigate, RouteComponentProps } from '@reach/router'
+import { navigate } from 'gatsby'
+import { RouteComponentProps } from '@reach/router'
 import { GoogleLoginButton } from 'react-social-login-buttons'
 import { Layout, Button, Divider, Alert } from 'antd'
 
-import { loginWithGoogle } from '../contexts/auth/AuthContext'
 import logo from '../assets/logo.png'
 import intro from '../assets/intro.png'
 
 const { Header, Content, Footer } = Layout
 
 const LoginPage: FC<RouteComponentProps> = () => {
-  const navigate = useNavigate()
-
   return (
     <Fragment>
       <Layout>
