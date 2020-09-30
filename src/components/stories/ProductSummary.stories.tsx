@@ -15,38 +15,47 @@ const commonProps = {
   setQuantity: (a: string) => {},
 }
 
-// export const CommonSize = () => (
-//   <ProductSummary
-//     {...commonProps}
-//     product={{
-//       name: text('Name', 'O Pioneiro'),
-//       imgSrc: 'https://i.imgur.com/Y880XEG.png',
-//       headline: text('Headline', '130g blend bovino'),
-//       price: 1800,
-//     }}
-//   />
-// )
+export const CommonSize = () => (
+  <ProductSummary
+    {...commonProps}
+    product={{
+      userId: '',
+      category: 0,
+      highlight: false,
+      live: true,
+      name: text('Name', 'O Pioneiro'),
+      imgSrc: 'https://i.imgur.com/Y880XEG.png',
+      price: 1800,
+    }}
+  />
+)
 
-// export const BigTitle = () => (
-//   <ProductSummary
-//     {...commonProps}
-//     product={{
-//       name: 'Combo 1 Hambúrguer + Duas Cocas + Batata',
-//       imgSrc: 'https://i.imgur.com/Y880XEG.png',
-//       headline: text('Headline', '130g blend bovino'),
-//       price: 1800,
-//     }}
-//   />
-// )
+export const BigTitle = () => (
+  <ProductSummary
+    {...commonProps}
+    product={{
+      userId: '',
+      category: 0,
+      highlight: false,
+      live: true,
+      name: 'Combo 1 Hambúrguer + Duas Cocas + Batata',
+      imgSrc: 'https://i.imgur.com/Y880XEG.png',
+      price: 1800,
+    }}
+  />
+)
 
-// export const BigHeadline = () => (
-//   <ProductSummary
-//     {...commonProps}
-//     product={{
-//       name: 'O Pioneiro',
-//       imgSrc: 'https://i.imgur.com/Y880XEG.png',
-//       headline: '130g de calabra quentinha pra você, no capricho',
-//       price: 1800,
-//     }}
-//   />
-// )
+export const BigHeadline = () => (
+  <ProductSummary
+    {...commonProps}
+    product={{
+      userId: '',
+      category: 0,
+      highlight: false,
+      live: true,
+      name: 'O Pioneiro',
+      imgSrc: 'https://i.imgur.com/Y880XEG.png',
+      price: 1800,
+    }}
+  />
+)

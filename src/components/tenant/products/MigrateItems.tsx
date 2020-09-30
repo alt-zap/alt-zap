@@ -2,7 +2,7 @@ import React, { FC, useState, useCallback } from 'react'
 import { Button } from 'antd'
 
 import { Message } from '../../../intlConfig'
-import { __MIGRATE_TENANT, useTenant } from '../../../contexts/TenantContext'
+import { MIGRATE_TENANT, useTenant } from '../../../contexts/TenantContext'
 import { useAuth } from '../../../contexts/auth/AuthContext'
 
 const MigrateItems: FC = () => {
@@ -17,7 +17,7 @@ const MigrateItems: FC = () => {
       return setLoading(false)
     }
 
-    __MIGRATE_TENANT(dispatch, {
+    MIGRATE_TENANT(dispatch, {
       tenant,
       tenantId,
       userId: user?.uid,
