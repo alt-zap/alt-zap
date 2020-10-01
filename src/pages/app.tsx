@@ -1,5 +1,4 @@
-import React, { FC } from 'react'
-import NoSSR from 'react-no-ssr'
+import React, { FC, Fragment } from 'react'
 import { Router } from '@reach/router'
 
 import TenantsPage from '../templates/TenantsPage'
@@ -11,7 +10,7 @@ import SEO from '../components/SEO'
 
 const App: FC = () => {
   return (
-    <NoSSR>
+    <Fragment>
       <SEO />
       <Router>
         <LoginPage path="/app/login" />
@@ -21,7 +20,7 @@ const App: FC = () => {
           <TenantsPage path="/" />
         </AdminPage>
       </Router>
-    </NoSSR>
+    </Fragment>
   )
 }
 
