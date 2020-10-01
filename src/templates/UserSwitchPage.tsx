@@ -1,12 +1,12 @@
 import React, { FC } from 'react'
 import { Spin } from 'antd'
-import { useNavigate, RouteComponentProps } from '@reach/router'
+import { navigate } from 'gatsby'
+import { RouteComponentProps } from '@reach/router'
 
 import { useAuth } from '../contexts/auth/AuthContext'
 
 const UserSwitch: FC<RouteComponentProps> = () => {
   const [{ user, userDb, loading }] = useAuth()
-  const navigate = useNavigate()
 
   if (loading) {
     return (
@@ -17,19 +17,19 @@ const UserSwitch: FC<RouteComponentProps> = () => {
   }
 
   if (!user) {
-    navigate(`/login`)
+    navigate(`/app/login`)
 
     return null
   }
 
   if ((user && !userDb) || !userDb?.hasTenant || !userDb.document) {
-    navigate(`/onboard`)
+    navigate(`/app/onboard`)
 
     return null
   }
 
   if (user && userDb) {
-    navigate(`/tenants`)
+    navigate(`/app/tenants`)
 
     return null
   }

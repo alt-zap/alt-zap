@@ -20,7 +20,7 @@ import {
   WarningOutlined,
   CloudOutlined,
 } from '@ant-design/icons'
-import { useNavigate } from '@reach/router'
+import { navigate } from 'gatsby'
 import { useQueryParam, StringParam } from 'use-query-params'
 
 import { useTenantConfig } from '../../contexts/TenantContext'
@@ -58,8 +58,6 @@ const TenantDashboard: FC = () => {
   const tenantContext = useTenantConfig()
   const { tenant, loading, productsLoading, products } = tenantContext
 
-  const navigate = useNavigate()
-
   const handleTabChange = useCallback(
     (tab) => {
       setTabId(tab)
@@ -74,9 +72,9 @@ const TenantDashboard: FC = () => {
 
   useEffect(() => {
     if (!userLoading && !userDb?.document) {
-      navigate('/onboard')
+      navigate('/app/onboard')
     }
-  }, [userDb, navigate, userLoading])
+  }, [userDb, userLoading])
 
   useEffect(() => {
     setOpen(tenant?.openingHours ? isTenantOpen(tenant?.openingHours) : false)
@@ -100,7 +98,7 @@ const TenantDashboard: FC = () => {
             backgroundColor: 'white',
           }}
           className="pt5 pt2-l"
-          onBack={() => navigate('/tenants')}
+          onBack={() => navigate('/app/tenants')}
           title={tenant.name}
           tags={
             <Tooltip title={intl.formatMessage({ id: 'tenant.openTitle' })}>
@@ -176,11 +174,12 @@ const TenantDashboard: FC = () => {
               }
               value={1}
             />
-            <Alert
-              className="mt3 mt0-l ml0 ml4-l mb1 mb3-l w-90 w-40-l"
-              type="info"
-              message={intl.formatMessage({ id: 'tenant.postMigrate' })}
-            />
+            <div className="mt3 mt0-l ml0 ml4-l mb1 mb3-l w-90 w-40-l">
+              <Alert
+                type="info"
+                message={intl.formatMessage({ id: 'tenant.postMigrate' })}
+              />
+            </div>
           </Row>
         </PageHeader>
       )}

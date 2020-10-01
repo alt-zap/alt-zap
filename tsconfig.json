@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -16,5 +16,5 @@
     "jsx": "react",
     "types": ["node"]
   },
-  "include": ["src"]
+  "include": ["src", "gatsby-*.ts*"]
 }

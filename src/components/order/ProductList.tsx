@@ -110,7 +110,7 @@ const ListSection: FC<SectionProps> = ({
       id={slug}
       key={slug}
       ref={refs[slug]}
-      className="w-100 flex justify-center"
+      className="w-100 flex flex-column items-center"
     >
       {shouldDisplayName && <Divider>{name}</Divider>}
       <List

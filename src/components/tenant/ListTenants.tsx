@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react'
-import { useNavigate } from '@reach/router'
+import { navigate } from 'gatsby'
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
 
@@ -14,7 +14,6 @@ const ListTenants: FC = () => {
   const [loading, setLoading] = useState(true)
   const [tenants, setTenants] = useState<TenantForList[]>([])
   const [{ user }] = useAuth()
-  const navigate = useNavigate()
 
   useEffect(() => {
     if (!user) return
@@ -45,8 +44,8 @@ const ListTenants: FC = () => {
         <TenantList
           loading={loading}
           tenants={tenants}
-          onSelectTenant={(id) => navigate(`/tenants/${id}`)}
-          onAddTenant={() => navigate('/onboard')}
+          onSelectTenant={(id) => navigate(`/app/tenants/${id}`)}
+          onAddTenant={() => navigate('/app/onboard')}
         />
       </div>
     </div>

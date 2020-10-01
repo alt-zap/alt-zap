@@ -505,7 +505,7 @@ export const addTenant = ({
     })
 }
 
-export const __MIGRATE_TENANT = async (
+export const MIGRATE_TENANT = async (
   dispatch: Dispatch,
   {
     tenantId,
