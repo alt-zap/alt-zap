@@ -37,3 +37,17 @@ Sentry.init({
 })
 
 export { wrapRootElement } from './src/gatsby/wrapRoot'
+
+const addScript = (url: string) => {
+  const script = document.createElement('script')
+
+  script.src = url
+  document.body.appendChild(script)
+}
+
+export const onClientEntry = () => {
+  window.onload = () => {
+    addScript('//js.api.here.com/v3/3.1/mapsjs-core.js')
+    addScript('//js.api.here.com/v3/3.1/mapsjs-service.js')
+  }
+}
