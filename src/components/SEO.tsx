@@ -22,8 +22,8 @@ const SEO: FC<Props> = ({
     description ??
     'GRATUITO - Organize seus pedidos de delivery, configure seu catálogo/cardápio rapidamente e venda mais!'
 
-  const imageBase = 'https://alt.app.br'
-  const url = 'https://alt.app.br'
+  const imageBase = 'https://portal.alt.app.br'
+  const url = 'https://portal.alt.app.br'
 
   const ogImage = ogImg ?? `${imageBase}/meta.png`
   const ogImageZap = ogZap ?? `${imageBase}/zap.png`
