@@ -25,22 +25,22 @@ import TenantDashboardPage from './pages/TenantDashboardPage'
 import { intlConfig } from './intlConfig'
 
 const {
-  REACT_APP_FIREBASE_KEY,
-  REACT_APP_FIREBASE_PROJECT_ID,
-  REACT_APP_FIREBASE_SENDER_ID,
-  REACT_APP_FIREBASE_APP_ID,
-  REACT_APP_FIREBASE_MEASUREMENT_ID,
+  GATSBY_FIREBASE_KEY,
+  GATSBY_FIREBASE_PROJECT_ID,
+  GATSBY_FIREBASE_SENDER_ID,
+  GATSBY_FIREBASE_APP_ID,
+  GATSBY_FIREBASE_MEASUREMENT_ID,
 } = process.env
 
 const firebaseConfig = {
-  apiKey: REACT_APP_FIREBASE_KEY,
-  authDomain: `${REACT_APP_FIREBASE_PROJECT_ID}.firebaseapp.com`,
-  databaseURL: `https://${REACT_APP_FIREBASE_PROJECT_ID}.firebaseio.com`,
-  projectId: REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: `${REACT_APP_FIREBASE_PROJECT_ID}.appspot.com`,
-  messagingSenderId: REACT_APP_FIREBASE_SENDER_ID,
-  appId: REACT_APP_FIREBASE_APP_ID,
-  measurementId: REACT_APP_FIREBASE_MEASUREMENT_ID,
+  apiKey: GATSBY_FIREBASE_KEY,
+  authDomain: `${GATSBY_FIREBASE_PROJECT_ID}.firebaseapp.com`,
+  databaseURL: `https://${GATSBY_FIREBASE_PROJECT_ID}.firebaseio.com`,
+  projectId: GATSBY_FIREBASE_PROJECT_ID,
+  storageBucket: `${GATSBY_FIREBASE_PROJECT_ID}.appspot.com`,
+  messagingSenderId: GATSBY_FIREBASE_SENDER_ID,
+  appId: GATSBY_FIREBASE_APP_ID,
+  measurementId: GATSBY_FIREBASE_MEASUREMENT_ID,
 }
 
 if (!firebase.apps.length) {
@@ -90,7 +90,7 @@ const App = () => {
 }
 
 Sentry.init({
-  dsn: process.env.REACT_APP_SENTRY_DSN,
+  dsn: process.env.GATSBY_SENTRY_DSN,
 })
 
 ReactDOM.render(<App />, document.getElementById('root'))
