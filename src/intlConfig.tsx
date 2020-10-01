@@ -268,7 +268,7 @@ export const intlConfig = {
     'tenant.sites.address': 'Endereço',
     'tenant.sites.type': 'Tipo',
     'tenant.sites.info':
-      'Estamos configurando o endereço .alt.app.br para você usar. Logo estará disponível!',
+      'Estamos configurando o endereço alt.app.br para você usar. Logo estará disponível!',
   },
 }
 

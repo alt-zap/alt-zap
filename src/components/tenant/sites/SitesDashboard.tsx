@@ -55,7 +55,7 @@ const SitesDashboard: FC = () => {
                 status: 'active',
               },
               {
-                address: `${tenant?.slug}.alt.app.br`,
+                address: `alt.app.br/${tenant?.slug}`,
                 status: 'inactive',
               },
             ]}
