@@ -174,11 +174,12 @@ const TenantDashboard: FC = () => {
               }
               value={1}
             />
-            <Alert
-              className="mt3 mt0-l ml0 ml4-l mb1 mb3-l w-90 w-40-l"
-              type="info"
-              message={intl.formatMessage({ id: 'tenant.postMigrate' })}
-            />
+            <div className="mt3 mt0-l ml0 ml4-l mb1 mb3-l w-90 w-40-l">
+              <Alert
+                type="info"
+                message={intl.formatMessage({ id: 'tenant.postMigrate' })}
+              />
+            </div>
           </Row>
         </PageHeader>
       )}
