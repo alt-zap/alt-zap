@@ -43,11 +43,16 @@ const addScript = (url: string) => {
 
   script.src = url
   document.body.appendChild(script)
+
+  return script
 }
 
 export const onClientEntry = () => {
   window.onload = () => {
-    addScript('//js.api.here.com/v3/3.1/mapsjs-core.js')
-    addScript('//js.api.here.com/v3/3.1/mapsjs-service.js')
+    const first = addScript('//js.api.here.com/v3/3.1/mapsjs-core.js')
+
+    first.onload = () => {
+      addScript('//js.api.here.com/v3/3.1/mapsjs-service.js')
+    }
   }
 }
