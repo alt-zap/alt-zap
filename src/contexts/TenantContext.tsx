@@ -438,7 +438,20 @@ export const setTenantData = async (
 }
 
 export const validateSlug = (slug: string, current: string) => {
-  const FORBIDDEN = ['admin', 'tenants', 'login', 'index', 'onboard']
+  const FORBIDDEN = [
+    'app',
+    'docs',
+    'www',
+    'sobre',
+    'quero-contibuir',
+    'contato',
+    'como-funciona',
+    'admin',
+    'tenants',
+    'login',
+    'index',
+    'onboard',
+  ]
 
   if (FORBIDDEN.includes(slug)) {
     return Promise.reject()
