@@ -38,24 +38,26 @@ const MenuSearch: FC<Props> = ({
         className="flex justify-between br2 pt3 ph3 shadow-2 mb2"
         style={{ backgroundColor: '#f0f2f5' }}
       >
-        <Form.Item
-          label="Categoria"
-          className="w-40 mr2"
-          style={{ display: 'unset' }}
-        >
-          <Select
-            getPopupContainer={(trigger) => trigger.parentElement}
-            value={activeSection}
-            size="large"
-            onChange={onSection}
+        <div className="mr2 w-40">
+          <Form.Item
+            label="Categoria"
+            className="w-100"
+            style={{ display: 'unset' }}
           >
-            {availableSections.map(({ name, slug }, i) => (
-              <Option key={i} value={slug}>
-                {name}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
+            <Select
+              getPopupContainer={(trigger) => trigger.parentElement}
+              value={activeSection}
+              size="large"
+              onChange={onSection}
+            >
+              {availableSections.map(({ name, slug }, i) => (
+                <Option key={i} value={slug}>
+                  {name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </div>
         <Form.Item
           label="Busca"
           name="searchTerm"

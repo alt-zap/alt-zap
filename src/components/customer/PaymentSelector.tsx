@@ -89,7 +89,7 @@ const PaymentSelector: FC = () => {
       )}
       {selectedPaymentHasInfo && (
         <div className="tc">
-          <h4>
+          <h4 className="mt3">
             <Message id="order.payment.info" />
           </h4>
           <div className="flex flex-column items-center">

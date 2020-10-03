@@ -103,14 +103,15 @@ const AutoFill: FC<Props> = ({ onAddress }) => {
     <Fragment>
       <div className="flex flex-col">
         <div className="flex w-100 justify-center">
-          <CepInput
-            onChange={eSet(setPostalCode)}
-            value={postalCode}
-            disabled={loading}
-            size="large"
-            placeholder={intl.formatMessage({ id: 'address.postalCode' })}
-            className="mr2"
-          />
+          <div className="mr2">
+            <CepInput
+              onChange={eSet(setPostalCode)}
+              value={postalCode}
+              disabled={loading}
+              size="large"
+              placeholder={intl.formatMessage({ id: 'address.postalCode' })}
+            />
+          </div>
           <Button
             type="primary"
             size="large"
