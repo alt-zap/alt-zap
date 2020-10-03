@@ -131,11 +131,13 @@ const Order: FC = () => {
       {!loading && (
         <Fragment>
           {!tenantOpen && !tenant?.showOnClose && (
-            <Alert
-              type="warning"
-              className="ma3"
-              message={intl.formatMessage({ id: 'order.closedForBuzz' })}
-            />
+            <div className="ma3">
+              <Alert
+                type="warning"
+                className="ma3"
+                message={intl.formatMessage({ id: 'order.closedForBuzz' })}
+              />
+            </div>
           )}
           {(tenantOpen || tenant?.showOnClose) && (
             <Layout className="pb3">
