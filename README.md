@@ -33,9 +33,9 @@ Pequenos empreendedores podem usar o **Alt** para cadastrar seus produtos e:
 
 ## Exemplo
 
-Acesse a página do [Alt Burguer CG](https://alt-zap.vercel.app/altburguer-cg), hamburgueria para qual o Alt foi desenvolvido inicialmente, e veja uma demonstração do serviço.
+Acesse a página da [Refazenda](https://refazenda.alt.app.br), nossa loja de exemplo, e verifique todas as funcionalidades possíveis da nossa plataforma.
 
-<p align="center"><img src="https://user-images.githubusercontent.com/18706156/87861502-3776f980-c91d-11ea-9d48-c33c941d2636.png" width="420" /></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/18706156/95028569-5ca31a80-0677-11eb-86a8-36041af25369.png" width="420" /></p>
 
 ## Preço
 
@@ -47,7 +47,7 @@ A principal motivação desse projeto é **ajudar as comunidades locais** e cont
 
 ## Desenvolvendo
 
-Este projeto renderiza o **Alt Admin**, _dashboard_ de administração que disponibiliza aos nossos clientes a configuração das funcionalidades oferecidas.
+Este projeto renderiza o **Alt Admin**, _dashboard_ de administração que disponibiliza aos nossos clientes a configuração das funcionalidades oferecidas e também o **Alt Menu**, parte do sistema que renderiza as páginas dos estabelecimentos.
 
 ### Requerimentos
 - Utilizamos o [Firebase](https://firebase.google.com) como provedor de autenticação e de banco de dados para a aplicação. Para facilitar o desenvolvimento local, você pode usar o **Emulador do Firebase**, distribuído pelo próprio serviço. Caso queira criar um projeto Firebase próprio, também é possível utilizá-lo configurando as varíaveis de ambiente como no arquivo `.env.exemplo`.
@@ -78,7 +78,7 @@ Ainda estamos [melhorando nossa documentação](https://github.com/alt-zap/alt-z
 
 ![Arquitetura do Alt](https://user-images.githubusercontent.com/18706156/91663167-93f13b00-eabd-11ea-87c4-6999a9350c90.jpg)
 
-**Disclaimer:** Por enquanto, este projeto _(alt-zap/alt-zap)_ **também está renderizando o Menu**. Isso é uma ação temporária para facilitar a integração de novos desenvolvedores. Num futuro próximo, esta funcionalidade será responsabilidade do repositório `alt-menu`.
+**Disclaimer:** Ainda estamos em fase _BETA_, portanto algumas das sessões da arquitetura ainda estão sendo implementadas.
 
 
 ## Contribuidores
