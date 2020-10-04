@@ -5,7 +5,7 @@ const TextareaInput: FC<React.ComponentPropsWithoutRef<
   typeof Input.TextArea
 >> = (props) => (
   <Input.TextArea
-    className="fw1"
+    style={{ fontSize: '16px' }}
     spellCheck="false"
     autoComplete="off"
     {...props}

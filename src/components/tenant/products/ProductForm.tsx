@@ -58,7 +58,6 @@ const PriceInput = forwardRef<
 >(CurrencyInput, {
   addonBefore: 'R$',
   size: 'large',
-  className: 'fw1',
   spellCheck: 'false',
 })
 
@@ -66,7 +65,6 @@ const NumberInput = forwardRef<
   React.ComponentPropsWithoutRef<typeof InputNumber>
 >(InputNumber, {
   size: 'large',
-  className: 'fw1',
   spellCheck: 'false',
 })
 
