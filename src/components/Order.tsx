@@ -26,6 +26,7 @@ import whatsapp from '../assets/whatsapp.svg'
 import SelectShipping from './order/SelectShipping'
 import { useOrder } from '../contexts/order/OrderContext'
 import { useInitialShipping } from './order/useInitialShipping'
+import SEO from './SEO'
 
 const { Header, Footer } = Layout
 const { TextArea } = Input
@@ -120,6 +121,7 @@ const Order: FC = () => {
 
   return (
     <div>
+      <SEO title={tenant?.name} />
       {loading && (
         <div className="flex flex-column items-center pt3">
           <Spin />
