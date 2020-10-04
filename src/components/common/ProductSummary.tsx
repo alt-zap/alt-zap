@@ -40,10 +40,7 @@ const ProductSummary: FC<Props> = ({
         )}
         <div className="flex flex-column ml3 justify-between">
           <div className="flex flex-column">
-            <span
-              className={`${name.length > 20 ? 'f4' : 'f3 fw2'}`}
-              style={{ lineHeight: '25px' }}
-            >
+            <span className="f3" style={{ lineHeight: '25px' }}>
               {name}
             </span>
             <span className="f5 fw2 silver" style={{ lineHeight: '20px' }}>
@@ -52,7 +49,7 @@ const ProductSummary: FC<Props> = ({
               }`}
             </span>
           </div>
-          <span className="b black f3" style={{ marginBottom: '-6px' }}>
+          <span className="grey f3" style={{ marginBottom: '-6px' }}>
             <Real cents={price} />
           </span>
         </div>
