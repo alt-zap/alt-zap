@@ -32,6 +32,8 @@ const ImageUpload: FC<Props> = ({ disabled, value, onChange, large }) => {
       const [, ext] = file.name.split('.')
 
       if (!ext || !VALID_EXTENSIONS.includes(ext)) {
+        setLoading(false)
+
         return message.error(
           intl.formatMessage({ id: 'imageupload.extensionError' })
         )
