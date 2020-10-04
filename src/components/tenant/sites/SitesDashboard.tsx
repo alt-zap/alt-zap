@@ -51,12 +51,8 @@ const SitesDashboard: FC = () => {
             ]}
             dataSource={[
               {
-                address: `alt-zap.vercel.app/${tenant?.slug}`,
-                status: 'active',
-              },
-              {
                 address: `${tenant?.slug}.alt.app.br`,
-                status: 'inactive',
+                status: 'active',
               },
             ]}
           />
