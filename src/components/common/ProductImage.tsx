@@ -12,6 +12,7 @@ const ProductImage: FC<Props> = ({ src, onClick, title }) => {
   return (
     <div
       className="pointer"
+      key={src}
       onClick={() => onClick?.()}
       onKeyPress={() => onClick?.()}
       role="button"
