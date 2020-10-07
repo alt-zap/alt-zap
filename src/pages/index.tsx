@@ -146,7 +146,7 @@ const HomePage: FC<RouteComponentProps> = () => {
                   type="primary"
                   size="large"
                   className="br2 pt2 mt2"
-                  onClick={() => navigate('/altburguer-cg')}
+                  onClick={() => navigate('/refazenda')}
                 >
                   Veja um modelo!
                 </Button>
@@ -172,7 +172,7 @@ const HomePage: FC<RouteComponentProps> = () => {
         </Content>
         <Footer className="tc">
           Alt Zap ©2020 -{' '}
-          <a href="https://github.com/lucis/alt-zap">Estamos no Github</a>
+          <a href="https://github.com/alt-zap/alt-zap">Estamos no Github</a>
         </Footer>
       </Layout>
     </Fragment>
