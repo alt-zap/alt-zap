@@ -142,7 +142,10 @@ const AutoFill: FC<Props> = ({ onAddress }) => {
           Ou
           <button
             className="bg-white bn underline pointer"
-            onClick={() => !loading && getCoordinates()}
+            onClick={(e) => {
+              e.preventDefault()
+              !loading && getCoordinates()
+            }}
           >
             <Message id="address.useLocation" />
           </button>
