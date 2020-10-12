@@ -7,7 +7,7 @@ import { AssemblyType } from '../../typings'
 import withIntl from './withIntl'
 
 export default {
-  title: 'order|AssemblyRenderer',
+  title: 'order/AssemblyRenderer',
   component: AssemblyRenderer,
   decorators: [withIntl],
 }

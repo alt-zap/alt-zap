@@ -7,7 +7,7 @@ import ProductList from '../order/ProductList'
 import withOrder from './withOrder'
 
 export default {
-  title: 'common|ProductList',
+  title: 'common/ProductList',
   component: ProductList,
   decorators: [
     (story: any) => (

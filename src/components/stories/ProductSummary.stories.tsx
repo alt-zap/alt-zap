@@ -4,7 +4,7 @@ import { withKnobs, text } from '@storybook/addon-knobs'
 import ProductSummary from '../common/ProductSummary'
 
 export default {
-  title: 'common|ProductSummary',
+  title: 'common/ProductSummary',
   component: ProductSummary,
   decorators: [(story: any) => <div className="pa2">{story()}</div>, withKnobs],
 }

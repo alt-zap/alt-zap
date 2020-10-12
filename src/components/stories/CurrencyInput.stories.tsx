@@ -7,7 +7,7 @@ import { State, Store } from '@sambego/storybook-state'
 import CurrencyInput from '../common/CurrencyInput'
 
 export default {
-  title: 'common|CurrencyInput',
+  title: 'common/CurrencyInput',
   component: CurrencyInput,
   decorators: [(story: any) => <div className="pa2">{story()}</div>, withKnobs],
 }
