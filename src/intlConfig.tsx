@@ -240,6 +240,7 @@ export const intlConfig = {
       'ex: Rua João Julião Martins, 155, Universitário',
     'address.smarAddress.error':
       'Não foi possível realizar a requisição. Tente novamente.',
+    'address.collapseMessage': 'Não encontrou seu endereço?',
     'address.form.save': 'Salvar Endereço',
     'tenant.migrate': 'Mostrar Produtos',
     'tenant.postMigrate':

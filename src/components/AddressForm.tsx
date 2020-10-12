@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import React, { FC, useCallback, Fragment } from 'react'
-import { Button, Form } from 'antd'
+import { Button, Form, Collapse } from 'antd'
 
 import AutoFill from './AutoFill'
 import AddressFields from './common/AddressFields'
 import { WorldAddress } from '../typings'
-import { TypedIntlRules, Message } from '../intlConfig'
+import { TypedIntlRules, Message, useAltIntl } from '../intlConfig'
 import SmartAddress from './tenant/logistics/SmartAddress'
 
 type Props = {
@@ -36,31 +36,45 @@ const AddressForm: FC<Props> = ({
     [form]
   )
 
+  const { Panel } = Collapse
+
+  const intl = useAltIntl()
+
   return (
     <Fragment>
       <div className="flex flex-column items-center">
         <AutoFill onAddress={handleAutoFill} />
       </div>
       <SmartAddress onAddress={handleAutoFill} />
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={(data) => onValidSubmit?.(data as WorldAddress)}
-        initialValues={initialAddress}
-      >
-        <div id="address" className="flex flex-column items-center mt2">
-          <AddressFields rules={rules} />
-          <Button
-            loading={loading}
-            size="large"
-            type="primary"
-            block
-            htmlType="submit"
+      <Collapse ghost className="mt2">
+        <Panel
+          header={intl.formatMessage({
+            id: 'address.collapseMessage',
+          })}
+          key="1"
+        >
+          <Form
+            form={form}
+            layout="vertical"
+            onFinish={(data) => onValidSubmit?.(data as WorldAddress)}
+            initialValues={initialAddress}
           >
-            <Message id="address.form.save" />
-          </Button>
-        </div>
-      </Form>
+            <div id="address" className="flex flex-column items-center mt2">
+              <AddressFields rules={rules} />
+            </div>
+          </Form>
+        </Panel>
+      </Collapse>
+      <Button
+        className="mt3"
+        loading={loading}
+        size="large"
+        type="primary"
+        block
+        htmlType="submit"
+      >
+        <Message id="address.form.save" />
+      </Button>
       <div />
     </Fragment>
   )
