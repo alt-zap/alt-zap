@@ -30,9 +30,14 @@ export interface TenantConfig {
   address?: WorldAddress
   shippingStrategies?: ShippingStrategies
   openingHours?: OpeningHours
-  sectionSorting: SiteSection[]
+  sites: Sites
 }
 
+export type Sites = {
+  zap: {
+    sections: SiteSection[]
+  }
+}
 export type SiteSection = {
   categoryIndex: number
   productIds: string[]
