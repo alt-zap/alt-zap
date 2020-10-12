@@ -1,6 +1,6 @@
 import React, { FC, useState, useCallback, useEffect } from 'react'
 import { Steps, message } from 'antd'
-import { navigate } from 'gatsby'
+import { navigate } from 'gatsby-link'
 
 import { Message, useAltIntl } from '../../../intlConfig'
 import UserForm from './UserForm'
