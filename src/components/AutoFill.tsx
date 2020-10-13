@@ -89,7 +89,7 @@ const AutoFill: FC<Props> = ({ onAddress }) => {
                 state: State,
               })
             } catch (e) {
-              setError('Não foi possível buscar sua localização')
+              setError(intl.formatMessage({ id: 'autofill.locationError' }))
             }
           },
           (err: unknown) => {
@@ -99,11 +99,11 @@ const AutoFill: FC<Props> = ({ onAddress }) => {
         )
       },
       () => {
-        setError('Você não compartilhou sua localização')
+        setError(intl.formatMessage({ id: 'autofill.locationNotShared' }))
         setLoading(false)
       }
     )
-  }, [onAddress])
+  }, [onAddress, intl])
 
   return (
     <Fragment>
