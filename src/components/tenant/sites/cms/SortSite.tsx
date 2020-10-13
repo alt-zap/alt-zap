@@ -18,7 +18,7 @@ const { Item } = Form
 /**
  * Some notes about this component
  *
- * - We are now using the `visible` prop, to be implemented later.
+ * - We are NOT using the `visible` prop, to be implemented later.
  * - We hold local state and lazily updates the remote server
  */
 const SortSite: FC = () => {
