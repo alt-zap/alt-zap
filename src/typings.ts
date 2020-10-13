@@ -30,7 +30,7 @@ export interface TenantConfig {
   address?: WorldAddress
   shippingStrategies?: ShippingStrategies
   openingHours?: OpeningHours
-  sites: Sites
+  sites?: Sites
 }
 
 export type Sites = {

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import SortCategories from '../tenant/sites/cms/SortCategories'
+import SortCategories from '../tenant/sites/cms/SortSite'
 import WithAltburguer from './withAltburguer'
 
 export default {

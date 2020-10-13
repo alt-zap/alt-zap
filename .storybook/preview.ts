@@ -1,5 +1,4 @@
 import { configure } from '@storybook/react'
-import { addParameters } from '@storybook/client-api'
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport'
 
 import 'antd/dist/antd.css'
@@ -27,11 +26,11 @@ window.___navigate = (pathname) => {
   console.log(`Navigating to ${pathname}`)
 }
 
-addParameters({
+export const parameters = {
   viewport: {
     viewports: INITIAL_VIEWPORTS,
   },
-})
+}
 
 configure(
   [require.context('../src/components/stories', true, /\.stories\.tsx$/)],
