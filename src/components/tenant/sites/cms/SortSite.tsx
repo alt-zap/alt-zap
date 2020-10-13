@@ -2,7 +2,10 @@
 import React, { FC, useCallback, useState } from 'react'
 import { Select, Form, Alert } from 'antd'
 
-import { useTenant } from '../../../../contexts/TenantContext'
+import {
+  useTenant,
+  getSectionsFromIds,
+} from '../../../../contexts/TenantContext'
 import SortCategories from './sort/SortCategories'
 import SortProducts from './sort/SortProducts'
 
@@ -19,10 +22,16 @@ const SortSite: FC = () => {
   const [category, setCategory] = useState<number | null>(null)
 
   const handleSortedCategories = useCallback((indexes: number[]) => {
+    // For now, not using the `visible` prop
+    const categoryIds = getSectionsFromIds(indexes)
+
     console.log('Saving', indexes)
   }, [])
 
   const handleSortedProducts = useCallback((ids: string[]) => {
+    // For now, not using the `visible` prop
+    const productIds = getSectionsFromIds(ids)
+
     console.log('Saving', ids)
   }, [])
 

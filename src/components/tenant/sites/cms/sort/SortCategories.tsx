@@ -1,6 +1,10 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useMemo } from 'react'
 
-import { useTenant } from '../../../../../contexts/TenantContext'
+import {
+  useTenant,
+  countProductPerCategory,
+} from '../../../../../contexts/TenantContext'
+import { useAltIntl } from '../../../../../intlConfig'
 import SortableList from './SortableList'
 
 type Props = {
@@ -8,12 +12,23 @@ type Props = {
 }
 
 const SortCategories: FC<Props> = ({ onSortedCategories }) => {
-  const [{ tenant }] = useTenant()
+  const [{ tenant, products }] = useTenant()
+  const intl = useAltIntl()
 
-  // TODO: Get from Tenant
+  // Not using the `visible` prop now, as we will implement it later
   const [categoryIds, setIds] = useState<number[]>(
-    tenant?.categories?.map((_, i) => i) ?? []
+    (tenant?.sites?.zap.categoryIds ?? []).map(({ element }) => element)
   )
+
+  const productsCount = useMemo(() => {
+    if (!products) return []
+
+    return (
+      tenant?.categories?.map((_, index) =>
+        countProductPerCategory(index, products)
+      ) ?? []
+    )
+  }, [tenant, products])
 
   return (
     <SortableList
@@ -22,7 +37,12 @@ const SortCategories: FC<Props> = ({ onSortedCategories }) => {
       renderItem={(item) => (
         <div className="flex flex-column">
           <span className="fw6 f5">{tenant?.categories?.[item]?.name}</span>
-          <span className="light-silver">10 produtos</span>
+          <span className="light-silver">
+            {intl.formatMessage(
+              { id: 'tenant.categories.productCount' },
+              { count: `${productsCount[item]}` }
+            )}
+          </span>
         </div>
       )}
       onSortedList={(ids) => {

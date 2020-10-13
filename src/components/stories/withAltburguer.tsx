@@ -14,6 +14,22 @@ const WithAltburguer: FC = ({ children }) => {
     tenantId: 'crTm1DXh6HG3IMjlzMlH',
     live: true,
     productsLoading: false,
+    sites: {
+      zap: {
+        categoryIds: [0, 1, 2],
+        productMap: {
+          0: [
+            '3JFP2gm0DKKZpc5sD6ay',
+            'JYCkG0nIN1zLfkZA2NzE',
+            'Mv7z8QhY90fmgtEpikGM',
+            'qG64OFMtkAUzAj76AqNY',
+            'qbEDBaIQ628jOBoO8OX8',
+          ],
+          1: ['KMp6nh8bNTxWV76sNTkb', 'aGofVkNn93REZ0fWuGHf'],
+          2: ['2qyjg0pwg8dolDGQh6Ee', 'wtSQPwPMBKMcxMjzy6Vl'],
+        },
+      },
+    },
     tenant: {
       address: {
         district: 'Catolé',

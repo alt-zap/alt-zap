@@ -2,6 +2,7 @@ import { Tag } from 'antd'
 import React, { FC, useMemo, useState } from 'react'
 
 import { useTenant } from '../../../../../contexts/TenantContext'
+import { useAltIntl } from '../../../../../intlConfig'
 import { Product } from '../../../../../typings'
 import SortableList from './SortableList'
 
@@ -11,14 +12,14 @@ type Props = {
 }
 
 const SortProducts: FC<Props> = ({ onSortedProducts, selectedCategory }) => {
-  const [{ products }] = useTenant()
+  const [{ products, tenant }] = useTenant()
+  const intl = useAltIntl()
 
-  // TODO: Get sections from Tenant
-  const [productIds, setIds] = useState(
-    () =>
-      products
-        ?.filter(({ category }) => category === selectedCategory)
-        .map(({ id }) => id ?? '') ?? []
+  // Not using the `visible` prop now, as we will implement it later
+  const [productIds, setIds] = useState<string[]>(() =>
+    (tenant?.sites?.zap.productMap[selectedCategory] ?? []).map(
+      ({ element }) => element
+    )
   )
 
   const productsMap = useMemo(
@@ -41,7 +42,11 @@ const SortProducts: FC<Props> = ({ onSortedProducts, selectedCategory }) => {
         <div className="flex flex-column items-baseline">
           <span className="fw6 f5">{productsMap?.[item].name}</span>
           <Tag color={productsMap?.[item].live ? 'green' : 'red'}>
-            {productsMap?.[item].live ? 'Ativo' : 'Inativo'}
+            {intl.formatMessage({
+              id: productsMap?.[item].live
+                ? 'tenant.sites.active'
+                : 'tenant.sites.inactive',
+            })}
           </Tag>
         </div>
       )}

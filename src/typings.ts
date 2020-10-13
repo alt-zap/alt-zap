@@ -33,14 +33,16 @@ export interface TenantConfig {
   sites?: Sites
 }
 
+export type Section<T> = {
+  element: T
+  visible: boolean
+}
+
 export type Sites = {
   zap: {
-    sections: SiteSection[]
+    categoryIds: Array<Section<number>>
+    productMap: Record<number, Array<Section<string>>>
   }
-}
-export type SiteSection = {
-  categoryIndex: number
-  productIds: string[]
 }
 
 export type PaymentMethod = {
@@ -217,10 +219,4 @@ export type Order = {
     totalPrice?: number
     finalPrice?: number
   }
-}
-
-export type Section = {
-  name: string
-  slug: string
-  products: Product[]
 }

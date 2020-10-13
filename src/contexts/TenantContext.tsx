@@ -12,6 +12,7 @@ import {
   OpeningHours,
   PaymentMethod,
   WorldAddress,
+  Section,
 } from '../typings'
 import { tenantStateReducer, TenantContextActions } from './tenantReducer'
 import { AltMessage, altMessage } from '../intlConfig'
@@ -96,6 +97,16 @@ export const TenantContextProvider: FC<Props> = ({
             const products = docs.map(
               (doc) => ({ ...doc.data(), id: doc.id } as Product)
             )
+
+            if (!tenant.sites) {
+              // Not awaiting here with purpose
+              // eslint-disable-next-line @typescript-eslint/no-use-before-define
+              configureInitialSiteSetup(dispatch, {
+                tenant,
+                products,
+                tenantId: docId,
+              })
+            }
 
             // Test some stuff and call migrate
             // But what about the userId? :grr
@@ -598,4 +609,47 @@ export const deleteProduct = (
     .finally(() => {
       dispatch({ type: 'PRODUCT_STOP_LOADING' })
     })
+}
+
+export function getSectionsFromIds<T>(list: T[]): Array<Section<T>> {
+  return list.map((element) => ({ element, visible: true }))
+}
+
+export const configureInitialSiteSetup = async (
+  dispatch: Dispatch,
+  {
+    tenant,
+    products,
+    tenantId,
+  }: { tenant: TenantConfig; products: Product[]; tenantId: string }
+) => {
+  if (!tenant?.categories || !products) {
+    return
+  }
+
+  const categoryIds = getSectionsFromIds(tenant.categories.map((_, i) => i))
+
+  const productMap = products.reduce((acc, product) => {
+    if (!acc[product.category]) {
+      acc[product.category] = []
+    }
+
+    acc[product.category].push({ visible: true, element: product.id as string })
+
+    return acc
+  }, {} as Record<number, Array<Section<string>>>)
+
+  const initialSites: TenantConfig['sites'] = {
+    zap: {
+      categoryIds,
+      productMap,
+    },
+  }
+
+  await setTenantData(dispatch, {
+    tenantId,
+    tenantData: {
+      sites: initialSites,
+    },
+  })
 }
