@@ -2,11 +2,16 @@ import React, { FC, useEffect, useMemo, useState, useCallback } from 'react'
 import { List, Divider, Affix } from 'antd'
 import slugify from 'slugify'
 
-import { Section } from '../../typings'
 import ProductSummary from '../common/ProductSummary'
 import MenuSearch from './MenuSearch'
 import { useSearch } from './useSearch'
+import { Product } from '../../typings'
 
+type Section = {
+  name: string
+  slug: string
+  products: Product[]
+}
 type Props = {
   sections: Section[]
 }
