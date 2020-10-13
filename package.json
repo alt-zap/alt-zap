@@ -86,6 +86,7 @@
     "emulators": "firebase emulators:start --import=dev --project=alt-zap-dev",
     "firestore-export": "firebase emulators:export dev --project=alt-zap-dev",
     "start": "gatsby develop",
+    "develop": "gatsby develop",
     "build": "GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES=true gatsby build --log-pages",
     "lint": "eslint --ext js,jsx,ts,tsx .",
     "format": "prettier --write \"**/*.{ts,js,json}\"",

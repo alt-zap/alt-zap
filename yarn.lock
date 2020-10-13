@@ -9333,13 +9333,6 @@ gatsby-plugin-antd@^2.2.0:
     antd "^4.0.0"
     babel-plugin-import "^1.13.0"
 
-gatsby-plugin-load-script@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-load-script/-/gatsby-plugin-load-script-1.1.0.tgz#b73dc8248ad0e3565d3f848bfd1ecd64f2b7aad2"
-  integrity sha512-EoXUtWX4aBO4zD61xMHIIlQti4FNYmH0KgBkhac+kNMLI64cjzLc0iD7zPrFnzjYR454XAN/GJBa7M7N/VYSpw==
-  dependencies:
-    "@babel/runtime" "^7.9.2"
-
 gatsby-plugin-netlify@^2.3.16:
   version "2.3.16"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-netlify/-/gatsby-plugin-netlify-2.3.16.tgz#bf886aaa1540ff804909dcc1069ba5ca79f20194"

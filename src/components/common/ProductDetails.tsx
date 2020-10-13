@@ -16,7 +16,9 @@ const ProductDetails: FC<Props> = ({
 
   return (
     <div className="flex flex-column items-center">
-      <img src={imgSrc} alt={name} title={name} className="br2 shadow-1" />
+      {imgSrc && (
+        <img src={imgSrc} alt={name} title={name} className="br2 shadow-1" />
+      )}
       <span className="f2 tc">{name}</span>
       <span className="gray f4 tc">{headline}</span>
       {(description ?? tempDescription) && (

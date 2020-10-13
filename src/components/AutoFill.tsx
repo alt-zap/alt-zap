@@ -65,39 +65,45 @@ const AutoFill: FC<Props> = ({ onAddress }) => {
     const geocoder = platform.getGeocodingService()
 
     setLoading(true)
-    navigator.geolocation.getCurrentPosition((position) => {
-      geocoder.reverseGeocode(
-        {
-          mode: 'retrieveAddresses',
-          maxresults: 1,
-          prox: `${position.coords.latitude},${position.coords.longitude}`,
-        },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (data: any) => {
-          setLoading(false)
-          try {
-            const address = data.Response.View[0].Result[0].Location.Address
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        geocoder.reverseGeocode(
+          {
+            mode: 'retrieveAddresses',
+            maxresults: 1,
+            prox: `${position.coords.latitude},${position.coords.longitude}`,
+          },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (data: any) => {
+            setLoading(false)
+            try {
+              const address = data.Response.View[0].Result[0].Location.Address
 
-            const { Street, District, HouseNumber, City, State } = address
+              const { Street, District, HouseNumber, City, State } = address
 
-            onAddress({
-              street: Street,
-              district: District,
-              number: HouseNumber,
-              city: City,
-              state: State,
-            })
-          } catch (e) {
-            setError('Não foi possível buscar sua localização')
+              onAddress({
+                street: Street,
+                district: District,
+                number: HouseNumber,
+                city: City,
+                state: State,
+              })
+            } catch (e) {
+              setError(intl.formatMessage({ id: 'autofill.locationError' }))
+            }
+          },
+          (err: unknown) => {
+            log(err)
+            setLoading(false)
           }
-        },
-        (err: unknown) => {
-          log(err)
-          setLoading(false)
-        }
-      )
-    })
-  }, [onAddress])
+        )
+      },
+      () => {
+        setError(intl.formatMessage({ id: 'autofill.locationNotShared' }))
+        setLoading(false)
+      }
+    )
+  }, [onAddress, intl])
 
   return (
     <Fragment>
@@ -136,7 +142,10 @@ const AutoFill: FC<Props> = ({ onAddress }) => {
           Ou
           <button
             className="bg-white bn underline pointer"
-            onClick={() => !loading && getCoordinates()}
+            onClick={(e) => {
+              e.preventDefault()
+              !loading && getCoordinates()
+            }}
           >
             <Message id="address.useLocation" />
           </button>

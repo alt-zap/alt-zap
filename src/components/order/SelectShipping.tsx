@@ -13,6 +13,8 @@ import { WorldAddress, ShippingMethod } from '../../typings'
 import AutoFill from '../AutoFill'
 import { useTenantConfig } from '../../contexts/TenantContext'
 import addressIcon from '../../assets/address.svg'
+import { DeliveryIcon } from '../../assets/DeliveryIcon'
+import { TakeawayIcon } from '../../assets/TakeawayIcon'
 import { generateGoogleMapsLink } from '../../utils'
 
 const { Group } = Radio
@@ -78,12 +80,26 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
           >
             {acceptsDelivery && (
               <Radio.Button value="DELIVERY">
-                <Message id="order.shipping.delivery" />
+                <div className="flex items-center">
+                  <DeliveryIcon
+                    className="mr2"
+                    size={20}
+                    fill={current === 'DELIVERY' ? 'white' : 'black'}
+                  />
+                  <Message id="order.shipping.delivery" />
+                </div>
               </Radio.Button>
             )}
             {acceptsTakeaway && (
               <Radio.Button value="TAKEAWAY">
-                <Message id="order.shipping.takeaway" />
+                <div className="flex items-center">
+                  <TakeawayIcon
+                    className="mr2"
+                    size={20}
+                    fill={current === 'TAKEAWAY' ? 'white' : 'black'}
+                  />
+                  <Message id="order.shipping.takeaway" />
+                </div>
               </Radio.Button>
             )}
           </Group>

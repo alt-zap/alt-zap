@@ -269,6 +269,8 @@ export const intlConfig = {
     'tenant.sites.type': 'Tipo',
     'tenant.sites.info':
       'Estamos configurando o endereço alt.app.br para você usar. Logo estará disponível!',
+    'autofill.locationNotShared': 'Você não compartilhou sua localização',
+    'autofill.locationError': 'Não foi possível buscar sua localização',
   },
 }
 
