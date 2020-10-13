@@ -10,12 +10,11 @@ import {
   WorldAddress,
   Product,
   Category,
-  Section,
   ShippingMethod,
   Order as OrderType,
 } from '../typings'
 import { useAltIntl, Message } from '../intlConfig'
-import ProductList from './order/ProductList'
+import ProductList, { UISection } from './order/ProductList'
 import Totalizer from './Totalizer'
 import OrderSummary from './OrderSummary'
 import PaymentSelector from './customer/PaymentSelector'
@@ -98,19 +97,31 @@ const Order: FC = () => {
 
     if (!productItems || !categoryItems) return []
 
-    // On a future category refact, change this.
-    // We call it sections because, eventually, there'll be the
-    // highlights sections that's not a category per se
-    return categoryItems
-      .filter(({ live }) => live)
-      .map(({ name }, i) => {
+    const productsMap = productItems.filter(Boolean).reduce((acc, product) => {
+      acc[product.id ?? ''] = product
+
+      return acc
+    }, {} as Record<string, Product>)
+
+    return tenant?.sites?.zap.categoryIds
+      .filter(({ visible }) => !!visible)
+      .map((index) => ({
+        category: categoryItems[index.element],
+        categoryIndex: index.element,
+      }))
+      .filter(({ category }) => category.live)
+      .map(({ category, categoryIndex }) => {
+        const { name } = category
+        const productIds = tenant?.sites?.zap.productMap[categoryIndex] ?? []
+
         return {
           name,
           slug: slugify(name, { lower: true }),
-          products: productItems.filter(
-            ({ category, live }) => category === i && !!live
-          ),
-        } as Section
+          products: productIds
+            .filter(({ visible }) => visible)
+            .map(({ element }) => productsMap[element])
+            .filter(({ live }) => !!live),
+        } as UISection
       })
       .filter(({ products: sectionProducts }) => !!sectionProducts?.length)
   }, [products, tenant, fallbackProducts])
@@ -194,7 +205,7 @@ const Order: FC = () => {
                       message={intl.formatMessage({ id: 'order.semiClosed' })}
                     />
                   )}
-                  <ProductList sections={sections} />
+                  <ProductList sections={sections ?? []} />
                   <Divider />
                   <Form
                     scrollToFirstError

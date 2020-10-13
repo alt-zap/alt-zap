@@ -56,7 +56,7 @@ export function SortableList<T extends unknown>({
               transition: 'all 0.2s ease-in-out',
             }}
             className={`${
-              snapshot?.isDraggingOver ? 'bg-lightest-blue' : ''
+              snapshot?.isDraggingOver ? 'bg-lightest-blue' : 'bg-light-gray'
             } pa3`}
           >
             {list.map((element, index) => (

@@ -71,14 +71,14 @@ const SortSite: FC = () => {
 
   return (
     <div className="bg-white w-100">
-      <div className="mv2 mb4">
+      <div className="mv2">
         <Alert
           type="info"
           showIcon
           message={intl.formatMessage({ id: 'tenant.sites.sort.info' })}
         />
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center mt4">
         <Form layout="vertical">
           <Item label={intl.formatMessage({ id: 'tenant.sites.sort.label' })}>
             <Select

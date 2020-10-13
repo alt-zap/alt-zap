@@ -7,13 +7,13 @@ import MenuSearch from './MenuSearch'
 import { useSearch } from './useSearch'
 import { Product } from '../../typings'
 
-type Section = {
+export type UISection = {
   name: string
   slug: string
   products: Product[]
 }
 type Props = {
-  sections: Section[]
+  sections: UISection[]
 }
 
 const ProductList: FC<Props> = ({ sections }) => {
@@ -77,7 +77,7 @@ const ProductList: FC<Props> = ({ sections }) => {
 
 export default ProductList
 
-interface SectionProps extends Section {
+interface SectionProps extends UISection {
   shouldDisplayName: boolean
   setActive: (slug: string) => void
   refs: Record<string, React.RefObject<HTMLDivElement>>
