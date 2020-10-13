@@ -14,23 +14,33 @@ const WithAltburguer: FC = ({ children }) => {
     tenantId: 'crTm1DXh6HG3IMjlzMlH',
     live: true,
     productsLoading: false,
-    sites: {
-      zap: {
-        categoryIds: [0, 1, 2],
-        productMap: {
-          0: [
-            '3JFP2gm0DKKZpc5sD6ay',
-            'JYCkG0nIN1zLfkZA2NzE',
-            'Mv7z8QhY90fmgtEpikGM',
-            'qG64OFMtkAUzAj76AqNY',
-            'qbEDBaIQ628jOBoO8OX8',
+    tenant: {
+      sites: {
+        zap: {
+          categoryIds: [
+            { visible: true, element: 0 },
+            { visible: true, element: 1 },
+            { visible: true, element: 2 },
           ],
-          1: ['KMp6nh8bNTxWV76sNTkb', 'aGofVkNn93REZ0fWuGHf'],
-          2: ['2qyjg0pwg8dolDGQh6Ee', 'wtSQPwPMBKMcxMjzy6Vl'],
+          productMap: {
+            0: [
+              { visible: true, element: '3JFP2gm0DKKZpc5sD6ay' },
+              { visible: true, element: 'JYCkG0nIN1zLfkZA2NzE' },
+              { visible: true, element: 'Mv7z8QhY90fmgtEpikGM' },
+              { visible: true, element: 'qG64OFMtkAUzAj76AqNY' },
+              { visible: true, element: 'qbEDBaIQ628jOBoO8OX8' },
+            ],
+            1: [
+              { visible: true, element: 'KMp6nh8bNTxWV76sNTkb' },
+              { visible: true, element: 'aGofVkNn93REZ0fWuGHf' },
+            ],
+            2: [
+              { visible: true, element: '2qyjg0pwg8dolDGQh6Ee' },
+              { visible: true, element: 'wtSQPwPMBKMcxMjzy6Vl' },
+            ],
+          },
         },
       },
-    },
-    tenant: {
       address: {
         district: 'Catolé',
         street: 'Severino Trindade',
