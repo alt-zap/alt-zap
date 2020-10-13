@@ -22,6 +22,7 @@ const SortProducts: FC<Props> = ({ onSortedProducts, selectedCategory }) => {
     )
   )
 
+  // Used to get the product's name and availability
   const productsMap = useMemo(
     () =>
       products?.reduce(

@@ -20,6 +20,8 @@ const SortCategories: FC<Props> = ({ onSortedCategories }) => {
     (tenant?.sites?.zap.categoryIds ?? []).map(({ element }) => element)
   )
 
+  // Used to get the products' count. It'd be great to have this on the Context, as we already
+  // use it on the Categories component
   const productsCount = useMemo(() => {
     if (!products) return []
 

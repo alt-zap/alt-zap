@@ -5,35 +5,69 @@ import { Select, Form, Alert } from 'antd'
 import {
   useTenant,
   getSectionsFromIds,
+  setTenantData,
 } from '../../../../contexts/TenantContext'
 import SortCategories from './sort/SortCategories'
 import SortProducts from './sort/SortProducts'
+import { useAltIntl } from '../../../../intlConfig'
+import { TenantConfig } from '../../../../typings'
 
 const { Option, OptGroup } = Select
 const { Item } = Form
 
-// Situação Inicial: não foi salvo nenhum ordenamento.
-// Situação Normal: já foi salvo um ordenamento
-// Pensar em uma forma mais genéricas para tratar "sessões"
+/**
+ * Some notes about this component
+ *
+ * - We are now using the `visible` prop, to be implemented later.
+ * - We hold local state and lazily updates the remote server
+ */
 const SortSite: FC = () => {
-  const [{ tenant }] = useTenant()
+  const [{ tenant, tenantId }, dispatch] = useTenant()
+  const intl = useAltIntl()
 
   const [mode, setMode] = useState<'CATEGORIES' | 'PRODUCTS'>('CATEGORIES')
   const [category, setCategory] = useState<number | null>(null)
 
-  const handleSortedCategories = useCallback((indexes: number[]) => {
-    // For now, not using the `visible` prop
-    const categoryIds = getSectionsFromIds(indexes)
+  const handleSortedCategories = useCallback(
+    (indexes: number[]) => {
+      const categoryIds = getSectionsFromIds(indexes)
 
-    console.log('Saving', indexes)
-  }, [])
+      const sites: TenantConfig['sites'] = {
+        zap: {
+          categoryIds,
+          productMap: tenant?.sites?.zap?.productMap ?? [],
+        },
+      }
 
-  const handleSortedProducts = useCallback((ids: string[]) => {
-    // For now, not using the `visible` prop
-    const productIds = getSectionsFromIds(ids)
+      setTenantData(dispatch, { tenantId, tenantData: { sites } })
+    },
+    [tenant, tenantId, dispatch]
+  )
 
-    console.log('Saving', ids)
-  }, [])
+  const handleSortedProducts = useCallback(
+    (ids: string[]) => {
+      // For now, not using the `visible` prop
+      const productIds = getSectionsFromIds(ids)
+
+      // Pleasing the TS compiler
+      if (!category) {
+        return
+      }
+
+      const sites: TenantConfig['sites'] = {
+        zap: {
+          categoryIds: tenant?.sites?.zap.categoryIds ?? [],
+          productMap: {
+            ...tenant?.sites?.zap?.productMap,
+            [category]: productIds,
+          },
+        },
+      }
+
+      setTenantData(dispatch, { tenantId, tenantData: { sites } })
+    },
+    [tenant, tenantId, dispatch, category]
+  )
 
   return (
     <div className="bg-white w-100">
@@ -41,15 +75,12 @@ const SortSite: FC = () => {
         <Alert
           type="info"
           showIcon
-          message="
-        Para ordernar os itens, basta arrastá-los com o mouse ou com o toque. Todas
-        as alterações são salvas automaticamente.
-      "
+          message={intl.formatMessage({ id: 'tenant.sites.sort.info' })}
         />
       </div>
       <div className="flex justify-center">
         <Form layout="vertical">
-          <Item label="O que deseja ordenar?">
+          <Item label={intl.formatMessage({ id: 'tenant.istes.sort.label' })}>
             <Select
               defaultValue="categories"
               style={{ width: 200 }}
@@ -65,8 +96,14 @@ const SortSite: FC = () => {
                 }
               }}
             >
-              <Option value="categories">Ordem das Categorias</Option>
-              <OptGroup label="Categorias">
+              <Option value="categories">
+                {intl.formatMessage({ id: 'tenant.sites.sort.categories' })}
+              </Option>
+              <OptGroup
+                label={intl.formatMessage({
+                  id: 'tenant.sites.sort.categories',
+                })}
+              >
                 {tenant?.categories?.map(({ slug, name }, i) => (
                   <Option value={`category-${i}`} key={slug}>
                     {name}
