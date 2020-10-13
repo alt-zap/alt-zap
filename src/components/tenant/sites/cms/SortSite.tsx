@@ -71,7 +71,7 @@ const SortSite: FC = () => {
 
   return (
     <div className="bg-white w-100">
-      <div className="mv2">
+      <div className="mv2 mb4">
         <Alert
           type="info"
           showIcon
@@ -80,7 +80,7 @@ const SortSite: FC = () => {
       </div>
       <div className="flex justify-center">
         <Form layout="vertical">
-          <Item label={intl.formatMessage({ id: 'tenant.istes.sort.label' })}>
+          <Item label={intl.formatMessage({ id: 'tenant.sites.sort.label' })}>
             <Select
               defaultValue="categories"
               style={{ width: 200 }}
@@ -91,7 +91,6 @@ const SortSite: FC = () => {
                   setMode('PRODUCTS')
                   const [, id] = (value as string).split('-')
 
-                  console.log({ id })
                   setCategory(parseInt(id, 10))
                 }
               }}

@@ -274,7 +274,9 @@ export const intlConfig = {
     'tenant.sites.sort.info':
       'Para ordernar os itens, basta arrastá-los com o mouse ou com o toque. Todas as alterações são salvas automaticamente.',
     'tenant.sites.sort.categories': 'Categorias',
-    'tenant.istes.sort.label': 'O que deseja ordenar?',
+    'tenant.sites.sort.label': 'O que deseja ordenar?',
+    'tenant.sites.table.edit': 'Editar',
+    'tenant.sites.editModal.title': 'Ordenar sessões',
   },
 }
 
