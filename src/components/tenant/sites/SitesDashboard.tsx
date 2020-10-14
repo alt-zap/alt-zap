@@ -1,12 +1,16 @@
-import React, { FC } from 'react'
-import { Divider, Table, Tag, Skeleton, Alert } from 'antd'
+import React, { FC, useState } from 'react'
+import { Divider, Table, Tag, Skeleton, Modal, Button } from 'antd'
+import { EditOutlined } from '@ant-design/icons'
 
 import { Message, useAltIntl, AltMessage } from '../../../intlConfig'
 import { useTenantConfig } from '../../../contexts/TenantContext'
+import SortSite from './cms/SortSite'
 
 const SitesDashboard: FC = () => {
   const intl = useAltIntl()
   const { tenant, loading } = useTenantConfig()
+  // For now, hardcoded to only work on Zap site
+  const [editModal, setEditModal] = useState(false)
 
   return (
     <div className="flex flex-column flex-row-l items-center items-start-l">
@@ -48,6 +52,19 @@ const SitesDashboard: FC = () => {
                   </Tag>
                 ),
               },
+              {
+                title: intl.formatMessage({ id: 'tenant.sites.table.edit' }),
+                key: 'edit',
+                // eslint-disable-next-line react/display-name
+                render: () => (
+                  <Button
+                    onClick={() => {
+                      setEditModal(true)
+                    }}
+                    icon={<EditOutlined />}
+                  />
+                ),
+              },
             ]}
             dataSource={[
               {
@@ -57,13 +74,16 @@ const SitesDashboard: FC = () => {
             ]}
           />
         )}
-        <div className="mt3">
-          <Alert
-            type="info"
-            message={intl.formatMessage({ id: 'tenant.sites.info' })}
-          />
-        </div>
       </div>
+      <Modal
+        destroyOnClose
+        title={<Message id="tenant.sites.editModal.title" />}
+        visible={editModal}
+        onCancel={() => setEditModal(false)}
+        footer={null}
+      >
+        <SortSite />
+      </Modal>
     </div>
   )
 }

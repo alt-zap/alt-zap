@@ -4,7 +4,7 @@ import { State, Store } from '@sambego/storybook-state'
 import BooleanQuantitySelector from '../common/BooleanQuantitySelector'
 
 export default {
-  title: 'common|BooleanQuantitySelector',
+  title: 'common/BooleanQuantitySelector',
   component: BooleanQuantitySelector,
 }
 

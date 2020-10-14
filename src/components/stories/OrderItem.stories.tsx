@@ -8,7 +8,7 @@ import withIntl from './withIntl'
 import { AssemblyType } from '../../typings'
 
 export default {
-  title: 'order|OrderItem',
+  title: 'order/OrderItem',
   component: OrderItem,
   decorators: [
     withIntl,

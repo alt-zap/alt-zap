@@ -3,7 +3,7 @@ import React from 'react'
 import ColorPicker from '../common/ColorPicker'
 
 export default {
-  title: 'common|ColorPicker',
+  title: 'common/ColorPicker',
   component: ColorPicker,
   decorators: [(story: any) => <div className="pa2">{story()}</div>],
 }

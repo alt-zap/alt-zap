@@ -10,7 +10,7 @@ import withIntl from './withIntl'
 const { Content, Footer, Sider } = Layout
 
 export default {
-  title: 'tenant|TenantDashboard',
+  title: 'tenant/TenantDashboard',
   component: TenantDashboard,
   decorators: [
     withIntl,

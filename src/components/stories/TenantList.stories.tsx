@@ -3,7 +3,7 @@ import React from 'react'
 import TenantList from '../tenant/TenantList'
 
 export default {
-  title: 'common|TenantList',
+  title: 'common/TenantList',
   component: TenantList,
   decorators: [(story: any) => <div className="pa2">{story()}</div>],
 }

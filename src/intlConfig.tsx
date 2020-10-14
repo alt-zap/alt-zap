@@ -271,6 +271,12 @@ export const intlConfig = {
       'Estamos configurando o endereço alt.app.br para você usar. Logo estará disponível!',
     'autofill.locationNotShared': 'Você não compartilhou sua localização',
     'autofill.locationError': 'Não foi possível buscar sua localização',
+    'tenant.sites.sort.info':
+      'Para ordernar os itens, basta arrastá-los com o mouse ou com o toque. Todas as alterações são salvas automaticamente.',
+    'tenant.sites.sort.categories': 'Categorias',
+    'tenant.sites.sort.label': 'O que deseja ordenar?',
+    'tenant.sites.table.edit': 'Editar',
+    'tenant.sites.editModal.title': 'Ordenar sessões',
   },
 }
 

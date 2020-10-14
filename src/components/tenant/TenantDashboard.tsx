@@ -20,7 +20,7 @@ import {
   WarningOutlined,
   CloudOutlined,
 } from '@ant-design/icons'
-import { navigate } from 'gatsby'
+import { navigate } from 'gatsby-link'
 import { useQueryParam, StringParam } from 'use-query-params'
 
 import { useTenantConfig } from '../../contexts/TenantContext'

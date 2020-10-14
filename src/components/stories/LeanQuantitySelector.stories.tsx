@@ -4,7 +4,7 @@ import { State, Store } from '@sambego/storybook-state'
 import LeanQuantitySelector from '../common/LeanQuantitySelector'
 
 export default {
-  title: 'common|LeanQuantitySelector',
+  title: 'common/LeanQuantitySelector',
   component: LeanQuantitySelector,
 }
 

@@ -6,7 +6,7 @@ import withIntl from './withIntl'
 import WithAltburguer from './withAltburguer'
 
 export default {
-  title: 'common|PaymentSelector',
+  title: 'common/PaymentSelector',
   component: PaymentSelector,
   decorators: [withOrder, withIntl],
 }

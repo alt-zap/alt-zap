@@ -4,7 +4,7 @@ import TenantDataForm from '../tenant/TenantDataForm'
 import withIntl from './withIntl'
 
 export default {
-  title: 'tenant|TenantDataForm',
+  title: 'tenant/TenantDataForm',
   component: TenantDataForm,
   decorators: [withIntl],
 }
