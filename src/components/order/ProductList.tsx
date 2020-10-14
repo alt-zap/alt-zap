@@ -19,7 +19,7 @@ type Props = {
 const ProductList: FC<Props> = ({ sections }) => {
   const { setQuery, filteredSections } = useSearch(sections)
 
-  const [active, setActive] = useState(sections[0].slug)
+  const [active, setActive] = useState<string | null>(sections?.[0]?.slug)
 
   const sectionsRef = useMemo(() => {
     return sections.reduce((acc, cur) => {
@@ -53,12 +53,14 @@ const ProductList: FC<Props> = ({ sections }) => {
       <div className="flex flex-column items-center">
         <div className="w-100">
           <Affix>
-            <MenuSearch
-              activeSection={active}
-              onSection={onChangeSection}
-              setQuery={setQuery}
-              availableSections={sections}
-            />
+            {active && (
+              <MenuSearch
+                activeSection={active}
+                onSection={onChangeSection}
+                setQuery={setQuery}
+                availableSections={sections}
+              />
+            )}
           </Affix>
         </div>
         {filteredSections.map((section) => (
