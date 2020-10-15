@@ -683,7 +683,7 @@ const getUpdatesSites = (
         zap: {
           productMap: sitesClone.zap.productMap,
           categoryIds: sitesClone.zap.categoryIds.filter(
-            ({ element }) => element === categoryId
+            ({ element }) => element !== categoryId
           ),
         },
       }
@@ -715,7 +715,7 @@ const getUpdatesSites = (
           productMap: {
             ...sites.zap.productMap,
             [categoryId]: sites.zap.productMap[categoryId].filter(
-              ({ element }) => element === productId
+              ({ element }) => element !== productId
             ),
           },
         },
