@@ -13,6 +13,7 @@ import {
   PaymentMethod,
   WorldAddress,
   Section,
+  Sites,
 } from '../typings'
 import { tenantStateReducer, TenantContextActions } from './tenantReducer'
 import { AltMessage, altMessage } from '../intlConfig'
@@ -251,6 +252,8 @@ export const addProduct = async (
     .add(sanitizeForFirebase(product))
     .then((doc) => {
       dispatch({ type: 'ADD_PRODUCT', args: { ...product, id: doc.id } })
+
+      return doc.id
     })
     .finally(() => {
       dispatch({ type: 'PRODUCT_STOP_LOADING' })
@@ -574,6 +577,26 @@ export const MIGRATE_TENANT = async (
             category: 0,
             userId,
           },
+        }).then((productId) => {
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
+          return reconcileSections(dispatch, {
+            tenantId,
+            currentSites: {
+              zap: {
+                categoryIds: [{ visible: true, element: 0 }],
+                productMap: {
+                  0: [],
+                },
+              },
+            },
+            action: {
+              type: 'PRODUCT_ADDED',
+              args: {
+                productId,
+                categoryId: 0,
+              },
+            },
+          })
         })
       )
     )
@@ -609,6 +632,117 @@ export const deleteProduct = (
     .finally(() => {
       dispatch({ type: 'PRODUCT_STOP_LOADING' })
     })
+}
+
+/**
+ * Here begun the first challenge of state sync on Alt
+ *
+ * Cases we need to take care of:
+ * - Product added => Add the product.id to productsMap[product.category]
+ * - Product removed => Remove the product.id from productsMap[product.category]
+ * - Category added => Add the category index to categoryIds && set [] as productsMap[category.id]
+ * - Category removed => Remove the category index from categoryIds && delete productsMap[category.id]
+ */
+
+type UpdateAction =
+  | { type: 'PRODUCT_ADDED'; args: { productId: string; categoryId: number } }
+  | { type: 'PRODUCT_REMOVED'; args: { productId: string; categoryId: number } }
+  | { type: 'CATEGORY_ADDED'; args: { categoryId: number } }
+  | { type: 'CATEGORY_REMOVED'; args: { categoryId: number } }
+
+const getUpdatesSites = (
+  sites: Sites,
+  action: UpdateAction
+): TenantConfig['sites'] => {
+  switch (action.type) {
+    case 'CATEGORY_ADDED': {
+      const { categoryId } = action.args
+
+      return {
+        zap: {
+          productMap: {
+            ...sites?.zap.productMap,
+            [categoryId]: [],
+          },
+          categoryIds: [
+            ...sites.zap.categoryIds,
+            { element: categoryId, visible: true },
+          ],
+        },
+      }
+    }
+
+    case 'CATEGORY_REMOVED': {
+      const { categoryId } = action.args
+
+      const sitesClone = JSON.parse(JSON.stringify(sites)) as Sites
+
+      delete sitesClone.zap.productMap[categoryId]
+
+      return {
+        zap: {
+          productMap: sitesClone.zap.productMap,
+          categoryIds: sitesClone.zap.categoryIds.filter(
+            ({ element }) => element === categoryId
+          ),
+        },
+      }
+    }
+
+    case 'PRODUCT_ADDED': {
+      const { productId, categoryId } = action.args
+
+      return {
+        zap: {
+          ...sites.zap,
+          productMap: {
+            ...sites.zap.productMap,
+            [categoryId]: [
+              ...sites.zap.productMap[categoryId],
+              { element: productId, visible: true },
+            ],
+          },
+        },
+      }
+    }
+
+    case 'PRODUCT_REMOVED': {
+      const { productId, categoryId } = action.args
+
+      return {
+        zap: {
+          ...sites.zap,
+          productMap: {
+            ...sites.zap.productMap,
+            [categoryId]: sites.zap.productMap[categoryId].filter(
+              ({ element }) => element === productId
+            ),
+          },
+        },
+      }
+    }
+
+    default:
+  }
+}
+
+export const reconcileSections = async (
+  dispatch: Dispatch,
+  {
+    tenantId,
+    currentSites,
+    action,
+  }: { action: UpdateAction; tenantId?: string; currentSites: Sites }
+) => {
+  const { zap } = currentSites
+
+  const newSites = getUpdatesSites(currentSites, action)
+
+  if (!zap || !tenantId || !newSites) {
+    return
+  }
+
+  await setTenantData(dispatch, { tenantData: { sites: newSites }, tenantId })
 }
 
 export function getSectionsFromIds<T>(list: T[]): Array<Section<T>> {

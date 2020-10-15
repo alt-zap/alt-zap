@@ -9,12 +9,16 @@ import {
 import { Img } from 'react-image'
 import * as Sentry from '@sentry/react'
 
-import { useTenant, deleteProduct } from '../../../contexts/TenantContext'
+import {
+  useTenant,
+  deleteProduct,
+  reconcileSections,
+} from '../../../contexts/TenantContext'
 import AddProduct from './AddProduct'
 import EditProduct from './EditProduct'
 import Real from '../../Real'
 import ProductsFilters from './ProductsFilters'
-import { Product } from '../../../typings'
+import { Product, Sites } from '../../../typings'
 import { Message, useAltIntl } from '../../../intlConfig'
 import MigrateItems from './MigrateItems'
 
@@ -60,6 +64,17 @@ const Products: FC = () => {
               message.success(
                 intl.formatMessage({ id: 'tenant.product.deleted' })
               )
+              reconcileSections(dispatch, {
+                tenantId,
+                currentSites: tenant?.sites as Sites,
+                action: {
+                  type: 'PRODUCT_REMOVED',
+                  args: {
+                    productId: product.id as string,
+                    categoryId: product.category,
+                  },
+                },
+              })
             })
             .catch((e) => {
               message.error(
@@ -70,7 +85,7 @@ const Products: FC = () => {
         },
       })
     },
-    [intl, tenantId, dispatch]
+    [intl, tenantId, dispatch, tenant]
   )
 
   const filteredProducts = useMemo(() => {

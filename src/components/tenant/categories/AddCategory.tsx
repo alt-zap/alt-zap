@@ -7,8 +7,9 @@ import {
   useTenantDispatch,
   addCategory,
   isCategoryUnique,
+  reconcileSections,
 } from '../../../contexts/TenantContext'
-import { Category } from '../../../typings'
+import { Category, Sites } from '../../../typings'
 import { useAltIntl } from '../../../intlConfig'
 
 type Props = { onFinish: () => void }
@@ -46,6 +47,16 @@ const AddCategory: FC<Props> = ({ onFinish }) => {
         message.success(
           intl.formatMessage({ id: 'tenant.categories.addSuccess' })
         )
+        reconcileSections(dispatch, {
+          tenantId,
+          currentSites: tenant?.sites as Sites,
+          action: {
+            type: 'CATEGORY_ADDED',
+            args: {
+              categoryId: categories?.length ?? 0,
+            },
+          },
+        })
       })
     },
     [onFinish, dispatch, tenant, tenantId, intl]

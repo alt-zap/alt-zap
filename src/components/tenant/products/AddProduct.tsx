@@ -6,9 +6,10 @@ import {
   useTenantConfig,
   useTenantDispatch,
   addProduct,
+  reconcileSections,
 } from '../../../contexts/TenantContext'
 import { useAuth } from '../../../contexts/auth/AuthContext'
-import { Product } from '../../../typings'
+import { Product, Sites } from '../../../typings'
 import { Message } from '../../../intlConfig'
 
 type Props = { onFinish: () => void }
@@ -28,14 +29,25 @@ const AddProduct: FC<Props> = ({ onFinish }) => {
       })
 
       return addPromise
-        .then(() => {
+        .then((productId) => {
           onFinish()
+          reconcileSections(dispatch, {
+            tenantId,
+            currentSites: tenant?.sites as Sites,
+            action: {
+              type: 'PRODUCT_ADDED',
+              args: {
+                productId,
+                categoryId: product.category,
+              },
+            },
+          })
         })
         .finally(() => {
           setLoading(false)
         })
     },
-    [onFinish, dispatch, tenantId, user]
+    [onFinish, dispatch, tenantId, user, tenant]
   )
 
   if (!tenant?.categories) {
