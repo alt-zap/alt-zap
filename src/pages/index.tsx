@@ -7,43 +7,35 @@ import { Layout, Button, Divider, Alert } from 'antd'
 import logo from '../assets/logo.png'
 import intro from '../assets/intro.png'
 import SEO from '../components/SEO'
+import Header from '../components/site/Header'
 
-const { Header, Content, Footer } = Layout
+const { Content, Footer } = Layout
 
 const HomePage: FC<RouteComponentProps> = () => {
   return (
     <Fragment>
       <SEO />
       <Layout>
-        <Header
-          style={{
-            position: 'fixed',
-            zIndex: 1,
-            width: '100%',
-            padding: '0 10px',
-          }}
-          className="flex justify-between tc mb3"
-        >
-          <div style={{ flex: 1 }} />
-          <div>
-            <img
-              src={logo}
-              alt="Alt Zap"
-              className="pa2"
-              style={{ maxHeight: '55px' }}
-            />
-          </div>
-          <div style={{ flex: 1 }} className="flex justify-end">
-            <button
-              onClick={() => navigate('/app/login')}
-              onKeyPress={() => navigate('/app/login')}
-              tabIndex={0}
-              className="f5 f4-l white fw2 bg-transparent bn pointer dim"
-            >
-              Login
-            </button>
-          </div>
-        </Header>
+        <Header />
+        <div style={{ flex: 1 }} />
+        <div>
+          <img
+            src={logo}
+            alt="Alt Zap"
+            className="pa2"
+            style={{ maxHeight: '55px' }}
+          />
+        </div>
+        <div style={{ flex: 1 }} className="flex justify-end">
+          <button
+            onClick={() => navigate('/app/login')}
+            onKeyPress={() => navigate('/app/login')}
+            tabIndex={0}
+            className="f5 f4-l white fw2 bg-transparent bn pointer dim"
+          >
+            Login
+          </button>
+        </div>
         <Content className="flex justify-center" style={{ marginTop: '80px' }}>
           <div className="w-100 w-60-l">
             <div className="flex flex-column">

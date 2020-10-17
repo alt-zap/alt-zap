@@ -11,5 +11,6 @@ export default {
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-netlify`,
     `gatsby-plugin-antd`,
+    `gatsby-plugin-linaria`,
   ],
 }
