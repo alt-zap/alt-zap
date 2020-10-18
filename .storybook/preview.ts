@@ -2,7 +2,7 @@ import { configure } from '@storybook/react'
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport'
 
 import 'antd/dist/antd.css'
-import './font.css'
+import './styles.css'
 import 'tachyons/css/tachyons.min.css'
 
 // Gatsby's Link overrides:
