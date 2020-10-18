@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown'
 import { Product } from '../../typings'
 import AssemblyRenderer from './AssemblyRenderer'
 import { useAltIntl } from '../../intlConfig'
+import OrderItemFooter from './OrderItemFooter'
 
 const { TextArea } = Input
 const { Item } = Form
@@ -55,6 +56,7 @@ const OrderItem: FC<Props> = ({ product }) => {
             </Item>
           </div>
         </div>
+        <OrderItemFooter quantity="1" />
       </Form>
     </div>
   )
