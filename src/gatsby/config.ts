@@ -12,5 +12,11 @@ export default {
     `gatsby-plugin-netlify`,
     `gatsby-plugin-antd`,
     `gatsby-plugin-linaria`,
+    {
+      resolve: `gatsby-plugin-polyfill-io`,
+      options: {
+        features: [`IntersectionObserver`],
+      },
+    },
   ],
 }
