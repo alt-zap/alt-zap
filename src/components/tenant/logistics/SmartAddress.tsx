@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react'
-import { AutoComplete, Button, Input, message } from 'antd'
+import { AutoComplete, Input, message, Form } from 'antd'
 import { useDebouncedCallback } from 'use-debounce/lib'
 import { LoadingOutlined } from '@ant-design/icons'
 
-import { Message, useAltIntl } from '../../../intlConfig'
+import { useAltIntl } from '../../../intlConfig'
 import { WorldAddress } from '../../../typings'
 import useHere, { mapHereToWorldAddress } from '../../common/useHere'
 
@@ -14,6 +14,7 @@ type Props = {
 
 const SmartAddress: React.FC<Props> = ({ onAddress }) => {
   const intl = useAltIntl()
+  const { Item } = Form
   const [loading, setLoading] = useState(false)
   const [options, setOptions] = useState<Option[]>([])
 
@@ -23,7 +24,7 @@ const SmartAddress: React.FC<Props> = ({ onAddress }) => {
     if (!term?.length) return
     discoverAddress({ q: term })
       .then((data) => {
-        console.log({ data })
+        console.log(data)
         const newOptions = data.items.map((item) => ({
           value: item.address.label,
           label: item.address.label,
@@ -48,26 +49,31 @@ const SmartAddress: React.FC<Props> = ({ onAddress }) => {
 
   return (
     <>
-      <Button className="mb2 mt2 mr2 blue b--light-blue">
-        <Message id="address.smartAddress.button" />
-      </Button>
-      <AutoComplete
-        options={options}
-        style={{ width: '100%' }}
-        onSelect={(_: string, option) => onSelect(option as Option)}
-        onSearch={(term: string) => {
-          setLoading(true)
-          debouncedSearch(term)
-        }}
-      >
-        <Input
-          suffix={loading ? <LoadingOutlined /> : <span />}
-          size="large"
-          placeholder={intl.formatMessage({
-            id: 'address.smartAddress.placeholder',
+      <Form layout="vertical">
+        <Item
+          label={intl.formatMessage({
+            id: 'address.smartAddress.button',
           })}
-        />
-      </AutoComplete>
+        >
+          <AutoComplete
+            options={options}
+            style={{ width: '100%' }}
+            onSelect={(_: string, option) => onSelect(option as Option)}
+            onSearch={(term: string) => {
+              setLoading(true)
+              debouncedSearch(term)
+            }}
+          >
+            <Input
+              suffix={loading ? <LoadingOutlined /> : <span />}
+              size="large"
+              placeholder={intl.formatMessage({
+                id: 'address.smartAddress.placeholder',
+              })}
+            />
+          </AutoComplete>
+        </Item>
+      </Form>
     </>
   )
 }

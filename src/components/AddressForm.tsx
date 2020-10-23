@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
-import React, { FC, useCallback, Fragment } from 'react'
+import React, { FC, Fragment } from 'react'
 import { Button, Form, Collapse } from 'antd'
 
-import AutoFill from './AutoFill'
 import AddressFields from './common/AddressFields'
 import { WorldAddress } from '../typings'
 import { TypedIntlRules, Message, useAltIntl } from '../intlConfig'
@@ -29,23 +28,15 @@ const AddressForm: FC<Props> = ({
 }) => {
   const [form] = Form.useForm()
 
-  const handleAutoFill = useCallback(
-    (data: Partial<WorldAddress>) => {
-      form.setFieldsValue({ ...data })
-    },
-    [form]
-  )
-
   const { Panel } = Collapse
 
   const intl = useAltIntl()
 
   return (
     <Fragment>
-      <div className="flex flex-column items-center">
-        <AutoFill onAddress={handleAutoFill} />
-      </div>
-      <SmartAddress onAddress={handleAutoFill} />
+      <SmartAddress
+        onAddress={(data) => onValidSubmit?.(data as WorldAddress)}
+      />
       <Collapse ghost className="mt2">
         <Panel
           header={intl.formatMessage({
@@ -62,19 +53,20 @@ const AddressForm: FC<Props> = ({
             <div id="address" className="flex flex-column items-center mt2">
               <AddressFields rules={rules} />
             </div>
+            <Button
+              className="mt3"
+              loading={loading}
+              size="large"
+              type="primary"
+              block
+              htmlType="submit"
+            >
+              <Message id="address.form.save" />
+            </Button>
           </Form>
         </Panel>
       </Collapse>
-      <Button
-        className="mt3"
-        loading={loading}
-        size="large"
-        type="primary"
-        block
-        htmlType="submit"
-      >
-        <Message id="address.form.save" />
-      </Button>
+
       <div />
     </Fragment>
   )

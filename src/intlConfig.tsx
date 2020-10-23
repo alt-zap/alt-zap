@@ -119,6 +119,9 @@ export const intlConfig = {
     'tenant.shipping.takeAway': 'Retirada no Local',
     'tenant.shipping.takeAwayDesc':
       'O cliente poderá visualizar o endereço da sua unidade. Não é adicionada nenhuma taxa no pedido',
+    'tenant.shipping.dynamicFee': 'Entrega com preço dinâmico',
+    'tenant.shipping.dynamicFeeDesc':
+      'O preço da entrega será calculado de acordo a distância e o tempo da rota a ser realizada.',
     'tenant.paymentMethods': 'Meios de Pagamento',
     'tenant.paymentForm.name': 'Nome',
     'tenant.paymentForm.namePlaceholder': 'Ex: Nubank',
@@ -235,7 +238,7 @@ export const intlConfig = {
     'address.districtRule': 'Preencha seu bairro',
     'address.cityRule': 'Preencha sua cidade',
     'address.stateRule': 'Selecione seu estado',
-    'address.smartAddress.button': 'Digite seu endereço',
+    'address.smartAddress.button': 'Digite seu endereço:',
     'address.smartAddress.placeholder':
       'ex: Rua João Julião Martins, 155, Universitário',
     'address.smarAddress.error':

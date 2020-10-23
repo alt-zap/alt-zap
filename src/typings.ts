@@ -84,6 +84,9 @@ export type ShippingStrategies = {
   takeaway: {
     active: boolean
   }
+  dynamicFee: {
+    active: boolean
+  }
 }
 
 export interface Menu {
@@ -140,7 +143,7 @@ export type WorldAddress = {
   state: string
   country?: string
   lat?: number
-  long?: number
+  lng?: number
 }
 
 // May change that later

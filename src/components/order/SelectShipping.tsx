@@ -1,35 +1,30 @@
+/* eslint-disable no-console */
 import React, { FC, useState, useEffect } from 'react'
 import { Form, Radio, Divider } from 'antd'
 
-import {
-  useAltIntl,
-  Message,
-  TypedIntlRules,
-  IntlRules,
-  prepareRules,
-} from '../../intlConfig'
-import AddressFields from '../common/AddressFields'
+import { useAltIntl, Message, IntlRules, prepareRules } from '../../intlConfig'
 import { WorldAddress, ShippingMethod } from '../../typings'
-import AutoFill from '../AutoFill'
 import { useTenantConfig } from '../../contexts/TenantContext'
 import addressIcon from '../../assets/address.svg'
 import { DeliveryIcon } from '../../assets/DeliveryIcon'
 import { TakeawayIcon } from '../../assets/TakeawayIcon'
 import { generateGoogleMapsLink } from '../../utils'
+import SmartAddress from '../tenant/logistics/SmartAddress'
+import { calculaTempoEDistancia } from '../common/useHere'
+import ComplementAddress from '../common/ComplementAddress'
 
 const { Group } = Radio
 const { Item } = Form
 
-const addressRules: TypedIntlRules<WorldAddress> = {
-  street: [{ required: true, message: 'address.streetRule' }],
-  number: [{ required: true, message: 'address.numberRule' }],
-  district: [{ required: true, message: 'address.districtRule' }],
-  city: [{ required: true, message: 'address.cityRule' }],
-  state: [{ required: true, message: 'address.stateRule' }],
-}
-
 type Props = {
   onAutoFill: (data: Partial<WorldAddress>) => void
+}
+
+type RoutingParams = {
+  clientLat: number
+  clientLng: number
+  tenantLat: number
+  tenantLng: number
 }
 
 const intlRules: IntlRules = {
@@ -40,6 +35,7 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
   const { tenant } = useTenantConfig()
   const acceptsTakeaway = tenant?.shippingStrategies?.takeaway?.active
   const acceptsDelivery = tenant?.shippingStrategies?.deliveryFixed?.active
+
   const initialValue =
     acceptsDelivery && acceptsTakeaway
       ? null
@@ -54,9 +50,27 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
       setCurrent(initialValue)
     }
   }, [setCurrent, initialValue, current])
+
   const intl = useAltIntl()
 
   const rules = prepareRules(intlRules, intl)
+
+  const setClientContext = (data: Partial<WorldAddress>) => {
+    const formData = data
+
+    console.log(formData)
+    onAutoFill(formData)
+
+    // TESTING ROUTING CALCULATION USING HERE ROUTING API
+    const routingData = {
+      clientLat: formData.lat,
+      clientLng: formData.lng,
+      tenantLat: tenant?.address?.lat,
+      tenantLng: tenant?.address?.lng,
+    }
+
+    calculaTempoEDistancia(routingData as RoutingParams)
+  }
 
   return (
     <div className="flex flex-column">
@@ -106,11 +120,24 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
         </Item>
       </div>
       {current === 'DELIVERY' && (
-        <div id="address" className="flex flex-column items-center mt2">
+        <div id="address" className="flex flex-column mt2">
           <div className="mb2">
-            <AutoFill onAddress={onAutoFill} />
+            <SmartAddress
+              onAddress={(data: Partial<WorldAddress>) =>
+                setClientContext(data)
+              }
+            />
+            <Form
+              layout="horizontal"
+              onValuesChange={(data) =>
+                onAutoFill(data as Partial<WorldAddress>)
+              }
+            >
+              <div id="address" className="flex mt2">
+                <ComplementAddress rules={rules} />
+              </div>
+            </Form>
           </div>
-          <AddressFields rules={addressRules} />
         </div>
       )}
       {current === 'TAKEAWAY' && (
