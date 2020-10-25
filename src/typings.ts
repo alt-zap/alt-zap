@@ -144,6 +144,7 @@ export type WorldAddress = {
   country?: string
   lat?: number
   lng?: number
+  additionalInfo?: string
 }
 
 // May change that later

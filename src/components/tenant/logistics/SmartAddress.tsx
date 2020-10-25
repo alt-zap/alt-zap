@@ -14,6 +14,7 @@ type Props = {
 const SmartAddress: React.FC<Props> = ({ onAddress }) => {
   const intl = useAltIntl()
 
+  const [inputValue, setInputValue] = useState('')
   const [empty, setEmpty] = useState(false)
   const [loading, setLoading] = useState(false)
   const [inputLoading, setInputLoading] = useState(false)
@@ -59,6 +60,7 @@ const SmartAddress: React.FC<Props> = ({ onAddress }) => {
 
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputLoading(true)
+    setInputValue(e.target.value)
     debouncedSearch(e.target.value)
   }
 
@@ -67,6 +69,7 @@ const SmartAddress: React.FC<Props> = ({ onAddress }) => {
       <Input
         allowClear
         className="mb3"
+        value={inputValue}
         onChange={onInputChange}
         suffix={inputLoading ? <LoadingOutlined /> : <span />}
         size="large"

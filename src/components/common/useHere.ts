@@ -12,6 +12,7 @@ type HereItem = {
   address: {
     label: string
     state: string
+    stateCode: string
     houseNumber: string
     city: string
     district: string
@@ -131,13 +132,14 @@ export async function calculaTempoEDistancia(routingParam: RoutingParams) {
 
 export const mapHereToWorldAddress = (data: HereItem): WorldAddress => {
   const {
-    address: { houseNumber, ...addressFields },
+    address: { houseNumber, stateCode, ...addressFields },
     position,
   } = data
 
   return {
     ...addressFields,
     number: houseNumber,
+    state: stateCode,
     ...position,
   }
 }

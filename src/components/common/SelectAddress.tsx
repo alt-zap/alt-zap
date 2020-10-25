@@ -1,23 +1,62 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { Button, Form, Input, Steps } from 'antd'
 
 import { WorldAddress } from '../../typings'
 import SmartAddress from '../tenant/logistics/SmartAddress'
 import AddressDisplay from './AddressDisplay'
-import { useAltIntl } from '../../intlConfig'
+import {
+  IntlRules,
+  prepareRules,
+  TypedIntlRules,
+  useAltIntl,
+} from '../../intlConfig'
 
 const { Step } = Steps
 
+type FormValues = {
+  number: string
+  complement?: string
+  additionalInfo: string
+}
+
 type Props = { onValidAddress: (address: WorldAddress) => void }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const intlRules: TypedIntlRules<WorldAddress> = {
+  number: [{ required: true, message: 'address.numberRule' }],
+  additionalInfo: [{ required: true, message: 'address.additionalInfoRule' }],
+}
+
 const SelectAddress: FC<Props> = ({ onValidAddress }) => {
+  const [form] = Form.useForm()
   const intl = useAltIntl()
   const [step, setStep] = useState(0)
+
+  const rules = prepareRules(intlRules as IntlRules, intl)
 
   const [smartAddress, setSmartAddress] = useState<
     Partial<WorldAddress> | undefined
   >()
+
+  const onSmartSelect = useCallback(
+    (data: Partial<WorldAddress>) => {
+      setSmartAddress(data)
+      data.number && form.setFieldsValue({ number: data.number })
+      setStep(1)
+    },
+    [setSmartAddress, setStep, form]
+  )
+
+  const onSubmitForm = useCallback(
+    (values: FormValues) => {
+      const returnedAddress = {
+        ...(smartAddress as WorldAddress),
+        ...(values as Partial<WorldAddress>),
+      }
+
+      onValidAddress(returnedAddress)
+    },
+    [smartAddress, onValidAddress]
+  )
 
   return (
     <div>
@@ -27,22 +66,26 @@ const SelectAddress: FC<Props> = ({ onValidAddress }) => {
       </Steps>
       {step === 0 && (
         <div>
-          <SmartAddress
-            onAddress={(data) => {
-              setSmartAddress(data)
-              setStep(1)
-            }}
-          />
+          <SmartAddress onAddress={onSmartSelect} />
         </div>
       )}
       {step === 1 && (
         <div className="flex flex-column pt2">
-          <div className="pa2 mb2" style={{ border: '1px solid #d9d9d9' }}>
+          <div
+            className="pa2 mb2 bg-light-gray"
+            style={{ border: '1px solid #d9d9d9' }}
+          >
             <AddressDisplay address={smartAddress} />
           </div>
-          <Form layout="vertical" className="mt2">
+          <Form
+            layout="vertical"
+            className="mt2"
+            form={form}
+            onFinish={(data) => onSubmitForm(data as FormValues)}
+          >
             <div className="flex justify-between">
               <Form.Item
+                rules={rules.number}
                 name="number"
                 className="w-30"
                 label={intl.formatMessage({ id: 'address.number' })}
@@ -63,21 +106,28 @@ const SelectAddress: FC<Props> = ({ onValidAddress }) => {
               </Form.Item>
             </div>
             <Form.Item
-              name="complement"
+              name="additionalInfo"
+              rules={rules.additionalInfo}
               className="w-100"
-              label={intl.formatMessage({ id: 'addsess.aditionalInfo' })}
+              label={intl.formatMessage({ id: 'address.additionalInfo' })}
             >
               <Input
                 size="large"
                 placeholder={intl.formatMessage({
-                  id: 'address.aditionalInfo.placeholder',
+                  id: 'address.additionalInfo.placeholder',
                 })}
               />
             </Form.Item>
+            <Button
+              size="large"
+              block
+              type="primary"
+              htmlType="submit"
+              onClick={() => {}}
+            >
+              {intl.formatMessage({ id: 'address.select' })}
+            </Button>
           </Form>
-          <Button block type="primary" onClick={() => {}}>
-            {intl.formatMessage({ id: 'address.select' })}
-          </Button>
         </div>
       )}
     </div>
