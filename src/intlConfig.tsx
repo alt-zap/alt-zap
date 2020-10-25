@@ -230,6 +230,8 @@ export const intlConfig = {
     'address.number': 'Número',
     'address.complement': 'Complemento',
     'address.complementPlaceholder': 'ex: Apto 205',
+    'addsess.aditionalInfo': 'Ponto de Referência',
+    'address.aditionalInfo.placeholder': 'ex: Casa com muro verde',
     'address.district': 'Bairro',
     'address.city': 'Cidade',
     'address.state': 'Estado',
@@ -239,10 +241,12 @@ export const intlConfig = {
     'address.cityRule': 'Preencha sua cidade',
     'address.stateRule': 'Selecione seu estado',
     'address.smartAddress.button': 'Digite seu endereço:',
-    'address.smartAddress.placeholder':
-      'ex: Rua João Julião Martins, 155, Universitário',
+    'address.smartAddress.placeholder': 'ex: margarida maria alves 130',
     'address.smarAddress.error':
       'Não foi possível realizar a requisição. Tente novamente.',
+    'address.select': 'Selecionar',
+    'address.searchFor': 'Procure seu endereço',
+    'address.confirm': 'Confirme os dados',
     'address.collapseMessage': 'Não encontrou seu endereço?',
     'address.form.save': 'Salvar Endereço',
     'tenant.migrate': 'Mostrar Produtos',

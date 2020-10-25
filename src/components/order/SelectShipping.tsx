@@ -9,9 +9,9 @@ import addressIcon from '../../assets/address.svg'
 import { DeliveryIcon } from '../../assets/DeliveryIcon'
 import { TakeawayIcon } from '../../assets/TakeawayIcon'
 import { generateGoogleMapsLink } from '../../utils'
-import SmartAddress from '../tenant/logistics/SmartAddress'
 import { calculaTempoEDistancia } from '../common/useHere'
-import ComplementAddress from '../common/ComplementAddress'
+import AddressDisplay from '../common/AddressDisplay'
+import OrderAddress from './OrderAddress'
 
 const { Group } = Radio
 const { Item } = Form
@@ -55,6 +55,7 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
 
   const rules = prepareRules(intlRules, intl)
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const setClientContext = (data: Partial<WorldAddress>) => {
     const formData = data
 
@@ -122,21 +123,7 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
       {current === 'DELIVERY' && (
         <div id="address" className="flex flex-column mt2">
           <div className="mb2">
-            <SmartAddress
-              onAddress={(data: Partial<WorldAddress>) =>
-                setClientContext(data)
-              }
-            />
-            <Form
-              layout="horizontal"
-              onValuesChange={(data) =>
-                onAutoFill(data as Partial<WorldAddress>)
-              }
-            >
-              <div id="address" className="flex mt2">
-                <ComplementAddress rules={rules} />
-              </div>
-            </Form>
+            <OrderAddress onAddress={(data) => console.log(data)} />
           </div>
         </div>
       )}
@@ -147,18 +134,7 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
               <span className="f4 grey b">
                 <Message id="order.shipping.addressTake" />
               </span>
-              <span className="f5">
-                {tenant?.address?.street}, {tenant?.address?.number ?? 's/n'}
-              </span>
-              <span className="f5">
-                {tenant?.address?.complement
-                  ? `${tenant?.address?.complement} - `
-                  : ''}
-                {tenant?.address?.district}
-              </span>
-              <span className="f5">
-                {tenant?.address?.city} - {tenant?.address?.state}
-              </span>
+              <AddressDisplay address={tenant?.address} />
               <a
                 href={generateGoogleMapsLink(tenant?.address)}
                 target="_blank"
