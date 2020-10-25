@@ -5,6 +5,7 @@ import Modal from 'antd/lib/modal/Modal'
 import React, { FC, useCallback, useState } from 'react'
 
 import { useOrder } from '../../contexts/order/OrderContext'
+import { useAltIntl } from '../../intlConfig'
 import { WorldAddress } from '../../typings'
 import AddressDisplay from '../common/AddressDisplay'
 import SelectAddress from '../common/SelectAddress'
@@ -12,6 +13,7 @@ import SelectAddress from '../common/SelectAddress'
 type Props = { onAddress: (data: Partial<WorldAddress>) => void }
 
 const OrderAddress: FC<Props> = () => {
+  const intl = useAltIntl()
   const [modal, setModal] = useState(false)
   const [{ order }, dispatch] = useOrder()
 
@@ -26,15 +28,20 @@ const OrderAddress: FC<Props> = () => {
     [dispatch]
   )
 
+  // Refact this. Terrible UX (no confirm and no edit option)
+  const onDeleteAddress = useCallback(() => {
+    dispatch({ type: 'SET_CUSTOMER_ADDRESS', args: {} as WorldAddress })
+  }, [dispatch])
+
   return (
     <div className="flex flex-column items-center">
       {!hasAddress && (
         <>
-          <span className="tc mb2">
-            Você não tem nenhum endereço selecionado
+          <span className="tc mb4">
+            {intl.formatMessage({ id: 'address.noAddress' })}
           </span>
           <Button size="large" type="primary" onClick={() => setModal(true)}>
-            Selecionar Endereço
+            {intl.formatMessage({ id: 'address.selectAddress' })}
           </Button>
         </>
       )}
@@ -43,7 +50,9 @@ const OrderAddress: FC<Props> = () => {
           <Card
             title="Endereço Selecionado"
             className="w-100"
-            actions={[<DeleteOutlined key="setting" />]}
+            actions={[
+              <DeleteOutlined onClick={onDeleteAddress} key="setting" />,
+            ]}
           >
             <AddressDisplay address={selectedAddress} />
           </Card>

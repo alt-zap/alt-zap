@@ -249,6 +249,8 @@ export const intlConfig = {
     'address.searchFor': 'Procure seu endereço',
     'address.confirm': 'Confirme os dados',
     'address.collapseMessage': 'Não encontrou seu endereço?',
+    'address.noAddress': 'Você não tem nenhum endereço selecionado',
+    'address.selectAddress': 'Selecionar Endereço',
     'address.form.save': 'Salvar Endereço',
     'tenant.migrate': 'Mostrar Produtos',
     'tenant.postMigrate':
