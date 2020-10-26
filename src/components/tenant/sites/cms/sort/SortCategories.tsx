@@ -18,6 +18,7 @@ const SortCategories: FC<Props> = ({ onSortedCategories, loading }) => {
   const [{ tenant, products }] = useTenant()
   const intl = useAltIntl()
 
+
   const [categoryIds, setIds] = useState<Array<Section<number>>>(
     tenant?.sites?.zap.categoryIds ?? []
   )
