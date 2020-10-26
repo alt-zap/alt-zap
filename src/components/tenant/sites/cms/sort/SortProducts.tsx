@@ -20,6 +20,7 @@ const SortProducts: FC<Props> = ({
 }) => {
   const [{ products, tenant }] = useTenant()
   const intl = useAltIntl()
+  const [isVisible, setIsVisible] = useState(true)
 
   // Not using the `visible` prop now, as we will implement it later
   const [productIds, setIds] = useState<Array<Section<string>>>(
