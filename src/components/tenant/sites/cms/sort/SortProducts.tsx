@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { Tag } from 'antd'
 import React, { FC, useCallback, useMemo, useState } from 'react'
+=======
+import { Tag, Switch } from 'antd'
+import React, { FC, useMemo, useState } from 'react'
+>>>>>>> 53e8306 (Implements switch button in sort products)
 
 import { useTenant } from '../../../../../contexts/TenantContext'
 import { useAltIntl } from '../../../../../intlConfig'
