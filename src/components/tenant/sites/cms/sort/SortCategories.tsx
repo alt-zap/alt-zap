@@ -17,6 +17,7 @@ type Props = {
 const SortCategories: FC<Props> = ({ onSortedCategories, loading }) => {
   const [{ tenant, products }] = useTenant()
   const intl = useAltIntl()
+  const [isVisible, setIsVisible] = useState(true)
 
 
 
@@ -77,7 +78,7 @@ const SortCategories: FC<Props> = ({ onSortedCategories, loading }) => {
       )}
       onSortedList={(ids) => {
         setIds(ids)
-        onSortedCategories(ids)
+        onSortedCategories(ids.map(({ element }) => element))
       }}
     />
   )
