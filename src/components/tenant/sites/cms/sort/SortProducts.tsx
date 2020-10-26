@@ -14,7 +14,7 @@ type Props = {
 const SortProducts: FC<Props> = ({ onSortedProducts, selectedCategory }) => {
   const [{ products, tenant }] = useTenant()
   const intl = useAltIntl()
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
 
   // Not using the `visible` prop now, as we will implement it later
   const [productIds, setIds] = useState<Array<Section<string>>>(
@@ -52,8 +52,18 @@ const SortProducts: FC<Props> = ({ onSortedProducts, selectedCategory }) => {
               })}
             </Tag>
           </div>
-          <Switch className="ml4" onChange={handleChecked} />
-          {(item.visible = isVisible)}
+          <Switch
+            className="ml4"
+            checkedChildren={() => {
+              setIsVisible(isVisible)
+              item.visible = isVisible
+            }}
+            unCheckedChildren={() => {
+              setIsVisible(!isVisible)
+              item.visible = isVisible
+            }}
+            defaultChecked
+          />
         </div>
       )}
       onSortedList={(ids) => {
