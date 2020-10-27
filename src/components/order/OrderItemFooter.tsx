@@ -10,7 +10,7 @@ const OrderItemFooter: FC<Props> = ({ quantity }) => {
     <div className="b-black b-solid flex justify-around justify-end-l">
       <div className="flex">
         <LeanQuantitySelector quantity={quantity} min={1} />
-        {/* <AddButton /> */}
+        <AddButton label="Adicionar" price={1200} />
       </div>
     </div>
   )

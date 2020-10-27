@@ -49,7 +49,7 @@ const AssemblyRenderer: FC<Props> = ({ assemblyOptions }) => {
             <Form.Item
               className="w-100"
               name={['assembly', assembly.name]}
-              initialValue={assembly.options.reduce(
+              initialValue={(assembly.options ?? []).reduce(
                 (acc, cur) => ({
                   ...acc,
                   [cur.name]: `${cur.initialQuantity ?? 0}`,
@@ -173,7 +173,7 @@ const MultiSelectInput: FC<MultiProps> = ({
 
   return (
     <div className="flex flex-column">
-      {options.map((option, i) => (
+      {(options ?? []).map((option, i) => (
         <label htmlFor={`${hash}-${i}`} key={i}>
           <div className="pa2 w-100 flex justify-between">
             <div className="flex flex-column">
