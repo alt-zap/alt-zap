@@ -7,6 +7,7 @@ import Real from '../Real'
 import ProductDetails from './ProductDetails'
 import ProductQuantity from '../order/ProductQuantity'
 import { Product } from '../../typings'
+import OrderItem from '../order/OrderItem'
 
 type Props = {
   product: Product
@@ -53,9 +54,6 @@ const ProductSummary: FC<Props> = ({
             <Real cents={price} />
           </span>
         </div>
-        <div className="flex justify-end" style={{ flex: 1 }}>
-          <ProductQuantity product={product} />
-        </div>
       </div>
       <Modal
         title={name}
@@ -63,7 +61,7 @@ const ProductSummary: FC<Props> = ({
         onCancel={() => setDetailsModal(false)}
         visible={detailsModalOpened}
       >
-        <ProductDetails product={product} />
+        <OrderItem product={product} />
       </Modal>
     </Fragment>
   )
