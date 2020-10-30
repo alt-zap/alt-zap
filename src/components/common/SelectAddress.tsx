@@ -65,12 +65,12 @@ const SelectAddress: FC<Props> = ({ onValidAddress }) => {
         <Step title={intl.formatMessage({ id: 'address.confirm' })} />
       </Steps>
       {step === 0 && (
-        <div>
+        <div className="mt3">
           <SmartAddress onAddress={onSmartSelect} />
         </div>
       )}
       {step === 1 && (
-        <div className="flex flex-column pt2">
+        <div className="flex flex-column pt2 mt3">
           <div
             className="pa2 mb2 bg-light-gray"
             style={{ border: '1px solid #d9d9d9' }}
@@ -118,15 +118,27 @@ const SelectAddress: FC<Props> = ({ onValidAddress }) => {
                 })}
               />
             </Form.Item>
-            <Button
-              size="large"
-              block
-              type="primary"
-              htmlType="submit"
-              onClick={() => {}}
-            >
-              {intl.formatMessage({ id: 'address.select' })}
-            </Button>
+            <div className="flex justify-between">
+              <Button
+                className="w-30 mr3"
+                size="large"
+                type="primary"
+                htmlType="submit"
+                onClick={() => setStep(0)}
+              >
+                {intl.formatMessage({ id: 'address.selectAddress.back' })}
+              </Button>
+
+              <Button
+                className="w-60"
+                size="large"
+                type="primary"
+                htmlType="submit"
+                onClick={() => {}}
+              >
+                {intl.formatMessage({ id: 'address.select' })}
+              </Button>
+            </div>
           </Form>
         </div>
       )}

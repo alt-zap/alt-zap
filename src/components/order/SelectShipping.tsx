@@ -9,7 +9,6 @@ import addressIcon from '../../assets/address.svg'
 import { DeliveryIcon } from '../../assets/DeliveryIcon'
 import { TakeawayIcon } from '../../assets/TakeawayIcon'
 import { generateGoogleMapsLink } from '../../utils'
-import { calculaTempoEDistancia } from '../common/useHere'
 import AddressDisplay from '../common/AddressDisplay'
 import OrderAddress from './OrderAddress'
 
@@ -18,13 +17,6 @@ const { Item } = Form
 
 type Props = {
   onAutoFill: (data: Partial<WorldAddress>) => void
-}
-
-type RoutingParams = {
-  clientLat: number
-  clientLng: number
-  tenantLat: number
-  tenantLng: number
 }
 
 const intlRules: IntlRules = {
@@ -54,24 +46,6 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
   const intl = useAltIntl()
 
   const rules = prepareRules(intlRules, intl)
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const setClientContext = (data: Partial<WorldAddress>) => {
-    const formData = data
-
-    console.log(formData)
-    onAutoFill(formData)
-
-    // TESTING ROUTING CALCULATION USING HERE ROUTING API
-    const routingData = {
-      clientLat: formData.lat,
-      clientLng: formData.lng,
-      tenantLat: tenant?.address?.lat,
-      tenantLng: tenant?.address?.lng,
-    }
-
-    calculaTempoEDistancia(routingData as RoutingParams)
-  }
 
   return (
     <div className="flex flex-column">

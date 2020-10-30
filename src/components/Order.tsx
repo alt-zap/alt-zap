@@ -40,10 +40,10 @@ interface TempFormData extends WorldAddress {
 const Order: FC = () => {
   const intl = useAltIntl()
   const [debug] = useQueryParam('debug', BooleanParam)
-
   const [orderForm] = Form.useForm()
   const { tenant, loading, products } = useTenantConfig()
   const [{ order }, dispatch] = useOrder()
+  const shippingAddress = order?.shipping?.address
 
   // Dirty hack to initially select a shipping method
   useInitialShipping(tenant, order, dispatch)
@@ -216,12 +216,7 @@ const Order: FC = () => {
                     onValuesChange={(_, data) => {
                       const formData = data as TempFormData
 
-                      const {
-                        name,
-                        info,
-                        shippingMethod,
-                        ...address
-                      } = formData
+                      const { name, info, shippingMethod } = formData
 
                       const partialOrder: Partial<OrderType> = {
                         customer: {
@@ -231,7 +226,7 @@ const Order: FC = () => {
                         ...(shippingMethod && {
                           shipping: {
                             type: shippingMethod,
-                            address,
+                            address: shippingAddress,
                             price:
                               shippingMethod === 'DELIVERY'
                                 ? tenant?.shippingStrategies?.deliveryFixed

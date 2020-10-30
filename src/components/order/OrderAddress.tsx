@@ -5,14 +5,42 @@ import Modal from 'antd/lib/modal/Modal'
 import React, { FC, useCallback, useState } from 'react'
 
 import { useOrder } from '../../contexts/order/OrderContext'
+import { useTenantConfig } from '../../contexts/TenantContext'
 import { useAltIntl } from '../../intlConfig'
 import { WorldAddress } from '../../typings'
 import AddressDisplay from '../common/AddressDisplay'
 import SelectAddress from '../common/SelectAddress'
+import { calculaTempoEDistancia } from '../common/useHere'
 
 type Props = { onAddress: (data: Partial<WorldAddress>) => void }
 
+type RoutingParams = {
+  clientLat: number
+  clientLng: number
+  tenantLat: number
+  tenantLng: number
+}
+
 const OrderAddress: FC<Props> = () => {
+  const { tenant } = useTenantConfig()
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const setClientContext = useCallback(
+    (data: WorldAddress) => {
+      const formData = data
+      // TESTING ROUTING CALCULATION USING HERE ROUTING API
+      const routingData = {
+        clientLat: formData.lat,
+        clientLng: formData.lng,
+        tenantLat: tenant?.address?.lat,
+        tenantLng: tenant?.address?.lng,
+      }
+
+      calculaTempoEDistancia(routingData as RoutingParams)
+    },
+    [tenant]
+  )
+
   const intl = useAltIntl()
   const [modal, setModal] = useState(false)
   const [{ order }, dispatch] = useOrder()
@@ -22,10 +50,11 @@ const OrderAddress: FC<Props> = () => {
 
   const onSelectedAddress = useCallback(
     (data: WorldAddress) => {
+      setClientContext(data)
       dispatch({ type: 'SET_CUSTOMER_ADDRESS', args: data })
       setModal(false)
     },
-    [dispatch]
+    [dispatch, setClientContext]
   )
 
   // Refact this. Terrible UX (no confirm and no edit option)

@@ -251,6 +251,8 @@ export const intlConfig = {
     'address.collapseMessage': 'Não encontrou seu endereço?',
     'address.noAddress': 'Você não tem nenhum endereço selecionado',
     'address.selectAddress': 'Selecionar Endereço',
+    'address.selectAddress.back': 'Voltar',
+    'address.editAddress': 'Editar Endereço',
     'address.form.save': 'Salvar Endereço',
     'tenant.migrate': 'Mostrar Produtos',
     'tenant.postMigrate':
