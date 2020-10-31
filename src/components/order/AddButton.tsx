@@ -7,7 +7,7 @@ const StyledButton = styled.button`
   display: flex;
   cursor: pointer;
   background: #091525;
-  border-radius: 20px;
+  border-radius: 10px;
   &:hover {
     border: 2px solid white;
   }
