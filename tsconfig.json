@@ -14,7 +14,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "types": ["node"]
+    "types": ["node", "jest"],
+    "typeRoots": ["./types", "./node_modules/@types"]
   },
   "include": ["src", "gatsby-*.ts*"]
 }

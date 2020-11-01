@@ -159,7 +159,8 @@ export interface Assembly {
   min?: number
   max?: number
   price?: number
-  options: AssemblyOption[]
+  // On some initial cases, there were no options. We don't want that
+  options?: AssemblyOption[]
 }
 
 export interface CategoriesCollection extends Category {
@@ -184,10 +185,9 @@ export type AssemblyForm = {
   }
 }
 
-export type OrderItem = {
+export type OrderItemInput = {
   product: Product
   quantity: number
-  itemPrice: number
   info?: string
   selectedItems: Array<{
     name: string
@@ -196,6 +196,9 @@ export type OrderItem = {
       quantity: number
     }>
   }>
+}
+export interface OrderItem extends OrderItemInput {
+  itemPrice: number
 }
 
 export type Order = {

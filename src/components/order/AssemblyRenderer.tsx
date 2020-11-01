@@ -123,7 +123,7 @@ const UniSelectInput: FC<UniProps> = ({ value, onChange, options }) => {
         value={Object.keys(value ?? {})?.[0]}
         onChange={handleChange}
       >
-        {options
+        {(options ?? [])
           .filter(({ live }) => live)
           .map((option, i) => (
             <label htmlFor={`${hash}-${i}`} key={i}>

@@ -13,7 +13,7 @@ export default {
   decorators: [
     withIntl,
     (Comp: React.FC) => (
-      <Modal visible className="customModal">
+      <Modal visible className="customModal" footer={null}>
         <Comp />
       </Modal>
     ),
