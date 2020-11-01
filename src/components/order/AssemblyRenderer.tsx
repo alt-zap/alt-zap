@@ -127,8 +127,20 @@ const UniSelectInput: FC<UniProps> = ({ value, onChange, options }) => {
           .filter(({ live }) => live)
           .map((option, i) => (
             <label htmlFor={`${hash}-${i}`} key={i}>
-              <div className="pa2 w-100 dim flex justify-between">
-                <span>{option.name}</span>
+              <div className="pa2 w-100 dim flex justify-between items-center">
+                <div className="flex flex-column">
+                  <b>{option.name}</b>
+                  {option.price && (
+                    <span
+                      className="gray"
+                      style={{
+                        marginTop: '-5px',
+                      }}
+                    >
+                      + <Real cents={option.price} />{' '}
+                    </span>
+                  )}
+                </div>
                 {/* Add the option additional price */}
                 <Radio id={`${hash}-${i}`} value={option.name} />
               </div>
