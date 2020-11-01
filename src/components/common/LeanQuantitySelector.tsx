@@ -37,9 +37,8 @@ const LeanQuantitySelector: FC<Props> = ({
     [onQuantity, quantity, min]
   )
 
-  const initialState = useMemo(() => parseInt(quantity ?? '0', 10) <= min, [
+  const initialState = useMemo(() => parseInt(quantity ?? '0', 10) === 0, [
     quantity,
-    min,
   ])
 
   return (

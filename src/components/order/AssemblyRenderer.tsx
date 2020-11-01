@@ -129,6 +129,7 @@ const UniSelectInput: FC<UniProps> = ({ value, onChange, options }) => {
             <label htmlFor={`${hash}-${i}`} key={i}>
               <div className="pa2 w-100 dim flex justify-between">
                 <span>{option.name}</span>
+                {/* Add the option additional price */}
                 <Radio id={`${hash}-${i}`} value={option.name} />
               </div>
               <Divider className="ma0" />

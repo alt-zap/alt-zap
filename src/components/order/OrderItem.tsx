@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { Input, Form } from 'antd'
 import ReactMarkdown from 'react-markdown'
 
@@ -8,6 +8,7 @@ import AssemblyRenderer from './AssemblyRenderer'
 import { useAltIntl } from '../../intlConfig'
 import OrderItemFooter from './OrderItemFooter'
 import { useItemPrice } from '../../hooks/useItemPrice'
+import { mapFormToAssembly } from '../../functions/orderItem'
 
 const { TextArea } = Input
 const { Item } = Form
@@ -21,15 +22,40 @@ type Props = {
 type FormInput = {
   info?: string
   assembly?: Record<string, Record<string, string>>
+  quantity: string
 }
 
 const OrderItem: FC<Props> = ({ product, onAddItem, loading }) => {
   const { name, description, imgSrc } = product
-  const [quantity, setQuantity] = useState('1')
   const [partialItem, setPartialItem] = useState<OrderItemInput>()
   const intl = useAltIntl()
   const [form] = Form.useForm()
   const itemPrice = useItemPrice(partialItem)
+
+  const mounted = useRef<boolean>()
+
+  // This, supposedly, only runs when the form is mounted.
+  // What is exactly what we need to compute the inital OrderItemInput
+  // But, seguro morreu de velho, so we're using a Ref to enforce that.
+  // (We need this to not have two functions to compute the initial Item)
+  useEffect(() => {
+    if (mounted.current) {
+      return
+    }
+
+    const data = form.getFieldsValue() as FormInput
+
+    const initialItem = {
+      product,
+      // Inconsistency with the Form.Item's initial value
+      quantity: 1,
+      info: '',
+      selectedItems: mapFormToAssembly(data.assembly ?? {}),
+    }
+
+    setPartialItem(initialItem)
+    mounted.current = true
+  }, [form, product])
 
   // Calculates the "partial" item reactively
   // Not the best idea, but it's what we have
@@ -37,7 +63,7 @@ const OrderItem: FC<Props> = ({ product, onAddItem, loading }) => {
     (_, data) => {
       // Mind initial quantity
       const formData = data as FormInput
-      const numberQt = parseInt(quantity, 10)
+      const numberQt = parseInt(data.quantity, 10)
 
       console.log({ formData })
 
@@ -45,10 +71,10 @@ const OrderItem: FC<Props> = ({ product, onAddItem, loading }) => {
         product,
         quantity: numberQt,
         info: formData.info,
-        selectedItems: [],
+        selectedItems: mapFormToAssembly(formData.assembly ?? {}),
       })
     },
-    [setPartialItem, product, quantity]
+    [setPartialItem, product]
   )
 
   const onSubmit = useCallback(() => {
@@ -73,7 +99,7 @@ const OrderItem: FC<Props> = ({ product, onAddItem, loading }) => {
         className="w-100"
         form={form}
         layout="vertical"
-        onValuesChange={(_, values) => console.log(values)}
+        onValuesChange={onFormChange}
         onFinish={onSubmit}
       >
         {!!product.assemblyOptions && (
@@ -93,12 +119,7 @@ const OrderItem: FC<Props> = ({ product, onAddItem, loading }) => {
             </Item>
           </div>
         </div>
-        <OrderItemFooter
-          totalPrice={itemPrice}
-          loading={loading ?? false}
-          quantity={quantity}
-          onQuantity={setQuantity}
-        />
+        <OrderItemFooter totalPrice={itemPrice} loading={loading ?? false} />
       </Form>
     </div>
   )
