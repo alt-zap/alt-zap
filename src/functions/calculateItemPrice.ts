@@ -1,9 +1,6 @@
 import { OrderItemInput } from '../typings'
 
-export const calculateItemPrice = (
-  item: OrderItemInput,
-  quantity: number
-): number => {
+export const calculateItemPrice = (item: OrderItemInput): number => {
   const productPrices = item.product.price
 
   const itemsPrice = item.selectedItems.reduce((acc, cur) => {
@@ -33,5 +30,5 @@ export const calculateItemPrice = (
     return assemblyPrice + subItemsPrice + acc
   }, 0)
 
-  return (productPrices + itemsPrice) * quantity
+  return (productPrices + itemsPrice) * item.quantity
 }

@@ -75,6 +75,10 @@ const products = [
   },
 ]
 
-export const Classs = () => <OrderItem product={products[1]} />
+export const Classs = () => (
+  <OrderItem product={products[1]} onAddItem={() => {}} />
+)
 
-export const WithAssembly = () => <OrderItem product={products[0]} />
+export const WithAssembly = () => (
+  <OrderItem product={products[0]} onAddItem={() => {}} />
+)

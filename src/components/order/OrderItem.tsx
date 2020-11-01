@@ -1,23 +1,57 @@
 /* eslint-disable no-console */
-import React, { FC } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { Input, Form } from 'antd'
 import ReactMarkdown from 'react-markdown'
 
-import { Product } from '../../typings'
+import { OrderItemInput, Product } from '../../typings'
 import AssemblyRenderer from './AssemblyRenderer'
 import { useAltIntl } from '../../intlConfig'
 import OrderItemFooter from './OrderItemFooter'
+import { useItemPrice } from '../../hooks/useItemPrice'
 
 const { TextArea } = Input
 const { Item } = Form
 
-type Props = { product: Product }
+type Props = {
+  product: Product
+  onAddItem: (item: OrderItemInput) => void
+  loading?: boolean
+}
 
-const OrderItem: FC<Props> = ({ product }) => {
+type FormInput = {
+  info?: string
+}
+
+const OrderItem: FC<Props> = ({ product, onAddItem, loading }) => {
   const { name, description, imgSrc } = product
-
+  const [quantity, setQuantity] = useState('1')
+  const [partialItem, setPartialItem] = useState<OrderItemInput>()
   const intl = useAltIntl()
   const [form] = Form.useForm()
+  const itemPrice = useItemPrice(partialItem)
+
+  // Calculates the "partial" item reactively
+  // Not the best idea, but it's what we have
+  const onFormChange = useCallback(
+    (data) => {
+      const formData = data as FormInput
+      const numberQt = parseInt(quantity, 10)
+
+      console.log({ formData })
+
+      setPartialItem({
+        product,
+        quantity: numberQt,
+        info: formData.info,
+        selectedItems: [],
+      })
+    },
+    [setPartialItem, product, quantity]
+  )
+
+  const onSubmit = useCallback(() => {
+    partialItem && onAddItem(partialItem)
+  }, [onAddItem, partialItem])
 
   return (
     <div className="flex flex-column items-center pt4">
@@ -37,7 +71,8 @@ const OrderItem: FC<Props> = ({ product }) => {
         className="w-100"
         form={form}
         layout="vertical"
-        onValuesChange={(_, a) => console.log(a)}
+        onValuesChange={onFormChange}
+        onFinish={onSubmit}
       >
         {!!product.assemblyOptions && (
           <AssemblyRenderer assemblyOptions={product.assemblyOptions} />
@@ -46,7 +81,7 @@ const OrderItem: FC<Props> = ({ product }) => {
           <div className="w-90">
             <Item
               label={intl.formatMessage({ id: 'order.field.description' })}
-              name="descriptions"
+              name="info"
             >
               <TextArea
                 placeholder={intl.formatMessage({
@@ -56,7 +91,12 @@ const OrderItem: FC<Props> = ({ product }) => {
             </Item>
           </div>
         </div>
-        <OrderItemFooter quantity="1" />
+        <OrderItemFooter
+          totalPrice={itemPrice}
+          loading={loading ?? false}
+          quantity={quantity}
+          onQuantity={setQuantity}
+        />
       </Form>
     </div>
   )

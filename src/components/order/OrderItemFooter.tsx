@@ -10,7 +10,6 @@ type Props = {
   quantity: string
   loading: boolean
   onQuantity: (qt: string) => void
-  onSubmit: () => void
 }
 
 const OrderItemFooter: FC<Props> = ({
@@ -18,7 +17,6 @@ const OrderItemFooter: FC<Props> = ({
   totalPrice,
   quantity,
   onQuantity,
-  onSubmit,
   loading,
 }) => {
   return (
@@ -36,10 +34,10 @@ const OrderItemFooter: FC<Props> = ({
           </div>
           <div className="mr0 mr2-ns">
             <AddButton
+              type="submit"
               label="Adicionar"
               price={totalPrice}
               loading={loading}
-              onClick={() => onSubmit()}
             />
           </div>
         </div>

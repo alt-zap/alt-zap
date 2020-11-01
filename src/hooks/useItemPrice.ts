@@ -1,13 +1,12 @@
+import { useMemo } from 'react'
+
+import { calculateItemPrice } from '../functions/calculateItemPrice'
 import { OrderItemInput } from '../typings'
 
-export const useItemPrice = (
-  item: OrderItemInput,
-  quantity: number
-): number => {
+export const useItemPrice = (item?: OrderItemInput): number => {
+  const totalPrice = useMemo(() => (item ? calculateItemPrice(item) : 0), [
+    item,
+  ])
 
-  const productPrices = item.product.price
-
-  const itemsPrice = item.selectedItems.reduce((acc, cur) => {
-    item.product.assemblyOptions?.find((assembly) => assembly.name)
-  }, 0)
+  return totalPrice
 }

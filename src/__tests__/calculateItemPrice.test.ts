@@ -17,3 +17,11 @@ test('no assembly with quantity', () => {
 
   expect(totalPrice).toEqual(1000)
 })
+
+// assembly with "base" price
+
+// assemlby with no base price
+
+// more than one item
+
+// three types of assembly (unique, select...)
