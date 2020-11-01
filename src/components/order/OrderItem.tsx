@@ -2,20 +2,24 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { Input, Form } from 'antd'
 import ReactMarkdown from 'react-markdown'
+import { styled } from 'linaria/react'
 
-import { OrderItemInput, Product } from '../../typings'
+import { OrderItem as IOrderItem, Product } from '../../typings'
 import AssemblyRenderer from './AssemblyRenderer'
 import { useAltIntl } from '../../intlConfig'
 import OrderItemFooter from './OrderItemFooter'
-import { useItemPrice } from '../../hooks/useItemPrice'
-import { mapFormToAssembly } from '../../functions/orderItem'
+import {
+  calculateItemPrice,
+  mapFormToAssembly,
+} from '../../functions/orderItem'
+import { ProductDescription } from './ProductDescription'
 
 const { TextArea } = Input
 const { Item } = Form
 
 type Props = {
   product: Product
-  onAddItem: (item: OrderItemInput) => void
+  onAddItem: (item: IOrderItem) => void
   loading?: boolean
 }
 
@@ -27,10 +31,9 @@ type FormInput = {
 
 const OrderItem: FC<Props> = ({ product, onAddItem, loading }) => {
   const { name, description, imgSrc } = product
-  const [partialItem, setPartialItem] = useState<OrderItemInput>()
+  const [partialItem, setPartialItem] = useState<IOrderItem>()
   const intl = useAltIntl()
   const [form] = Form.useForm()
-  const itemPrice = useItemPrice(partialItem)
 
   const mounted = useRef<boolean>()
 
@@ -45,7 +48,7 @@ const OrderItem: FC<Props> = ({ product, onAddItem, loading }) => {
 
     const data = form.getFieldsValue() as FormInput
 
-    const initialItem = {
+    const initialItem: Omit<IOrderItem, 'itemPrice'> = {
       product,
       // Inconsistency with the Form.Item's initial value
       quantity: 1,
@@ -53,7 +56,11 @@ const OrderItem: FC<Props> = ({ product, onAddItem, loading }) => {
       selectedItems: mapFormToAssembly(data.assembly ?? {}),
     }
 
-    setPartialItem(initialItem)
+    const itemPrice = calculateItemPrice(initialItem)
+
+    setPartialItem(
+      Object.assign(initialItem, { itemPrice } as Pick<IOrderItem, 'itemPrice'>)
+    )
     mounted.current = true
   }, [form, product])
 
@@ -61,18 +68,21 @@ const OrderItem: FC<Props> = ({ product, onAddItem, loading }) => {
   // Not the best idea, but it's what we have
   const onFormChange = useCallback(
     (_, data) => {
-      // Mind initial quantity
       const formData = data as FormInput
       const numberQt = parseInt(data.quantity, 10)
 
-      console.log({ formData })
-
-      setPartialItem({
+      const itemInput: Omit<IOrderItem, 'itemPrice'> = {
         product,
         quantity: numberQt,
         info: formData.info,
         selectedItems: mapFormToAssembly(formData.assembly ?? {}),
-      })
+      }
+
+      const itemPrice = calculateItemPrice(itemInput)
+
+      setPartialItem(
+        Object.assign(itemInput, { itemPrice } as Pick<IOrderItem, 'itemPrice'>)
+      )
     },
     [setPartialItem, product]
   )
@@ -82,17 +92,16 @@ const OrderItem: FC<Props> = ({ product, onAddItem, loading }) => {
   }, [onAddItem, partialItem])
 
   return (
-    <div className="flex flex-column items-center pt4">
-      <img src={imgSrc} alt={name} title={name} className="br2 shadow-1" />
+    <Wrapper>
+      {!!imgSrc && (
+        <img src={imgSrc} alt={name} title={name} className="shadow-1 w-100" />
+      )}
       <span className="f3 tc mt2 b">{name}</span>
       {!!description && (
         <div className="flex justify-center w-100">
-          <div
-            className="w-90 b--solid b--light-gray pa2 mt2 br2"
-            style={{ borderWidth: '1px' }}
-          >
+          <ProductDescription>
             <ReactMarkdown className="tc pt2" source={description} />
-          </div>
+          </ProductDescription>
         </div>
       )}
       <Form
@@ -119,10 +128,19 @@ const OrderItem: FC<Props> = ({ product, onAddItem, loading }) => {
             </Item>
           </div>
         </div>
-        <OrderItemFooter totalPrice={itemPrice} loading={loading ?? false} />
+        <OrderItemFooter
+          totalPrice={partialItem?.itemPrice ?? 0}
+          loading={loading ?? false}
+        />
       </Form>
-    </div>
+    </Wrapper>
   )
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
 export default OrderItem

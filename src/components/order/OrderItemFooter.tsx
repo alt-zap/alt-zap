@@ -1,4 +1,5 @@
 import { Divider, Form } from 'antd'
+import { styled } from 'linaria/react'
 import React, { FC } from 'react'
 
 import LeanQuantitySelector from '../common/LeanQuantitySelector'
@@ -10,18 +11,28 @@ type Props = {
   loading?: boolean
 }
 
+const Content = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  @media (max-width: 600px) {
+    justify-content: space-around;
+  }
+`
+
 const OrderItemFooter: FC<Props> = ({ min = 1, totalPrice, loading }) => {
   return (
     <>
       <Divider />
-      <div className="b-black b-solid flex justify-around justify-end-ns items-center mb3">
-        <div className="flex">
-          <div className="mr2">
+      <Content>
+        <div className="flex justify-around w-100">
+          <div className="mh4">
             <Form.Item name="quantity" initialValue="1">
               <QuantityWrapper min={min} />
             </Form.Item>
           </div>
-          <div className="mr0 mr2-ns">
+          <div className="mr4">
             <AddButton
               type="submit"
               label="Adicionar"
@@ -30,7 +41,7 @@ const OrderItemFooter: FC<Props> = ({ min = 1, totalPrice, loading }) => {
             />
           </div>
         </div>
-      </div>
+      </Content>
     </>
   )
 }
@@ -51,7 +62,7 @@ const QuantityWrapper: FC<QuantityWrapperProps> = ({
       quantity={value}
       onQuantity={onChange}
       min={min}
-      dimension="37px"
+      dimension="43px"
     />
   )
 }

@@ -37,7 +37,6 @@
     "react-beautiful-dnd": "^13.0.0",
     "react-color": "^2.18.1",
     "react-currency-masked-input": "^2.5.0",
-    "react-device-detect": "^1.13.1",
     "react-dom": "latest",
     "react-helmet": "^6.1.0",
     "react-image": "^4.0.3",

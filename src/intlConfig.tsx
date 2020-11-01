@@ -193,7 +193,7 @@ export const intlConfig = {
       'Selecione {range, select, yes {de {min}} other {}} {strict, select, no {até} other {}} {max} {max, plural, one {opção} other {opções} }',
     'order.assembly.lessThanMin':
       'Você deve selecionar pelo menos {min} {min, plural, one {opção} other {opções}}.',
-    'order.field.description': 'Descrição',
+    'order.field.description': 'Informações Extras',
     'order.field.descriptionPlaceholder': 'Ex: Por favor, tire as cebolas.',
     'onboard.personalData': 'Dados pessoais',
     'onboard.yourBusiness': 'Seu negócio',

@@ -9,6 +9,7 @@ interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
 
 const StyledButton = styled.button<ButtonProps>`
   display: flex;
+  min-width: 166px;
   border: 0;
   cursor: ${(props) => (props.loading ? 'unset' : 'pointer')};
   background: ${(props) => (props.loading ? '#b3b3b3' : '#091525')};

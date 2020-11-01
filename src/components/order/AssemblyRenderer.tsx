@@ -20,7 +20,7 @@ const AssemblyRenderer: FC<Props> = ({ assemblyOptions }) => {
 
   return (
     <div className="flex flex-column items-center">
-      <h2 className="tc pa2">Opções</h2>
+      {(assemblyOptions ?? []).length > 0 && <h2 className="tc pa2">Opções</h2>}
       {assemblyOptions
         .filter(({ live }) => live)
         .map((assembly, i) => (
@@ -144,7 +144,7 @@ const UniSelectInput: FC<UniProps> = ({ value, onChange, options }) => {
                 {/* Add the option additional price */}
                 <Radio id={`${hash}-${i}`} value={option.name} />
               </div>
-              <Divider className="ma0" />
+              <Divider style={{ margin: 0 }} />
             </label>
           ))}
       </Radio.Group>
@@ -221,7 +221,7 @@ const MultiSelectInput: FC<MultiProps> = ({
               />
             )}
           </div>
-          <Divider className="ma0" />
+          <Divider style={{ margin: 0 }} />
         </label>
       ))}
     </div>
