@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { calculateItemPrice } from '../functions/calculateItemPrice'
+import { calculateItemPrice } from '../functions/orderItem'
 import { OrderItemInput } from '../typings'
 
 export const useItemPrice = (item?: OrderItemInput): number => {

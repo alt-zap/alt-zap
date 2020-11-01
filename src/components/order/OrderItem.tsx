@@ -20,6 +20,7 @@ type Props = {
 
 type FormInput = {
   info?: string
+  assembly?: Record<string, Record<string, string>>
 }
 
 const OrderItem: FC<Props> = ({ product, onAddItem, loading }) => {
@@ -33,7 +34,8 @@ const OrderItem: FC<Props> = ({ product, onAddItem, loading }) => {
   // Calculates the "partial" item reactively
   // Not the best idea, but it's what we have
   const onFormChange = useCallback(
-    (data) => {
+    (_, data) => {
+      // Mind initial quantity
       const formData = data as FormInput
       const numberQt = parseInt(quantity, 10)
 
@@ -71,7 +73,7 @@ const OrderItem: FC<Props> = ({ product, onAddItem, loading }) => {
         className="w-100"
         form={form}
         layout="vertical"
-        onValuesChange={onFormChange}
+        onValuesChange={(_, values) => console.log(values)}
         onFinish={onSubmit}
       >
         {!!product.assemblyOptions && (

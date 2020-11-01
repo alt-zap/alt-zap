@@ -1,4 +1,4 @@
-import { OrderItemInput } from '../typings'
+import { OrderItem, OrderItemInput } from '../typings'
 
 export const calculateItemPrice = (item: OrderItemInput): number => {
   const productPrices = item.product.price
@@ -31,4 +31,24 @@ export const calculateItemPrice = (item: OrderItemInput): number => {
   }, 0)
 
   return (productPrices + itemsPrice) * item.quantity
+}
+
+export const mapFormToAssembly = (
+  assembly: Record<string, Record<string, string>>
+): OrderItem['selectedItems'] => {
+  const itemsNames = Object.keys(assembly)
+
+  const getOptionsForItem = (options: Record<string, string>) => {
+    const optionsNames = Object.keys(options)
+
+    return optionsNames.map((optionName) => ({
+      name: optionName,
+      quantity: parseInt(options[optionName], 10),
+    }))
+  }
+
+  return itemsNames.map((itemName) => ({
+    name: itemName,
+    options: getOptionsForItem(assembly[itemName]),
+  }))
 }
