@@ -38,7 +38,7 @@ const OrderItem: FC<Props> = ({ product, onAddItem, loading }) => {
   const mounted = useRef<boolean>()
 
   // This, supposedly, only runs when the form is mounted.
-  // What is exactly what we need to compute the inital OrderItemInput
+  // What is exactly what we need to compute the inital OrderItem
   // But, seguro morreu de velho, so we're using a Ref to enforce that.
   // (We need this to not have two functions to compute the initial Item)
   useEffect(() => {

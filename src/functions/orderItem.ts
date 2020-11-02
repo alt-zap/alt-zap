@@ -1,6 +1,6 @@
-import { OrderItem, OrderItemInput } from '../typings'
+import { OrderItem } from '../typings'
 
-export const calculateItemPrice = (item: OrderItemInput): number => {
+export const calculateItemPrice = (item: OrderItem): number => {
   const productPrices = item.product.price
 
   const itemsPrice = item.selectedItems.reduce((acc, cur) => {

@@ -185,7 +185,7 @@ export type AssemblyForm = {
   }
 }
 
-export type OrderItemInput = {
+export type OrderItem = {
   product: Product
   quantity: number
   info?: string
@@ -196,8 +196,6 @@ export type OrderItemInput = {
       quantity: number
     }>
   }>
-}
-export interface OrderItem extends OrderItemInput {
   itemPrice: number
 }
 
