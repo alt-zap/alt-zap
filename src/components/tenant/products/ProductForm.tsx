@@ -23,6 +23,7 @@ import {
   IntlSelect,
   prepareSelect,
 } from '../../../intlConfig'
+import DocsSuggestion from '../../common/DocsSuggestion'
 
 const { Item } = Form
 const { Option } = Select
@@ -225,9 +226,11 @@ const ProductForm: FC<Props> = ({
         <LogoUpload large />
       </Item>
 
-      <Divider>
-        <Message id="tenant.product.display" />
-      </Divider>
+      {false && (
+        <Divider>
+          <Message id="tenant.product.display" />
+        </Divider>
+      )}
 
       {false && (
         <div className="flex justify-around">
@@ -304,6 +307,15 @@ const ProductForm: FC<Props> = ({
       <Divider>
         <Message id="tenant.product.assemblyOptions" />
       </Divider>
+
+      <DocsSuggestion
+        docs={[
+          {
+            name: 'Como configurar opções de montagem em um produto?',
+            href: '#',
+          },
+        ]}
+      />
 
       <Form.List name="assemblyOptions">
         {(fields, { add, remove }) => {
