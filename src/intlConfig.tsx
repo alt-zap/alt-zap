@@ -31,7 +31,8 @@ export const intlConfig = {
     'tenant.categories.add': 'Adicionar Categoria',
     'tenant.categories.live': 'Ativa',
     'tenant.categories.edit': 'Editar Categoria',
-    'tenant.categories.productCount': '{count} produtos',
+    'tenant.categories.productCount':
+      '{count} {count, plural, =0 {produto} one {produto} other {produtos}}',
     'tenant.categories.alreadyExists': 'Já existe uma categoria %s',
     'tenant.categories.addSuccess': 'Categoria cadastrada com sucesso',
     'tenant.categories.editSuccess': 'Categoria editada com sucesso',

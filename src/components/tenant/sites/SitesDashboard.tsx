@@ -70,6 +70,7 @@ const SitesDashboard: FC = () => {
               {
                 address: `${tenant?.slug}.alt.app.br`,
                 status: 'active',
+                key: 'alt-zap',
               },
             ]}
           />

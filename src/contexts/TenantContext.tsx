@@ -651,12 +651,21 @@ type UpdateAction =
   | { type: 'CATEGORY_REMOVED'; args: { categoryId: number } }
 
 const getUpdatesSites = (
-  sites: Sites,
+  incomingSites: Sites,
   action: UpdateAction
 ): TenantConfig['sites'] => {
+  const sites: Sites = incomingSites ?? {
+    zap: { categoryIds: [], productMap: {} },
+  }
+
   switch (action.type) {
     case 'CATEGORY_ADDED': {
       const { categoryId } = action.args
+
+      const categoryIds = [
+        ...(sites.zap?.categoryIds || []),
+        { element: categoryId, visible: true },
+      ]
 
       return {
         zap: {
@@ -664,10 +673,7 @@ const getUpdatesSites = (
             ...sites?.zap.productMap,
             [categoryId]: [],
           },
-          categoryIds: [
-            ...sites.zap.categoryIds,
-            { element: categoryId, visible: true },
-          ],
+          categoryIds,
         },
       }
     }
@@ -734,7 +740,9 @@ export const reconcileSections = async (
     action,
   }: { action: UpdateAction; tenantId?: string; currentSites: Sites }
 ) => {
-  const { zap } = currentSites
+  const { zap } = currentSites?.zap
+    ? currentSites
+    : { zap: { categoryIds: [], productMap: {} } }
 
   const newSites = getUpdatesSites(currentSites, action)
 
