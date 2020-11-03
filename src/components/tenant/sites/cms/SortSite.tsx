@@ -50,7 +50,7 @@ const SortSite: FC = () => {
       const productIds = getSectionsFromIds(ids)
 
       // Pleasing the TS compiler
-      if (!category) {
+      if (category === null || category === undefined) {
         return
       }
 

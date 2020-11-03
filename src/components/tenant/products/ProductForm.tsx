@@ -200,7 +200,9 @@ const ProductForm: FC<Props> = ({
         label={<Message id="tenant.product.category" />}
         rules={rules.category}
       >
+        {/** For now, check #104 */}
         <Select
+          disabled={editMode}
           size="large"
           placeholder={<Message id="tenant.product.categoryPlaceholder" />}
         >
