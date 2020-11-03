@@ -203,7 +203,7 @@ const MultiSelectInput: FC<MultiProps> = ({
             </div>
             {single ? (
               <BooleanQuantitySelector
-                disabled={totalSelected === max}
+                isMax={totalSelected === max}
                 id={`${hash}-${i}`}
                 quantity={value?.[option.name]}
                 onQuantity={(quantity) =>

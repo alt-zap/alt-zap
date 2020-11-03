@@ -6,14 +6,14 @@ type Props = {
   quantity?: string
   onQuantity?: (quantity: string) => void
   id?: string
-  disabled?: boolean
+  isMax?: boolean
 }
 
 const BooleanQuantitySelector: FC<Props> = ({
   quantity,
   onQuantity,
   id,
-  disabled,
+  isMax,
 }) => {
   const checked = useMemo(() => quantity === '1', [quantity])
 
@@ -26,7 +26,7 @@ const BooleanQuantitySelector: FC<Props> = ({
 
   return (
     <Checkbox
-      disabled={disabled}
+      disabled={isMax && !checked}
       id={id}
       style={{
         width: '25px',
