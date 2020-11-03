@@ -126,12 +126,16 @@ const UniSelectInput: FC<UniProps> = ({ value, onChange, options }) => {
     [onChange]
   )
 
+  const inputValue = useMemo(
+    () =>
+      Object.keys(value ?? {}).find((key) => value?.[key] === '1') ??
+      Object.keys(value ?? {})[0],
+    [value]
+  )
+
   return (
     <div className="flex flex-column">
-      <Radio.Group
-        value={Object.keys(value ?? {})?.[0]}
-        onChange={handleChange}
-      >
+      <Radio.Group value={inputValue} onChange={handleChange}>
         {(options ?? [])
           .filter(({ live }) => live)
           .map((option, i) => (
