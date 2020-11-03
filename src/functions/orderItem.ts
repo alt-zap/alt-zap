@@ -8,6 +8,8 @@ export const calculateItemPrice = (item: OrderItem): number => {
       (_assembly) => _assembly.name === cur.name
     )
 
+    // Mind the assembly price
+
     if (!assembly) {
       console.error(`Couldn't find an Assembly ${cur.name}`)
     }

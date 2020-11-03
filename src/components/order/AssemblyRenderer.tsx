@@ -130,7 +130,7 @@ const UniSelectInput: FC<UniProps> = ({ value, onChange, options }) => {
               <div className="pa2 w-100 dim flex justify-between items-center">
                 <div className="flex flex-column">
                   <b>{option.name}</b>
-                  {option.price && (
+                  {!!option.price && (
                     <span
                       className="gray"
                       style={{
@@ -141,7 +141,6 @@ const UniSelectInput: FC<UniProps> = ({ value, onChange, options }) => {
                     </span>
                   )}
                 </div>
-                {/* Add the option additional price */}
                 <Radio id={`${hash}-${i}`} value={option.name} />
               </div>
               <Divider style={{ margin: 0 }} />
@@ -191,7 +190,7 @@ const MultiSelectInput: FC<MultiProps> = ({
           <div className="pa2 w-100 flex justify-between">
             <div className="flex flex-column">
               <b className="dim">{option.name}</b>
-              {option.price && (
+              {!!option.price && (
                 <span
                   className="gray"
                   style={{

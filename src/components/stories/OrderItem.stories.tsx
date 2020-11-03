@@ -52,6 +52,20 @@ const products = [
         ],
         live: true,
       },
+      {
+        price: 100,
+        max: 3,
+        type: 'SINGLE' as AssemblyType,
+        min: 0,
+        name: 'Temperos',
+        options: [
+          { price: 0, name: 'Lemon Pepper', live: true },
+          { price: 0, name: 'Tomilho', live: true },
+          { price: 0, name: 'Cumin', live: true },
+          { price: 0, name: 'Páprica Picante', live: true },
+        ],
+        live: true,
+      },
     ],
     category: 1,
     imgSrc:

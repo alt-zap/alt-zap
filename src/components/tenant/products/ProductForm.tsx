@@ -172,7 +172,15 @@ const ProductForm: FC<Props> = ({
       autoComplete="off"
       scrollToFirstError
     >
-      <div className="flex justify-between">
+      <DocsSuggestion
+        docs={[
+          {
+            name: 'Como adicionar produtos no Alt',
+            href: 'https://docs.alt.app.br/docs/adicionando-um-produto-no-alt',
+          },
+        ]}
+      />
+      <div className="flex justify-between mt3">
         <div className="w-80">
           <Item
             label={<Message id="tenant.product.name" />}
@@ -312,7 +320,8 @@ const ProductForm: FC<Props> = ({
         docs={[
           {
             name: 'Como configurar opções de montagem em um produto?',
-            href: '#',
+            href:
+              'https://docs.alt.app.br/docs/guides/configurando-opcoes-de-montagem-de-produto',
           },
         ]}
       />
