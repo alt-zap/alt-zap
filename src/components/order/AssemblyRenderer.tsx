@@ -27,7 +27,16 @@ const AssemblyRenderer: FC<Props> = ({ assemblyOptions }) => {
           <div key={i} className="w-100">
             <div className="bg-light-gray flex ph3 pv1 w-100">
               <div className="flex flex-column">
-                <span className="f5 b pb0 mb0">{assembly.name}</span>
+                <span className="f5 b pb0 mb0">
+                  {assembly.name}
+                  {assembly.price ? (
+                    <span>
+                      &nbsp; (+ <Real cents={assembly.price} />)
+                    </span>
+                  ) : (
+                    ''
+                  )}
+                </span>
                 <span className="black-40" style={{ marginTop: '-5px' }}>
                   <Message
                     id="order.assembly.select"

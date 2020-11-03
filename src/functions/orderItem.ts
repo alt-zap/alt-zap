@@ -8,8 +8,6 @@ export const calculateItemPrice = (item: OrderItem): number => {
       (_assembly) => _assembly.name === cur.name
     )
 
-    // Mind the assembly price
-
     if (!assembly) {
       console.error(`Couldn't find an Assembly ${cur.name}`)
     }
@@ -21,15 +19,19 @@ export const calculateItemPrice = (item: OrderItem): number => {
         })
       }, {} as Record<string, number>) ?? {}
 
-    const assemblyPrice = assembly?.price ?? 0
-
     const subItemsPrice = cur.options.reduce((__acc, __cur) => {
       const itemPrice = optionsPriceMap[__cur.name] ?? 0
 
       return itemPrice * __cur.quantity + __acc
     }, 0)
 
-    return assemblyPrice + subItemsPrice + acc
+    const assemblyOptionIncrement = cur.options.some(
+      ({ quantity }) => quantity > 0
+    )
+      ? assembly?.price ?? 0
+      : 0
+
+    return assemblyOptionIncrement + subItemsPrice + acc
   }, 0)
 
   return (productPrices + itemsPrice) * item.quantity

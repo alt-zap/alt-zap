@@ -45,6 +45,7 @@ const products = [
         type: 'REPEAT' as AssemblyType,
         min: 1,
         name: 'Adicionais',
+        price: 300,
         options: [
           { price: 200, name: 'Bacon', live: true, initialQuantity: 2 },
           { price: 50, name: 'Pimenta Calabresa', live: true },
