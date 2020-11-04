@@ -3,3 +3,6 @@ body {
   scroll-behavior: smooth;
 }
 
+.customModal .ant-modal-body {
+  padding: 0;
+}

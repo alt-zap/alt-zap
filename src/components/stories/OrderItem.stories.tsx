@@ -5,7 +5,7 @@ import Modal from 'antd/lib/modal/Modal'
 
 import OrderItem from '../order/OrderItem'
 import withIntl from './withIntl'
-import { AssemblyType } from '../../typings'
+import { AssemblyType, Product } from '../../typings'
 
 export default {
   title: 'order/OrderItem',
@@ -13,7 +13,7 @@ export default {
   decorators: [
     withIntl,
     (Comp: React.FC) => (
-      <Modal visible>
+      <Modal visible className="customModal" footer={null}>
         <Comp />
       </Modal>
     ),
@@ -34,7 +34,7 @@ const products = [
         min: 1,
         name: 'Tamanho',
         options: [
-          { initialQuantity: 1, name: 'Pequeno', live: true },
+          { name: 'Pequeno', live: true },
           { price: 200, name: 'Médio', live: true },
           { price: 400, name: 'Grande', live: true },
         ],
@@ -45,6 +45,7 @@ const products = [
         type: 'REPEAT' as AssemblyType,
         min: 1,
         name: 'Adicionais',
+        price: 300,
         options: [
           { price: 200, name: 'Bacon', live: true, initialQuantity: 2 },
           { price: 50, name: 'Pimenta Calabresa', live: true },
@@ -52,7 +53,21 @@ const products = [
         ],
         live: true,
       },
-    ],
+      {
+        price: 100,
+        max: 3,
+        type: 'SINGLE' as AssemblyType,
+        min: 0,
+        name: 'Temperos',
+        options: [
+          { price: 0, name: 'Lemon Pepper', live: true, initialQuantity: 1 },
+          { price: 0, name: 'Tomilho', live: true },
+          { price: 0, name: 'Cumin', live: true },
+          { price: 0, name: 'Páprica Picante', live: true },
+        ],
+        live: true,
+      },
+    ] as Product['assemblyOptions'],
     category: 1,
     imgSrc:
       'https://firebasestorage.googleapis.com/v0/b/alt-zap.appspot.com/o/7673341d-0e28-4bb4-b258-11f5f8844c47.jpg?alt=media&token=bd86d456-395f-4c7f-91dd-6afab8e3e780',
@@ -75,6 +90,10 @@ const products = [
   },
 ]
 
-export const Classs = () => <OrderItem product={products[1]} />
+export const Classs = () => (
+  <OrderItem product={products[1]} onAddItem={() => {}} />
+)
 
-export const WithAssembly = () => <OrderItem product={products[0]} />
+export const WithAssembly = () => (
+  <OrderItem product={products[0]} onAddItem={() => {}} />
+)

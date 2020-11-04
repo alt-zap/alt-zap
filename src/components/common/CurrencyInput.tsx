@@ -59,9 +59,13 @@ const CurrencyInput: FC<Props> = ({
 
       event.persist()
 
+      const centsToDispatch = Number.isInteger(cents) ? cents : 0
+
       onChange?.(({
         target: {
-          value: valueAsString ? toCurrency(separator, stringValue) : cents,
+          value: valueAsString
+            ? toCurrency(separator, stringValue)
+            : centsToDispatch,
         },
       } as unknown) as React.ChangeEvent<HTMLInputElement>)
     },

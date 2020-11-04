@@ -2,12 +2,11 @@ import React, { useEffect, useRef } from 'react'
 
 import {
   WorldAddress,
-  OrderProducts,
   OpeningHours,
   Days,
   Order,
   TenantConfig,
-  ShippingMethod,
+  OrderItem,
 } from './typings'
 
 type Elements = HTMLInputElement | HTMLTextAreaElement
@@ -29,20 +28,7 @@ const toString = (number: number) => {
   return `${str.slice(0, len - 2)},${str.slice(len - 2, len)}`
 }
 
-type GenerateLinkParams = {
-  name: string
-  address: WorldAddress
-  tenantAddress: WorldAddress
-  shippingMethod: ShippingMethod
-  order: OrderProducts[]
-  payment: {
-    label: string
-    change?: string
-  }
-  total: number
-  info?: string
-  whatsapp: string
-}
+const LINE_BREAK = '\r\n'
 
 const messageForAddress = (address?: WorldAddress) => {
   if (!address) return ''
@@ -70,18 +56,53 @@ ${addressLabel}
 ${messageForAddress(isDelivery ? order?.shipping?.address : tenant.address)}`
 }
 
+const messageForItems = (items: OrderItem[]) => {
+  const messageForSubitems = (subitems: OrderItem['selectedItems']) => {
+    return subitems
+      .filter(({ options }) => options.some(({ quantity }) => quantity > 0))
+      .map(({ name, options }) => {
+        const optionsToDisplay = options.filter(({ quantity }) => quantity > 0)
+        const messageForOptions =
+          optionsToDisplay.length === 1 && optionsToDisplay[0].quantity === 1
+            ? optionsToDisplay[0].name
+            : optionsToDisplay
+                .map(({ name: _name, quantity }) => `${_name}(${quantity})`)
+                .join(' - ')
+
+        return `  *${name}*: ${messageForOptions}`
+      })
+      .join(LINE_BREAK)
+  }
+
+  const messageForItem = (item: OrderItem) => {
+    const { product, quantity } = item
+
+    const quantityName = `*${quantity}* - ${product.name}`
+    const options = messageForSubitems(item.selectedItems)
+    const info = item.info?.length ? `  *Obs:* ${item.info}` : ''
+
+    const lines = [quantityName, options, info]
+
+    return lines.filter((str) => str?.length > 0).join(LINE_BREAK)
+  }
+
+  const message = items
+    .filter(({ quantity }) => parseInt(`${quantity}`, 10) > 0)
+    .map(messageForItem)
+    .join(`${LINE_BREAK}${LINE_BREAK}`)
+
+  return message
+}
+
 export const generateLink = (order: Order, tenant: TenantConfig) => {
   // eslint-disable-next-line no-shadow
-  const itemsSection = order.items
-    .filter(({ quantity }) => parseInt(`${quantity}`, 10) > 0)
-    .map(({ product, quantity }) => `*${quantity}* - ${product.name}`)
-    .join('\r\n')
+  const itemsSection = messageForItems(order.items)
 
   const text = `*Novo Pedido!*
 *Nome do Cliente:* ${order?.customer?.name}
 
 *Itens do Pedido:*
-${itemsSection}
+${itemsSection + LINE_BREAK}
 *Total do Pedido:* R$ ${toString(order.totalizers?.finalPrice ?? 0)}
 
 ${messageForShipping(order, tenant)}

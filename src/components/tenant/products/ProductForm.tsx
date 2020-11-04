@@ -23,6 +23,7 @@ import {
   IntlSelect,
   prepareSelect,
 } from '../../../intlConfig'
+import DocsSuggestion from '../../common/DocsSuggestion'
 
 const { Item } = Form
 const { Option } = Select
@@ -171,7 +172,15 @@ const ProductForm: FC<Props> = ({
       autoComplete="off"
       scrollToFirstError
     >
-      <div className="flex justify-between">
+      <DocsSuggestion
+        docs={[
+          {
+            name: 'Como adicionar produtos no Alt',
+            href: 'https://docs.alt.app.br/docs/adicionando-um-produto-no-alt',
+          },
+        ]}
+      />
+      <div className="flex justify-between mt3">
         <div className="w-80">
           <Item
             label={<Message id="tenant.product.name" />}
@@ -225,30 +234,34 @@ const ProductForm: FC<Props> = ({
         <LogoUpload large />
       </Item>
 
-      <Divider>
-        <Message id="tenant.product.display" />
-      </Divider>
+      {false && (
+        <Divider>
+          <Message id="tenant.product.display" />
+        </Divider>
+      )}
 
-      <div className="flex justify-around">
-        <div>
-          <Item label={<Message id="tenant.product.displayMode" />}>
-            <Select defaultValue="Horizontal" size="large" disabled />
-          </Item>
+      {false && (
+        <div className="flex justify-around">
+          <div>
+            <Item label={<Message id="tenant.product.displayMode" />}>
+              <Select defaultValue="Horizontal" size="large" disabled />
+            </Item>
+          </div>
+          <div>
+            <Form.Item
+              label={<Message id="tenant.product.highlight" />}
+              name="highlight"
+              valuePropName="checked"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Switch />
+            </Form.Item>
+          </div>
         </div>
-        <div>
-          <Form.Item
-            label={<Message id="tenant.product.highlight" />}
-            name="highlight"
-            valuePropName="checked"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <Switch />
-          </Form.Item>
-        </div>
-      </div>
+      )}
       <Divider>
         <Message id="tenant.product.offer" />
       </Divider>
@@ -299,150 +312,57 @@ const ProductForm: FC<Props> = ({
         </div>
       </div>
 
-      {/* Why, do you ask?
+      <Divider>
+        <Message id="tenant.product.assemblyOptions" />
+      </Divider>
 
-      Since we're releasing the new Admin even without the new Menu implementation,
-      I think it's best to reduce the "area of impact" where users can set something
-      but can't see the impact of it.
-      */}
-      {false && (
-        <Divider>
-          <Message id="tenant.product.assemblyOptions" />
-        </Divider>
-      )}
+      <DocsSuggestion
+        docs={[
+          {
+            name: 'Como configurar opções de montagem em um produto?',
+            href:
+              'https://docs.alt.app.br/docs/guides/configurando-opcoes-de-montagem-de-produto',
+          },
+        ]}
+      />
 
-      {false && (
-        <Form.List name="assemblyOptions">
-          {(fields, { add, remove }) => {
-            return (
-              <div>
-                {fields.map((field) => (
-                  <div
-                    key={`${field.key}`}
-                    className="flex flex-column bg-light-gray br3 bw1 pa2 mt2"
-                  >
-                    <div className="flex justify-between">
-                      <div className="w-70">
-                        <Form.Item
-                          {...field}
-                          name={[field.name, 'name']}
-                          fieldKey={[field.fieldKey, 'name']}
-                          rules={[
-                            ...rules.assemblyName,
-                            ({ getFieldValue }) => ({
-                              validator(_, value) {
-                                const allItems: Assembly[] = getFieldValue(
-                                  'assemblyOptions'
-                                )
-
-                                const allNames = allItems
-                                  .map(({ name }) => name)
-                                  .filter(Boolean)
-
-                                const ocurrences = allNames.reduce(
-                                  (acc: number, current: string) =>
-                                    acc + (current === value ? 1 : 0),
-                                  0
-                                )
-
-                                if (ocurrences >= 2) {
-                                  return Promise.reject(
-                                    intl.formatMessage({
-                                      id: 'tenant.productform.itemSameName',
-                                    })
-                                  )
-                                }
-
-                                return Promise.resolve()
-                              },
-                            }),
-                          ]}
-                          label={labelFor('Nome do Campo')}
-                        >
-                          <TextInput placeholder="ex: Sabor" />
-                        </Form.Item>
-                      </div>
-                      <div className="w-20">
-                        <Form.Item
-                          {...field}
-                          name={[field.name, 'live']}
-                          fieldKey={[field.fieldKey, 'live']}
-                          valuePropName="checked"
-                          rules={rules.required}
-                          label={labelFor('Ativo')}
-                          initialValue
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Switch />
-                        </Form.Item>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <div className="w-50 pr2">
-                        <Item
-                          label={<Message id="tenant.product.price" />}
-                          name={[field.name, 'price']}
-                          fieldKey={[field.fieldKey, 'price']}
-                        >
-                          <PriceInput />
-                        </Item>
-                      </div>
-                      <div className="w-50 pl2">
-                        <Item
-                          {...field}
-                          name={[field.name, 'type']}
-                          fieldKey={[field.fieldKey, 'type']}
-                          label={<Message id="tenant.product.type" />}
-                          rules={rules.required}
-                        >
-                          <Select
-                            size="large"
-                            placeholder={
-                              <Message id="tenant.product.placeholderType" />
-                            }
-                          >
-                            {assemblyOptionsTypes?.map(({ name, value }) => (
-                              <Option value={value} key={value}>
-                                {name}
-                              </Option>
-                            ))}
-                          </Select>
-                        </Item>
-                      </div>
-                    </div>
-                    <div className="flex justify-around flex-auto w-100 w-auto-l">
-                      <Item
-                        label={<Message id="tenant.product.min" />}
-                        name={[field.name, 'min']}
-                        fieldKey={[field.fieldKey, 'min']}
-                        rules={[...rules.assemblyMin]}
-                      >
-                        <NumberInput disabled={loading} />
-                      </Item>
-                      <Item
-                        label={<Message id="tenant.product.max" />}
-                        name={[field.name, 'max']}
-                        fieldKey={[field.fieldKey, 'max']}
+      <Form.List name="assemblyOptions">
+        {(fields, { add, remove }) => {
+          return (
+            <div>
+              {fields.map((field) => (
+                <div
+                  key={`${field.key}`}
+                  className="flex flex-column bg-light-gray br3 bw1 pa2 mt2"
+                >
+                  <div className="flex justify-between">
+                    <div className="w-70">
+                      <Form.Item
+                        {...field}
+                        name={[field.name, 'name']}
+                        fieldKey={[field.fieldKey, 'name']}
                         rules={[
-                          ...rules.assemblyMax,
+                          ...rules.assemblyName,
                           ({ getFieldValue }) => ({
-                            validator: (_, value) => {
-                              const otherMin = getFieldValue([
-                                'assemblyOptions',
-                                field.name,
-                                'min',
-                              ])
+                            validator(_, value) {
+                              const allItems: Assembly[] = getFieldValue(
+                                'assemblyOptions'
+                              )
 
-                              if (
-                                typeof otherMin === 'number' &&
-                                otherMin > value
-                              ) {
+                              const allNames = allItems
+                                .map(({ name }) => name)
+                                .filter(Boolean)
+
+                              const ocurrences = allNames.reduce(
+                                (acc: number, current: string) =>
+                                  acc + (current === value ? 1 : 0),
+                                0
+                              )
+
+                              if (ocurrences >= 2) {
                                 return Promise.reject(
                                   intl.formatMessage({
-                                    id: 'tenant.productform.lessThenMin',
+                                    id: 'tenant.productform.itemSameName',
                                   })
                                 )
                               }
@@ -451,240 +371,321 @@ const ProductForm: FC<Props> = ({
                             },
                           }),
                         ]}
+                        label={labelFor('Nome do Campo')}
                       >
-                        <NumberInput disabled={loading} />
+                        <TextInput placeholder="ex: Sabor" />
+                      </Form.Item>
+                    </div>
+                    <div className="w-20">
+                      <Form.Item
+                        {...field}
+                        name={[field.name, 'live']}
+                        fieldKey={[field.fieldKey, 'live']}
+                        valuePropName="checked"
+                        rules={rules.required}
+                        label={labelFor('Ativo')}
+                        initialValue
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Switch />
+                      </Form.Item>
+                    </div>
+                  </div>
+                  <div className="flex">
+                    <div className="w-50 pr2">
+                      <Item
+                        label={<Message id="tenant.product.price" />}
+                        name={[field.name, 'price']}
+                        fieldKey={[field.fieldKey, 'price']}
+                      >
+                        <PriceInput />
                       </Item>
                     </div>
-                    <Divider orientation="left">
-                      <Message id="tenant.product.options" />
-                    </Divider>
-                    <div>
-                      <Form.List name={[field.name, 'options']}>
-                        {(
-                          optionFields,
-                          { add: optionAdd, remove: optionRemove }
-                        ) => {
-                          return (
-                            <div>
-                              {optionFields.map((optionField) => (
-                                <div
-                                  key={`${field.key}-${optionField.key}`}
-                                  className="bg-white br3 flex flex-column pa3 mt2"
-                                >
-                                  <div className="flex justify-between">
-                                    <div className="w-70">
-                                      <Form.Item
-                                        {...optionField}
-                                        name={[optionField.name, 'name']}
-                                        fieldKey={[
-                                          optionField.fieldKey,
-                                          'name',
-                                        ]}
-                                        rules={[
-                                          ...rules.required,
-                                          ({ getFieldValue }) => ({
-                                            validator(_, value) {
-                                              const allItems: AssemblyOption[] = getFieldValue(
-                                                [
-                                                  'assemblyOptions',
-                                                  field.name,
-                                                  'options',
-                                                ]
-                                              )
+                    <div className="w-50 pl2">
+                      <Item
+                        {...field}
+                        name={[field.name, 'type']}
+                        fieldKey={[field.fieldKey, 'type']}
+                        label={<Message id="tenant.product.type" />}
+                        rules={rules.required}
+                      >
+                        <Select
+                          size="large"
+                          placeholder={
+                            <Message id="tenant.product.placeholderType" />
+                          }
+                        >
+                          {assemblyOptionsTypes?.map(({ name, value }) => (
+                            <Option value={value} key={value}>
+                              {name}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Item>
+                    </div>
+                  </div>
+                  <div className="flex justify-around flex-auto w-100 w-auto-l">
+                    <Item
+                      label={<Message id="tenant.product.min" />}
+                      name={[field.name, 'min']}
+                      fieldKey={[field.fieldKey, 'min']}
+                      rules={[...rules.assemblyMin]}
+                    >
+                      <NumberInput disabled={loading} />
+                    </Item>
+                    <Item
+                      label={<Message id="tenant.product.max" />}
+                      name={[field.name, 'max']}
+                      fieldKey={[field.fieldKey, 'max']}
+                      rules={[
+                        ...rules.assemblyMax,
+                        ({ getFieldValue }) => ({
+                          validator: (_, value) => {
+                            const otherMin = getFieldValue([
+                              'assemblyOptions',
+                              field.name,
+                              'min',
+                            ])
 
-                                              const allNames = allItems
-                                                .map(({ name }) => name)
-                                                .filter(Boolean)
+                            if (
+                              typeof otherMin === 'number' &&
+                              otherMin > value
+                            ) {
+                              return Promise.reject(
+                                intl.formatMessage({
+                                  id: 'tenant.productform.lessThenMin',
+                                })
+                              )
+                            }
 
-                                              const ocurrences = allNames.reduce(
-                                                (
-                                                  acc: number,
-                                                  current: string
-                                                ) =>
-                                                  acc +
-                                                  (current === value ? 1 : 0),
-                                                0
-                                              )
-
-                                              if (ocurrences >= 2) {
-                                                return Promise.reject(
-                                                  intl.formatMessage({
-                                                    id:
-                                                      'tenant.productform.optionSameName',
-                                                  })
-                                                )
-                                              }
-
-                                              return Promise.resolve()
-                                            },
-                                          }),
-                                        ]}
-                                        label={
-                                          <Message id="tenant.product.optionName" />
-                                        }
-                                      >
-                                        <TextInput
-                                          placeholder={intl.formatMessage({
-                                            id:
-                                              'tenant.product.placeholderOption',
-                                          })}
-                                        />
-                                      </Form.Item>
-                                    </div>
-                                    <div className="w-20">
-                                      <Form.Item
-                                        {...optionField}
-                                        name={[optionField.name, 'live']}
-                                        fieldKey={[
-                                          optionField.fieldKey,
-                                          'live',
-                                        ]}
-                                        valuePropName="checked"
-                                        rules={rules.required}
-                                        label={<Message id="tenant.live" />}
-                                        initialValue
-                                        style={{
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                        }}
-                                      >
-                                        <Switch />
-                                      </Form.Item>
-                                    </div>
-                                  </div>
-                                  <div className="w-100">
+                            return Promise.resolve()
+                          },
+                        }),
+                      ]}
+                    >
+                      <NumberInput disabled={loading} />
+                    </Item>
+                  </div>
+                  <Divider orientation="left">
+                    <Message id="tenant.product.options" />
+                  </Divider>
+                  <div>
+                    <Form.List name={[field.name, 'options']}>
+                      {(
+                        optionFields,
+                        { add: optionAdd, remove: optionRemove }
+                      ) => {
+                        return (
+                          <div>
+                            {optionFields.map((optionField) => (
+                              <div
+                                key={`${field.key}-${optionField.key}`}
+                                className="bg-white br3 flex flex-column pa3 mt2"
+                              >
+                                <div className="flex justify-between">
+                                  <div className="w-70">
                                     <Form.Item
                                       {...optionField}
-                                      name={[optionField.name, 'description']}
-                                      fieldKey={[
-                                        optionField.fieldKey,
-                                        'description',
+                                      name={[optionField.name, 'name']}
+                                      fieldKey={[optionField.fieldKey, 'name']}
+                                      rules={[
+                                        ...rules.required,
+                                        ({ getFieldValue }) => ({
+                                          validator(_, value) {
+                                            const allItems: AssemblyOption[] = getFieldValue(
+                                              [
+                                                'assemblyOptions',
+                                                field.name,
+                                                'options',
+                                              ]
+                                            )
+
+                                            const allNames = allItems
+                                              .map(({ name }) => name)
+                                              .filter(Boolean)
+
+                                            const ocurrences = allNames.reduce(
+                                              (acc: number, current: string) =>
+                                                acc +
+                                                (current === value ? 1 : 0),
+                                              0
+                                            )
+
+                                            if (ocurrences >= 2) {
+                                              return Promise.reject(
+                                                intl.formatMessage({
+                                                  id:
+                                                    'tenant.productform.optionSameName',
+                                                })
+                                              )
+                                            }
+
+                                            return Promise.resolve()
+                                          },
+                                        }),
                                       ]}
                                       label={
-                                        <Message id="tenant.product.description" />
+                                        <Message id="tenant.product.optionName" />
                                       }
                                     >
                                       <TextInput
                                         placeholder={intl.formatMessage({
                                           id:
-                                            'tenant.product.placeholderDescription',
+                                            'tenant.product.placeholderOption',
                                         })}
                                       />
                                     </Form.Item>
                                   </div>
-                                  <div className="flex justify-around">
-                                    <div className="w-40 pr3">
-                                      <Form.Item
-                                        {...optionField}
-                                        name={[optionField.name, 'price']}
-                                        fieldKey={[
-                                          optionField.fieldKey,
-                                          'price',
-                                        ]}
-                                        label={
-                                          <Message id="tenant.product.price" />
-                                        }
-                                      >
-                                        <PriceInput />
-                                      </Form.Item>
-                                    </div>
-                                    <div className="w-40">
-                                      <Form.Item
-                                        {...optionField}
-                                        name={[
-                                          optionField.name,
-                                          'initialQuantity',
-                                        ]}
-                                        fieldKey={[
-                                          optionField.fieldKey,
-                                          'initialQuantity',
-                                        ]}
-                                        label={
-                                          <Message id="tenant.product.initialQuantity" />
-                                        }
-                                      >
-                                        <NumberInput />
-                                      </Form.Item>
-                                    </div>
-                                  </div>
-
-                                  <div className="flex justify-center">
-                                    <Tooltip
-                                      title={intl.formatMessage({
-                                        id: 'tenant.product.removeOption',
-                                      })}
+                                  <div className="w-20">
+                                    <Form.Item
+                                      {...optionField}
+                                      name={[optionField.name, 'live']}
+                                      fieldKey={[optionField.fieldKey, 'live']}
+                                      valuePropName="checked"
+                                      rules={rules.required}
+                                      label={<Message id="tenant.live" />}
+                                      initialValue
+                                      style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                      }}
                                     >
-                                      <Button
-                                        danger
-                                        onClick={() =>
-                                          optionRemove(optionField.name)
-                                        }
-                                        onKeyPress={() =>
-                                          optionRemove(optionField.name)
-                                        }
-                                        shape="circle"
-                                        icon={<DeleteOutlined />}
-                                      />
-                                    </Tooltip>
+                                      <Switch />
+                                    </Form.Item>
                                   </div>
                                 </div>
-                              ))}
-
-                              <div className="mt3">
-                                <Form.Item>
-                                  <Button
-                                    type="dashed"
-                                    onClick={() => {
-                                      optionAdd()
-                                    }}
-                                    block
+                                <div className="w-100">
+                                  <Form.Item
+                                    {...optionField}
+                                    name={[optionField.name, 'description']}
+                                    fieldKey={[
+                                      optionField.fieldKey,
+                                      'description',
+                                    ]}
+                                    label={
+                                      <Message id="tenant.product.description" />
+                                    }
                                   >
-                                    <PlusOutlined />{' '}
-                                    <Message id="tenant.product.addOption" />
-                                  </Button>
-                                </Form.Item>
+                                    <TextInput
+                                      placeholder={intl.formatMessage({
+                                        id:
+                                          'tenant.product.placeholderDescription',
+                                      })}
+                                    />
+                                  </Form.Item>
+                                </div>
+                                <div className="flex justify-around">
+                                  <div className="w-40 pr3">
+                                    <Form.Item
+                                      {...optionField}
+                                      name={[optionField.name, 'price']}
+                                      fieldKey={[optionField.fieldKey, 'price']}
+                                      label={
+                                        <Message id="tenant.product.price" />
+                                      }
+                                    >
+                                      <PriceInput />
+                                    </Form.Item>
+                                  </div>
+                                  <div className="w-40">
+                                    <Form.Item
+                                      {...optionField}
+                                      name={[
+                                        optionField.name,
+                                        'initialQuantity',
+                                      ]}
+                                      fieldKey={[
+                                        optionField.fieldKey,
+                                        'initialQuantity',
+                                      ]}
+                                      label={
+                                        <Message id="tenant.product.initialQuantity" />
+                                      }
+                                    >
+                                      <NumberInput />
+                                    </Form.Item>
+                                  </div>
+                                </div>
+
+                                <div className="flex justify-center">
+                                  <Tooltip
+                                    title={intl.formatMessage({
+                                      id: 'tenant.product.removeOption',
+                                    })}
+                                  >
+                                    <Button
+                                      danger
+                                      onClick={() =>
+                                        optionRemove(optionField.name)
+                                      }
+                                      onKeyPress={() =>
+                                        optionRemove(optionField.name)
+                                      }
+                                      shape="circle"
+                                      icon={<DeleteOutlined />}
+                                    />
+                                  </Tooltip>
+                                </div>
                               </div>
-                              <div className="flex justify-center">
-                                <Tooltip
-                                  title={intl.formatMessage({
-                                    id: 'tenant.product.removeItem',
-                                  })}
+                            ))}
+
+                            <div className="mt3">
+                              <Form.Item>
+                                <Button
+                                  type="dashed"
+                                  onClick={() => {
+                                    optionAdd()
+                                  }}
+                                  block
                                 >
-                                  <Button
-                                    danger
-                                    type="primary"
-                                    onClick={() => remove(field.name)}
-                                    onKeyPress={() => remove(field.name)}
-                                    shape="circle"
-                                    icon={<DeleteOutlined />}
-                                  />
-                                </Tooltip>
-                              </div>
+                                  <PlusOutlined />{' '}
+                                  <Message id="tenant.product.addOption" />
+                                </Button>
+                              </Form.Item>
                             </div>
-                          )
-                        }}
-                      </Form.List>
-                    </div>
-                  </div>
-                ))}
-                <div className="mt3">
-                  <Form.Item>
-                    <Button
-                      type="dashed"
-                      onClick={() => {
-                        add()
+                            <div className="flex justify-center">
+                              <Tooltip
+                                title={intl.formatMessage({
+                                  id: 'tenant.product.removeItem',
+                                })}
+                              >
+                                <Button
+                                  danger
+                                  type="primary"
+                                  onClick={() => remove(field.name)}
+                                  onKeyPress={() => remove(field.name)}
+                                  shape="circle"
+                                  icon={<DeleteOutlined />}
+                                />
+                              </Tooltip>
+                            </div>
+                          </div>
+                        )
                       }}
-                      block
-                    >
-                      <PlusOutlined /> <Message id="tenant.product.addField" />
-                    </Button>
-                  </Form.Item>
+                    </Form.List>
+                  </div>
                 </div>
+              ))}
+              <div className="mt3">
+                <Form.Item>
+                  <Button
+                    type="dashed"
+                    onClick={() => {
+                      add()
+                    }}
+                    block
+                  >
+                    <PlusOutlined /> <Message id="tenant.product.addField" />
+                  </Button>
+                </Form.Item>
               </div>
-            )
-          }}
-        </Form.List>
-      )}
+            </div>
+          )
+        }}
+      </Form.List>
 
       <div className="flex justify-between">
         <Button

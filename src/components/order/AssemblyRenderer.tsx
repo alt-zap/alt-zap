@@ -20,14 +20,23 @@ const AssemblyRenderer: FC<Props> = ({ assemblyOptions }) => {
 
   return (
     <div className="flex flex-column items-center">
-      <h2 className="tc pa2">Opções</h2>
+      {(assemblyOptions ?? []).length > 0 && <h2 className="tc pa2">Opções</h2>}
       {assemblyOptions
         .filter(({ live }) => live)
         .map((assembly, i) => (
           <div key={i} className="w-100">
             <div className="bg-light-gray flex ph3 pv1 w-100">
               <div className="flex flex-column">
-                <span className="f5 b pb0 mb0">{assembly.name}</span>
+                <span className="f5 b pb0 mb0">
+                  {assembly.name}
+                  {assembly.price ? (
+                    <span>
+                      &nbsp; (+ <Real cents={assembly.price} />)
+                    </span>
+                  ) : (
+                    ''
+                  )}
+                </span>
                 <span className="black-40" style={{ marginTop: '-5px' }}>
                   <Message
                     id="order.assembly.select"
@@ -49,7 +58,7 @@ const AssemblyRenderer: FC<Props> = ({ assemblyOptions }) => {
             <Form.Item
               className="w-100"
               name={['assembly', assembly.name]}
-              initialValue={assembly.options.reduce(
+              initialValue={(assembly.options ?? []).reduce(
                 (acc, cur) => ({
                   ...acc,
                   [cur.name]: `${cur.initialQuantity ?? 0}`,
@@ -117,21 +126,37 @@ const UniSelectInput: FC<UniProps> = ({ value, onChange, options }) => {
     [onChange]
   )
 
+  const inputValue = useMemo(
+    () =>
+      Object.keys(value ?? {}).find((key) => value?.[key] === '1') ??
+      Object.keys(value ?? {})[0],
+    [value]
+  )
+
   return (
     <div className="flex flex-column">
-      <Radio.Group
-        value={Object.keys(value ?? {})?.[0]}
-        onChange={handleChange}
-      >
-        {options
+      <Radio.Group value={inputValue} onChange={handleChange}>
+        {(options ?? [])
           .filter(({ live }) => live)
           .map((option, i) => (
             <label htmlFor={`${hash}-${i}`} key={i}>
-              <div className="pa2 w-100 dim flex justify-between">
-                <span>{option.name}</span>
+              <div className="pa2 w-100 dim flex justify-between items-center">
+                <div className="flex flex-column">
+                  <b>{option.name}</b>
+                  {!!option.price && (
+                    <span
+                      className="gray"
+                      style={{
+                        marginTop: '-5px',
+                      }}
+                    >
+                      + <Real cents={option.price} />{' '}
+                    </span>
+                  )}
+                </div>
                 <Radio id={`${hash}-${i}`} value={option.name} />
               </div>
-              <Divider className="ma0" />
+              <Divider style={{ margin: 0 }} />
             </label>
           ))}
       </Radio.Group>
@@ -173,12 +198,12 @@ const MultiSelectInput: FC<MultiProps> = ({
 
   return (
     <div className="flex flex-column">
-      {options.map((option, i) => (
+      {(options ?? []).map((option, i) => (
         <label htmlFor={`${hash}-${i}`} key={i}>
           <div className="pa2 w-100 flex justify-between">
             <div className="flex flex-column">
               <b className="dim">{option.name}</b>
-              {option.price && (
+              {!!option.price && (
                 <span
                   className="gray"
                   style={{
@@ -191,7 +216,7 @@ const MultiSelectInput: FC<MultiProps> = ({
             </div>
             {single ? (
               <BooleanQuantitySelector
-                disabled={totalSelected === max}
+                isMax={totalSelected === max}
                 id={`${hash}-${i}`}
                 quantity={value?.[option.name]}
                 onQuantity={(quantity) =>
@@ -208,7 +233,7 @@ const MultiSelectInput: FC<MultiProps> = ({
               />
             )}
           </div>
-          <Divider className="ma0" />
+          <Divider style={{ margin: 0 }} />
         </label>
       ))}
     </div>

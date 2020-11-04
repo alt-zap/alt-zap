@@ -1,7 +1,7 @@
 import React from 'react'
 import { withKnobs, text } from '@storybook/addon-knobs'
 
-import ProductSummary from '../common/ProductSummary'
+import ProductSummary from '../order/ProductCard'
 
 export default {
   title: 'common/ProductSummary',

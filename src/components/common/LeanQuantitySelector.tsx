@@ -4,15 +4,15 @@ type Props = {
   min?: number
   max?: number
   quantity?: string
-  onQuantity?: (data?: string) => void
+  onQuantity?: (data: string) => void
+  dimension?: string
   disabled?: boolean
 }
-
-const dimension = '28px'
 
 const LeanQuantitySelector: FC<Props> = ({
   min = 0,
   max = 20,
+  dimension = '28px',
   quantity,
   onQuantity,
   disabled,
@@ -21,7 +21,7 @@ const LeanQuantitySelector: FC<Props> = ({
     (e: React.MouseEvent<HTMLButtonElement>) => {
       const val = parseInt(quantity ?? '0', 10)
 
-      onQuantity?.(val >= max ? quantity : `${val + 1}`)
+      onQuantity?.((val >= max ? quantity : `${val + 1}`) ?? '0')
       e.stopPropagation()
     },
     [onQuantity, quantity, max]
@@ -31,15 +31,14 @@ const LeanQuantitySelector: FC<Props> = ({
     (e: React.MouseEvent<HTMLButtonElement>) => {
       const val = parseInt(quantity ?? '0', 10)
 
-      onQuantity?.(val <= min ? quantity : `${val - 1}`)
+      onQuantity?.((val <= min ? quantity : `${val - 1}`) ?? '0')
       e.stopPropagation()
     },
     [onQuantity, quantity, min]
   )
 
-  const initialState = useMemo(() => parseInt(quantity ?? '0', 10) <= min, [
+  const initialState = useMemo(() => parseInt(quantity ?? '0', 10) === 0, [
     quantity,
-    min,
   ])
 
   return (

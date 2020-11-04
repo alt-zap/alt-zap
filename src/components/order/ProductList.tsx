@@ -2,10 +2,10 @@ import React, { FC, useEffect, useMemo, useState, useCallback } from 'react'
 import { List, Divider, Affix } from 'antd'
 import slugify from 'slugify'
 
-import ProductSummary from '../common/ProductSummary'
 import MenuSearch from './MenuSearch'
 import { useSearch } from './useSearch'
 import { Product } from '../../typings'
+import ProductCard from './ProductCard'
 
 export type UISection = {
   name: string
@@ -126,7 +126,7 @@ const ListSection: FC<SectionProps> = ({
         dataSource={products}
         renderItem={(product, i) => (
           <div className="pv2" key={slugify(`${product.name}-${i}`)}>
-            <ProductSummary product={product} />
+            <ProductCard product={product} />
           </div>
         )}
       />
