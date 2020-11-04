@@ -20,11 +20,13 @@ const SortSite: FC = () => {
   const [{ tenant, tenantId }, dispatch] = useTenant()
   const intl = useAltIntl()
 
+  const [loading, setLoading] = useState(false)
   const [mode, setMode] = useState<'CATEGORIES' | 'PRODUCTS'>('CATEGORIES')
   const [category, setCategory] = useState<number | null>(null)
 
   const handleSortedCategories = useCallback(
     (categoryIds: Array<Section<number>>) => {
+      setLoading(true)
       const sites: TenantConfig['sites'] = {
         zap: {
           categoryIds,
@@ -32,7 +34,9 @@ const SortSite: FC = () => {
         },
       }
 
-      setTenantData(dispatch, { tenantId, tenantData: { sites } })
+      setTenantData(dispatch, { tenantId, tenantData: { sites } }).finally(() =>
+        setLoading(false)
+      )
     },
     [tenant, tenantId, dispatch]
   )
@@ -44,6 +48,7 @@ const SortSite: FC = () => {
         return
       }
 
+      setLoading(true)
       const sites: TenantConfig['sites'] = {
         zap: {
           categoryIds: tenant?.sites?.zap.categoryIds ?? [],
@@ -54,7 +59,9 @@ const SortSite: FC = () => {
         },
       }
 
-      setTenantData(dispatch, { tenantId, tenantData: { sites } })
+      setTenantData(dispatch, { tenantId, tenantData: { sites } }).finally(() =>
+        setLoading(false)
+      )
     },
     [tenant, tenantId, dispatch, category]
   )
@@ -104,12 +111,16 @@ const SortSite: FC = () => {
         </Form>
       </div>
       {mode === 'CATEGORIES' && (
-        <SortCategories onSortedCategories={handleSortedCategories} />
+        <SortCategories
+          onSortedCategories={handleSortedCategories}
+          loading={loading}
+        />
       )}
       {mode === 'PRODUCTS' && (
         <SortProducts
           key={category ?? ''}
           selectedCategory={category ?? 0}
+          loading={loading}
           onSortedProducts={handleSortedProducts}
         />
       )}

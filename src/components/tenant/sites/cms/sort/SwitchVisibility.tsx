@@ -1,18 +1,13 @@
 import { Switch } from 'antd'
-import React, { FC } from 'react'
+import React, { ComponentPropsWithoutRef, FC } from 'react'
 
-type VisibleSection = { type: 'category' }
-
-type Props = {
-  checked: boolean
-  onChecked: (value: boolean) => void
-}
-
-const SwitchVisibility: FC<Props> = ({ checked, onChecked }) => {
+const SwitchVisibility: FC<ComponentPropsWithoutRef<typeof Switch>> = (
+  props
+) => {
   return (
     <div className="flex flex-column">
       <label htmlFor="switch-put-item-id-here">Ativo?</label>
-      <Switch checked={checked} onChange={(value) => onChecked(value)} />
+      <Switch {...props} />
     </div>
   )
 }

@@ -1,5 +1,4 @@
-import React, { FC, useState, useMemo } from 'react'
-import { Switch } from 'antd'
+import React, { FC, useState, useMemo, useCallback } from 'react'
 
 import {
   useTenant,
@@ -8,19 +7,19 @@ import {
 import { useAltIntl } from '../../../../../intlConfig'
 import { Section } from '../../../../../typings'
 import SortableList from './SortableList'
+import SwitchVisibility from './SwitchVisibility'
 
 type Props = {
   onSortedCategories: (indexeds: Array<Section<number>>) => void
+  loading?: boolean
 }
 
-const SortCategories: FC<Props> = ({ onSortedCategories }) => {
+const SortCategories: FC<Props> = ({ onSortedCategories, loading }) => {
   const [{ tenant, products }] = useTenant()
   const intl = useAltIntl()
-  const [isVisible, setIsVisible] = useState(true)
 
-  // Not using the `visible` prop now, as we will implement it later
   const [categoryIds, setIds] = useState<Array<Section<number>>>(
-    tenant?.sites?.zap.categoryIds ?? [] // session
+    tenant?.sites?.zap.categoryIds ?? []
   )
 
   // Used to get the products' count. It'd be great to have this on the Context, as we already
@@ -35,7 +34,19 @@ const SortCategories: FC<Props> = ({ onSortedCategories }) => {
     )
   }, [tenant, products])
 
-  const handleChecked = () => setIsVisible(!isVisible)
+  const handleCheckedItem = useCallback(
+    (value: boolean, item: Section<number>) => {
+      const newSections = categoryIds.map((section) =>
+        section.element === item.element
+          ? Object.assign(section, { visible: value })
+          : section
+      )
+
+      setIds(newSections)
+      onSortedCategories(newSections)
+    },
+    [setIds, onSortedCategories, categoryIds]
+  )
 
   return (
     <SortableList
@@ -54,18 +65,10 @@ const SortCategories: FC<Props> = ({ onSortedCategories }) => {
               )}
             </span>
           </div>
-          {/* Use SwitchVisibility here, mutate the array, and call onSortedCategoried */}
-          <Switch
-            className="ml4"
-            checkedChildren={() => {
-              setIsVisible(isVisible)
-              item.visible = isVisible
-            }}
-            unCheckedChildren={() => {
-              setIsVisible(!isVisible)
-              item.visible = isVisible
-            }}
-            defaultChecked
+          <SwitchVisibility
+            checked={item.visible}
+            disabled={loading}
+            onChange={(value) => handleCheckedItem(value, item)}
           />
         </div>
       )}
