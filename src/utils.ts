@@ -2,12 +2,10 @@ import React, { useEffect, useRef } from 'react'
 
 import {
   WorldAddress,
-  OrderProducts,
   OpeningHours,
   Days,
   Order,
   TenantConfig,
-  ShippingMethod,
   OrderItem,
 } from './typings'
 
@@ -28,21 +26,6 @@ const toString = (number: number) => {
   const len = str.length
 
   return `${str.slice(0, len - 2)},${str.slice(len - 2, len)}`
-}
-
-type GenerateLinkParams = {
-  name: string
-  address: WorldAddress
-  tenantAddress: WorldAddress
-  shippingMethod: ShippingMethod
-  order: OrderProducts[]
-  payment: {
-    label: string
-    change?: string
-  }
-  total: number
-  info?: string
-  whatsapp: string
 }
 
 const LINE_BREAK = '\r\n'
