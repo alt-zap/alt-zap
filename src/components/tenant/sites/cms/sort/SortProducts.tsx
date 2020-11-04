@@ -58,7 +58,7 @@ const SortProducts: FC<Props> = ({
       list={productIds}
       getIdFromItem={(item) => `${item.element}`}
       renderItem={(item) => (
-        <div className="flex  items-center justify-center">
+        <div className="flex  items-center justify-between w-100">
           <div className="flex flex-column items-baseline">
             <span className="fw6 f5">{productsMap?.[item.element].name}</span>
             <Tag color={productsMap?.[item.element].live ? 'green' : 'red'}>

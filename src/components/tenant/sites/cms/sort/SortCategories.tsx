@@ -53,7 +53,7 @@ const SortCategories: FC<Props> = ({ onSortedCategories, loading }) => {
       list={categoryIds}
       getIdFromItem={(item) => `${item.element}`}
       renderItem={(item) => (
-        <div className="flex  items-center justify-center">
+        <div className="flex items-center justify-between w-100">
           <div className="flex flex-column items-baseline">
             <span className="fw6 f5">
               {tenant?.categories?.[item.element]?.name}
