@@ -2,15 +2,11 @@
 import React, { FC, useCallback, useState } from 'react'
 import { Select, Form, Alert } from 'antd'
 
-import {
-  useTenant,
-  getSectionsFromIds,
-  setTenantData,
-} from '../../../../contexts/TenantContext'
+import { useTenant, setTenantData } from '../../../../contexts/TenantContext'
 import SortCategories from './sort/SortCategories'
 import SortProducts from './sort/SortProducts'
 import { useAltIntl } from '../../../../intlConfig'
-import { TenantConfig } from '../../../../typings'
+import { Section, TenantConfig } from '../../../../typings'
 
 const { Option, OptGroup } = Select
 const { Item } = Form
@@ -18,7 +14,6 @@ const { Item } = Form
 /**
  * Some notes about this component
  *
- * - We are NOT using the `visible` prop, to be implemented later.
  * - We hold local state and lazily updates the remote server
  */
 const SortSite: FC = () => {
@@ -29,9 +24,7 @@ const SortSite: FC = () => {
   const [category, setCategory] = useState<number | null>(null)
 
   const handleSortedCategories = useCallback(
-    (indexes: number[]) => {
-      const categoryIds = getSectionsFromIds(indexes)
-
+    (categoryIds: Array<Section<number>>) => {
       const sites: TenantConfig['sites'] = {
         zap: {
           categoryIds,
@@ -45,10 +38,7 @@ const SortSite: FC = () => {
   )
 
   const handleSortedProducts = useCallback(
-    (ids: string[]) => {
-      // For now, not using the `visible` prop
-      const productIds = getSectionsFromIds(ids)
-
+    (productIds: Array<Section<string>>) => {
       // Pleasing the TS compiler
       if (category === null || category === undefined) {
         return

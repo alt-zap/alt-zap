@@ -10,7 +10,7 @@ import { Section } from '../../../../../typings'
 import SortableList from './SortableList'
 
 type Props = {
-  onSortedCategories: (indexeds: number[]) => void
+  onSortedCategories: (indexeds: Array<Section<number>>) => void
 }
 
 const SortCategories: FC<Props> = ({ onSortedCategories }) => {
@@ -54,6 +54,7 @@ const SortCategories: FC<Props> = ({ onSortedCategories }) => {
               )}
             </span>
           </div>
+          {/* Use SwitchVisibility here, mutate the array, and call onSortedCategoried */}
           <Switch
             className="ml4"
             checkedChildren={() => {
@@ -70,7 +71,7 @@ const SortCategories: FC<Props> = ({ onSortedCategories }) => {
       )}
       onSortedList={(ids) => {
         setIds(ids)
-        onSortedCategories(ids.map(({ element }) => element))
+        onSortedCategories(ids)
       }}
     />
   )
