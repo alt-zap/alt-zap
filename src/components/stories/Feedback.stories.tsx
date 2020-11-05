@@ -11,4 +11,6 @@ export default {
   decorators: [withIntl],
 }
 
-export const Component = () => <Feedback />
+export const Initial = () => <Feedback />
+
+export const WithBug = () => <Feedback initialType="bug" />
