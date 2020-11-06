@@ -97,6 +97,8 @@ export const AuthContextProvider: FC = ({ children }) => {
               dispatch({ type: 'SET_DB_USER', args: userDb })
               dispatch({ type: 'SET_DB_USER_ID', args: doc.id })
 
+              Sentry.setUser({ email: user.email ?? 'anon@alt.app.br' })
+
               // DATA MIGRATION WARNING
               // Some users who were onboarded before the new Admin may have tenants
               // but not have this flag set

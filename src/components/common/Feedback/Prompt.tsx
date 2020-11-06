@@ -14,6 +14,7 @@ const FeedbackPrompt: FC<Props> = ({ type }) => {
     e.preventDefault()
     setLoading(true)
 
+    // fetch(`https://sentry.io/api/0/projects/{organization_slug}/{project_slug}/user-feedback/`)
     // Simulating
     setTimeout(() => {
       setLoading(false)
@@ -41,7 +42,7 @@ const FeedbackPrompt: FC<Props> = ({ type }) => {
           </Button>
         </Form>
       )}
-      {success && <Success>Muito obrigado!</Success>}
+      {success && <Success>{formatMessage({ id: 'feedback.thanks' })}</Success>}
     </Container>
   )
 }
@@ -70,9 +71,8 @@ const Textarea = styled.textarea`
 const Button = styled.button`
   margin-top: 10px;
   background-color: ${(props) => (props.disabled ? '#c4c4c4' : '#001529')};
-  font-weight: bold;
   color: white;
-  width: 80%;
+  width: 100%;
   border-radius: 8px;
   cursor: pointer;
   border: 0;

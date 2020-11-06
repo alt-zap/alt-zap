@@ -8,8 +8,9 @@ import { useAltIntl } from '../../../intlConfig'
 
 type Props = {
   initialType?: 'bug' | 'feature'
+  onClose: () => void
 }
-const Feedback: FC<Props> = ({ initialType }) => {
+const Feedback: FC<Props> = ({ initialType, onClose }) => {
   const { formatMessage } = useAltIntl()
   const [type, setType] = useState<'bug' | 'feature' | null>(
     initialType ?? null
@@ -28,7 +29,7 @@ const Feedback: FC<Props> = ({ initialType }) => {
             id: type === null ? 'feedback.title' : 'feedback.conta',
           })}
         </Title>
-        <CloseButton>
+        <CloseButton onClick={() => onClose()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="11"
@@ -52,6 +53,7 @@ const Container = styled.div`
   width: 100%;
   border: 2px solid #d4d4d4;
   padding: 8px;
+  height: 209px;
 `
 
 const BackButton = styled.button`

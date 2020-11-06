@@ -285,6 +285,7 @@ export const intlConfig = {
     'feedback.placeholder': 'Descreva o que você quer nos dizer',
     'feedback.title': 'Envie-nos um Feedback',
     'feedback.conta': 'Conta!',
+    'feedback.thanks': 'Muito Obrigado!',
   },
 }
 

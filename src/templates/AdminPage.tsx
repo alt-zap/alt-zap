@@ -10,6 +10,7 @@ import 'firebase/auth'
 import logo from '../assets/logo.png'
 import { useAuth } from '../contexts/auth/AuthContext'
 import { useAltIntl, Message } from '../intlConfig'
+import FeedbackButton from '../components/common/Feedback/Button'
 
 const { Header, Content, Footer, Sider } = Layout
 
@@ -109,6 +110,7 @@ const AdminPage: FC<RouteComponentProps> = ({ children }) => {
           </Footer>
         </Layout>
       </Layout>
+      <FeedbackButton />
     </Fragment>
   )
 }
