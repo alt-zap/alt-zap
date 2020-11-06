@@ -1,5 +1,10 @@
 import { styled } from 'linaria/react'
 import React, { FC, useState } from 'react'
+import { useCallback } from 'react'
+import * as Sentry from '@sentry/react'
+
+import { useAuthState } from '../../../contexts/auth/AuthContext'
+import { useTenantConfig } from '../../../contexts/TenantContext'
 
 import { useAltIntl } from '../../../intlConfig'
 
@@ -9,18 +14,30 @@ const FeedbackPrompt: FC<Props> = ({ type }) => {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const { formatMessage } = useAltIntl()
+  const { user } = useAuthState()
+  const { tenant, tenantId } = useTenantConfig()
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
 
-    // fetch(`https://sentry.io/api/0/projects/{organization_slug}/{project_slug}/user-feedback/`)
-    // Simulating
-    setTimeout(() => {
+    fetch(process.env.GATSBY_FEEDBACK_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        email: user.email,
+        message: message,
+        info: {
+          tenantId,
+          tenant: tenant?.slug
+        }
+      })
+    }).catch((e) => {
+      Sentry.captureException(e)
+    }).finally(() => {
       setLoading(false)
       setSuccess(true)
-    }, 1000)
-  }
+    })
+  }, [tenant, user, message])
 
   return (
     <Container>
