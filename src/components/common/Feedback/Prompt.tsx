@@ -28,7 +28,8 @@ const FeedbackPrompt: FC<Props> = ({ type }) => {
         message: message,
         info: {
           tenantId,
-          tenant: tenant?.slug
+          tenant: tenant?.slug,
+          ua: navigator.userAgent
         }
       })
     }).catch((e) => {
