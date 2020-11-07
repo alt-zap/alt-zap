@@ -1,6 +1,5 @@
-<!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
 <p align="center">
-  <a href="https://www.gatsbyjs.com">
+  <a href="https://alt.app.br">
     <img alt="Alt" src="https://avatars1.githubusercontent.com/u/68825062?s=200&v=4" width="60" />
   </a>
 </p>
@@ -28,7 +27,6 @@ Pequenos empreendedores podem usar o **Alt** para cadastrar seus produtos e:
   * [Requerimentos](#requerimentos)
   * [Iniciando](#iniciando)
   * [Disclaimers](#disclaimers)
-- [Arquitetura](#arquitetura)
 - [Contribuidores](#contribuidores)
 
 ## Exemplo
@@ -63,7 +61,7 @@ Este projeto renderiza o **Alt Admin**, _dashboard_ de administração que dispo
 6. Após isso, você **não precisa criar um novo negócio** seguindo o fluxo do Onboarding. Logo após o preenchimento dos dados, caso você esteja em `localhost`, será redirecionado para o painel do "Bar do Lucis". Em próximos logins, talvez você precise clicar no link **Meus Negócios** no Menu para ir até o painel de Administração.
 7. Para visualizar o menu desse Tenant, basta acessar http://localhost:3000/bardolucis.
 
-> É importante que você acesse o serviço utilizando o _host_ **localhost**. Acessando o Alt Admin local por algum IP (ex: 127.0.0.1) fará o sistema não utilizar o Firebase Emulator.
+> É importante que você acesse o serviço utilizando o _host_ **localhost**.
 
 ### Disclaimers
 - Já adicionamos alguns **dados iniciais** para que você não precise configurar nada. Você pode verificá-los na UI do Firebase Emulator (geralmente em http://localhost:4000).
@@ -71,15 +69,6 @@ Este projeto renderiza o **Alt Admin**, _dashboard_ de administração que dispo
 - Para que o desenvolvimento local seja mais fácil, há **condições no código** para carregar os dados mockados. Por exemplo, geralmente carregaríamos os `tenants` para o `userId` do usuário que está logado, mas fazemos resolver sempre para o mesmo id (o meu) caso estejamos em `localhost`.
 
 Sinta-se livre para reportar erros, tirar dúvidas e dar sugestões nas issues do repositório.
-
-## Arquitetura
-
-Ainda estamos [melhorando nossa documentação](https://github.com/alt-zap/alt-zap/issues/53), mas esta imagem pode te ajudar a entender como funciona o Alt ~~atualmente~~:
-
-![Arquitetura do Alt](https://user-images.githubusercontent.com/18706156/91663167-93f13b00-eabd-11ea-87c4-6999a9350c90.jpg)
-
-**Disclaimer:** Ainda estamos em fase _BETA_, portanto algumas das sessões da arquitetura ainda estão sendo implementadas.
-
 
 ## Contribuidores
 
