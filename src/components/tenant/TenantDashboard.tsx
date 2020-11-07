@@ -22,6 +22,7 @@ import {
 } from '@ant-design/icons'
 import { navigate } from 'gatsby-link'
 import { useQueryParam, StringParam } from 'use-query-params'
+import { styled } from 'linaria/react'
 
 import { useTenantConfig } from '../../contexts/TenantContext'
 import MenuDashboard from './menus/MenuDashboard'
@@ -93,95 +94,96 @@ const TenantDashboard: FC = () => {
         </div>
       )}
       {tenant && (
-        <PageHeader
-          style={{
-            backgroundColor: 'white',
-          }}
-          className="pt5 pt2-l"
-          onBack={() => navigate('/app/tenants')}
-          title={tenant.name}
-          tags={
-            <Tooltip title={intl.formatMessage({ id: 'tenant.openTitle' })}>
-              <Tag
-                className="pointer dim"
-                onClick={() => setTabId('2')}
-                color={isOpen ? 'blue' : 'red'}
-              >
-                {intl.formatMessage({
-                  id: isOpen ? 'tenant.open' : 'tenant.closed',
-                })}
-              </Tag>
-            </Tooltip>
-          }
-          extra={[
-            !!tenantPendencies?.length && (
+        <Padding>
+          <PageHeader
+            style={{
+              backgroundColor: 'white',
+            }}
+            onBack={() => navigate('/app/tenants')}
+            title={tenant.name}
+            tags={
+              <Tooltip title={intl.formatMessage({ id: 'tenant.openTitle' })}>
+                <Tag
+                  className="pointer dim"
+                  onClick={() => setTabId('2')}
+                  color={isOpen ? 'blue' : 'red'}
+                >
+                  {intl.formatMessage({
+                    id: isOpen ? 'tenant.open' : 'tenant.closed',
+                  })}
+                </Tag>
+              </Tooltip>
+            }
+            extra={[
+              !!tenantPendencies?.length && (
+                <Button
+                  key="0"
+                  danger
+                  icon={<WarningOutlined style={{ marginRight: '6px' }} />}
+                  onClick={() => setPendenciesModal(true)}
+                >
+                  <Message id="tenant.pendencies" />
+                </Button>
+              ),
               <Button
-                key="0"
-                danger
-                icon={<WarningOutlined style={{ marginRight: '6px' }} />}
-                onClick={() => setPendenciesModal(true)}
+                key="edit"
+                type="primary"
+                onClick={() => setEditMetadata(true)}
               >
-                <Message id="tenant.pendencies" />
-              </Button>
-            ),
-            <Button
-              key="edit"
-              type="primary"
-              onClick={() => setEditMetadata(true)}
-            >
-              <Message id="tenant.edit" />
-              <EditOutlined />
-            </Button>,
-          ]}
-        >
-          <Row className="justify-center justify-start-l">
-            {!productsLoading ? (
+                <Message id="tenant.edit" />
+                <EditOutlined />
+              </Button>,
+            ]}
+          >
+            <Row className="justify-center justify-start-l">
+              {!productsLoading ? (
+                <Statistic
+                  title={
+                    // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                    <a href="#" onClick={() => setTabId('1')}>
+                      <Message
+                        id="tenant.products"
+                        values={{ n: products?.length ?? 0 }}
+                      />
+                    </a>
+                  }
+                  value={products?.length}
+                  style={{ margin: '0 32px 0 0' }}
+                />
+              ) : (
+                <Skeleton.Button active size="large" shape="square" />
+              )}
               <Statistic
+                style={{ margin: '0 30px 0 0' }}
                 title={
                   // eslint-disable-next-line jsx-a11y/anchor-is-valid
                   <a href="#" onClick={() => setTabId('1')}>
                     <Message
-                      id="tenant.products"
-                      values={{ n: products?.length ?? 0 }}
+                      id="tenant.categories"
+                      values={{ n: tenant?.categories?.length ?? 0 }}
                     />
                   </a>
                 }
-                value={products?.length}
-                style={{ margin: '0 32px 0 0' }}
+                value={tenant?.categories?.length}
               />
-            ) : (
-              <Skeleton.Button active size="large" shape="square" />
-            )}
-            <Statistic
-              style={{ margin: '0 30px 0 0' }}
-              title={
-                // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                <a href="#" onClick={() => setTabId('1')}>
-                  <Message
-                    id="tenant.categories"
-                    values={{ n: tenant?.categories?.length ?? 0 }}
-                  />
-                </a>
-              }
-              value={tenant?.categories?.length}
-            />
-            <Statistic
-              title={
-                // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                <a href="#" onClick={() => setTabId('5')}>
-                  <Message id="tenant.sitesOnline" />
-                </a>
-              }
-              value={1}
-            />
-            <div className="mt3 mt0-l ml0 ml4-l mb1 mb3-l w-90 w-40-l">
-              <Alert
-                type="info"
-                message={intl.formatMessage({ id: 'tenant.postMigrate' })}
+              <Statistic
+                title={
+                  // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                  <a href="#" onClick={() => setTabId('5')}>
+                    <Message id="tenant.sitesOnline" />
+                  </a>
+                }
+                value={1}
               />
-            </div>
-          </Row>
-        </PageHeader>
+              <div className="mt3 mt0-l ml0 ml4-l mb1 mb3-l w-90 w-40-l">
+                <Alert
+                  type="info"
+                  message={intl.formatMessage({ id: 'tenant.postMigrate' })}
+                />
+              </div>
+            </Row>
+          </PageHeader>
+        </Padding>
       )}
       <Tabs
         renderTabBar={renderTabBar}
@@ -263,5 +265,14 @@ const TenantDashboard: FC = () => {
     </div>
   )
 }
+
+const Padding = styled.div`
+  padding-top: 4rem;
+  background-color white;
+
+  @media (min-width: 600px) {
+    padding-top: 0.5rem;
+  }
+`
 
 export default TenantDashboard

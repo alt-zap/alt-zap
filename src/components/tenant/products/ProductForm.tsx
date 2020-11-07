@@ -430,6 +430,7 @@ const ProductForm: FC<Props> = ({
                   <div className="flex justify-around flex-auto w-100 w-auto-l">
                     <Item
                       label={<Message id="tenant.product.min" />}
+                      style={{ display: 'unset' }}
                       name={[field.name, 'min']}
                       fieldKey={[field.fieldKey, 'min']}
                       rules={[...rules.assemblyMin]}
@@ -438,6 +439,7 @@ const ProductForm: FC<Props> = ({
                     </Item>
                     <Item
                       label={<Message id="tenant.product.max" />}
+                      style={{ display: 'unset' }}
                       name={[field.name, 'max']}
                       fieldKey={[field.fieldKey, 'max']}
                       rules={[
