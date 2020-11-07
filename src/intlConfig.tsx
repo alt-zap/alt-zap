@@ -286,6 +286,7 @@ export const intlConfig = {
     'feedback.title': 'Envie-nos um Feedback',
     'feedback.conta': 'Conta!',
     'feedback.thanks': 'Muito Obrigado!',
+    'admin.docs': 'Documentação',
   },
 }
 

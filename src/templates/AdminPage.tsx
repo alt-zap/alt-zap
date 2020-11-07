@@ -3,7 +3,12 @@ import React, { FC, useCallback, Fragment } from 'react'
 import { navigate } from 'gatsby'
 import { RouteComponentProps } from '@reach/router'
 import { Dropdown, Layout, Menu, Alert } from 'antd'
-import { HomeOutlined, DownOutlined, LogoutOutlined } from '@ant-design/icons'
+import {
+  HomeOutlined,
+  DownOutlined,
+  LogoutOutlined,
+  FileTextOutlined,
+} from '@ant-design/icons'
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 
@@ -50,13 +55,20 @@ const AdminPage: FC<RouteComponentProps> = ({ children }) => {
               />
             </div>
           </div>
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
             <Menu.Item
               key="1"
               onClick={() => navigate('/app/tenants')}
               icon={<HomeOutlined />}
             >
               <Message id="admin.tenants" />
+            </Menu.Item>
+            <Menu.Item
+              key="2"
+              onClick={() => window.open('https://docs.alt.app.br', '_blank')}
+              icon={<FileTextOutlined />}
+            >
+              <Message id="admin.docs" />
             </Menu.Item>
           </Menu>
         </Sider>

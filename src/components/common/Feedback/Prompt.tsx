@@ -1,11 +1,8 @@
 import { styled } from 'linaria/react'
-import React, { FC, useState } from 'react'
-import { useCallback } from 'react'
+import React, { FC, useState, useCallback } from 'react'
 import * as Sentry from '@sentry/react'
 
 import { useAuthState } from '../../../contexts/auth/AuthContext'
-import { useTenantConfig } from '../../../contexts/TenantContext'
-
 import { useAltIntl } from '../../../intlConfig'
 
 type Props = { type: 'bug' | 'feature' }
@@ -15,30 +12,39 @@ const FeedbackPrompt: FC<Props> = ({ type }) => {
   const [success, setSuccess] = useState(false)
   const { formatMessage } = useAltIntl()
   const { user } = useAuthState()
-  const { tenant, tenantId } = useTenantConfig()
 
-  const onSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+  const onSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault()
+      setLoading(true)
 
-    fetch(process.env.GATSBY_FEEDBACK_URL, {
-      method: "POST",
-      body: JSON.stringify({
-        email: user.email,
-        message: message,
-        info: {
-          tenantId,
-          tenant: tenant?.slug,
-          ua: navigator.userAgent
-        }
+      const endpoint = process.env.GATSBY_FEEDBACK_URL
+
+      if (!endpoint) {
+        return
+      }
+
+      fetch(endpoint, {
+        method: 'POST',
+        body: JSON.stringify({
+          email: user?.email,
+          message,
+          info: {
+            userId: user?.uid,
+            ua: navigator.userAgent,
+          },
+        }),
       })
-    }).catch((e) => {
-      Sentry.captureException(e)
-    }).finally(() => {
-      setLoading(false)
-      setSuccess(true)
-    })
-  }, [tenant, user, message])
+        .catch((err: Error) => {
+          Sentry.captureException(err)
+        })
+        .finally(() => {
+          setLoading(false)
+          setSuccess(true)
+        })
+    },
+    [user, message]
+  )
 
   return (
     <Container>

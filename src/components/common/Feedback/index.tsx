@@ -29,7 +29,12 @@ const Feedback: FC<Props> = ({ initialType, onClose }) => {
             id: type === null ? 'feedback.title' : 'feedback.conta',
           })}
         </Title>
-        <CloseButton onClick={() => onClose()}>
+        <CloseButton
+          onClick={() => {
+            setType(null)
+            onClose()
+          }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="11"
@@ -42,7 +47,7 @@ const Feedback: FC<Props> = ({ initialType, onClose }) => {
         </CloseButton>
       </div>
       {!type && <FeedbackOption onSelect={(option) => setType(option)} />}
-      {type && <FeedbackPrompt type={type} />}
+      {type && <FeedbackPrompt type={type} key={type} />}
     </Container>
   )
 }
@@ -75,7 +80,6 @@ const CloseButton = styled.button`
 const Title = styled.div`
   flex: 1;
   font-size: 16px;
-  font-weight: bold;
   text-align: center;
 `
 
