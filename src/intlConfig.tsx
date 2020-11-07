@@ -278,6 +278,15 @@ export const intlConfig = {
     'tenant.sites.sort.label': 'O que deseja ordenar?',
     'tenant.sites.table.edit': 'Editar',
     'tenant.sites.editModal.title': 'Ordenar sessões',
+    'feedback.sendSuggestionButton': 'Enviar Sugestão',
+    'feedback.sendBugbutton': 'Enviar Problema',
+    'feedback.reportBug': 'Reportar um Problema',
+    'feedback.reportFeature': 'Enviar uma Sugestão',
+    'feedback.placeholder': 'Descreva o que você quer nos dizer',
+    'feedback.title': 'Envie-nos um Feedback',
+    'feedback.conta': 'Conta!',
+    'feedback.thanks': 'Muito Obrigado!',
+    'admin.docs': 'Documentação',
   },
 }
 
