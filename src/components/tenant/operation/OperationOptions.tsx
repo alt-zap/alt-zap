@@ -76,9 +76,7 @@ const OperationOption: FC = () => {
                 name={['live']}
                 valuePropName="checked"
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'baseline',
+                  display: 'unset',
                 }}
               >
                 <Switch />
@@ -103,9 +101,7 @@ const OperationOption: FC = () => {
                 name={['showOnClose']}
                 valuePropName="checked"
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'baseline',
+                  display: 'unset',
                 }}
               >
                 <Switch />
