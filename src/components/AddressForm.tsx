@@ -12,6 +12,7 @@ type Props = {
   onValidSubmit?: (data: WorldAddress) => void
   loading?: boolean
 }
+const { Panel } = Collapse
 
 const rules: TypedIntlRules<WorldAddress> = {
   street: [{ required: true, message: 'address.streetRule' }],
@@ -27,8 +28,6 @@ const AddressForm: FC<Props> = ({
   initialAddress = {},
 }) => {
   const [form] = Form.useForm()
-
-  const { Panel } = Collapse
 
   const intl = useAltIntl()
 

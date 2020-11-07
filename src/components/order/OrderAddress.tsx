@@ -10,35 +10,40 @@ import { useAltIntl } from '../../intlConfig'
 import { WorldAddress } from '../../typings'
 import AddressDisplay from '../common/AddressDisplay'
 import SelectAddress from '../common/SelectAddress'
-import { calculaTempoEDistancia } from '../common/useHere'
+import useHere from '../common/useHere'
 
 type Props = { onAddress: (data: Partial<WorldAddress>) => void }
 
 type RoutingParams = {
-  clientLat: number
-  clientLng: number
+  customerLat: number
+  customerLng: number
   tenantLat: number
   tenantLng: number
 }
 
 const OrderAddress: FC<Props> = () => {
   const { tenant } = useTenantConfig()
+  const { estimateRouteFee } = useHere()
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const setClientContext = useCallback(
+  const setCustomerContext = useCallback(
     (data: WorldAddress) => {
       const formData = data
       // TESTING ROUTING CALCULATION USING HERE ROUTING API
       const routingData = {
-        clientLat: formData.lat,
-        clientLng: formData.lng,
+        customerLat: formData.lat,
+        customerLng: formData.lng,
         tenantLat: tenant?.address?.lat,
         tenantLng: tenant?.address?.lng,
       }
 
-      calculaTempoEDistancia(routingData as RoutingParams)
+      estimateRouteFee({
+        routingParams: routingData as RoutingParams,
+      }).then((route) => {
+        console.log(route)
+      })
     },
-    [tenant]
+    [estimateRouteFee, tenant]
   )
 
   const intl = useAltIntl()
@@ -50,11 +55,11 @@ const OrderAddress: FC<Props> = () => {
 
   const onSelectedAddress = useCallback(
     (data: WorldAddress) => {
-      setClientContext(data)
+      setCustomerContext(data)
       dispatch({ type: 'SET_CUSTOMER_ADDRESS', args: data })
       setModal(false)
     },
-    [dispatch, setClientContext]
+    [dispatch, setCustomerContext]
   )
 
   // Refact this. Terrible UX (no confirm and no edit option)

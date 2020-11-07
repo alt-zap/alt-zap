@@ -25,15 +25,15 @@ type HereItem = {
   }
 }
 
-type RoutingParams = {
-  clientLat: number
-  clientLng: number
-  tenantLat: number
-  tenantLng: number
-}
-
 type HereDiscoverReturn = {
   items: HereItem[]
+}
+
+type RoutingParams = {
+  customerLat: number
+  customerLng: number
+  tenantLat: number
+  tenantLng: number
 }
 
 export default () => {
@@ -87,48 +87,41 @@ export default () => {
     [intl]
   )
 
+  const estimateRouteFee = useCallback(
+    // eslint-disable-next-line prettier/prettier
+    async ({ routingParams }: { routingParams: RoutingParams }) => {
+      if (!hereClient.current) return Promise.reject()
+
+      const client = hereClient.current as any
+      const router = client.getRoutingService(null, 8)
+      const { tenantLat, tenantLng, customerLat, customerLng } = routingParams
+
+      return new Promise<any>((resolve, reject) => {
+        router.calculateRoute(
+          {
+            routingMode: 'fast',
+            transportMode: 'car',
+            origin: `${tenantLat},${tenantLng}`,
+            destination: `${customerLat},${customerLng}`,
+            return: 'polyline',
+            spans: 'length,duration',
+          },
+          (data: any) => resolve(data),
+          (error: any) => {
+            Sentry.captureException(error)
+            reject(error)
+          }
+        )
+      })
+    },
+    [intl]
+  )
+
   return {
     discoverAddress,
+    estimateRouteFee,
   }
 }
-
-// TESTING ROUTING SERVICE -- TESTING ROUTING SERVICE --TESTING ROUTING SERVICE -- TESTING ROUTING
-
-// eslint-disable-next-line max-params
-export async function calculaTempoEDistancia(routingParam: RoutingParams) {
-  const { H } = window as Window
-  const Here = new H.service.Platform({
-    app_id: process.env.GATSBY_HERE_APP_ID,
-    apikey: process.env.GATSBY_HERE_KEY,
-  })
-
-  const { tenantLat, tenantLng, clientLat, clientLng } = routingParam
-
-  const router = Here.getRoutingService(null, 8)
-  const routingParameters = {
-    routingMode: 'fast',
-    transportMode: 'car',
-    // The start point of the route:
-    origin: `${tenantLat},${tenantLng}`,
-    // The end point of the route:
-    destination: `${clientLat},${clientLng}`,
-    // Includes the route shape in the response
-    return: 'polyline',
-    spans: 'length,carAttributes,duration',
-  }
-
-  router.calculateRoute(
-    routingParameters,
-    // eslint-disable-next-line no-console
-    (result: any) =>
-      console.log(
-        result.routes[0].sections[0].spans[0].length,
-        result.routes[0].sections[0].spans[0].duration
-      ),
-    console.error
-  )
-}
-// TESTING ROUTING SERVICE -- TESTING ROUTING SERVICE -- TESTING ROUTING SERVICE -- TESTING ROUTING
 
 export const mapHereToWorldAddress = (data: HereItem): WorldAddress => {
   const {
