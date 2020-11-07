@@ -30,6 +30,7 @@ const FeedbackPrompt: FC<Props> = ({ type }) => {
           email: user?.email,
           message,
           info: {
+            type,
             userId: user?.uid,
             ua: navigator.userAgent,
           },
@@ -43,7 +44,7 @@ const FeedbackPrompt: FC<Props> = ({ type }) => {
           setSuccess(true)
         })
     },
-    [user, message]
+    [user, message, type]
   )
 
   return (
