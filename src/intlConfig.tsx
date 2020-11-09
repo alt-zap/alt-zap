@@ -181,9 +181,9 @@ export const intlConfig = {
     'tenant.pendencies.address':
       'Você precisa preencher o Endereço de seu negócio no painel de Logística',
     'tenant.pendencies.title': 'Pendência que você precisa ajustar',
-    'tenant.productform.assemblyRepeat': 'Selecão Com Repetição',
+    'tenant.productform.assemblyRepeat': 'Com Repetição',
     'tenant.productform.assemblyText': 'Texto Personalizado',
-    'tenant.productform.assemblySimple': 'Seleção Simples',
+    'tenant.productform.assemblySimple': 'Simples',
     'tenant.productform.lessThenMin': 'Maior que o mínimo',
     'tenant.productform.optionSameName':
       'Não é permitido repetir nome de opções',

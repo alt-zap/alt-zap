@@ -85,9 +85,7 @@ const ShippingStrategies: FC = () => {
                     }),
                   ]}
                   style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'baseline',
+                    display: 'unset',
                   }}
                 >
                   <CurrencyInput
@@ -103,9 +101,7 @@ const ShippingStrategies: FC = () => {
                   valuePropName="checked"
                   initialValue={false}
                   style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'baseline',
+                    display: 'unset',
                   }}
                 >
                   <Switch />

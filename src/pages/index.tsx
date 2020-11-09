@@ -1,8 +1,9 @@
-import React, { FC, Fragment } from 'react'
+import React, { FC, Fragment, useCallback, useState } from 'react'
 import { navigate } from 'gatsby'
 import { RouteComponentProps } from '@reach/router'
 import { GoogleLoginButton } from 'react-social-login-buttons'
 import { Layout, Button, Divider, Alert } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
 
 import logo from '../assets/logo.png'
 import intro from '../assets/intro.png'
@@ -11,6 +12,15 @@ import SEO from '../components/SEO'
 const { Header, Content, Footer } = Layout
 
 const HomePage: FC<RouteComponentProps> = () => {
+  const [loginLoading, setLoginLoading] = useState(false)
+
+  const redirectToLogin = useCallback(() => {
+    setLoginLoading(true)
+    setTimeout(() => {
+      navigate('/app/login')
+    }, 500)
+  }, [setLoginLoading])
+
   return (
     <Fragment>
       <SEO />
@@ -35,12 +45,20 @@ const HomePage: FC<RouteComponentProps> = () => {
           </div>
           <div style={{ flex: 1 }} className="flex justify-end">
             <button
-              onClick={() => navigate('/app/login')}
-              onKeyPress={() => navigate('/app/login')}
+              onClick={() => {
+                redirectToLogin()
+              }}
+              onKeyPress={() => {
+                redirectToLogin()
+              }}
               tabIndex={0}
               className="f5 f4-l white fw2 bg-transparent bn pointer dim"
             >
-              Login
+              {loginLoading ? (
+                <LoadingOutlined style={{ fontSize: 24 }} spin />
+              ) : (
+                'Login'
+              )}
             </button>
           </div>
         </Header>
