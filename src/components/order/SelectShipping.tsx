@@ -1,32 +1,19 @@
+/* eslint-disable no-console */
 import React, { FC, useState, useEffect } from 'react'
 import { Form, Radio, Divider } from 'antd'
 
-import {
-  useAltIntl,
-  Message,
-  TypedIntlRules,
-  IntlRules,
-  prepareRules,
-} from '../../intlConfig'
-import AddressFields from '../common/AddressFields'
+import { useAltIntl, Message, IntlRules, prepareRules } from '../../intlConfig'
 import { WorldAddress, ShippingMethod } from '../../typings'
-import AutoFill from '../AutoFill'
 import { useTenantConfig } from '../../contexts/TenantContext'
 import addressIcon from '../../assets/address.svg'
 import { DeliveryIcon } from '../../assets/DeliveryIcon'
 import { TakeawayIcon } from '../../assets/TakeawayIcon'
 import { generateGoogleMapsLink } from '../../utils'
+import AddressDisplay from '../common/AddressDisplay'
+import OrderAddress from './OrderAddress'
 
 const { Group } = Radio
 const { Item } = Form
-
-const addressRules: TypedIntlRules<WorldAddress> = {
-  street: [{ required: true, message: 'address.streetRule' }],
-  number: [{ required: true, message: 'address.numberRule' }],
-  district: [{ required: true, message: 'address.districtRule' }],
-  city: [{ required: true, message: 'address.cityRule' }],
-  state: [{ required: true, message: 'address.stateRule' }],
-}
 
 type Props = {
   onAutoFill: (data: Partial<WorldAddress>) => void
@@ -40,6 +27,7 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
   const { tenant } = useTenantConfig()
   const acceptsTakeaway = tenant?.shippingStrategies?.takeaway?.active
   const acceptsDelivery = tenant?.shippingStrategies?.deliveryFixed?.active
+
   const initialValue =
     acceptsDelivery && acceptsTakeaway
       ? null
@@ -54,6 +42,7 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
       setCurrent(initialValue)
     }
   }, [setCurrent, initialValue, current])
+
   const intl = useAltIntl()
 
   const rules = prepareRules(intlRules, intl)
@@ -106,11 +95,10 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
         </Item>
       </div>
       {current === 'DELIVERY' && (
-        <div id="address" className="flex flex-column items-center mt2">
+        <div id="address" className="flex flex-column mt2">
           <div className="mb2">
-            <AutoFill onAddress={onAutoFill} />
+            <OrderAddress onAddress={(data) => console.log(data)} />
           </div>
-          <AddressFields rules={addressRules} />
         </div>
       )}
       {current === 'TAKEAWAY' && (
@@ -120,18 +108,7 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
               <span className="f4 grey b">
                 <Message id="order.shipping.addressTake" />
               </span>
-              <span className="f5">
-                {tenant?.address?.street}, {tenant?.address?.number ?? 's/n'}
-              </span>
-              <span className="f5">
-                {tenant?.address?.complement
-                  ? `${tenant?.address?.complement} - `
-                  : ''}
-                {tenant?.address?.district}
-              </span>
-              <span className="f5">
-                {tenant?.address?.city} - {tenant?.address?.state}
-              </span>
+              <AddressDisplay address={tenant?.address} />
               <a
                 href={generateGoogleMapsLink(tenant?.address)}
                 target="_blank"

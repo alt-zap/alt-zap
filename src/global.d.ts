@@ -100,3 +100,8 @@ declare module '@rjsf/antd'
 declare module 'fuzzysearch' {
   export default (a: string, b: string) => boolean
 }
+
+interface Window {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  H: any
+}

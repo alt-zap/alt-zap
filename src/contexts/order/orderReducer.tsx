@@ -1,4 +1,4 @@
-import { Action, Order, OrderItem } from '../../typings'
+import { Action, Order, OrderItem, WorldAddress } from '../../typings'
 
 type Actions =
   | Action<'ADD_ITEM', { args: OrderItem }>
@@ -7,6 +7,7 @@ type Actions =
   | Action<'SET_TOTAL_PRICE', { args: number }>
   | Action<'SET_SHIPPING_PRICE', { args: number }>
   | Action<'SET_PARTIAL_ORDER', { args: Partial<Order> }>
+  | Action<'SET_CUSTOMER_ADDRESS', { args: WorldAddress }>
 
 export type OrderContextActions = Actions
 
@@ -112,6 +113,21 @@ export const orderStateReducer = (
             totalPrice,
             finalPrice: totalPrice + shippingPrice,
           },
+        },
+      }
+    }
+
+    case 'SET_CUSTOMER_ADDRESS': {
+      const address = action.args
+
+      return {
+        ...state,
+        order: {
+          ...(state.order as Order),
+          shipping: {
+            ...state.order?.shipping,
+            address,
+          } as Order['shipping'],
         },
       }
     }

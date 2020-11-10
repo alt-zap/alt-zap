@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useReducer } from 'react'
 
 import { createCtx } from '../../utils'
-import { Order } from '../../typings'
+import { Order, WorldAddress } from '../../typings'
 import {
   OrderContextActions,
   OrderContextState,
