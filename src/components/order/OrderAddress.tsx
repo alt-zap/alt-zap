@@ -5,46 +5,45 @@ import Modal from 'antd/lib/modal/Modal'
 import React, { FC, useCallback, useState } from 'react'
 
 import { useOrder } from '../../contexts/order/OrderContext'
-import { useTenantConfig } from '../../contexts/TenantContext'
 import { useAltIntl } from '../../intlConfig'
 import { WorldAddress } from '../../typings'
 import AddressDisplay from '../common/AddressDisplay'
 import SelectAddress from '../common/SelectAddress'
-import useHere from '../common/useHere'
+// import useHere from '../common/useHere'
+// import { useTenantConfig } from '../../contexts/TenantContext'
 
 type Props = { onAddress: (data: Partial<WorldAddress>) => void }
 
-type RoutingParams = {
-  customerLat: number
-  customerLng: number
-  tenantLat: number
-  tenantLng: number
-}
+// type RoutingParams = {
+//   customerLat: number
+//   customerLng: number
+//   tenantLat: number
+//   tenantLng: number
+// }
 
 const OrderAddress: FC<Props> = () => {
-  const { tenant } = useTenantConfig()
-  const { estimateRouteFee } = useHere()
+  // TESTING ROUTING CALCULATION USING HERE ROUTING API
+  // const { tenant } = useTenantConfig()
+  // const { estimateRouteFee } = useHere()
+  // const setCustomerContext = useCallback(
+  //   (data: WorldAddress) => {
+  //     const formData = data
+  //     const routingData = {
+  //       customerLat: formData.lat,
+  //       customerLng: formData.lng,
+  //       tenantLat: tenant?.address?.lat,
+  //       tenantLng: tenant?.address?.lng,
+  //     }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const setCustomerContext = useCallback(
-    (data: WorldAddress) => {
-      const formData = data
-      // TESTING ROUTING CALCULATION USING HERE ROUTING API
-      const routingData = {
-        customerLat: formData.lat,
-        customerLng: formData.lng,
-        tenantLat: tenant?.address?.lat,
-        tenantLng: tenant?.address?.lng,
-      }
-
-      estimateRouteFee({
-        routingParams: routingData as RoutingParams,
-      }).then((route) => {
-        console.log(route)
-      })
-    },
-    [estimateRouteFee, tenant]
-  )
+  //     estimateRouteFee({
+  //       routingParams: routingData as RoutingParams,
+  //     }).then((route) => {
+  //       console.log(route)
+  //     })
+  //   },
+  //   [estimateRouteFee, tenant]
+  // )
+  // TESTING ROUTING CALCULATION USING HERE ROUTING API
 
   const intl = useAltIntl()
   const [modal, setModal] = useState(false)
@@ -55,11 +54,11 @@ const OrderAddress: FC<Props> = () => {
 
   const onSelectedAddress = useCallback(
     (data: WorldAddress) => {
-      setCustomerContext(data)
+      // setCustomerContext(data)
       dispatch({ type: 'SET_CUSTOMER_ADDRESS', args: data })
       setModal(false)
     },
-    [dispatch, setCustomerContext]
+    [dispatch]
   )
 
   // Refact this. Terrible UX (no confirm and no edit option)

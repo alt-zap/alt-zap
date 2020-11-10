@@ -33,11 +33,20 @@ const LINE_BREAK = '\r\n'
 const messageForAddress = (address?: WorldAddress) => {
   if (!address) return ''
 
-  const { street, number, complement, district, city, state } = address
+  const {
+    street,
+    number,
+    complement,
+    district,
+    city,
+    state,
+    additionalInfo,
+  } = address
 
   return `${street} - ${number}
 ${complement ?? '(s/c)'} - ${district}
-${city} - ${state}`
+${city} - ${state}
+*Referência:* ${additionalInfo}`
 }
 
 const messageForShipping = (order: Order, tenant: TenantConfig) => {
@@ -100,7 +109,6 @@ export const generateLink = (order: Order, tenant: TenantConfig) => {
 
   const text = `*Novo Pedido!*
 *Nome do Cliente:* ${order?.customer?.name}
-
 *Itens do Pedido:*
 ${itemsSection + LINE_BREAK}
 *Total do Pedido:* R$ ${toString(order.totalizers?.finalPrice ?? 0)}
@@ -113,6 +121,7 @@ ${
     : ''
 }
 ${order.info ?? ''} 
+
 *Meio de Pagamento:* ${order.payment?.type.name}
 ${
   order.payment?.changeFor
