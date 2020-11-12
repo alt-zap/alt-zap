@@ -1,5 +1,6 @@
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 
+import { useAltIntl } from '../../intlConfig'
 import { Product } from '../../typings'
 import Real from '../Real'
 import ProductImage from './ProductImage'
@@ -10,9 +11,16 @@ type Props = {
 }
 
 const ProductSummary: FC<Props> = ({
-  product: { name, price, imgSrc, description },
+  product: { name, price, imgSrc, description, assemblyOptions },
   onClick,
 }) => {
+  const { formatMessage } = useAltIntl()
+  const shouldDisplayFrom = useMemo(() => {
+    return assemblyOptions?.some((field) => {
+      return !!field.price || field.options?.some((option) => !!option.price)
+    })
+  }, [assemblyOptions])
+
   return (
     <div
       className="shadow-1 br3 flex pa3 bg-white pointer"
@@ -37,9 +45,16 @@ const ProductSummary: FC<Props> = ({
             }`}
           </span>
         </div>
-        <span className="grey f3" style={{ marginBottom: '-6px' }}>
-          <Real cents={price} />
-        </span>
+        <div className="flex flex-column">
+          {shouldDisplayFrom && (
+            <span className="grey f6" style={{ marginBottom: '-6px' }}>
+              {formatMessage({ id: 'order.product.priceFrom' })}
+            </span>
+          )}
+          <span className="grey f3" style={{ marginBottom: '-6px' }}>
+            <Real cents={price} />
+          </span>
+        </div>
       </div>
     </div>
   )
