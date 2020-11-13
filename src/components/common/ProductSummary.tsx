@@ -2,6 +2,7 @@ import React, { FC, useMemo } from 'react'
 
 import { useAltIntl } from '../../intlConfig'
 import { Product } from '../../typings'
+import { shouldDisplayFrom } from '../../utils/assembly'
 import Real from '../Real'
 import ProductImage from './ProductImage'
 
@@ -11,15 +12,12 @@ type Props = {
 }
 
 const ProductSummary: FC<Props> = ({
-  product: { name, price, imgSrc, description, assemblyOptions },
+  product: { name, price, imgSrc, description },
+  product,
   onClick,
 }) => {
   const { formatMessage } = useAltIntl()
-  const shouldDisplayFrom = useMemo(() => {
-    return assemblyOptions?.some((field) => {
-      return !!field.price || field.options?.some((option) => !!option.price)
-    })
-  }, [assemblyOptions])
+  const displayFrom = useMemo(() => shouldDisplayFrom(product), [product])
 
   return (
     <div
@@ -46,7 +44,7 @@ const ProductSummary: FC<Props> = ({
           </span>
         </div>
         <div className="flex flex-column">
-          {shouldDisplayFrom && (
+          {displayFrom && (
             <span className="grey f6" style={{ marginBottom: '-6px' }}>
               {formatMessage({ id: 'order.product.priceFrom' })}
             </span>
