@@ -307,6 +307,7 @@ export const intlConfig = {
     'feedback.conta': 'Conta!',
     'feedback.thanks': 'Muito Obrigado!',
     'admin.docs': 'Documentação',
+    'order.product.priceFrom': 'A partir de',
   },
 }
 
