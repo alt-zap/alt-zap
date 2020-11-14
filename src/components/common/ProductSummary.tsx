@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react'
 
 import { useAltIntl } from '../../intlConfig'
 import { Product } from '../../typings'
-import { shouldDisplayFrom } from '../../utils/assembly'
+import { shouldDisplayFrom, productMinimalPrice } from '../../utils/assembly'
 import Real from '../Real'
 import ProductImage from './ProductImage'
 
@@ -12,12 +12,13 @@ type Props = {
 }
 
 const ProductSummary: FC<Props> = ({
-  product: { name, price, imgSrc, description },
+  product: { name, imgSrc, description },
   product,
   onClick,
 }) => {
   const { formatMessage } = useAltIntl()
   const displayFrom = useMemo(() => shouldDisplayFrom(product), [product])
+  const productPrice = useMemo(() => productMinimalPrice(product), [product])
 
   return (
     <div
@@ -50,7 +51,7 @@ const ProductSummary: FC<Props> = ({
             </span>
           )}
           <span className="grey f3" style={{ marginBottom: '-6px' }}>
-            <Real cents={price} />
+            <Real cents={productPrice} />
           </span>
         </div>
       </div>

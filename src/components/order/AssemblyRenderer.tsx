@@ -92,7 +92,7 @@ const AssemblyRenderer: FC<Props> = ({ assemblyOptions }) => {
                 }),
               ]}
             >
-              {assembly.max === 1 ? (
+              {assembly.max === 1 && assembly.min === 1 ? (
                 <UniSelectInput options={assembly.options} />
               ) : (
                 <MultiSelectInput
