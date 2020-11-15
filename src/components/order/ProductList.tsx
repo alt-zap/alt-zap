@@ -1,11 +1,14 @@
 import React, { FC, useEffect, useMemo, useState, useCallback } from 'react'
-import { List, Divider, Affix } from 'antd'
+import { List, Divider, Affix, Modal, message } from 'antd'
 import slugify from 'slugify'
 
 import MenuSearch from './MenuSearch'
 import { useSearch } from './useSearch'
-import { Product } from '../../typings'
-import ProductCard from './ProductCard'
+import OrderItem from './OrderItem'
+import { useAltModal } from '../../hooks/useAltModal'
+import { useOrderDispatch } from '../../contexts/order/OrderContext'
+import { OrderItem as IOrderItem, Product } from '../../typings'
+import ProductSummary from '../common/ProductSummary'
 
 export type UISection = {
   name: string
@@ -15,6 +18,11 @@ export type UISection = {
 type Props = {
   sections: UISection[]
 }
+
+const wait = (ms: number) =>
+  new Promise((resolve) => {
+    setTimeout(() => resolve(), ms)
+  })
 
 const ProductList: FC<Props> = ({ sections }) => {
   const { setQuery, filteredSections } = useSearch(sections)
@@ -93,6 +101,10 @@ const ListSection: FC<SectionProps> = ({
   setActive,
 }) => {
   const ref = refs[slug]
+  const { show, close, modalProps } = useAltModal(`productDetails-${slug}`)
+  const [setSimulatedLoading, setLoading] = useState(false)
+  const [selectedProduct, setProduct] = useState<Product | null>(null)
+  const dispatch = useOrderDispatch()
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -111,6 +123,21 @@ const ListSection: FC<SectionProps> = ({
     return () => observer.disconnect()
   }, [ref, slug, setActive])
 
+  const onAddItem = useCallback(
+    (item: IOrderItem) => {
+      setLoading(true)
+
+      dispatch({ type: 'ADD_ITEM', args: item })
+      wait(500).then(() => {
+        setLoading(false)
+        close()
+
+        message.success('Item adicionado com sucesso')
+      })
+    },
+    [setLoading, close, dispatch]
+  )
+
   return (
     <div
       id={slug}
@@ -125,10 +152,32 @@ const ListSection: FC<SectionProps> = ({
         dataSource={products}
         renderItem={(product, i) => (
           <div className="pv2" key={slugify(`${product.name}-${i}`)}>
-            <ProductCard product={product} />
+            <ProductSummary
+              product={product}
+              onClick={() => {
+                setProduct(product)
+                show()
+              }}
+            />
           </div>
         )}
       />
+      <Modal
+        className="customModal"
+        title={selectedProduct?.name ?? ''}
+        footer={null}
+        {...modalProps}
+      >
+        <div>
+          {!!selectedProduct && (
+            <OrderItem
+              product={selectedProduct}
+              onAddItem={onAddItem}
+              loading={setSimulatedLoading}
+            />
+          )}
+        </div>
+      </Modal>
     </div>
   )
 }
