@@ -6,6 +6,7 @@ import OrderItem from './OrderItem'
 import '../../css/global.css'
 import ProductSummary from '../common/ProductSummary'
 import { useOrderDispatch } from '../../contexts/order/OrderContext'
+import { useAltModal } from '../../hooks/useAltModal'
 
 type Props = {
   product: Product
@@ -17,7 +18,7 @@ const wait = (ms: number) =>
   })
 
 const ProductCard: FC<Props> = ({ product: { name }, product }) => {
-  const [orderItemModal, setOrderItemModal] = useState(false)
+  const { show, close, modalProps } = useAltModal('productDetails')
   const [setSimulatedLoading, setLoading] = useState(false)
   const dispatch = useOrderDispatch()
 
@@ -28,28 +29,18 @@ const ProductCard: FC<Props> = ({ product: { name }, product }) => {
       dispatch({ type: 'ADD_ITEM', args: item })
       wait(500).then(() => {
         setLoading(false)
-        setOrderItemModal(false)
+        close()
 
         message.success('Item adicionado com sucesso')
       })
     },
-    [setLoading, setOrderItemModal, dispatch]
+    [setLoading, close, dispatch]
   )
 
   return (
     <Fragment>
-      <ProductSummary
-        product={product}
-        onClick={() => setOrderItemModal(true)}
-      />
-      <Modal
-        className="customModal"
-        title={name}
-        footer={null}
-        onCancel={() => setOrderItemModal(false)}
-        visible={orderItemModal}
-        destroyOnClose
-      >
+      <ProductSummary product={product} onClick={() => show()} />
+      <Modal className="customModal" title={name} footer={null} {...modalProps}>
         <OrderItem
           product={product}
           onAddItem={onAddItem}

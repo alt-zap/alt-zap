@@ -35,6 +35,7 @@ import { isTenantOpen, useInterval, log } from '../../utils'
 import { useAuth } from '../../contexts/auth/AuthContext'
 import OperationDashboard from './operation/OperationDashboard'
 import SitesDashboard from './sites/SitesDashboard'
+import OpenStatus from '../common/OpenStatus'
 
 const { TabPane } = Tabs
 
@@ -103,15 +104,16 @@ const TenantDashboard: FC = () => {
             title={tenant.name}
             tags={
               <Tooltip title={intl.formatMessage({ id: 'tenant.openTitle' })}>
-                <Tag
+                <OpenStatus
                   className="pointer dim"
+                  isOpen={isOpen}
                   onClick={() => setTabId('2')}
                   color={isOpen ? 'blue' : 'red'}
                 >
                   {intl.formatMessage({
                     id: isOpen ? 'tenant.open' : 'tenant.closed',
                   })}
-                </Tag>
+                </OpenStatus>
               </Tooltip>
             }
             extra={[

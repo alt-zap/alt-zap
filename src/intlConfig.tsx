@@ -308,6 +308,7 @@ export const intlConfig = {
     'feedback.thanks': 'Muito Obrigado!',
     'admin.docs': 'Documentação',
     'order.product.priceFrom': 'A partir de',
+    'order.makeYourOrder': 'Faça seu pedido',
   },
 }
 

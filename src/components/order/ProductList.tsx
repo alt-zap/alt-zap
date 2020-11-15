@@ -49,7 +49,6 @@ const ProductList: FC<Props> = ({ sections }) => {
 
   return (
     <div className="mt3">
-      <h2 className="tc">Qual seu pedido?</h2>
       <div className="flex flex-column items-center">
         <div className="w-100">
           <Affix>
