@@ -111,6 +111,7 @@ const TenantName = styled.span`
 
 const InfoGrid = styled.div<{ hasLogo: boolean }>`
   max-width: 500px;
+  width: 100%;
   padding: 10px 15px;
   display: grid;
   column-gap: 10px;
