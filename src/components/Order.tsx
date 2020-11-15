@@ -20,14 +20,13 @@ import OrderSummary from './OrderSummary'
 import PaymentSelector from './customer/PaymentSelector'
 import { useTenantConfig } from '../contexts/TenantContext'
 import { generateLink, log, isTenantOpen } from '../utils'
-import instagram from '../assets/instagram.svg'
-import whatsapp from '../assets/whatsapp.svg'
 import SelectShipping from './order/SelectShipping'
 import { useOrder } from '../contexts/order/OrderContext'
 import { useInitialShipping } from './order/useInitialShipping'
 import SEO from './SEO'
+import TenantHeader from './order/TenantHeader'
 
-const { Header, Footer } = Layout
+const { Footer } = Layout
 const { TextArea } = Input
 const { Item } = Form
 
@@ -154,52 +153,13 @@ const Order: FC = () => {
           )}
           {(tenantOpen || tenant?.showOnClose) && (
             <Layout className="pb3">
-              <Header
-                style={{
-                  zIndex: 10,
-                  width: '100%',
-                  padding: '0 10px',
-                }}
-                className="flex justify-between tc mb3"
-              >
-                {tenant?.instagram ? (
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={`https://instagram.com/${tenant?.instagram}`}
-                    title="Ir para o Instagram"
-                  >
-                    <img src={instagram} alt="Ir para o Instagram" width="30" />
-                  </a>
-                ) : (
-                  <div />
-                )}
-                <span className="fw2 f3 white">{tenant?.name}</span>
-                <a
-                  href={`https://wa.me/${tenant?.whatsapp}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Ir para o WhatsApp"
-                >
-                  <img
-                    src={whatsapp}
-                    alt="Ir para o WhatsApp"
-                    width="30"
-                    style={{ fill: 'white' }}
-                  />
-                </a>
-              </Header>
+              <TenantHeader />
               <div
                 className="flex justify-center"
                 style={{ marginTop: '10px' }}
               >
                 <div className="w-100 ph2 ph0-l w-50-l">
-                  {tenantOpen ? (
-                    <Alert
-                      message={intl.formatMessage({ id: 'order.alert' })}
-                      type="info"
-                    />
-                  ) : (
+                  {!tenantOpen && (
                     <Alert
                       type="warning"
                       message={intl.formatMessage({ id: 'order.semiClosed' })}

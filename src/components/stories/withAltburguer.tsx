@@ -5,11 +5,14 @@ import {
   TenantDispatchProvider,
 } from '../../contexts/TenantContext'
 import { tenantStateReducer } from '../../contexts/tenantReducer'
-import { TenantContextState } from '../../typings'
+import { TenantContextState, TenantConfig } from '../../typings'
 
-const WithAltburguer: FC = ({ children }) => {
+const WithAltburguer: FC<{ overrides?: Partial<TenantConfig> }> = ({
+  children,
+  overrides = {},
+}) => {
   // Check this later
-  const [state, dispatch] = useReducer(tenantStateReducer, {
+  const [state, dispatch] = useReducer(tenantStateReducer, ({
     loading: false,
     tenantId: 'crTm1DXh6HG3IMjlzMlH',
     live: true,
@@ -275,10 +278,18 @@ const WithAltburguer: FC = ({ children }) => {
         id: 'wtSQPwPMBKMcxMjzy6Vl',
       },
     ],
-  } as TenantContextState)
+  } as unknown) as TenantContextState)
 
   return (
-    <TenantStateProvider value={state}>
+    <TenantStateProvider
+      value={{
+        ...state,
+        tenant: {
+          ...(state?.tenant as TenantConfig),
+          ...overrides,
+        },
+      }}
+    >
       <TenantDispatchProvider value={dispatch}>
         {children}
       </TenantDispatchProvider>
