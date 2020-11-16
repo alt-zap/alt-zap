@@ -10,6 +10,8 @@ import { Rule } from 'antd/lib/form'
 export const intlConfig = {
   locale: 'pt',
   messages: {
+    physicStore: 'Loja Física',
+    qrCode: 'QRCode',
     successful: 'Dados atualizados com sucesso',
     errorful: 'Ocorreu um erro ao atualizar os dados',
     add: 'Adicionar',
