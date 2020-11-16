@@ -14,7 +14,7 @@ type Props = {
 }
 const { Panel } = Collapse
 
-const rules: TypedIntlRules<WorldAddress> = {
+export const rules: TypedIntlRules<WorldAddress> = {
   street: [{ required: true, message: 'address.streetRule' }],
   number: [{ required: true, message: 'address.numberRule' }],
   district: [{ required: true, message: 'address.districtRule' }],

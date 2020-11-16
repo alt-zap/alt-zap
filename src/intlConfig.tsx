@@ -309,6 +309,11 @@ export const intlConfig = {
     'admin.docs': 'Documentação',
     'order.product.priceFrom': 'A partir de',
     'order.makeYourOrder': 'Faça seu pedido',
+    proceed: 'Prosseguir',
+    'selectAddress.warningManual':
+      'Ao preencher seu endereço manualmente você não conseguirá usar a funcionalidade Preço de Entrega Dinâmico',
+    'selectAddress.backToSeach': 'voltar para busca',
+    'selectAddress.fillManually': 'preencha manualmente',
   },
 }
 
