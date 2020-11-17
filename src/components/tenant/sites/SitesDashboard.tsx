@@ -87,7 +87,6 @@ const SitesDashboard: FC = () => {
       >
         <SortSite />
       </Modal>
-      {/** DIVISÃO */}
       <div className="w-90 w-50-l bg-white mv2 ml4-l ml-0 pb3 ph3 br1">
         <Divider>
           <Message id="physicStore" />
