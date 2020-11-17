@@ -22,14 +22,17 @@ type FormValues = {
   additionalInfo: string
 }
 
-type Props = { onValidAddress: (address: WorldAddress) => void }
+type Props = {
+  onValidAddress: (address: WorldAddress) => void
+  allowManual?: boolean
+}
 
 const intlRules: TypedIntlRules<WorldAddress> = {
   number: [{ required: true, message: 'address.numberRule' }],
   additionalInfo: [{ required: true, message: 'address.additionalInfoRule' }],
 }
 
-const SelectAddress: FC<Props> = ({ onValidAddress }) => {
+const SelectAddress: FC<Props> = ({ onValidAddress, allowManual }) => {
   const [form] = Form.useForm()
   const intl = useAltIntl()
   const [step, setStep] = useState(0)
@@ -85,7 +88,7 @@ const SelectAddress: FC<Props> = ({ onValidAddress }) => {
             />
           )}
           <div className="flex justify-center tc">
-            {!manual && (
+            {!manual && allowManual && (
               <span className="tc">
                 {intl.formatMessage({ id: 'or' })}{' '}
                 <a
