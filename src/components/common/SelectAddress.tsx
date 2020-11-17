@@ -1,5 +1,6 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { FC, useCallback, useState } from 'react'
-import { Button, Form, Input, Steps } from 'antd'
+import { Alert, Button, Form, Input, Steps } from 'antd'
 
 import { WorldAddress } from '../../typings'
 import SmartAddress from '../tenant/logistics/SmartAddress'
@@ -10,6 +11,8 @@ import {
   TypedIntlRules,
   useAltIntl,
 } from '../../intlConfig'
+import AddressFields from './AddressFields'
+import { rules as addressRules } from '../AddressForm'
 
 const { Step } = Steps
 
@@ -30,8 +33,10 @@ const SelectAddress: FC<Props> = ({ onValidAddress }) => {
   const [form] = Form.useForm()
   const intl = useAltIntl()
   const [step, setStep] = useState(0)
+  const [manual, setManual] = useState(false)
 
   const rules = prepareRules(intlRules as IntlRules, intl)
+  const manualRules = prepareRules(addressRules as IntlRules, intl)
 
   const [smartAddress, setSmartAddress] = useState<
     Partial<WorldAddress> | undefined
@@ -40,7 +45,10 @@ const SelectAddress: FC<Props> = ({ onValidAddress }) => {
   const onSmartSelect = useCallback(
     (data: Partial<WorldAddress>) => {
       setSmartAddress(data)
-      data.number && form.setFieldsValue({ number: data.number })
+      form.setFieldsValue({
+        number: data?.number ?? '',
+        complement: data?.complement ?? '',
+      })
       setStep(1)
     },
     [setSmartAddress, setStep, form]
@@ -66,7 +74,69 @@ const SelectAddress: FC<Props> = ({ onValidAddress }) => {
       </Steps>
       {step === 0 && (
         <div className="mt3">
-          <SmartAddress onAddress={onSmartSelect} />
+          {!manual && <SmartAddress onAddress={onSmartSelect} />}
+          {manual && (
+            <Alert
+              type="info"
+              className="mb2"
+              message={intl.formatMessage({
+                id: 'selectAddress.warningManual',
+              })}
+            />
+          )}
+          <div className="flex justify-center tc">
+            {!manual && (
+              <span className="tc">
+                {intl.formatMessage({ id: 'or' })}{' '}
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    setManual(true)
+                  }}
+                >
+                  {intl.formatMessage({ id: 'selectAddress.fillManually' })}
+                </a>
+              </span>
+            )}
+            {manual && (
+              <span className="tc">
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    setManual(false)
+                  }}
+                >
+                  {intl.formatMessage({ id: 'selectAddress.backToSeach' })}
+                </a>
+              </span>
+            )}
+          </div>
+          {manual && (
+            <Form
+              layout="vertical"
+              className="mt2"
+              onFinish={(data) => {
+                onSmartSelect(data)
+              }}
+            >
+              <div id="address" className="flex flex-column items-center mt2">
+                <AddressFields rules={manualRules} />
+              </div>
+              <Button
+                className="mt3"
+                size="large"
+                type="primary"
+                block
+                htmlType="submit"
+              >
+                {intl.formatMessage({ id: 'proceed' })}
+              </Button>
+            </Form>
+          )}
         </div>
       )}
       {step === 1 && (
