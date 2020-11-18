@@ -47,7 +47,24 @@ const Totalizer = React.forwardRef<HTMLDivElement, Props>(
             </span>
           </div>
         </div>
-        <GoDownButton shouldDisplay={!!shouldDisplayButton}>
+        <GoDownButton
+          shouldDisplay={!!shouldDisplayButton}
+          onClick={() => {
+            const el = document.getElementById('shipping-selector')
+
+            if (!el) {
+              return
+            }
+
+            const yOffSet = -110
+            const y =
+              (el?.getBoundingClientRect().top || 0) +
+              window.pageYOffset +
+              yOffSet
+
+            window.scrollTo({ top: y, behavior: 'smooth' })
+          }}
+        >
           {formatMessage({ id: 'order.totalizer.goToShipping' })}
           <svg
             xmlns="http://www.w3.org/2000/svg"

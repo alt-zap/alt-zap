@@ -205,10 +205,8 @@ const Order: FC = () => {
                     layout="vertical"
                   >
                     <SelectShipping
+                      id="shipping-selector"
                       onViewPort={(isIt) => setAddressOnViewport(isIt)}
-                      onAutoFill={(data: Partial<WorldAddress>) => {
-                        orderForm.setFieldsValue({ ...data })
-                      }}
                     />
                     <Divider />
                     <Item name="info" label="Outras informações?">
