@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, Fragment } from 'react'
+import React, { FC, useCallback, useMemo, Fragment, useState } from 'react'
 import { Affix, Alert, Button, Form, Divider, Input, Spin, Layout } from 'antd'
 import { SendOutlined } from '@ant-design/icons'
 import * as firebase from 'firebase/app'
@@ -43,6 +43,7 @@ const Order: FC = () => {
   const { tenant, loading, products } = useTenantConfig()
   const [{ order }, dispatch] = useOrder()
   const shippingAddress = order?.shipping?.address
+  const [isAddressOnViewport, setAddressOnViewport] = useState(false)
 
   // Dirty hack to initially select a shipping method
   useInitialShipping(tenant, order, dispatch)
@@ -204,6 +205,7 @@ const Order: FC = () => {
                     layout="vertical"
                   >
                     <SelectShipping
+                      onViewPort={(isIt) => setAddressOnViewport(isIt)}
                       onAutoFill={(data: Partial<WorldAddress>) => {
                         orderForm.setFieldsValue({ ...data })
                       }}
@@ -225,7 +227,10 @@ const Order: FC = () => {
                     {!!order?.items.length && (
                       <>
                         <Affix offsetBottom={-5} className="mt4">
-                          <Totalizer order={order} />
+                          <Totalizer
+                            order={order}
+                            shouldDisplayButton={!isAddressOnViewport}
+                          />
                         </Affix>
                         <OrderSummary order={order} />
                         <Divider />
