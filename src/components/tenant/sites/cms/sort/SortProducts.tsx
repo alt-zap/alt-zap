@@ -73,6 +73,7 @@ const SortProducts: FC<Props> = ({
             checked={item.visible}
             disabled={loading}
             onChange={(value) => handleCheckedItem(value, item)}
+            id={item.element}
           />
         </div>
       )}

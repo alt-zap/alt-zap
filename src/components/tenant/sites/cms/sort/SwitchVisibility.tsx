@@ -10,7 +10,7 @@ const SwitchVisibility: FC<ComponentPropsWithoutRef<typeof Switch>> = (
 
   return (
     <div className="flex flex-column items-center">
-      <label htmlFor="switch-put-item-id-here">
+      <label htmlFor={props.id}>
         {formatMessage({ id: 'tenant.sites.show?' })}
       </label>
       <Switch {...props} />
