@@ -47,7 +47,7 @@ const TenantAddress: FC = () => {
       </Divider>
       <Modal visible={modal} footer={null} onCancel={() => setModal(false)}>
         <div className="mt2">
-          <SelectAddress onValidAddress={handleAddressChange} />
+          <SelectAddress onValidAddress={handleAddressChange} allowManual />
         </div>
       </Modal>
       {hasAddress && (

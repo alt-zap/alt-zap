@@ -92,7 +92,7 @@ const OrderAddress: FC<Props> = () => {
         </div>
       )}
       <Modal visible={modal} footer={null} onCancel={() => setModal(false)}>
-        <SelectAddress onValidAddress={onSelectedAddress} />
+        <SelectAddress onValidAddress={onSelectedAddress} allowManual />
       </Modal>
     </div>
   )
