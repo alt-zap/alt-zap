@@ -298,7 +298,6 @@ export const intlConfig = {
     'tenant.sites.sort.label': 'O que deseja ordenar?',
     'tenant.sites.table.edit': 'Editar',
     'tenant.sites.editModal.title': 'Ordenar sessões',
-<<<<<<< HEAD
     'feedback.sendSuggestionButton': 'Enviar Sugestão',
     'feedback.sendBugbutton': 'Enviar Problema',
     'feedback.reportBug': 'Reportar um Problema',
@@ -315,8 +314,6 @@ export const intlConfig = {
       'Ao preencher seu endereço manualmente você não conseguirá usar a funcionalidade Preço de Entrega Dinâmico',
     'selectAddress.backToSeach': 'voltar para busca',
     'selectAddress.fillManually': 'preencha manualmente',
-=======
->>>>>>> d5092c7 (Adding 'No Products' message and finishing styling issues)
     'tenant.sites.noProduct': 'Nenhum produto cadastrado',
     'tenant.sites.show?': 'Mostrar?',
   },
