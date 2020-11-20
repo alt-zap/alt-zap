@@ -77,7 +77,7 @@ export function SortableList<T extends unknown>({
                       ref={innerProvided.innerRef}
                       style={{
                         border: '1px solid #f0f0f0',
-                        height: '65px',
+                        minHeight: '65px',
                       }}
                       className="flex items-center justify-between ph3 pv2 mb3 bg-white"
                     >
