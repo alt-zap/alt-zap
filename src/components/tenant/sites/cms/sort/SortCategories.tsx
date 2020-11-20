@@ -17,9 +17,6 @@ type Props = {
 const SortCategories: FC<Props> = ({ onSortedCategories, loading }) => {
   const [{ tenant, products }] = useTenant()
   const intl = useAltIntl()
-  const [isVisible, setIsVisible] = useState(true)
-
-
 
   const [categoryIds, setIds] = useState<Array<Section<number>>>(
     tenant?.sites?.zap.categoryIds ?? []
@@ -72,13 +69,13 @@ const SortCategories: FC<Props> = ({ onSortedCategories, loading }) => {
             checked={item.visible}
             disabled={loading}
             onChange={(value) => handleCheckedItem(value, item)}
-            id={item.element}
+            htmlFor={item.element?.toString()}
           />
         </div>
       )}
       onSortedList={(ids) => {
         setIds(ids)
-        onSortedCategories(ids.map(({ element }) => element))
+        onSortedCategories(ids)
       }}
     />
   )

@@ -20,9 +20,7 @@ const SortProducts: FC<Props> = ({
 }) => {
   const [{ products, tenant }] = useTenant()
   const intl = useAltIntl()
-  const [isVisible, setIsVisible] = useState(true)
 
-  // Not using the `visible` prop now, as we will implement it later
   const [productIds, setIds] = useState<Array<Section<string>>>(
     tenant?.sites?.zap.productMap[selectedCategory] ?? []
   )
@@ -74,13 +72,13 @@ const SortProducts: FC<Props> = ({
             checked={item.visible}
             disabled={loading}
             onChange={(value) => handleCheckedItem(value, item)}
-            id={item.element}
+            htmlFor={item.element}
           />
         </div>
       )}
       onSortedList={(ids) => {
         setIds(ids)
-        onSortedProducts(ids.map(({ element }) => element))
+        onSortedProducts(ids)
       }}
     />
   )
