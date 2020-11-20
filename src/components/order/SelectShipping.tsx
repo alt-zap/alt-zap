@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect, useRef } from 'react'
 import { Form, Radio, Divider } from 'antd'
 
 import { useAltIntl, Message, IntlRules, prepareRules } from '../../intlConfig'
-import { WorldAddress, ShippingMethod } from '../../typings'
+import { ShippingMethod } from '../../typings'
 import { useTenantConfig } from '../../contexts/TenantContext'
 import addressIcon from '../../assets/address.svg'
 import { DeliveryIcon } from '../../assets/DeliveryIcon'
@@ -11,19 +11,21 @@ import { TakeawayIcon } from '../../assets/TakeawayIcon'
 import { generateGoogleMapsLink } from '../../utils'
 import AddressDisplay from '../common/AddressDisplay'
 import OrderAddress from './OrderAddress'
+import { useObserver } from '../../hooks/useObserver'
 
 const { Group } = Radio
 const { Item } = Form
 
 type Props = {
-  onAutoFill: (data: Partial<WorldAddress>) => void
+  onViewPort: (isIt: boolean) => void
+  id: string
 }
 
 const intlRules: IntlRules = {
   shippingMethod: [{ required: true, message: 'order.shipping.rule' }],
 }
 
-const SelectShipping: FC<Props> = ({ onAutoFill }) => {
+const SelectShipping: FC<Props> = ({ id, onViewPort }) => {
   const { tenant } = useTenantConfig()
   const acceptsTakeaway = tenant?.shippingStrategies?.takeaway?.active
   const acceptsDelivery = tenant?.shippingStrategies?.deliveryFixed?.active
@@ -44,11 +46,13 @@ const SelectShipping: FC<Props> = ({ onAutoFill }) => {
   }, [setCurrent, initialValue, current])
 
   const intl = useAltIntl()
-
   const rules = prepareRules(intlRules, intl)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useObserver(ref, '0px 0px -100px 0px', onViewPort)
 
   return (
-    <div className="flex flex-column">
+    <div className="flex flex-column" ref={ref} id={id}>
       <Divider>
         <h2 className="tc">
           {intl.formatMessage({ id: 'order.shippingMethod' })}

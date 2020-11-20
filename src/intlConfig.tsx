@@ -314,6 +314,12 @@ export const intlConfig = {
       'Ao preencher seu endereço manualmente você não conseguirá usar a funcionalidade Preço de Entrega Dinâmico',
     'selectAddress.backToSeach': 'voltar para busca',
     'selectAddress.fillManually': 'preencha manualmente',
+    or: 'ou',
+    'order.totalizer.total': 'Total:',
+    'order.totalizer.delivery': 'Entrega: ',
+    'order.totalizer.freeTakeaway': 'Retirada Grátis',
+    'order.totalizer.freeShipping': 'Entrega Grátis',
+    'order.totalizer.goToShipping': 'Ir para Entrega',
   },
 }
 
