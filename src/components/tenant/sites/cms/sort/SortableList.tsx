@@ -95,7 +95,7 @@ export function SortableList<T extends unknown>({
             {provided.placeholder}
             {!list.length && (
               <div className="flex justify-center tc">
-                <span>{formatMessage({ id: 'tenant.sites.noProduct' })}</span>
+                <span>{formatMessage({ id: 'tenant.sites.noItems' })}</span>
               </div>
             )}
           </div>

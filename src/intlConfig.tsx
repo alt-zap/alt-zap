@@ -314,7 +314,7 @@ export const intlConfig = {
       'Ao preencher seu endereço manualmente você não conseguirá usar a funcionalidade Preço de Entrega Dinâmico',
     'selectAddress.backToSeach': 'voltar para busca',
     'selectAddress.fillManually': 'preencha manualmente',
-    'tenant.sites.noProduct': 'Nenhum produto cadastrado',
+    'tenant.sites.noItems': 'Nenhum item cadastrado',
     'tenant.sites.show?': 'Mostrar?',
   },
 }
