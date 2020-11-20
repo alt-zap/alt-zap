@@ -19,7 +19,7 @@ const Categories: FC = () => {
     index: number
   }>()
 
-  const { tenant, loading, products } = useTenantConfig()
+  const { tenant, loading, products, productsLoading } = useTenantConfig()
 
   const productsCount = useMemo(() => {
     if (!products) return []
@@ -40,17 +40,21 @@ const Categories: FC = () => {
         dataSource={tenant?.categories}
         renderItem={(category, index) => (
           <List.Item>
-            <List.Item.Meta
-              title={<span className="f5 fw4">{category.name}</span>}
-              description={intl.formatMessage(
-                {
-                  id: 'tenant.categories.productCount',
-                },
-                {
-                  count: `${productsCount[index]}`,
-                }
-              )}
-            />
+            {!productsLoading ? (
+              <List.Item.Meta
+                title={<span className="f5 fw4">{category.name}</span>}
+                description={intl.formatMessage(
+                  {
+                    id: 'tenant.categories.productCount',
+                  },
+                  {
+                    count: `${productsCount[index]}`,
+                  }
+                )}
+              />
+            ) : (
+              <Skeleton loading active paragraph={{ rows: 1 }} />
+            )}
             <div>
               <Button
                 onClick={() => setCategory({ category, index })}
