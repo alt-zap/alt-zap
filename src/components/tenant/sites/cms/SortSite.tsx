@@ -2,15 +2,11 @@
 import React, { FC, useCallback, useState } from 'react'
 import { Select, Form, Alert } from 'antd'
 
-import {
-  useTenant,
-  getSectionsFromIds,
-  setTenantData,
-} from '../../../../contexts/TenantContext'
+import { useTenant, setTenantData } from '../../../../contexts/TenantContext'
 import SortCategories from './sort/SortCategories'
 import SortProducts from './sort/SortProducts'
 import { useAltIntl } from '../../../../intlConfig'
-import { TenantConfig } from '../../../../typings'
+import { Section, TenantConfig } from '../../../../typings'
 
 const { Option, OptGroup } = Select
 const { Item } = Form
@@ -18,20 +14,19 @@ const { Item } = Form
 /**
  * Some notes about this component
  *
- * - We are NOT using the `visible` prop, to be implemented later.
  * - We hold local state and lazily updates the remote server
  */
 const SortSite: FC = () => {
   const [{ tenant, tenantId }, dispatch] = useTenant()
   const intl = useAltIntl()
 
+  const [loading, setLoading] = useState(false)
   const [mode, setMode] = useState<'CATEGORIES' | 'PRODUCTS'>('CATEGORIES')
   const [category, setCategory] = useState<number | null>(null)
 
   const handleSortedCategories = useCallback(
-    (indexes: number[]) => {
-      const categoryIds = getSectionsFromIds(indexes)
-
+    (categoryIds: Array<Section<number>>) => {
+      setLoading(true)
       const sites: TenantConfig['sites'] = {
         zap: {
           categoryIds,
@@ -39,21 +34,21 @@ const SortSite: FC = () => {
         },
       }
 
-      setTenantData(dispatch, { tenantId, tenantData: { sites } })
+      setTenantData(dispatch, { tenantId, tenantData: { sites } }).finally(() =>
+        setLoading(false)
+      )
     },
     [tenant, tenantId, dispatch]
   )
 
   const handleSortedProducts = useCallback(
-    (ids: string[]) => {
-      // For now, not using the `visible` prop
-      const productIds = getSectionsFromIds(ids)
-
+    (productIds: Array<Section<string>>) => {
       // Pleasing the TS compiler
       if (category === null || category === undefined) {
         return
       }
 
+      setLoading(true)
       const sites: TenantConfig['sites'] = {
         zap: {
           categoryIds: tenant?.sites?.zap.categoryIds ?? [],
@@ -64,7 +59,9 @@ const SortSite: FC = () => {
         },
       }
 
-      setTenantData(dispatch, { tenantId, tenantData: { sites } })
+      setTenantData(dispatch, { tenantId, tenantData: { sites } }).finally(() =>
+        setLoading(false)
+      )
     },
     [tenant, tenantId, dispatch, category]
   )
@@ -114,12 +111,16 @@ const SortSite: FC = () => {
         </Form>
       </div>
       {mode === 'CATEGORIES' && (
-        <SortCategories onSortedCategories={handleSortedCategories} />
+        <SortCategories
+          onSortedCategories={handleSortedCategories}
+          loading={loading}
+        />
       )}
       {mode === 'PRODUCTS' && (
         <SortProducts
           key={category ?? ''}
           selectedCategory={category ?? 0}
+          loading={loading}
           onSortedProducts={handleSortedProducts}
         />
       )}

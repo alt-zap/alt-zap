@@ -1,23 +1,25 @@
-import React, { FC, useState, useMemo } from 'react'
+import React, { FC, useState, useMemo, useCallback } from 'react'
 
 import {
   useTenant,
   countProductPerCategory,
 } from '../../../../../contexts/TenantContext'
 import { useAltIntl } from '../../../../../intlConfig'
+import { Section } from '../../../../../typings'
 import SortableList from './SortableList'
+import SwitchVisibility from './SwitchVisibility'
 
 type Props = {
-  onSortedCategories: (indexeds: number[]) => void
+  onSortedCategories: (indexeds: Array<Section<number>>) => void
+  loading?: boolean
 }
 
-const SortCategories: FC<Props> = ({ onSortedCategories }) => {
+const SortCategories: FC<Props> = ({ onSortedCategories, loading }) => {
   const [{ tenant, products }] = useTenant()
   const intl = useAltIntl()
 
-  // Not using the `visible` prop now, as we will implement it later
-  const [categoryIds, setIds] = useState<number[]>(
-    (tenant?.sites?.zap.categoryIds ?? []).map(({ element }) => element)
+  const [categoryIds, setIds] = useState<Array<Section<number>>>(
+    tenant?.sites?.zap.categoryIds ?? []
   )
 
   // Used to get the products' count. It'd be great to have this on the Context, as we already
@@ -32,19 +34,43 @@ const SortCategories: FC<Props> = ({ onSortedCategories }) => {
     )
   }, [tenant, products])
 
+  const handleCheckedItem = useCallback(
+    (value: boolean, item: Section<number>) => {
+      const newSections = categoryIds.map((section) =>
+        section.element === item.element
+          ? Object.assign(section, { visible: value })
+          : section
+      )
+
+      setIds(newSections)
+      onSortedCategories(newSections)
+    },
+    [setIds, onSortedCategories, categoryIds]
+  )
+
   return (
     <SortableList
       list={categoryIds}
-      getIdFromItem={(item) => `${item}`}
+      getIdFromItem={(item) => `${item.element}`}
       renderItem={(item) => (
-        <div className="flex flex-column">
-          <span className="fw6 f5">{tenant?.categories?.[item]?.name}</span>
-          <span className="light-silver">
-            {intl.formatMessage(
-              { id: 'tenant.categories.productCount' },
-              { count: `${productsCount[item]}` }
-            )}
-          </span>
+        <div className="flex items-center justify-between w-100">
+          <div className="flex flex-column items-baseline">
+            <span className="fw6 f5">
+              {tenant?.categories?.[item.element]?.name}
+            </span>
+            <span className="light-silver">
+              {intl.formatMessage(
+                { id: 'tenant.categories.productCount' },
+                { count: `${productsCount[item.element]}` }
+              )}
+            </span>
+          </div>
+          <SwitchVisibility
+            checked={item.visible}
+            disabled={loading}
+            onChange={(value) => handleCheckedItem(value, item)}
+            htmlFor={item.element?.toString()}
+          />
         </div>
       )}
       onSortedList={(ids) => {

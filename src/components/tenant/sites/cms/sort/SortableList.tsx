@@ -7,6 +7,8 @@ import {
 } from 'react-beautiful-dnd'
 import { BarsOutlined } from '@ant-design/icons'
 
+import { useAltIntl } from '../../../../../intlConfig'
+
 type Props<T = object> = {
   list: T[]
   getIdFromItem: (item: T) => string
@@ -20,6 +22,7 @@ export function SortableList<T extends unknown>({
   renderItem,
   onSortedList,
 }: Props<T>) {
+  const { formatMessage } = useAltIntl()
   const handleDrag = useCallback(
     (result: DropResult) => {
       const { destination, source } = result
@@ -74,11 +77,11 @@ export function SortableList<T extends unknown>({
                       ref={innerProvided.innerRef}
                       style={{
                         border: '1px solid #f0f0f0',
-                        height: '65px',
+                        minHeight: '65px',
                       }}
                       className="flex items-center justify-between ph3 pv2 mb3 bg-white"
                     >
-                      <div className="flex items-center">
+                      <div className="flex items-center justify-between w-100">
                         <div className="mr3">
                           <BarsOutlined style={{ fontSize: '25px' }} />
                         </div>
@@ -90,6 +93,11 @@ export function SortableList<T extends unknown>({
               </Draggable>
             ))}
             {provided.placeholder}
+            {!list.length && (
+              <div className="flex justify-center tc">
+                <span>{formatMessage({ id: 'tenant.sites.noProduct' })}</span>
+              </div>
+            )}
           </div>
         )}
       </Droppable>
