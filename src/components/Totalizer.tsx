@@ -49,20 +49,23 @@ const Totalizer = React.forwardRef<HTMLDivElement, Props>(
         </div>
         <GoDownButton
           shouldDisplay={!!shouldDisplayButton}
-          onClick={() => {
+          type="button"
+          onClick={(e) => {
             const el = document.getElementById('shipping-selector')
 
             if (!el) {
               return
             }
 
-            const yOffSet = -110
+            const yOffSet = -100
             const y =
               (el?.getBoundingClientRect().top || 0) +
               window.pageYOffset +
               yOffSet
 
             window.scrollTo({ top: y, behavior: 'smooth' })
+            e.preventDefault()
+            e.stopPropagation()
           }}
         >
           {formatMessage({ id: 'order.totalizer.goToShipping' })}
