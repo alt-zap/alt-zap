@@ -82,6 +82,10 @@ const intlRules: IntlRules = {
 
 const intlCategories: IntlSelect = [
   {
+    name: 'tenant.category.lanchonete',
+    value: 'lanchonete',
+  },
+  {
     name: 'tenant.category.hamburgueria',
     value: 'hamburgueria',
   },
@@ -96,6 +100,42 @@ const intlCategories: IntlSelect = [
   {
     name: 'tenant.category.restaurante',
     value: 'restaurante',
+  },
+  {
+    name: 'tenant.category.mercado',
+    value: 'mercado',
+  },
+  {
+    name: 'tenant.category.marmitas',
+    value: 'marmitas',
+  },
+  {
+    name: 'tenant.category.cafe',
+    value: 'cafe',
+  },
+  {
+    name: 'tenant.category.doceria',
+    value: 'doceria',
+  },
+  {
+    name: 'tenant.category.foodTruck',
+    value: 'foodTruck',
+  },
+  {
+    name: 'tenant.category.bar',
+    value: 'bar',
+  },
+  {
+    name: 'tenant.category.petiscaria',
+    value: 'petiscaria',
+  },
+  {
+    name: 'tenant.category.pastelaria',
+    value: 'pastelaria',
+  },
+  {
+    name: 'tenant.category.sorveteria',
+    value: 'sorveteria',
   },
 ]
 

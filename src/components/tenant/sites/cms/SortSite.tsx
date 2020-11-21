@@ -66,6 +66,14 @@ const SortSite: FC = () => {
     [tenant, tenantId, dispatch, category]
   )
 
+  const selectCategory = useCallback(
+    (i: number) => {
+      setMode('PRODUCTS')
+      setCategory(i)
+    },
+    [setMode, setCategory]
+  )
+
   return (
     <div className="bg-white w-100">
       <div className="mv2">
@@ -80,6 +88,9 @@ const SortSite: FC = () => {
           <Item label={intl.formatMessage({ id: 'tenant.sites.sort.label' })}>
             <Select
               defaultValue="categories"
+              value={
+                mode === 'CATEGORIES' ? 'categories' : `category-${category}`
+              }
               style={{ width: 200 }}
               onChange={(value) => {
                 if (value === 'categories') {
@@ -112,6 +123,7 @@ const SortSite: FC = () => {
       </div>
       {mode === 'CATEGORIES' && (
         <SortCategories
+          onSelectCategory={selectCategory}
           onSortedCategories={handleSortedCategories}
           loading={loading}
         />
