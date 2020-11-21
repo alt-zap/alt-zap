@@ -1,6 +1,8 @@
 import { OrderItem } from '../typings'
 
-export const calculateItemPrice = (item: OrderItem): number => {
+export const calculateItemPrice = (
+  item: Omit<OrderItem, 'itemPrice'>
+): number => {
   const productPrices = item.product.price
 
   const itemsPrice = item.selectedItems.reduce((acc, cur) => {

@@ -326,6 +326,12 @@ export const intlConfig = {
     'selectAddress.fillManually': 'preencha manualmente',
     'tenant.sites.noItems': 'Nenhum item cadastrado',
     'tenant.sites.show?': 'Mostrar?',
+    'order.totalizer.total': 'Total',
+    'order.totalizer.goToShipping': 'Ir para Entrega',
+    'order.totalizer.freeTakeaway': 'Retirada Grátis',
+    'order.totalizer.freeShipping': 'Frete Grátis',
+    'order.totalizer.delivery': 'Entrega',
+    or: 'Ou',
   },
 }
 
