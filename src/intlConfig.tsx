@@ -331,6 +331,7 @@ export const intlConfig = {
     'order.totalizer.freeTakeaway': 'Retirada Grátis',
     'order.totalizer.freeShipping': 'Frete Grátis',
     'order.totalizer.delivery': 'Entrega',
+    or: 'Ou',
   },
 }
 
