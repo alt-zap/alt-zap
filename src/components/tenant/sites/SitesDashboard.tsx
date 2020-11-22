@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 import { Divider, Table, Tag, Skeleton, Modal, Button } from 'antd'
-import { EditOutlined, QrcodeOutlined, LinkOutlined } from '@ant-design/icons'
+import { EditOutlined, QrcodeOutlined } from '@ant-design/icons'
 import QRCode from 'qrcode.react'
 
 import { Message, useAltIntl, AltMessage } from '../../../intlConfig'
@@ -9,9 +9,10 @@ import SortSite from './cms/SortSite'
 
 const SitesDashboard: FC = () => {
   const intl = useAltIntl()
-  const { tenant, tenantId, loading } = useTenantConfig()
+  const { tenant, loading } = useTenantConfig()
   // For now, hardcoded to only work on Zap site
   const [editModal, setEditModal] = useState(false)
+  const [site, setSite] = useState('')
   const [showQR, setShowQR] = useState(false)
 
   return (
@@ -36,6 +37,7 @@ const SitesDashboard: FC = () => {
                       href={`https://${address.url}`}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => setSite(`https://${address.url}`)}
                     >
                       {address.menu}
                     </a>
@@ -94,7 +96,7 @@ const SitesDashboard: FC = () => {
               },
               {
                 address: {
-                  url: `${tenant?.slug}.alt.app.br/loja-fisica/${tenantId}`,
+                  url: `${tenant?.slug}.alt.app.br/loja-fisica`,
                   menu: 'Menu Loja Física',
                 },
                 status: 'active',
@@ -120,12 +122,7 @@ const SitesDashboard: FC = () => {
         onCancel={() => setShowQR(false)}
         footer={null}
       >
-        <QRCode
-          value={`${tenant?.slug}.alt.app.br/loja-fisica`}
-          renderAs="svg"
-          size={240}
-          includeMargin
-        />
+        <QRCode value={site} renderAs="svg" size={240} includeMargin />
       </Modal>
     </div>
   )
