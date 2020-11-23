@@ -8,13 +8,14 @@ import { OrderContextProvider } from '../contexts/order/OrderContext'
 
 interface Props extends PageProps {
   slug: string
+  physicStore?: boolean
 }
 
-const OrderPage: FC<RouteComponentProps<Props>> = ({ slug }) => {
+const OrderPage: FC<RouteComponentProps<Props>> = ({ slug, physicStore }) => {
   return (
     <TenantContextProvider slug={slug}>
       <OrderContextProvider>
-        <Order />
+        <Order physicStore={physicStore} />
       </OrderContextProvider>
     </TenantContextProvider>
   )
@@ -23,7 +24,8 @@ const OrderPage: FC<RouteComponentProps<Props>> = ({ slug }) => {
 const RouteWrapper = () => {
   return (
     <Router>
-      <OrderPage path="/:slug" />
+      <OrderPage path="/:slug" physicStore={false} />
+      <OrderPage path="/:slug/loja-fisica" physicStore />
     </Router>
   )
 }

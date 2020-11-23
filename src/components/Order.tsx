@@ -36,7 +36,11 @@ interface TempFormData extends WorldAddress {
   shippingMethod?: ShippingMethod
 }
 
-const Order: FC = () => {
+interface Props {
+  physicStore?: boolean
+}
+
+const Order: FC<Props> = ({ physicStore }) => {
   const intl = useAltIntl()
   const [debug] = useQueryParam('debug', BooleanParam)
   const [orderForm] = Form.useForm()
@@ -203,11 +207,13 @@ const Order: FC = () => {
                     }}
                     layout="vertical"
                   >
-                    <SelectShipping
-                      onAutoFill={(data: Partial<WorldAddress>) => {
-                        orderForm.setFieldsValue({ ...data })
-                      }}
-                    />
+                    {!physicStore && (
+                      <SelectShipping
+                        onAutoFill={(data: Partial<WorldAddress>) => {
+                          orderForm.setFieldsValue({ ...data })
+                        }}
+                      />
+                    )}
                     <Divider />
                     <Item name="info" label="Outras informações?">
                       <TextArea
