@@ -36,6 +36,7 @@ import { useAuth } from '../../contexts/auth/AuthContext'
 import OperationDashboard from './operation/OperationDashboard'
 import SitesDashboard from './sites/SitesDashboard'
 import OpenStatus from '../common/OpenStatus'
+import { useSecurePage } from '../../hooks/useSecurePage'
 
 const { TabPane } = Tabs
 
@@ -51,7 +52,7 @@ const renderTabBar = (props: any, DefaultTabBar: any) => (
 const TenantDashboard: FC = () => {
   const intl = useAltIntl()
   const [tabId, setTabId] = useQueryParam('tabId', StringParam)
-  const [{ userDb, loading: userLoading }] = useAuth()
+  const [{ userDb, loading: userLoading, user }] = useAuth()
 
   const [isOpen, setOpen] = useState(false)
   const [editingMetadata, setEditMetadata] = useState(false)
@@ -59,6 +60,8 @@ const TenantDashboard: FC = () => {
 
   const tenantContext = useTenantConfig()
   const { tenant, loading, productsLoading, products } = tenantContext
+
+  useSecurePage('tenant', user?.uid, tenant)
 
   const handleTabChange = useCallback(
     (tab) => {
