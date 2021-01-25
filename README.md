@@ -47,6 +47,17 @@ A principal motivação desse projeto é **ajudar as comunidades locais** e cont
 
 Este projeto renderiza o **Alt Admin**, _dashboard_ de administração que disponibiliza aos nossos clientes a configuração das funcionalidades oferecidas e também o **Alt Menu**, parte do sistema que renderiza as páginas dos estabelecimentos.
 
+### Aprenda
+
+Segue uma série de *Alt Talks* introduzindo a aplicação do Alt de forma mais técnica e também explicando alguns dos módulos do sistema:
+
+- [**#001 - Rodando o projeto pela primeira vez**](https://youtu.be/ydUFnv17sXY)
+- [**#002 - Módulo de Autenticação**](https://youtu.be/oW2VlA-SnBQ)
+- [**#003 - Horário de Funcionamento**](https://youtu.be/5WDdAMNb1fY)
+- [**#004 - Opções de Montagem**](https://youtu.be/xqLUQm44Do8)
+- [**#005 - Módulo de Pedido**](https://youtu.be/rIWBrQSNByY)
+- [**#006 - Internacionalização**](https://youtu.be/Il1H1h5xeVg)
+
 ### Requerimentos
 - Utilizamos o [Firebase](https://firebase.google.com) como provedor de autenticação e de banco de dados para a aplicação. Para facilitar o desenvolvimento local, você pode usar o **Emulador do Firebase**, distribuído pelo próprio serviço. Caso queira criar um projeto Firebase próprio, também é possível utilizá-lo configurando as varíaveis de ambiente como no arquivo `.env.exemplo`.
 
