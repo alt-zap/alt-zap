@@ -273,7 +273,7 @@ const TenantDashboard: FC = () => {
 
 const Padding = styled.div`
   padding-top: 4rem;
-  background-color white;
+  background-color: white;
 
   @media (min-width: 600px) {
     padding-top: 0.5rem;

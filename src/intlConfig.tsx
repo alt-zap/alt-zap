@@ -332,6 +332,7 @@ export const intlConfig = {
     'order.totalizer.freeShipping': 'Frete Grátis',
     'order.totalizer.delivery': 'Entrega',
     or: 'Ou',
+    'tenant.requiredField': 'Campo obrigatório',
   },
 }
 

@@ -179,7 +179,14 @@ const OpeningHours: FC = () => {
                         name={[field.name, 'days']}
                         fieldKey={[field.fieldKey, 'days']}
                         label={<Message id="tenant.hours.day" />}
-                        rules={[{ required: true }]}
+                        rules={[
+                          {
+                            required: true,
+                            message: intl.formatMessage({
+                              id: 'tenant.requiredField',
+                            }),
+                          },
+                        ]}
                       >
                         <Select
                           size="large"
@@ -203,7 +210,14 @@ const OpeningHours: FC = () => {
                         name={[field.name, 'time']}
                         fieldKey={[field.fieldKey, 'time']}
                         label={<Message id="tenant.hours.hourInterval" />}
-                        rules={[{ required: true }]}
+                        rules={[
+                          {
+                            required: true,
+                            message: intl.formatMessage({
+                              id: 'tenant.requiredField',
+                            }),
+                          },
+                        ]}
                       >
                         <RangePicker
                           picker="time"
