@@ -57,6 +57,7 @@ const AssemblyRenderer: FC<Props> = ({ assemblyOptions }) => {
             </div>
             <Form.Item
               className="w-100"
+              id={`assembly-${assembly.name}`}
               name={['assembly', assembly.name]}
               initialValue={(assembly.options ?? []).reduce(
                 (acc, cur) => ({

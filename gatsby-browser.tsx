@@ -24,6 +24,7 @@ if (!firebase.apps.length) {
     // eslint-disable-next-line no-console
     console.log('Using Firestore on emulator')
     firebase.firestore().settings({
+      experimentalForceLongPolling: true,
       host: 'localhost:4004',
       ssl: false,
     })
