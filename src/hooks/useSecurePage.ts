@@ -16,7 +16,10 @@ export const useSecurePage = (
         return
       }
 
-      if (tenant.userId !== userId) {
+      if (
+        tenant.userId !== userId &&
+        window?.location?.hostname !== 'localhost'
+      ) {
         navigate('/app/tenants')
       }
     }

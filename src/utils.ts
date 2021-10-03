@@ -245,3 +245,5 @@ export const generateHash = (length: number) => {
 
   return result
 }
+
+export const isDevelopment = () => window?.location?.hostname === 'localhost'

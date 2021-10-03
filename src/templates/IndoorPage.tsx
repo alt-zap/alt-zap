@@ -7,14 +7,14 @@ import Order from '../components/Order'
 import { OrderContextProvider } from '../contexts/order/OrderContext'
 
 interface Props extends PageProps {
-  slug: string
+  tenantId: string
 }
 
-const IndoorPage: FC<RouteComponentProps<Props>> = ({ slug }) => {
+const IndoorPage: FC<RouteComponentProps<Props>> = ({ tenantId }) => {
   return (
-    <TenantContextProvider slug={slug}>
+    <TenantContextProvider tenantId={tenantId}>
       <OrderContextProvider>
-        <Order />
+        <Order mode="INDOOR" />
       </OrderContextProvider>
     </TenantContextProvider>
   )

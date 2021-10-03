@@ -6,6 +6,7 @@ import React, {
   useState,
   useEffect,
 } from 'react'
+import { navigate } from 'gatsby'
 import { Affix, Alert, Button, Form, Divider, Input, Spin, Layout } from 'antd'
 import { SendOutlined } from '@ant-design/icons'
 import * as firebase from 'firebase/app'
@@ -72,7 +73,7 @@ const Order: FC<Props> = ({ mode }) => {
   }, [mode, order, dispatch])
 
   const insertOrder = useCallback(() => {
-    if (!order || !tenant) return
+    if (!order || !tenant) return Promise.resolve()
 
     try {
       const analytics = firebase.analytics()
@@ -90,7 +91,7 @@ const Order: FC<Props> = ({ mode }) => {
       log('Erro ao enviar evento ao Analytics')
     }
 
-    addOrder(dispatch, { order, tenantId })
+    return addOrder(dispatch, { order, tenantId })
   }, [dispatch, order, tenant, tenantId])
 
   const sendToWhatsapp = useCallback(() => {
@@ -118,8 +119,12 @@ const Order: FC<Props> = ({ mode }) => {
     win?.focus()
   }, [order, tenant])
 
-  const hasValidOrder =
-    (order?.totalizers?.totalPrice ?? 0) > 0 && order?.payment
+  const hasValidOrder = useMemo(() => {
+    return (
+      (order?.totalizers?.totalPrice ?? 0) > 0 &&
+      (order?.payment || mode === 'INDOOR')
+    )
+  }, [order, mode])
 
   const fallbackProducts: Product[] = useMemo(
     () =>
@@ -219,7 +224,13 @@ const Order: FC<Props> = ({ mode }) => {
                       const fn =
                         mode === 'INDOOR' ? insertOrder : sendToWhatsapp
 
-                      fn()
+                      const result = fn()
+
+                      if (mode === 'INDOOR') {
+                        ;((result as unknown) as Promise<any>).then(() => {
+                          navigate('/order-placed')
+                        })
+                      }
                     }}
                     form={orderForm}
                     onValuesChange={(_, data) => {

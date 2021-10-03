@@ -12,4 +12,17 @@ export const createPages: GatsbyNode['createPages'] = ({ actions }) => {
     component: resolve(__dirname, '../templates/OrderPage.tsx'),
     context: {},
   })
+
+  createPage({
+    path: '/indoor/__tenant_id__',
+    matchPath: '/indoor/*',
+    component: resolve(__dirname, '../templates/IndoorPage.tsx'),
+    context: {},
+  })
+
+  createPage({
+    path: '/order-placed',
+    component: resolve(__dirname, '../templates/OrderPlacedPage.tsx'),
+    context: {},
+  })
 }
