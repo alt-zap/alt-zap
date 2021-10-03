@@ -1,4 +1,11 @@
-import React, { FC, useCallback, useMemo, Fragment, useState } from 'react'
+import React, {
+  FC,
+  useCallback,
+  useMemo,
+  Fragment,
+  useState,
+  useEffect,
+} from 'react'
 import { Affix, Alert, Button, Form, Divider, Input, Spin, Layout } from 'antd'
 import { SendOutlined } from '@ant-design/icons'
 import * as firebase from 'firebase/app'
@@ -12,6 +19,7 @@ import {
   Category,
   ShippingMethod,
   Order as OrderType,
+  OrderTypes,
 } from '../typings'
 import { useAltIntl, Message } from '../intlConfig'
 import ProductList, { UISection } from './order/ProductList'
@@ -21,7 +29,7 @@ import PaymentSelector from './customer/PaymentSelector'
 import { useTenantConfig } from '../contexts/TenantContext'
 import { generateLink, log, isTenantOpen } from '../utils'
 import SelectShipping from './order/SelectShipping'
-import { useOrder } from '../contexts/order/OrderContext'
+import { addOrder, useOrder } from '../contexts/order/OrderContext'
 import { useInitialShipping } from './order/useInitialShipping'
 import SEO from './SEO'
 import TenantHeader from './order/TenantHeader'
@@ -36,11 +44,15 @@ interface TempFormData extends WorldAddress {
   shippingMethod?: ShippingMethod
 }
 
-const Order: FC = () => {
+type Props = {
+  mode?: OrderTypes
+}
+
+const Order: FC<Props> = ({ mode }) => {
   const intl = useAltIntl()
   const [debug] = useQueryParam('debug', BooleanParam)
   const [orderForm] = Form.useForm()
-  const { tenant, loading, products } = useTenantConfig()
+  const { tenant, loading, products, tenantId } = useTenantConfig()
   const [{ order }, dispatch] = useOrder()
   const shippingAddress = order?.shipping?.address
   const [isAddressOnViewport, setAddressOnViewport] = useState(false)
@@ -48,7 +60,40 @@ const Order: FC = () => {
   // Dirty hack to initially select a shipping method
   useInitialShipping(tenant, order, dispatch)
 
-  const enviarPedido = useCallback(() => {
+  useEffect(() => {
+    if (mode && order?.type !== mode) {
+      dispatch({
+        type: 'SET_PARTIAL_ORDER',
+        args: {
+          type: mode,
+        },
+      })
+    }
+  }, [mode, order, dispatch])
+
+  const insertOrder = useCallback(() => {
+    if (!order || !tenant) return
+
+    try {
+      const analytics = firebase.analytics()
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      analytics.logEvent('purchase', {
+        tenant: tenant?.name,
+        value: order.totalizers?.totalPrice ?? 0 / 100,
+        type: 'indoor',
+        currency: 'BRA',
+      })
+    } catch (e) {
+      log(e)
+      log('Erro ao enviar evento ao Analytics')
+    }
+
+    addOrder(dispatch, { order, tenantId })
+  }, [dispatch, order, tenant, tenantId])
+
+  const sendToWhatsapp = useCallback(() => {
     if (!order || !tenant) return
 
     const whatsappLink = generateLink(order, tenant)
@@ -171,7 +216,10 @@ const Order: FC = () => {
                   <Form
                     scrollToFirstError
                     onFinish={() => {
-                      enviarPedido()
+                      const fn =
+                        mode === 'INDOOR' ? insertOrder : sendToWhatsapp
+
+                      fn()
                     }}
                     form={orderForm}
                     onValuesChange={(_, data) => {
@@ -204,10 +252,12 @@ const Order: FC = () => {
                     }}
                     layout="vertical"
                   >
-                    <SelectShipping
-                      id="shipping-selector"
-                      onViewPort={(isIt) => setAddressOnViewport(isIt)}
-                    />
+                    {mode !== 'INDOOR' && (
+                      <SelectShipping
+                        id="shipping-selector"
+                        onViewPort={(isIt) => setAddressOnViewport(isIt)}
+                      />
+                    )}
                     <Divider />
                     <Item name="info" label="Outras informações?">
                       <TextArea
@@ -232,7 +282,7 @@ const Order: FC = () => {
                         </Affix>
                         <OrderSummary order={order} />
                         <Divider />
-                        <PaymentSelector />
+                        {mode !== 'INDOOR' && <PaymentSelector />}
                       </>
                     )}
                     <div className="flex justify-center">

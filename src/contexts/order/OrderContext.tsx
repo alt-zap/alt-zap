@@ -1,12 +1,15 @@
 import React, { FC, useEffect, useReducer } from 'react'
+import firebase, { firestore } from 'firebase/app'
+import 'firebase/firestore'
 
-import { createCtx } from '../../utils'
-import { Order, WorldAddress } from '../../typings'
+import { createCtx, sanitizeForFirebase } from '../../utils'
+import { Order } from '../../typings'
 import {
   OrderContextActions,
   OrderContextState,
   orderStateReducer,
 } from './orderReducer'
+import { tenantRef } from '../TenantContext'
 
 export type Dispatch = (action: OrderContextActions) => void
 
@@ -55,4 +58,29 @@ export const OrderContextProvider: FC = ({ children }) => {
       <OrderDispatchProvider value={dispatch}>{children}</OrderDispatchProvider>
     </OrderStateProvider>
   )
+}
+
+export const addOrder = async (
+  dispatch: Dispatch,
+  {
+    order,
+    tenantId,
+  }: {
+    order: Order
+    tenantId?: string
+  }
+) => {
+  if (!tenantId) {
+    return Promise.reject('Tenant ID missing')
+  }
+
+  const db = firebase.firestore()
+  const ref = tenantRef(db, tenantId)
+
+  return ref
+    .collection('orders')
+    .add(sanitizeForFirebase(order))
+    .then((ent) => {
+      dispatch({ type: 'SET_PARTIAL_ORDER', args: { id: ent.id } })
+    })
 }
