@@ -3,6 +3,7 @@ import { RouteComponentProps } from '@reach/router'
 
 import { TenantContextProvider } from '../contexts/TenantContext'
 import TenantDashboard from '../components/tenant/TenantDashboard'
+import { OrdersContextProvider } from '../contexts/orders/OrdersContext'
 
 type Props = {
   tenantId: string
@@ -11,7 +12,9 @@ type Props = {
 const TenantDashboardPage: FC<RouteComponentProps<Props>> = ({ tenantId }) => {
   return (
     <TenantContextProvider tenantId={tenantId}>
-      <TenantDashboard />
+      <OrdersContextProvider>
+        <TenantDashboard />
+      </OrdersContextProvider>
     </TenantContextProvider>
   )
 }

@@ -79,7 +79,10 @@ export const addOrder = async (
 
   return ref
     .collection('orders')
-    .add(sanitizeForFirebase(order))
+    .add({
+      ...sanitizeForFirebase(order),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    })
     .then((ent) => {
       dispatch({ type: 'SET_PARTIAL_ORDER', args: { id: ent.id } })
     })

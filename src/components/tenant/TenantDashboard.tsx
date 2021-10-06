@@ -37,6 +37,7 @@ import OperationDashboard from './operation/OperationDashboard'
 import SitesDashboard from './sites/SitesDashboard'
 import OpenStatus from '../common/OpenStatus'
 import { useSecurePage } from '../../hooks/useSecurePage'
+import OrdersDashboard from './orders/OrdersDashboard'
 
 const { TabPane } = Tabs
 
@@ -249,6 +250,17 @@ const TenantDashboard: FC = () => {
           key="5"
         >
           <SitesDashboard />
+        </TabPane>
+        <TabPane
+          tab={
+            <span>
+              <CloudOutlined />
+              <Message id="orders" />
+            </span>
+          }
+          key="6"
+        >
+          <OrdersDashboard />
         </TabPane>
       </Tabs>
       <Modal

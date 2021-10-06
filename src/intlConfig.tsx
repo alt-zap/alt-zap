@@ -333,7 +333,8 @@ export const intlConfig = {
     'order.totalizer.delivery': 'Entrega',
     'order.orderPlaced.title': 'Pedido realizado!',
     or: 'Ou',
-    goBack: 'Voltar'
+    goBack: 'Voltar',
+    orders: 'Pedidos',
   },
 }
 

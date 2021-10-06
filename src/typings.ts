@@ -210,6 +210,7 @@ export type OrderTypes = 'INDOOR' | 'HOME'
 export type Order = {
   id?: string
   date: string
+  createdAt?: number
   type?: OrderTypes
   items: OrderItem[]
   info?: string
