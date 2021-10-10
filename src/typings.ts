@@ -207,10 +207,13 @@ export type OrderItem = {
 
 export type OrderTypes = 'INDOOR' | 'HOME'
 
+export type OrderStates = 'CREATED' | 'DONE' | 'CONFIRMED' | 'CANCELED'
+
 export type Order = {
   id?: string
   date: string
   createdAt?: number
+  state: OrderStates
   type?: OrderTypes
   items: OrderItem[]
   info?: string
@@ -231,4 +234,8 @@ export type Order = {
     totalPrice?: number
     finalPrice?: number
   }
+  stateChanges: Array<{
+    date: number
+    state: OrderStates
+  }>
 }

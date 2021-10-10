@@ -335,6 +335,12 @@ export const intlConfig = {
     or: 'Ou',
     goBack: 'Voltar',
     orders: 'Pedidos',
+    'orders.confirm': 'Confirmar',
+    'orders.cancel': 'Cancelar',
+    'orders.confirmPrompt': 'Tem certeza que deseja confirmar esse pedido?',
+    'orders.cancelPrompt': 'Tem certeza que deseja cancelar esse pedido?',
+    'common.yes': 'Sim',
+    'common.no': 'Não',
   },
 }
 

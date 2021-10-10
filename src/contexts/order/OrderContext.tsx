@@ -23,6 +23,7 @@ export const useOrder = () =>
 
 const initialOrder: Order = {
   items: [],
+  state: 'CREATED',
   date: new Date().toISOString(),
   totalizers: {
     totalPrice: 0,

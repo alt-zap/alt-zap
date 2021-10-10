@@ -2,14 +2,14 @@ import React, { FC, useEffect, useReducer } from 'react'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
-import { createCtx } from '../../utils'
+import { createCtx, sanitizeForFirebase } from '../../utils'
 import { Order } from '../../typings'
 import {
   OrdersContextActions,
   OrdersContextState,
   ordersStateReducer,
 } from './ordersReducer'
-import { useTenantConfig } from '../TenantContext'
+import { tenantRef, useTenantConfig } from '../TenantContext'
 
 export type Dispatch = (action: OrdersContextActions) => void
 
@@ -44,15 +44,15 @@ export const OrdersContextProvider: FC = ({ children }) => {
 
     const unsub = ref.onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change) => {
-        if (change.type === 'added') {
-          dispatch({
-            type: 'ADD_ORDER',
-            args: {
-              ...(change.doc.data() as Order),
-              id: change.doc.id,
-            },
-          })
-        }
+        const action = change.type === 'added' ? 'ADD_ORDER' : 'UPDATE_ORDER'
+
+        dispatch({
+          type: action,
+          args: {
+            ...(change.doc.data() as Order),
+            id: change.doc.id,
+          },
+        })
       })
     })
 
@@ -66,4 +66,23 @@ export const OrdersContextProvider: FC = ({ children }) => {
       </OrdersDispatchProvider>
     </OrdersStateProvider>
   )
+}
+
+export const updateOrder = async ({
+  orderData,
+  tenantId,
+}: {
+  orderData: Order
+  tenantId?: string
+}) => {
+  if (!tenantId) {
+    return Promise.reject('Tenant ID missing')
+  }
+
+  const db = firebase.firestore()
+  const ref = tenantRef(db, tenantId)
+
+  const { id, ...order } = orderData
+
+  return ref.collection('orders').doc(id).update(sanitizeForFirebase(order))
 }
