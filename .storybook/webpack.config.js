@@ -1,4 +1,5 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin')
 
 module.exports = ({ config }) => {
   config.plugins.push(
@@ -74,5 +75,9 @@ module.exports = ({ config }) => {
 
   config.resolve.extensions.push('.ts', '.tsx')
 
+  config.resolve.plugins = [
+    ...(config.resolve.plugins || []),
+    new TsconfigPathsPlugin(),
+  ];
   return config
 }

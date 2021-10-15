@@ -94,7 +94,8 @@
     "source-map-explorer": "^2.4.2",
     "source-map-support": "^0.5.19",
     "ts-jest": "^26.3.0",
-    "ts-node": "^9.0.0"
+    "ts-node": "^9.0.0",
+    "tsconfig-paths-webpack-plugin": "^3.5.1"
   },
   "optionalDependencies": {
     "cypress": "^4.9.0"

@@ -1,15 +1,18 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, {
+  FC,
+  useCallback,
+  useState,
+  ComponentPropsWithoutRef,
+} from 'react'
+
 import { useTenantConfig } from '../../../../contexts/TenantContext'
 import { updateOrder } from '../../../../contexts/orders/OrdersContext'
-import { useAltIntl } from '../../../../intlConfig'
 import { Order } from '../../../../typings'
-import { OrderSummary as Component } from './component'
-import { ComponentPropsWithoutRef } from 'gatsby-link/node_modules/@types/react'
+import { OrderSummary as Component } from './components'
 
 type Props = Pick<ComponentPropsWithoutRef<typeof Component>, 'mode' | 'order'>
 
 const OrderSummaryContainer: FC<Props> = ({ order, mode }) => {
-  const intl = useAltIntl()
   const [loading, setLoading] = useState(false)
   const { tenantId } = useTenantConfig()
 

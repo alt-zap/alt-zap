@@ -207,14 +207,15 @@ export type OrderItem = {
 
 export type OrderTypes = 'INDOOR' | 'HOME'
 
-export type OrderStates = 'CREATED' | 'DONE' | 'CONFIRMED' | 'CANCELED'
+export type OrderStates = 'CREATED' | 'FULFILLED' | 'CONFIRMED' | 'CANCELED'
 
 export type Order = {
   id?: string
   date: string
   createdAt?: number
   state: OrderStates
-  type?: OrderTypes
+  type: OrderTypes
+  last?: boolean
   items: OrderItem[]
   info?: string
   customer?: {

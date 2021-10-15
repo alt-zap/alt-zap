@@ -15,7 +15,11 @@
     "noEmit": true,
     "jsx": "react",
     "types": ["node", "jest"],
-    "typeRoots": ["./types", "./node_modules/@types"]
+    "typeRoots": ["./types", "./node_modules/@types"],
+    "baseUrl": "./",
+    "paths": {
+      "@src/*": ["./src/*"]
+    }
   },
   "include": ["src", "gatsby-*.ts*"]
 }

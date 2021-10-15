@@ -1,12 +1,14 @@
 import React from 'react'
 
 import { Order } from '../../typings'
-import OrderSummary from '../OrderSummary'
+import { OrderSummary } from '../tenant/orders/OrderSummary/components/index'
+import WithAltburguer from './withAltburguer'
+import withIntl from './withIntl'
 
 export default {
   title: 'orders/OrderSummary',
   component: OrderSummary,
-  decorators: [(story: any) => <div className="pa2">{story()}</div>],
+  decorators: [withIntl, (story: any) => <div className="pa2">{story()}</div>],
 }
 
 const baseOrder: Order = {
@@ -15,6 +17,7 @@ const baseOrder: Order = {
   },
   type: 'HOME',
   state: 'CREATED',
+  stateChanges: [],
   date: Date.now().toString(),
   items: [
     {
@@ -33,6 +36,54 @@ const baseOrder: Order = {
   ],
 }
 
-export const Full = () => <OrderSummary mode="full" order={baseOrder} />
+export const Full = () => (
+  <div style={{ maxWidth: 600 }}>
+    <WithAltburguer>
+      <OrderSummary mode="full" order={baseOrder} onStateChange={() => {}} />
+      <div className="pa2" />
+      <OrderSummary
+        mode="full"
+        order={{ ...baseOrder, state: 'CONFIRMED' }}
+        onStateChange={() => {}}
+      />
+      <div className="pa2" />
+      <OrderSummary
+        mode="full"
+        order={{ ...baseOrder, state: 'CANCELED' }}
+        onStateChange={() => {}}
+      />
+      <div className="pa2" />
+      <OrderSummary
+        mode="full"
+        order={{ ...baseOrder, state: 'FULFILLED' }}
+        onStateChange={() => {}}
+      />
+    </WithAltburguer>
+  </div>
+)
 
-export const Lean = () => <OrderSummary mode="lean" order={baseOrder} />
+export const Lean = () => (
+  <div style={{ maxWidth: 600 }}>
+    <WithAltburguer>
+      <OrderSummary mode="lean" order={baseOrder} onStateChange={() => {}} />
+      <div className="pa2" />
+      <OrderSummary
+        mode="lean"
+        order={{ ...baseOrder, state: 'CONFIRMED' }}
+        onStateChange={() => {}}
+      />
+      <div className="pa2" />
+      <OrderSummary
+        mode="lean"
+        order={{ ...baseOrder, state: 'CANCELED' }}
+        onStateChange={() => {}}
+      />
+      <div className="pa2" />
+      <OrderSummary
+        mode="lean"
+        order={{ ...baseOrder, state: 'FULFILLED' }}
+        onStateChange={() => {}}
+      />
+    </WithAltburguer>
+  </div>
+)
