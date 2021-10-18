@@ -1,21 +1,19 @@
-import React, { FC, ReactNode, useMemo } from 'react'
+import React, { FC, useMemo } from 'react'
 import { Card } from 'antd'
-import moment from 'moment'
 import { useAltIntl } from '@src/intlConfig'
-import Real from '@src/components/Real'
 
 import { Order } from '../../../../../typings'
-import { OrderTag } from '../../components/OrderTag'
-import { OrderActions } from '../../components/OrderActions'
+import { OrderAction, OrderActions } from '../../components/OrderActions'
+import { OrderTitle } from '../../components/OrderTitle'
 
 interface Props {
   order: Order
   mode: 'lean' | 'full'
-  onStateChange(state: Order['state']): void
+  onAction(action: OrderAction): void
   loading?: boolean
 }
 
-const OrderSummary: FC<Props> = ({ mode, order, onStateChange, loading }) => {
+const OrderSummary: FC<Props> = ({ mode, order, onAction, loading }) => {
   const intl = useAltIntl()
   const cardBackgroundColor = useMemo(() => {
     switch (order.state) {
@@ -27,51 +25,16 @@ const OrderSummary: FC<Props> = ({ mode, order, onStateChange, loading }) => {
     }
   }, [order])
 
-  const orderPrice = useMemo(() => order?.totalizers?.totalPrice, [order])
-
-  const title = useMemo<ReactNode>(() => {
-    return (
-      <div className="flex justify-between" style={{ flex: 1 }}>
-        <div>
-          <OrderTag order={order} />
-          <b>{order.customer?.name}</b>
-          <span>{` - ${intl.formatMessage(
-            { id: 'orders.table' },
-            { table: `${order?.table}` }
-          )}`}</span>
-          <span className="light-silver f6 pl2">{` ${moment(
-            order?.createdAt
-          ).format('lll')}`}</span>
-        </div>
-        <div>
-          <span className="f6 light-silver mr2">
-            {intl.formatMessage(
-              { id: 'order.nitems' },
-              { n: order?.items?.length }
-            )}
-          </span>
-          <span className="f5 b">
-            {orderPrice && <Real cents={orderPrice} />}
-          </span>
-        </div>
-      </div>
-    )
-  }, [order, intl, orderPrice])
-
   return (
     <Card
       key={order.id}
       hoverable
       extra={
         mode === 'full' && (
-          <OrderActions
-            order={order}
-            loading={loading}
-            onStateChange={onStateChange}
-          />
+          <OrderActions order={order} loading={loading} onAction={onAction} />
         )
       }
-      title={mode === 'full' && title}
+      title={mode === 'full' && <OrderTitle mode={mode} order={order} />}
       style={{
         width: '100%',
         marginBottom: 10,
@@ -81,11 +44,18 @@ const OrderSummary: FC<Props> = ({ mode, order, onStateChange, loading }) => {
       bodyStyle={{
         padding: 10,
       }}
+      headStyle={{
+        padding: 0,
+        paddingLeft: 10,
+        paddingRight: 10,
+      }}
     >
       {mode === 'full' ? (
         `${order.items.length} itens`
       ) : (
-        <div className="flex">{title}</div>
+        <div className="flex">
+          <OrderTitle mode={mode} order={order} />
+        </div>
       )}
     </Card>
   )
