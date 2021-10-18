@@ -1,5 +1,8 @@
 import React, { FC, ReactNode, useMemo } from 'react'
 import { Card } from 'antd'
+import moment from 'moment'
+import { useAltIntl } from '@src/intlConfig'
+import Real from '@src/components/Real'
 
 import { Order } from '../../../../../typings'
 import { OrderTag } from '../../components/OrderTag'
@@ -13,6 +16,7 @@ interface Props {
 }
 
 const OrderSummary: FC<Props> = ({ mode, order, onStateChange, loading }) => {
+  const intl = useAltIntl()
   const cardBackgroundColor = useMemo(() => {
     switch (order.state) {
       case 'CREATED':
@@ -23,15 +27,36 @@ const OrderSummary: FC<Props> = ({ mode, order, onStateChange, loading }) => {
     }
   }, [order])
 
+  const orderPrice = useMemo(() => order?.totalizers?.totalPrice, [order])
+
   const title = useMemo<ReactNode>(() => {
     return (
-      <>
-        <OrderTag order={order} />
-        <b>{order.customer?.name}</b>
-        <span> - Mesa 2</span>
-      </>
+      <div className="flex justify-between" style={{ flex: 1 }}>
+        <div>
+          <OrderTag order={order} />
+          <b>{order.customer?.name}</b>
+          <span>{` - ${intl.formatMessage(
+            { id: 'orders.table' },
+            { table: `${order?.table}` }
+          )}`}</span>
+          <span className="light-silver f6 pl2">{` ${moment(
+            order?.createdAt
+          ).format('lll')}`}</span>
+        </div>
+        <div>
+          <span className="f6 light-silver mr2">
+            {intl.formatMessage(
+              { id: 'order.nitems' },
+              { n: order?.items?.length }
+            )}
+          </span>
+          <span className="f5 b">
+            {orderPrice && <Real cents={orderPrice} />}
+          </span>
+        </div>
+      </div>
     )
-  }, [order])
+  }, [order, intl, orderPrice])
 
   return (
     <Card

@@ -343,6 +343,8 @@ export const intlConfig = {
     'orders.state.fulfilled': 'Entregue',
     'orders.state.created': 'Novo',
     'orders.state.canceled': 'Cancelado',
+    'orders.table': 'Mesa {table}',
+    'order.nitems': '{n} {n, plural, =0 {item} one {item} other {items}}',
     'common.yes': 'Sim',
     'common.no': 'Não',
   },

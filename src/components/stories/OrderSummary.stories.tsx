@@ -15,11 +15,29 @@ const baseOrder: Order = {
   customer: {
     name: 'Juliette',
   },
+  table: 4,
+  createdAt: Date.now(),
+  date: '',
   type: 'HOME',
   state: 'CREATED',
   stateChanges: [],
-  date: Date.now().toString(),
+  totalizers: {
+    totalPrice: 1650,
+  },
   items: [
+    {
+      itemPrice: 2500,
+      product: {
+        live: true,
+        category: 1,
+        price: 2500,
+        userId: '',
+        highlight: false,
+        name: 'Caipirinha de Limão',
+      },
+      quantity: 1,
+      selectedItems: [],
+    },
     {
       itemPrice: 2500,
       product: {

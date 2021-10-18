@@ -216,6 +216,7 @@ export type Order = {
   state: OrderStates
   type: OrderTypes
   last?: boolean
+  table?: number
   items: OrderItem[]
   info?: string
   customer?: {
