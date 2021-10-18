@@ -57,24 +57,24 @@ const baseOrder: Order = {
 export const Full = () => (
   <div style={{ maxWidth: 600 }}>
     <WithAltburguer>
-      <OrderSummary mode="full" order={baseOrder} onStateChange={() => {}} />
+      <OrderSummary mode="full" order={baseOrder} onAction={() => {}} />
       <div className="pa2" />
       <OrderSummary
         mode="full"
         order={{ ...baseOrder, state: 'CONFIRMED' }}
-        onStateChange={() => {}}
+        onAction={() => {}}
       />
       <div className="pa2" />
       <OrderSummary
         mode="full"
         order={{ ...baseOrder, state: 'CANCELED' }}
-        onStateChange={() => {}}
+        onAction={() => {}}
       />
       <div className="pa2" />
       <OrderSummary
         mode="full"
         order={{ ...baseOrder, state: 'FULFILLED' }}
-        onStateChange={() => {}}
+        onAction={() => {}}
       />
     </WithAltburguer>
   </div>
@@ -83,24 +83,24 @@ export const Full = () => (
 export const Lean = () => (
   <div style={{ maxWidth: 600 }}>
     <WithAltburguer>
-      <OrderSummary mode="lean" order={baseOrder} onStateChange={() => {}} />
+      <OrderSummary mode="lean" order={baseOrder} onAction={() => {}} />
       <div className="pa2" />
       <OrderSummary
         mode="lean"
         order={{ ...baseOrder, state: 'CONFIRMED' }}
-        onStateChange={() => {}}
+        onAction={() => {}}
       />
       <div className="pa2" />
       <OrderSummary
         mode="lean"
         order={{ ...baseOrder, state: 'CANCELED' }}
-        onStateChange={() => {}}
+        onAction={() => {}}
       />
       <div className="pa2" />
       <OrderSummary
         mode="lean"
         order={{ ...baseOrder, state: 'FULFILLED' }}
-        onStateChange={() => {}}
+        onAction={() => {}}
       />
     </WithAltburguer>
   </div>

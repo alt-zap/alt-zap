@@ -206,7 +206,6 @@ const OpeningHours: FC = () => {
                         rules={[{ required: true }]}
                       >
                         <RangePicker
-                          picker="time"
                           size="large"
                           format="HH:mm"
                           minuteStep={15}
