@@ -7,6 +7,7 @@ import {
   Order,
   TenantConfig,
   OrderItem,
+  Product,
 } from './typings'
 
 type Elements = HTMLInputElement | HTMLTextAreaElement
@@ -65,7 +66,7 @@ ${addressLabel}
 ${messageForAddress(isDelivery ? order?.shipping?.address : tenant.address)}`
 }
 
-const messageForItems = (items: OrderItem[]) => {
+export const messageForItems = (items: OrderItem[]) => {
   const messageForSubitems = (subitems: OrderItem['selectedItems']) => {
     return subitems
       .filter(({ options }) => options.some(({ quantity }) => quantity > 0))
@@ -247,3 +248,21 @@ export const generateHash = (length: number) => {
 }
 
 export const isDevelopment = () => window?.location?.hostname === 'localhost'
+
+export const findAssembly = (product: Product, assemblyName: string) => {
+  return product?.assemblyOptions?.find(({ name }) => name === assemblyName)
+}
+
+export const findOption = (
+  product: Product,
+  assemblyName: string,
+  option: string
+) => {
+  return findAssembly(product, assemblyName)?.options?.find(
+    ({ name }) => name === option
+  )
+}
+
+export const hasQuantity: ({ quantity }: { quantity: number }) => boolean = ({
+  quantity,
+}) => parseInt(`${quantity}`, 10) > 0

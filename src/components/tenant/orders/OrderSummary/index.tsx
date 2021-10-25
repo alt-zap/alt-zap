@@ -9,6 +9,7 @@ import { useTenantConfig } from '../../../../contexts/TenantContext'
 import { updateOrder } from '../../../../contexts/orders/OrdersContext'
 import { Order } from '../../../../typings'
 import { OrderSummary as Component } from './components'
+import { OrderAction } from '../components/OrderActions'
 
 type Props = Pick<ComponentPropsWithoutRef<typeof Component>, 'mode' | 'order'>
 
@@ -36,11 +37,28 @@ const OrderSummaryContainer: FC<Props> = ({ order, mode }) => {
     [updateOrderState]
   )
 
+  const onAction = useCallback(
+    (action: OrderAction) => {
+      switch (action.type) {
+        case 'set_state':
+          onUpdateState(action.state)
+          break
+
+        case 'set_last':
+          break
+
+        default:
+          break
+      }
+    },
+    [onUpdateState]
+  )
+
   return (
     <Component
       mode={mode}
       loading={loading}
-      onStateChange={onUpdateState}
+      onAction={onAction}
       order={order}
     />
   )
