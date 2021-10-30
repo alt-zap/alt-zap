@@ -8,7 +8,7 @@ import React, {
 import { useTenantConfig } from '../../../../contexts/TenantContext'
 import { updateOrder } from '../../../../contexts/orders/OrdersContext'
 import { Order } from '../../../../typings'
-import { OrderSummary as Component } from './components'
+import { OrderSummary as Component } from './component'
 import { OrderAction } from '../components/OrderActions'
 
 type Props = Pick<ComponentPropsWithoutRef<typeof Component>, 'mode' | 'order'>

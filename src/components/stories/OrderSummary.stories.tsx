@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Order } from '../../typings'
-import { OrderSummary } from '../tenant/orders/OrderSummary/components/index'
+import { OrderSummary } from '../tenant/orders/OrderSummary/component'
 import WithAltburguer from './withAltburguer'
 import withIntl from './withIntl'
 

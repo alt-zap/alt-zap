@@ -3,9 +3,9 @@ import { Card } from 'antd'
 import { useAltIntl } from '@src/intlConfig'
 import { Order } from '@src/typings'
 
-import { OrderAction, OrderActions } from '../../components/OrderActions'
-import { OrderTitle } from '../../components/OrderTitle'
-import { OrderItemDetails } from '../../components/OrderItemDetails'
+import { OrderAction, OrderActions } from '../components/OrderActions'
+import { OrderTitle } from '../components/OrderTitle'
+import { OrderItemDetails } from '../components/OrderItemDetails'
 
 interface Props {
   order: Order

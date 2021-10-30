@@ -3,18 +3,20 @@ import { Table } from 'antd'
 import { Order } from '@src/typings'
 import { hasQuantity } from '@src/utils'
 
-import { TableItem, useTableColumns, useTableData } from './hooks'
+import { useTableColumns, useTableData } from './hooks'
+import type { TableItem } from './hooks'
 
 interface Props {
   order: Order
 }
 
-const OrderItemDetails: FC<Props> = ({ order }) => {
+const columns = useTableColumns()
+
+export const OrderItemDetails: FC<Props> = ({ order }) => {
   const itemsToDisplay = useMemo(() => order?.items?.filter(hasQuantity), [
     order,
   ])
 
-  const columns = useTableColumns()
   const tableData = useTableData(itemsToDisplay)
 
   return (
@@ -30,5 +32,3 @@ const OrderItemDetails: FC<Props> = ({ order }) => {
     </div>
   )
 }
-
-export { OrderItemDetails }
