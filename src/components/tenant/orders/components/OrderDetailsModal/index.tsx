@@ -1,8 +1,12 @@
 import React, { FC } from 'react'
-import { Button, Modal } from 'antd'
+import { Button, Modal, Space, Typography } from 'antd'
 import { Order } from '@src/typings'
+import { useAltIntl } from '@src/intlConfig'
 
 import { OrderAction } from '../OrderActions'
+import { OrderTimeline } from '../OrderTimeline'
+
+const { Text } = Typography
 
 interface Props {
   order: Order
@@ -10,6 +14,8 @@ interface Props {
 }
 
 const OrderDetailsModal: FC<Props> = ({ order }) => {
+  const intl = useAltIntl()
+
   return (
     <Modal
       visible
@@ -31,7 +37,12 @@ const OrderDetailsModal: FC<Props> = ({ order }) => {
         </Button>,
       ]}
     >
-      <div>Test</div>
+      <div className="flex flex-column ">
+        <Text className="mb3" strong>
+          {intl.formatMessage({ id: 'order.statuses' })}
+        </Text>
+        <OrderTimeline order={order} />
+      </div>
     </Modal>
   )
 }

@@ -36,7 +36,7 @@ const confirmedOrder: Order = {
   ],
 }
 
-const fulfilledOrder: Order = {
+export const fulfilledOrder: Order = {
   ...baseOrder,
   stateChanges: [
     {
