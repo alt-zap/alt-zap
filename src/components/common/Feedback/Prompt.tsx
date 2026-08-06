@@ -18,7 +18,7 @@ const FeedbackPrompt: FC<Props> = ({ type }) => {
       e.preventDefault()
       setLoading(true)
 
-      const endpoint = process.env.GATSBY_FEEDBACK_URL
+      const endpoint = import.meta.env.VITE_FEEDBACK_URL
 
       if (!endpoint) {
         return
