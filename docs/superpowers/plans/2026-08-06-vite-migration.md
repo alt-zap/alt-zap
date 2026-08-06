@@ -56,9 +56,11 @@
 
 - [ ] **Step 1: Atualizar `package.json` (deps e scripts)**
 
-Remover dependências Gatsby e Reach:
+Remover dependências Gatsby e Reach **já nesta task** (decisão de execução: Tasks 3+4 fundidas migram todos os imports de uma vez; não há estado intermediário com Gatsby instalado):
 
 - `gatsby`, `gatsby-plugin-*`, `@reach/router`, `@types/reach__router`
+
+**Nota:** até a Task 3 (fundida) terminar, arquivos em `src/` ainda importam `gatsby`/`@reach/router`. Por isso o script `build` desta task usa só `vite build` (entry stub). Só após a Task 3 reativar `tsc --noEmit && vite build`.
 
 Adicionar (versões exatas na instalação — usar ranges abaixo):
 
@@ -85,7 +87,7 @@ Adicionar (versões exatas na instalação — usar ranges abaixo):
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "emulators": "firebase emulators:start --import=dev --project=alt-zap-dev",
     "firestore-export": "firebase emulators:export dev --project=alt-zap-dev",
@@ -449,14 +451,17 @@ Em `src/components/common/useHere.ts`, `src/components/AutoFill.tsx`, `src/compo
 - `process.env.GATSBY_HERE_KEY` → `import.meta.env.VITE_HERE_KEY`
 - `process.env.GATSBY_FEEDBACK_URL` → `import.meta.env.VITE_FEEDBACK_URL`
 
-- [ ] **Step 8: Mover estáticos**
+- [ ] **Step 8: Mover estáticos e ajustar `.gitignore`**
+
+O `.gitignore` atual ignora `public/` (output do Gatsby). No Vite, `public/` é fonte de estáticos e `dist/` é o build — já ignorado.
 
 ```bash
+# Remover a linha `public` do .gitignore (manter /dist)
 mkdir -p public
 cp -R static/. public/
 ```
 
-Confirmar que favicons/manifests estão em `public/`. Remover `static/` só após confirmar que o build serve os assets (`yarn preview` / network).
+Confirmar que favicons/manifests estão em `public/` e que `public/` **não** está mais no `.gitignore`. Remover `static/` só na Task 6 (ou após confirmar serve).
 
 - [ ] **Step 9: Validar**
 
@@ -469,7 +474,7 @@ Expected: página stub em http://localhost:3000; console sem crash de Firebase i
 - [ ] **Step 10: Commit**
 
 ```bash
-git add src/lib src/providers src/main.tsx src/App.tsx .env.exemplo .env.development public
+git add src/lib src/providers src/main.tsx src/App.tsx .env.exemplo .env.development public .gitignore
 git commit -m "$(cat <<'EOF'
 Inicializa Firebase, Sentry e providers no entry Vite.
 
@@ -481,18 +486,34 @@ Não commitar segredos novos; `.env.development` já estava no repo — apenas r
 
 ---
 
-### Task 3: Router — landing, loja `/:slug` e smoke test
+### Task 3: Router + migração completa Gatsby/Reach → React Router
+
+> **Fundida com a antiga Task 4** (decisão de execução): todos os imports `gatsby` / `gatsby-link` / `@reach/router` saem nesta task, junto com o `App.tsx` de rotas. A antiga Task 4 foi absorvida; as Tasks 5–8 do plano original mantêm a numeração do arquivo (Task 5 Linaria, etc.).
 
 **Files:**
 - Modify: `src/App.tsx`
 - Modify: `src/pages/index.tsx`
 - Modify: `src/templates/OrderPage.tsx`
+- Modify: `src/templates/AdminPage.tsx`
+- Modify: `src/templates/LoginPage.tsx`
+- Modify: `src/templates/OnboardPage.tsx`
+- Modify: `src/templates/TenantsPage.tsx`
+- Modify: `src/templates/TenantDashboardPage.tsx`
+- Modify: `src/templates/UserSwitchPage.tsx`
+- Modify: `src/templates/EditTenantPage.tsx`
+- Modify: `src/hooks/useAltModal.ts`
+- Modify: `src/hooks/useSecurePage.ts`
+- Modify: `src/components/tenant/ListTenants.tsx`
+- Modify: `src/components/tenant/onboard/OnboardStepper.tsx`
+- Modify: `src/components/tenant/TenantDashboard.tsx`
 - Create: `src/__tests__/App.routes.test.tsx`
 - Modify: `jest.config.js` (se necessário para JSX/RR)
+- Modify: `package.json` — restaurar `"build": "tsc --noEmit && vite build"`
+- Delete: `src/pages/app.tsx`
 
 **Interfaces:**
 - Consumes: `BrowserRouter` já em `main.tsx`
-- Produces: rotas `/` e `/:slug` funcionais; `OrderPage` usa `useParams<{ slug: string }>()`
+- Produces: árvore RR6 completa; zero imports Gatsby/Reach em `src/`; `OrderPage`/`TenantDashboardPage` via `useParams`
 
 - [ ] **Step 1: Escrever teste de rotas (falha antes do App completo)**
 
@@ -678,41 +699,7 @@ yarn test src/__tests__/App.routes.test.tsx
 
 Expected: PASS nos 3 casos.
 
-- [ ] **Step 8: Commit**
-
-```bash
-git add src/App.tsx src/pages/index.tsx src/templates/OrderPage.tsx src/__tests__/App.routes.test.tsx jest.config.js package.json yarn.lock
-git commit -m "$(cat <<'EOF'
-Adiciona rotas React Router para landing e loja.
-
-EOF
-)"
-```
-
----
-
-### Task 4: Migrar admin, hooks e `navigate`
-
-**Files:**
-- Modify: `src/templates/AdminPage.tsx`
-- Modify: `src/templates/LoginPage.tsx`
-- Modify: `src/templates/OnboardPage.tsx`
-- Modify: `src/templates/TenantsPage.tsx`
-- Modify: `src/templates/TenantDashboardPage.tsx`
-- Modify: `src/templates/UserSwitchPage.tsx`
-- Modify: `src/templates/EditTenantPage.tsx`
-- Modify: `src/hooks/useAltModal.ts`
-- Modify: `src/hooks/useSecurePage.ts`
-- Modify: `src/components/tenant/ListTenants.tsx`
-- Modify: `src/components/tenant/onboard/OnboardStepper.tsx`
-- Modify: `src/components/tenant/TenantDashboard.tsx`
-- Delete: `src/pages/app.tsx` (rotas já estão em `App.tsx`)
-
-**Interfaces:**
-- Consumes: nesting `/app/tenants` + `<Outlet>` em `AdminPage`
-- Produces: admin navegável sem imports Gatsby/Reach
-
-- [ ] **Step 1: `AdminPage` com Outlet + useNavigate**
+- [ ] **Step 8: Migrar AdminPage com Outlet + useNavigate**
 
 Padrão:
 
@@ -729,7 +716,7 @@ const AdminPage: FC = () => {
 
 Trocar `Content>{children}</Content>` por `Content><Outlet /></Content>`.
 
-- [ ] **Step 2: Páginas que só tinham `RouteComponentProps`**
+- [ ] **Step 9: Páginas que só tinham `RouteComponentProps`**
 
 Em `LoginPage`, `OnboardPage`, `TenantsPage`, `UserSwitchPage`, `EditTenantPage`:
 
@@ -754,7 +741,7 @@ useEffect(() => {
 }, [loading, user, userDb, navigate])
 ```
 
-- [ ] **Step 3: `TenantDashboardPage` com `useParams`**
+- [ ] **Step 10: `TenantDashboardPage` com `useParams`**
 
 ```tsx
 import { useParams } from 'react-router-dom'
@@ -769,7 +756,7 @@ const TenantDashboardPage: FC = () => {
 }
 ```
 
-- [ ] **Step 4: Hooks**
+- [ ] **Step 11: Hooks**
 
 `useAltModal.ts`:
 
@@ -801,7 +788,7 @@ export const useAltModal = (id: string) => {
 
 `useSecurePage.ts`: trocar `gatsby-link` por `useNavigate`.
 
-- [ ] **Step 5: Componentes com `navigate` de gatsby/gatsby-link**
+- [ ] **Step 12: Componentes com `navigate` de gatsby/gatsby-link**
 
 Arquivos:
 
@@ -811,30 +798,50 @@ Arquivos:
 
 Usar `const navigate = useNavigate()` e as mesmas URLs.
 
-- [ ] **Step 6: Remover `src/pages/app.tsx`**
+- [ ] **Step 13: Remover `src/pages/app.tsx` e restaurar build com tsc**
 
-Rotas já declaradas em `App.tsx`.
+Rotas já declaradas em `App.tsx`. Em `package.json`:
 
-- [ ] **Step 7: Validar manualmente**
+```json
+"build": "tsc --noEmit && vite build"
+```
+
+Confirmar zero hits:
 
 ```bash
+rg -n "from ['\"]gatsby|from ['\"]gatsby-link|from ['\"]@reach/router" src
+```
+
+Expected: sem matches.
+
+- [ ] **Step 14: Validar**
+
+```bash
+yarn test src/__tests__/App.routes.test.tsx
+yarn build
 yarn emulators
 # outro terminal
 yarn dev
 ```
 
-Checklist: `/` → login → (com emulator) `/app/tenants` → `/app/tenants/:id` → `/bardolucis`.
+Checklist manual: `/` → login → (com emulator) `/app/tenants` → `/app/tenants/:id` → `/bardolucis`.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 15: Commit**
 
 ```bash
-git add src/templates src/hooks src/components/tenant src/pages src/App.tsx
+git add src jest.config.js package.json yarn.lock
 git commit -m "$(cat <<'EOF'
-Migra admin e navegação de Gatsby/Reach para React Router.
+Migra rotas e navegação de Gatsby/Reach para React Router.
 
 EOF
 )"
 ```
+
+---
+
+### Task 4: _(absorvida na Task 3)_
+
+Não executar. Conteúdo fundido na Task 3 por decisão de execução (opção B).
 
 ---
 
