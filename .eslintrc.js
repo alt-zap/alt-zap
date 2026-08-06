@@ -35,6 +35,13 @@ module.exports = {
         project: './tsconfig.node.json',
       },
     },
+    // Triple-slash reference na linha 1 (spaced-comment quebraria ///)
+    {
+      files: ['src/vite-env.d.ts'],
+      rules: {
+        'spaced-comment': 'off',
+      },
+    },
     // Override for .ts components only
     {
       files: ['*.ts'],
