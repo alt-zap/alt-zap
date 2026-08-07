@@ -1,12 +1,11 @@
 import React from 'react'
-import { withKnobs, text } from '@storybook/addon-knobs'
 
 import ProductSummary from '../common/ProductSummary'
 
 export default {
   title: 'common/ProductSummary',
   component: ProductSummary,
-  decorators: [(story: any) => <div className="pa2">{story()}</div>, withKnobs],
+  decorators: [(story: any) => <div className="pa2">{story()}</div>],
 }
 
 const commonProps = {
@@ -23,7 +22,7 @@ export const CommonSize = () => (
       category: 0,
       highlight: false,
       live: true,
-      name: text('Name', 'O Pioneiro'),
+      name: 'O Pioneiro',
       imgSrc: 'https://i.imgur.com/Y880XEG.png',
       price: 1800,
     }}
