@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { navigate } from 'gatsby-link'
+import { useNavigate } from 'react-router-dom'
 
 import { TenantConfig } from '../typings'
 
@@ -10,6 +10,8 @@ export const useSecurePage = (
   userId?: string,
   tenant?: TenantConfig
 ) => {
+  const navigate = useNavigate()
+
   useEffect(() => {
     if (lockType === 'tenant') {
       if (!tenant || !userId) {
@@ -20,5 +22,5 @@ export const useSecurePage = (
         navigate('/app/tenants')
       }
     }
-  }, [tenant, userId])
+  }, [tenant, userId, lockType, navigate])
 }

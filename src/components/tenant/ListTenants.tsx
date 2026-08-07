@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react'
-import { navigate } from 'gatsby'
+import { useNavigate } from 'react-router-dom'
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
 
@@ -11,6 +11,7 @@ interface TenantForList extends TenantConfig {
 }
 
 const ListTenants: FC = () => {
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [tenants, setTenants] = useState<TenantForList[]>([])
   const [{ user }] = useAuth()

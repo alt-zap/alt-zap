@@ -1,14 +1,12 @@
 import React, { FC } from 'react'
-import { RouteComponentProps } from '@reach/router'
+import { useParams } from 'react-router-dom'
 
 import { TenantContextProvider } from '../contexts/TenantContext'
 import TenantDashboard from '../components/tenant/TenantDashboard'
 
-type Props = {
-  tenantId: string
-}
+const TenantDashboardPage: FC = () => {
+  const { tenantId } = useParams<{ tenantId: string }>()
 
-const TenantDashboardPage: FC<RouteComponentProps<Props>> = ({ tenantId }) => {
   return (
     <TenantContextProvider tenantId={tenantId}>
       <TenantDashboard />

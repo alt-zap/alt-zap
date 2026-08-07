@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { FC, useCallback, Fragment } from 'react'
-import { navigate } from 'gatsby'
-import { RouteComponentProps } from '@reach/router'
+import React, { FC, ReactNode, useCallback, Fragment } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { Dropdown, Layout, Menu, Alert } from 'antd'
 import {
   HomeOutlined,
@@ -19,9 +18,10 @@ import FeedbackButton from '../components/common/Feedback/Button'
 
 const { Header, Content, Footer, Sider } = Layout
 
-const AdminPage: FC<RouteComponentProps> = ({ children }) => {
+const AdminPage: FC<{ children?: ReactNode }> = ({ children }) => {
   const intl = useAltIntl()
   const [{ user, userDb }] = useAuth()
+  const navigate = useNavigate()
 
   const logout = useCallback(() => {
     firebase
@@ -30,7 +30,7 @@ const AdminPage: FC<RouteComponentProps> = ({ children }) => {
       .then(() => {
         navigate('/')
       })
-  }, [])
+  }, [navigate])
 
   const showDevAlert = window?.location.hostname === 'localhost'
 
@@ -109,7 +109,11 @@ const AdminPage: FC<RouteComponentProps> = ({ children }) => {
               </Dropdown>
             )}
           </Header>
-          <Content>{children}</Content>
+          {/* AdminPage é usado tanto como layout de rota (via <Outlet />,
+              quando /app/tenants tem TenantsPage/TenantDashboardPage como
+              filhos) quanto diretamente pelo OnboardPage, que passa
+              children explicitamente sem estar aninhado na árvore de rotas. */}
+          <Content>{children ?? <Outlet />}</Content>
           <Footer style={{ textAlign: 'center' }}>
             Alt Zap ©2020 -{' '}
             <a

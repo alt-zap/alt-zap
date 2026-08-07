@@ -1,7 +1,6 @@
 import React, { FC, useState, useCallback, useMemo, useEffect } from 'react'
 import {
   PageHeader,
-  Tag,
   Button,
   Statistic,
   Row,
@@ -20,7 +19,7 @@ import {
   WarningOutlined,
   CloudOutlined,
 } from '@ant-design/icons'
-import { navigate } from 'gatsby-link'
+import { useNavigate } from 'react-router-dom'
 import { useQueryParam, StringParam } from 'use-query-params'
 import { styled } from 'linaria/react'
 
@@ -50,6 +49,7 @@ const renderTabBar = (props: any, DefaultTabBar: any) => (
 )
 
 const TenantDashboard: FC = () => {
+  const navigate = useNavigate()
   const intl = useAltIntl()
   const [tabId, setTabId] = useQueryParam('tabId', StringParam)
   const [{ userDb, loading: userLoading, user }] = useAuth()
@@ -79,7 +79,7 @@ const TenantDashboard: FC = () => {
     if (!userLoading && !userDb?.document) {
       navigate('/app/onboard')
     }
-  }, [userDb, userLoading])
+  }, [userDb, userLoading, navigate])
 
   useEffect(() => {
     setOpen(tenant?.openingHours ? isTenantOpen(tenant?.openingHours) : false)

@@ -1,6 +1,5 @@
 import React, { FC, Fragment, useCallback, useState } from 'react'
-import { navigate } from 'gatsby'
-import { RouteComponentProps } from '@reach/router'
+import { useNavigate } from 'react-router-dom'
 import { GoogleLoginButton } from 'react-social-login-buttons'
 import { Layout, Button, Divider, Alert } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
@@ -11,7 +10,8 @@ import SEO from '../components/SEO'
 
 const { Header, Content, Footer } = Layout
 
-const HomePage: FC<RouteComponentProps> = () => {
+const HomePage: FC = () => {
+  const navigate = useNavigate()
   const [loginLoading, setLoginLoading] = useState(false)
 
   const redirectToLogin = useCallback(() => {
@@ -19,7 +19,7 @@ const HomePage: FC<RouteComponentProps> = () => {
     setTimeout(() => {
       navigate('/app/login')
     }, 500)
-  }, [setLoginLoading])
+  }, [navigate])
 
   return (
     <Fragment>
