@@ -31,3 +31,4 @@ ui-debug.log
 
 .linaria-cache
 .worktrees
+storybook-static/
