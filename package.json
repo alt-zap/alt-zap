@@ -98,7 +98,7 @@
     "cypress": "^4.9.0"
   },
   "scripts": {
-    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "analyze": "source-map-explorer 'dist/assets/*.js'",
     "emulators": "firebase emulators:start --import=dev --project=alt-zap-dev",
     "firestore-export": "firebase emulators:export dev --project=alt-zap-dev",
     "start": "vite",
