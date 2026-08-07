@@ -144,7 +144,7 @@ export const generateGoogleMapsLink = (address?: WorldAddress) => {
   return `https://www.google.com/maps/search/?api=1&query=${query}`
 }
 
-export function createCtx<A extends {} | null>() {
+export function createCtx<A extends Record<string, unknown> | null>() {
   const ctx = React.createContext<A | undefined>(undefined)
 
   function useCtx() {
@@ -193,13 +193,13 @@ export const isTenantOpen = (hours: OpeningHours, today: Date = new Date()) => {
     .some(({ from: fromRaw, to: toRaw }) => {
       // Time is stored in ISO format
       const [from, to] = [fromRaw, toRaw].map((str) => {
-        const onToday = new Date()
+        const onReferenceDay = new Date(today.getTime())
         const settedDate = new Date(str)
 
-        onToday.setHours(settedDate.getHours())
-        onToday.setMinutes(settedDate.getMinutes())
+        onReferenceDay.setHours(settedDate.getHours())
+        onReferenceDay.setMinutes(settedDate.getMinutes())
 
-        return onToday
+        return onReferenceDay
       })
 
       const afterFrom = today >= from
