@@ -1,4 +1,4 @@
-import { styled } from 'linaria/react'
+import { styled } from '@linaria/react'
 import React, { FC } from 'react'
 
 import BugIcon from './BugIcon'

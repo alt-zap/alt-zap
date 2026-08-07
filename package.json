@@ -22,7 +22,6 @@
     "firebase": "7.24.0",
     "fuzzysearch": "^1.0.3",
     "imask": "6.0.5",
-    "linaria": "^1.4.0-beta.10",
     "moment": "2.29.4",
     "query-string": "^6.13.1",
     "react": "^18.3.1",

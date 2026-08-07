@@ -1,5 +1,5 @@
 import React, { ComponentPropsWithoutRef, FC } from 'react'
-import { styled } from 'linaria/react'
+import { styled } from '@linaria/react'
 
 import Real from '../Real'
 

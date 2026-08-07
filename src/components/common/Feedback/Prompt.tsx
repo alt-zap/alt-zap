@@ -1,4 +1,4 @@
-import { styled } from 'linaria/react'
+import { styled } from '@linaria/react'
 import React, { FC, useState, useCallback } from 'react'
 import * as Sentry from '@sentry/react'
 

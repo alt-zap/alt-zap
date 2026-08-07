@@ -21,7 +21,7 @@ import {
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useQueryParam, StringParam } from 'use-query-params'
-import { styled } from 'linaria/react'
+import { styled } from '@linaria/react'
 
 import { useTenantConfig } from '../../contexts/TenantContext'
 import MenuDashboard from './menus/MenuDashboard'

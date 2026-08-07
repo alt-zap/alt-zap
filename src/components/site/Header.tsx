@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { styled } from 'linaria/react'
+import { styled } from '@linaria/react'
 
 const StyledHeader = styled.div`
   text-transform: uppercase;
