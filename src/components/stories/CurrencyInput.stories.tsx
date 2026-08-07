@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react'
-import { withKnobs } from '@storybook/addon-knobs'
 import { State, Store } from '@sambego/storybook-state'
 
 import CurrencyInput from '../common/CurrencyInput'
@@ -9,7 +8,7 @@ import CurrencyInput from '../common/CurrencyInput'
 export default {
   title: 'common/CurrencyInput',
   component: CurrencyInput,
-  decorators: [(story: any) => <div className="pa2">{story()}</div>, withKnobs],
+  decorators: [(story: any) => <div className="pa2">{story()}</div>],
 }
 
 const numberStore = new Store({

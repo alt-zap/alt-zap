@@ -1,5 +1,5 @@
 import { Divider, Form } from 'antd'
-import { styled } from 'linaria/react'
+import { styled } from '@linaria/react'
 import React, { FC } from 'react'
 
 import LeanQuantitySelector from '../common/LeanQuantitySelector'

@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react'
-import { styled } from 'linaria/react'
+import { styled } from '@linaria/react'
 
 import { useTenantConfig } from '../../contexts/TenantContext'
 import instagram from '../../assets/instagram.svg'

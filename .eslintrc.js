@@ -1,4 +1,5 @@
 module.exports = {
+  root: true,
   extends: ['vtex'],
   env: {
     browser: true,
@@ -25,6 +26,20 @@ module.exports = {
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/prefer-enum-initializers': 'off',
         'no-await-in-loop': 'off',
+      },
+    },
+    // Vite config (fora do tsconfig principal)
+    {
+      files: ['vite.config.ts'],
+      parserOptions: {
+        project: './tsconfig.node.json',
+      },
+    },
+    // Triple-slash reference na linha 1 (spaced-comment quebraria ///)
+    {
+      files: ['src/vite-env.d.ts'],
+      rules: {
+        'spaced-comment': 'off',
       },
     },
     // Override for .ts components only

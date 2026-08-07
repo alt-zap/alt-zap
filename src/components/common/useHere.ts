@@ -45,8 +45,8 @@ export default () => {
 
     try {
       hereClient.current = new H.service.Platform({
-        app_id: process.env.GATSBY_HERE_APP_ID,
-        apikey: process.env.GATSBY_HERE_KEY,
+        app_id: import.meta.env.VITE_HERE_APP_ID,
+        apikey: import.meta.env.VITE_HERE_KEY,
       })
     } catch {
       console.error('Error instantiating Here client')

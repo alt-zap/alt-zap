@@ -1,4 +1,4 @@
-import { styled } from 'linaria/react'
+import { styled } from '@linaria/react'
 import React, { FC, useState, useMemo, useCallback } from 'react'
 
 import {

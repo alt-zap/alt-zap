@@ -1,6 +1,5 @@
 {
   "peerDependencies": {
-    "@storybook/react": ">=6.0.26",
     "antd": ">=4.4.3",
     "imask": "6.0.5",
     "react": ">=16.13.1",
@@ -12,41 +11,32 @@
     "**/**/lodash": "^4.17.19"
   },
   "dependencies": {
-    "@ant-design/icons": "4.2.1",
-    "@reach/router": "1.3.4",
+    "@ant-design/icons": "^4.8.3",
     "@rjsf/antd": "2.2.0",
     "@rjsf/core": "2.2.0",
     "@sentry/react": "^5.20.1",
-    "antd": "latest",
+    "antd": "4.24.16",
     "antd-img-crop": "^3.9.0",
     "dayjs": "1.8.28",
-    "firebase": "7.15.5",
+    "firebase": "7.24.0",
     "fuzzysearch": "^1.0.3",
-    "gatsby": "2.24.85",
-    "gatsby-plugin-antd": "^2.2.0",
-    "gatsby-plugin-linaria": "^2.2.0",
-    "gatsby-plugin-netlify": "^2.3.16",
-    "gatsby-plugin-polyfill-io": "^1.1.0",
-    "gatsby-plugin-react-helmet": "^3.3.12",
-    "gatsby-plugin-use-query-params": "^1.0.1",
     "imask": "6.0.5",
-    "linaria": "^1.4.0-beta.10",
-    "moment": "latest",
+    "moment": "2.29.4",
     "query-string": "^6.13.1",
-    "react": "latest",
+    "react": "^18.3.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-color": "^2.18.1",
     "react-currency-masked-input": "^2.5.0",
-    "react-dom": "latest",
+    "react-dom": "^18.3.1",
     "react-helmet": "^6.1.0",
     "react-image": "^4.0.3",
     "react-input-mask": "^3.0.0-alpha.2",
     "react-intl": "^5.4.5",
     "react-markdown": "4.3.1",
+    "react-router-dom": "^6.28.0",
     "react-social-login-buttons": "3.1.0",
     "slugify": "^1.4.4",
     "tachyons": "^4.12.0",
-    "typescript": "^3.9.6",
     "use-debounce": "^4.0.0",
     "use-query-params": "^1.1.6",
     "uuid": "^8.2.0"
@@ -60,28 +50,33 @@
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.12.1",
-    "@bit/bit.envs.compilers.typescript": "^3.1.49",
+    "@linaria/core": "^6.2.0",
+    "@linaria/react": "^6.2.1",
     "@sambego/storybook-state": "^2.0.1",
-    "@storybook/addon-knobs": "^6.0.26",
-    "@storybook/addon-viewport": "^6.0.26",
-    "@storybook/react": "^6.0.26",
+    "@storybook/addon-essentials": "^8.4.0",
+    "@storybook/addon-viewport": "^8.4.0",
+    "@storybook/react": "^8.4.0",
+    "@storybook/react-vite": "^8.4.0",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/react": "^16.3.2",
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.6",
-    "@types/reach__router": "^1.3.5",
-    "@types/react": "^16.9.55",
+    "@types/react": "^18.3.12",
     "@types/react-beautiful-dnd": "^13.0.0",
-    "@types/react-dom": "^16.9.9",
+    "@types/react-dom": "^18.3.1",
     "@types/react-helmet": "^6.1.0",
     "@types/react-input-mask": "^2.0.5",
-    "@types/storybook__react": "^5.2.1",
     "@types/uuid": "^8.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "@vtex/prettier-config": "^0.3.1",
+    "@wyw-in-js/vite": "^0.5.5",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.1",
     "babel-loader": "^8.1.0",
-    "babel-preset-gatsby": "^0.5.14",
     "babel-preset-react-app": "^9.1.2",
     "css-loader": "^5.0.0",
+    "eslint": "^7.32.0",
     "eslint-config-vtex": "^12.8.6",
     "eslint-config-vtex-react": "^6.7.0",
     "husky": "^4.2.5",
@@ -93,27 +88,32 @@
     "react-test-renderer": "^17.0.1",
     "source-map-explorer": "^2.4.2",
     "source-map-support": "^0.5.19",
+    "storybook": "^8.4.0",
     "ts-jest": "^26.3.0",
-    "ts-node": "^9.0.0"
+    "ts-node": "^9.0.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
   },
   "optionalDependencies": {
     "cypress": "^4.9.0"
   },
   "scripts": {
-    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "analyze": "source-map-explorer 'dist/assets/*.js'",
     "emulators": "firebase emulators:start --import=dev --project=alt-zap-dev",
     "firestore-export": "firebase emulators:export dev --project=alt-zap-dev",
-    "start": "gatsby develop",
-    "develop": "gatsby develop",
-    "build": "GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES=true gatsby build --log-pages",
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview",
     "lint": "eslint --ext js,jsx,ts,tsx .",
     "format": "prettier --write \"**/*.{ts,js,json}\"",
-    "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public",
+    "test": "jest",
+    "storybook": "storybook dev -p 9009",
+    "build-storybook": "storybook build",
     "bit-export": "bit export lucis.alt",
     "bit-tag-minor": "bit tag --all --minor",
-    "bit-tag-patch": "bit tag --all --patch",
-    "test": "jest"
+    "bit-tag-patch": "bit tag --all --patch"
   },
   "browserslist": {
     "production": [
@@ -140,35 +140,6 @@
     "*.json": [
       "prettier --write"
     ]
-  },
-  "bit": {
-    "env": {
-      "compiler": {
-        "bit.envs/compilers/test@0.0.1": {
-          "options": {
-            "file": "../react-typescript-compiler/components/compilers/react-typescript"
-          },
-          "compilerArguments": [
-            "--declaration",
-            "--skipLibCheck"
-          ],
-          "rawConfig": {
-            "tsconfig": {
-              "compilerOptions": {
-                "skipLibCheck": true,
-                "lib": [
-                  "dom",
-                  "es2015",
-                  "es7"
-                ]
-              }
-            }
-          }
-        }
-      }
-    },
-    "componentsDefaultDirectory": "components/{name}",
-    "packageManager": "yarn"
   },
   "overrides": {
     "*": {

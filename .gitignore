@@ -28,6 +28,7 @@ ui-debug.log
 
 .lucisenv
 .cache
-public
 
 .linaria-cache
+.worktrees
+storybook-static/

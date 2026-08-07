@@ -1,6 +1,6 @@
 import React, { FC, useState, useCallback, useEffect } from 'react'
 import { Steps, message } from 'antd'
-import { navigate } from 'gatsby-link'
+import { useNavigate } from 'react-router-dom'
 
 import { Message, useAltIntl } from '../../../intlConfig'
 import UserForm from './UserForm'
@@ -17,6 +17,7 @@ import { addTenant } from '../../../contexts/TenantContext'
 const { Step } = Steps
 
 const OnboardStepper: FC = () => {
+  const navigate = useNavigate()
   const intl = useAltIntl()
   const [{ user, userDb, userDbId }, dispatch] = useAuth()
 
@@ -59,7 +60,7 @@ const OnboardStepper: FC = () => {
           setLoading(false)
         })
     },
-    [intl, userDb, userDbId, user, dispatch]
+    [intl, userDb, userDbId, user, dispatch, navigate]
   )
 
   const handleTenantSubmit = useCallback(
@@ -83,7 +84,7 @@ const OnboardStepper: FC = () => {
           message.error(intl.formatMessage({ id: error }))
         })
     },
-    [dispatch, user, intl, userDbId]
+    [dispatch, user, intl, userDbId, navigate]
   )
 
   return (

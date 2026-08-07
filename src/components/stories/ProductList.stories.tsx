@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react'
-import { withKnobs } from '@storybook/addon-knobs'
 
 import ProductList from '../order/ProductList'
 import withOrder from './withOrder'
@@ -15,7 +14,6 @@ export default {
         {story()}
       </div>
     ),
-    withKnobs,
     withOrder,
   ],
 }

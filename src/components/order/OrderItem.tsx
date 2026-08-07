@@ -2,7 +2,7 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { Input, Form } from 'antd'
 import ReactMarkdown from 'react-markdown'
-import { styled } from 'linaria/react'
+import { styled } from '@linaria/react'
 
 import { OrderItem as IOrderItem, Product } from '../../typings'
 import AssemblyRenderer from './AssemblyRenderer'

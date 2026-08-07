@@ -1,12 +1,30 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Spin } from 'antd'
-import { navigate } from 'gatsby'
-import { RouteComponentProps } from '@reach/router'
+import { useNavigate } from 'react-router-dom'
 
 import { useAuth } from '../contexts/auth/AuthContext'
 
-const UserSwitch: FC<RouteComponentProps> = () => {
+const UserSwitch: FC = () => {
   const [{ user, userDb, loading }] = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (loading) return
+
+    if (!user) {
+      navigate('/app/login')
+
+      return
+    }
+
+    if (!userDb?.hasTenant || !userDb.document) {
+      navigate('/app/onboard')
+
+      return
+    }
+
+    navigate('/app/tenants')
+  }, [loading, user, userDb, navigate])
 
   if (loading) {
     return (
@@ -14,24 +32,6 @@ const UserSwitch: FC<RouteComponentProps> = () => {
         <Spin />
       </div>
     )
-  }
-
-  if (!user) {
-    navigate(`/app/login`)
-
-    return null
-  }
-
-  if ((user && !userDb) || !userDb?.hasTenant || !userDb.document) {
-    navigate(`/app/onboard`)
-
-    return null
-  }
-
-  if (user && userDb) {
-    navigate(`/app/tenants`)
-
-    return null
   }
 
   return <span>Wow, you definitely on trouble</span>

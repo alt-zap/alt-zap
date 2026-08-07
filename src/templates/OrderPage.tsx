@@ -1,16 +1,13 @@
 import React, { FC } from 'react'
-import { PageProps } from 'gatsby'
-import { RouteComponentProps, Router } from '@reach/router'
+import { useParams } from 'react-router-dom'
 
 import { TenantContextProvider } from '../contexts/TenantContext'
 import Order from '../components/Order'
 import { OrderContextProvider } from '../contexts/order/OrderContext'
 
-interface Props extends PageProps {
-  slug: string
-}
+const OrderPage: FC = () => {
+  const { slug } = useParams<{ slug: string }>()
 
-const OrderPage: FC<RouteComponentProps<Props>> = ({ slug }) => {
   return (
     <TenantContextProvider slug={slug}>
       <OrderContextProvider>
@@ -20,12 +17,4 @@ const OrderPage: FC<RouteComponentProps<Props>> = ({ slug }) => {
   )
 }
 
-const RouteWrapper = () => {
-  return (
-    <Router>
-      <OrderPage path="/:slug" />
-    </Router>
-  )
-}
-
-export default RouteWrapper
+export default OrderPage

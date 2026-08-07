@@ -1,4 +1,4 @@
-import { styled } from 'linaria/react'
+import { styled } from '@linaria/react'
 
 export const ProductDescription = styled.div`
   width: 100%;

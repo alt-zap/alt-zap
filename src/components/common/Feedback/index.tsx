@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import { styled } from 'linaria/react'
+import { styled } from '@linaria/react'
 
 import FeedbackOption from './Option'
 import FeedbackPrompt from './Prompt'

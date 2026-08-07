@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout } from 'antd'
-import { RouteComponentProps, LocationProvider } from '@reach/router'
+import { MemoryRouter } from 'react-router-dom'
 
 import TenantDashboard from '../tenant/TenantDashboard'
 import { TenantStateProvider } from '../../contexts/TenantContext'
@@ -15,9 +15,9 @@ export default {
   decorators: [
     withIntl,
     (Comp: React.FC) => (
-      <LocationProvider>
+      <MemoryRouter>
         <Comp />
-      </LocationProvider>
+      </MemoryRouter>
     ),
   ],
 }
@@ -91,7 +91,7 @@ export const Active = () => (
   </TenantStateProvider>
 )
 
-export const Dashboard: React.FC<RouteComponentProps> = () => {
+export const Dashboard: React.FC = () => {
   return <TenantDashboard />
 }
 

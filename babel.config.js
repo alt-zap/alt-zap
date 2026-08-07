@@ -1,15 +1,8 @@
-// Only used with Jest
+// Jest e @wyw-in-js (merge de Babel na raiz do projeto)
 module.exports = {
   presets: [
     ['@babel/preset-env', { targets: { node: 'current' } }],
     '@babel/preset-typescript',
-    [
-      'babel-preset-gatsby',
-      {
-        targets: {
-          browsers: ['>0.25%', 'not dead'],
-        },
-      },
-    ],
+    '@babel/preset-react',
   ],
 }

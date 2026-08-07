@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { FC, useCallback, Fragment } from 'react'
-import { navigate } from 'gatsby'
-import { RouteComponentProps } from '@reach/router'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { Dropdown, Layout, Menu, Alert } from 'antd'
 import {
   HomeOutlined,
@@ -19,9 +18,10 @@ import FeedbackButton from '../components/common/Feedback/Button'
 
 const { Header, Content, Footer, Sider } = Layout
 
-const AdminPage: FC<RouteComponentProps> = ({ children }) => {
+const AdminPage: FC = () => {
   const intl = useAltIntl()
   const [{ user, userDb }] = useAuth()
+  const navigate = useNavigate()
 
   const logout = useCallback(() => {
     firebase
@@ -30,7 +30,7 @@ const AdminPage: FC<RouteComponentProps> = ({ children }) => {
       .then(() => {
         navigate('/')
       })
-  }, [])
+  }, [navigate])
 
   const showDevAlert = window?.location.hostname === 'localhost'
 
@@ -109,7 +109,9 @@ const AdminPage: FC<RouteComponentProps> = ({ children }) => {
               </Dropdown>
             )}
           </Header>
-          <Content>{children}</Content>
+          <Content>
+            <Outlet />
+          </Content>
           <Footer style={{ textAlign: 'center' }}>
             Alt Zap ©2020 -{' '}
             <a
