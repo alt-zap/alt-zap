@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { FC, ReactNode, useCallback, Fragment } from 'react'
+import React, { FC, useCallback, Fragment } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { Dropdown, Layout, Menu, Alert } from 'antd'
 import {
@@ -18,7 +18,7 @@ import FeedbackButton from '../components/common/Feedback/Button'
 
 const { Header, Content, Footer, Sider } = Layout
 
-const AdminPage: FC<{ children?: ReactNode }> = ({ children }) => {
+const AdminPage: FC = () => {
   const intl = useAltIntl()
   const [{ user, userDb }] = useAuth()
   const navigate = useNavigate()
@@ -109,11 +109,9 @@ const AdminPage: FC<{ children?: ReactNode }> = ({ children }) => {
               </Dropdown>
             )}
           </Header>
-          {/* AdminPage é usado tanto como layout de rota (via <Outlet />,
-              quando /app/tenants tem TenantsPage/TenantDashboardPage como
-              filhos) quanto diretamente pelo OnboardPage, que passa
-              children explicitamente sem estar aninhado na árvore de rotas. */}
-          <Content>{children ?? <Outlet />}</Content>
+          <Content>
+            <Outlet />
+          </Content>
           <Footer style={{ textAlign: 'center' }}>
             Alt Zap ©2020 -{' '}
             <a
